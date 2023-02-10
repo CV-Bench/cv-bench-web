@@ -58,7 +58,7 @@ The user should select an appropriate file from the local file system and load i
 - Let user input name and access type
 - When uploaded, send model, name and accesstype to the backend
 - Show toast when uploaded
-- Redirect user to page of new model
+- Redirect user to __/model/[id]__
 
 **Endpoints**
 
@@ -74,8 +74,8 @@ User should see a list with the name of the models and other useful infos like t
 
 - Fetch all the existing models from the backend
 - Show models in list
-- Redirect when model is selected
-- Redirect when upload button is pressed
+- Redirect to __/model/[id]__ when model is selected
+- Redirect to __/model/upload__ when upload button is pressed
 
 **Endpoints**
 
@@ -104,6 +104,8 @@ User should see a visualization of the selected model and is able to change the 
 - Get model: `GET api/model/[id]`
 - Delete model: `DELETE api/model/[id]`
 - Update model: `PATCH api/model/[id]`
+- Request download Download: `POST api/download/[id]`
+- Check download status: `GET api/download/status/[id]`
 - Download model: `GET api/model/download/[id]`
 
 ### List Datasets **/dataset**
