@@ -1,21 +1,30 @@
 import { Dialog, Transition } from "@headlessui/react";
-import DatasetIcon from '@mui/icons-material/Dataset';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import HomeIcon from '@mui/icons-material/Home';
+import DatasetIcon from "@mui/icons-material/Dataset";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import HomeIcon from "@mui/icons-material/Home";
 import classNames from "classnames";
-import AutorenewIcon from '@mui/icons-material/Autorenew';
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import SideNavItem from "./SideNavItem";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: HomeIcon, current: true },
-  { name: "Models", href: "/model", icon: AccountTreeIcon, current: false },
-  { name: "Training", href: "/training", icon: AutorenewIcon, current: false },
-  { name: "Datasets", href: "/dataset", icon: DatasetIcon, current: false },
+  { name: "Dashboard", href: "/", icon: HomeIcon },
+  { name: "Models", href: "/model", icon: AccountTreeIcon },
+  { name: "Training", href: "/training", icon: AutorenewIcon },
+  { name: "Datasets", href: "/dataset", icon: DatasetIcon }
 ];
 
-const SideNavContainer = ({sidebarOpen, setSidebarOpen}:{sidebarOpen:boolean, setSidebarOpen: Dispatch<SetStateAction<boolean>>}) => {
+const SideNavContainer = ({
+  sidebarOpen,
+  setSidebarOpen
+}: {
+  sidebarOpen: boolean;
+  setSidebarOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const router = useRouter();
+
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -79,9 +88,12 @@ const SideNavContainer = ({sidebarOpen, setSidebarOpen}:{sidebarOpen:boolean, se
                 </div>
                 <div className="mt-5 h-0 flex-1 overflow-y-auto">
                   <nav className="space-y-1 px-2">
-                    {navigation.map((item) => (
-                      <SideNavItem item={item}/>
-                    ))}
+                    {navigation.map((item) => {
+                      const active =
+                        router.pathname.split("/")[1] ===
+                        item.href.substring(1);
+                      return <SideNavItem item={item} active={active} />;
+                    })}
                   </nav>
                 </div>
               </Dialog.Panel>
@@ -105,29 +117,11 @@ const SideNavContainer = ({sidebarOpen, setSidebarOpen}:{sidebarOpen:boolean, se
           </div>
           <div className="flex flex-1 flex-col overflow-y-auto">
             <nav className="flex-1 space-y-1 px-2 py-4">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                  )}
-                >
-                  <item.icon
-                    className={classNames(
-                      item.current
-                        ? "text-gray-300"
-                        : "text-gray-400 group-hover:text-gray-300",
-                      "mr-3 flex-shrink-0 h-6 w-6"
-                    )}
-                    aria-hidden="true"
-                  />
-                  {item.name}
-                </a>
-              ))}
+              {navigation.map((item) => {
+                const active =
+                  router.pathname.split("/")[1] === item.href.substring(1);
+                return <SideNavItem item={item} active={active} />;
+              })}
             </nav>
           </div>
         </div>
