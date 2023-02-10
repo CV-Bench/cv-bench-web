@@ -102,8 +102,11 @@ User should see a visualization of the selected model and is able to change the 
 **Endpoints**
 
 Get model: `GET api/model/[id]`
+
 Delete model: `DELETE api/model/[id]`
+
 Update model: `PATCH api/model/[id]`
+
 Download model: `GET api/model/download/[id]`
 
 ### List Datasets **/dataset**
@@ -141,6 +144,7 @@ User should see a list of existing models from which he can select one. The user
 **Endpoints**
 
 Create Dataset: `POST api/dataset/create`
+
 Get Models: `GET api/model`
 
 ### Show Dataset **/dataset/[id]**
@@ -164,8 +168,11 @@ Show a detailed page of a dataset and let the user change the name and redefine 
 **Endpoints**
 
 Get dataset: `GET api/dataset/[id]`
+
 Update dataset: `PATCH api/dataset/[id]`
+
 Delete dataset: `DELETE api/dataset/[id]`
+
 Download dataset: `GET api/dataset/download/[id]`
 
 ### List Network **/network**
@@ -220,8 +227,11 @@ Get network architectures: `GET api/networkArchitectures`
 **Endpoints**
 
 Get network: `GET api/network/[id]`
+
 Update network: `PATCH api/network/[id]`
+
 Delete network: `DELETE api/network/[id]`
+
 Download network: `GET api/network/download/[id]`
 
 ### Show Tasks **/task**
@@ -253,8 +263,11 @@ Get tasks: `GET api/task`
 ** Endpoints**
 
 Get task: `GET api/task/[id]`
+
 Request Log download: `POST api/task/download/request/[id]`
+
 Get download status: `GET api/download/status/[id]`
+
 Download log: `GET api/task/download/[id]`
 
 ### Sign in **/signin**
@@ -284,6 +297,7 @@ Download log: `GET api/task/download/[id]`
 **Endpoints**
 
 Get user: `GET api/user/[id]`
+
 Update user: `PATCH api/user/[id]`
 
 # Datatypes
