@@ -62,7 +62,7 @@ The user should select an appropriate file from the local file system and load i
 
 **Endpoints**
 
-Upload model: `POST /model`
+- Upload model: `POST /model`
 
 ### List Models **api/model**
 
@@ -79,7 +79,7 @@ User should see a list with the name of the models and other useful infos like t
 
 **Endpoints**
 
-Get models: `GET api/model`
+- Get models: `GET api/model`
 
 ### Show Model **/model/[id]**
 
@@ -101,13 +101,10 @@ User should see a visualization of the selected model and is able to change the 
 
 **Endpoints**
 
-Get model: `GET api/model/[id]`
-
-Delete model: `DELETE api/model/[id]`
-
-Update model: `PATCH api/model/[id]`
-
-Download model: `GET api/model/download/[id]`
+- Get model: `GET api/model/[id]`
+- Delete model: `DELETE api/model/[id]`
+- Update model: `PATCH api/model/[id]`
+- Download model: `GET api/model/download/[id]`
 
 ### List Datasets **/dataset**
 
@@ -124,7 +121,7 @@ User should see a list with the name of the dataset and other useful infos like 
 
 **Endpoints**
 
-Get datasets: `GET api/dataset`
+- Get datasets: `GET api/dataset`
 
 ### Create Dataset from Model **/dataset/create**
 
@@ -143,9 +140,8 @@ User should see a list of existing models from which he can select one. The user
 
 **Endpoints**
 
-Create Dataset: `POST api/dataset/create`
-
-Get Models: `GET api/model`
+- Create Dataset: `POST api/dataset/create`
+- Get Models: `GET api/model`
 
 ### Show Dataset **/dataset/[id]**
 
@@ -167,13 +163,10 @@ Show a detailed page of a dataset and let the user change the name and redefine 
 
 **Endpoints**
 
-Get dataset: `GET api/dataset/[id]`
-
-Update dataset: `PATCH api/dataset/[id]`
-
-Delete dataset: `DELETE api/dataset/[id]`
-
-Download dataset: `GET api/dataset/download/[id]`
+- Get dataset: `GET api/dataset/[id]`
+- Update dataset: `PATCH api/dataset/[id]`
+- Delete dataset: `DELETE api/dataset/[id]`
+- Download dataset: `GET api/dataset/download/[id]`
 
 ### List Network **/network**
 
@@ -186,7 +179,7 @@ Download dataset: `GET api/dataset/download/[id]`
 
 **Endpoints**
 
-Get networks: `GET api/network`
+- Get networks: `GET api/network`
 
 ### Start Training **/network/train**
 
@@ -205,9 +198,9 @@ Get networks: `GET api/network`
 
 **Endpoints**
 
-Start training: `POST api/network/train`
-Get datasets: `GET api/dataset`
-Get network architectures: `GET api/networkArchitectures`
+- Start training: `POST api/network/train`
+- Get datasets: `GET api/dataset`
+- Get network architectures: `GET api/networkArchitectures`
 
 ### Show Network **/network/[id]**
 
@@ -226,13 +219,10 @@ Get network architectures: `GET api/networkArchitectures`
 
 **Endpoints**
 
-Get network: `GET api/network/[id]`
-
-Update network: `PATCH api/network/[id]`
-
-Delete network: `DELETE api/network/[id]`
-
-Download network: `GET api/network/download/[id]`
+- Get network: `GET api/network/[id]`
+- Update network: `PATCH api/network/[id]`
+- Delete network: `DELETE api/network/[id]`
+- Download network: `GET api/network/download/[id]`
 
 ### Show Tasks **/task**
 
@@ -246,7 +236,7 @@ Tasks are either creation of a dataset or training of a network. Task run asynch
 
 **Endpoints**
 
-Get tasks: `GET api/task`
+- Get tasks: `GET api/task`
 
 ### Show specific task **/task/[id]**
 
@@ -262,13 +252,10 @@ Get tasks: `GET api/task`
 
 ** Endpoints**
 
-Get task: `GET api/task/[id]`
-
-Request Log download: `POST api/task/download/request/[id]`
-
-Get download status: `GET api/download/status/[id]`
-
-Download log: `GET api/task/download/[id]`
+- Get task: `GET api/task/[id]`
+- Request Log download: `POST api/task/download/request/[id]`
+- Get download status: `GET api/download/status/[id]`
+- Download log: `GET api/task/download/[id]`
 
 ### Sign in **/signin**
 
@@ -296,9 +283,8 @@ Download log: `GET api/task/download/[id]`
 
 **Endpoints**
 
-Get user: `GET api/user/[id]`
-
-Update user: `PATCH api/user/[id]`
+- Get user: `GET api/user/[id]`
+- Update user: `PATCH api/user/[id]`
 
 # Datatypes
 
