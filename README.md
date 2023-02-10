@@ -250,7 +250,7 @@ Tasks are either creation of a dataset or training of a network. Task run asynch
 - OnStop: Show confirmation model
 - OnConfirm: call appropriate endpoint to stop the task
 
-** Endpoints**
+**Endpoints**
 
 - Get task: `GET api/task/[id]`
 - Request Log download: `POST api/task/download/request/[id]`
