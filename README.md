@@ -41,7 +41,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 Our system consist of four major components: Frontend, Backend, Server Task Manager and MongoDB.
 
-### Frontend
+## Frontend
 
 The frontend is the actual website with the pages the user can see. It has following pages with described functionalities:
 
@@ -62,7 +62,7 @@ The user should select an appropriate file from the local file system and load i
 
 **Endpoints**
 
-- Upload model: `POST /model`
+- Upload model: `POST api/model`
 
 ### List Models **api/model**
 
@@ -253,7 +253,7 @@ Tasks are either creation of a dataset or training of a network. Task run asynch
 **Endpoints**
 
 - Get task: `GET api/task/[id]`
-- Request Log download: `POST api/task/download/request/[id]`
+- Request Log download: `POST api/download/request/[id]`
 - Get download status: `GET api/download/status/[id]`
 - Download log: `GET api/task/download/[id]`
 
@@ -286,6 +286,58 @@ Tasks are either creation of a dataset or training of a network. Task run asynch
 - Get user: `GET api/user/[id]`
 - Update user: `PATCH api/user/[id]`
 
+## Backend
+
+### Upload Model `POST api/model`
+
+### Get all Models `GET api/model`
+
+### Get specific Model `GET api/model/[id]`
+
+### Delete Model `DELETE api/model/[id]`
+
+### Update Model `PATCH api/model/[id]`
+
+### Download Model `GET api/model/download/[id]`
+
+### Start new Dataset creation `POST api/dataset/create`
+
+### Get all Datasets `GET api/dataset`
+
+### Get specific Dataset `GET api/dataset/[id]`
+
+### Update Dataset `PATCH api/dataset/[id]`
+
+### Delete Dataset `DELETE api/dataset/[id]`
+
+### Download Dataset `GET api/dataset/download/[id]`
+
+### Get all Networks `GET api/network`
+
+### Get specific Network `GET api/network/[id]`
+
+### Update Network `PATCH api/network/[id]`
+
+### Delete Network `DELETE api/network/[id]`
+
+### Download Network `GET api/network/download/[id]`
+
+### Start Training `POST api/network/train`
+
+### Get Network Architectures `GET api/networkArchitectures`
+
+### Get all Tasks `GET api/task`
+
+### Get specific Task `GET api/task/[id]`
+
+### Download Task Log `GET api/task/download/[id]`
+
+### Request Download `POST api/download/[id]`
+
+### Get Download Status `GET api/download/status/[id]`
+
+## Server
+
 # Datatypes
 
 ## Access Type
@@ -317,3 +369,13 @@ interface Model {
 **updatedAt**: Date the model was updated the last time.
 
 ## 
+
+# Additional Explenations
+
+### Downloads
+
+### Tasks
+
+### Notifications
+
+### Deletions
