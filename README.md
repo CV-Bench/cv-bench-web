@@ -433,14 +433,14 @@ Return a list of all running, pending and finished tasks that belongs to the use
 
 Return details of a specific task that belongs to the user.
 
-### Stop Task `GET api/task/[id]`
+### Stop Task `POST api/task/stop/[id]`
 
 Stop a running task.
 
 - Schedule a new stop request for the task
 - Create Audit Event
 
-### Task Finished `POST api/task/[id]`
+### Task Finished `POST api/task/finish/[id]`
 
 Called when a task finishes on our servers.
 
@@ -466,6 +466,18 @@ Create a download request for a specific type of data with the id [id]. Set the 
 
 Return the status of a specific download request. [id] should not the the id of the download request but the id of the data. Type is the type of the data.
 
+### Get Notifications `GET api/notification`
+
+Returns a list of all notifications that belong to the user
+
+### Delete Notification `DELETE api/notification/[id]`
+
+Deletes a notification
+
+### Patch Notification `PATCH api/notification/[id]`
+
+Marks a notification as read or unread
+
 ## Server
 
 In general, the following properties hold:
@@ -487,7 +499,7 @@ Therefore, some decisions regarding the whole architecture of the app had been m
 - To reduce costs and handle large amounts of data, we try to keep the data on our servers and not use the buckets if it is not needed. Meaning, we will only upload the data when the user is explicitelly requesting to download them.
 - Since the server is not directly accessable by the backend, we have to find a workaround. This workaround will be the async communication over the database. Data is added and marked in the database then read be the server and appropriate processes will be instantiated.
 
-To make the above things possible, the _server_ will be a collection a different python scripts, which will in a given frequency and each taking over one of the following tasks:
+To make the above things possible, the _server_ will be a collection a different python scripts, which will in a given frequency and each taking over one of the following tasks. Additionally some other cronjobs to manage data will be running:
 
 - Update log outputs in the Database of all running tasks
 - Check for new download requests and upload requested data to the bucket
@@ -497,6 +509,7 @@ To make the above things possible, the _server_ will be a collection a different
 - Start new tasks
 - Stop tasks
 - Delete data
+- Delete Notifications
 
 ### Log Updater
 
@@ -553,6 +566,11 @@ To make the above things possible, the _server_ will be a collection a different
 - Check for new delete requests in the database
 - Delete the data on the server and in the database referenced by the request
 - Delete the entry itself
+
+### Delete Notifications
+
+- Check for notifications that are read and older than X days
+- Delete all notifications
 
 # Datatypes
 
@@ -721,6 +739,20 @@ interface AuditEvent {
   userId: ObjectId | undefined;
   type: AuditEventType;
   createdAt: Date;
+}
+```
+
+### Notifiactions
+
+```typescript
+interface Notification {
+  _id: ObjectId;
+  userId: ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+  read: boolean;
+  description: string;
+  title: string;
 }
 ```
 
