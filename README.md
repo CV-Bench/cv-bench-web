@@ -309,6 +309,7 @@ Create a new model and save it.
 - Create a model entry in the database
 - Upload the real model to the bucket with key [id]\_model.zip
 - Create a new Data Request with state upload, so the server will download the model into the file system
+- Create Audit Event
 - Return the id of the new model
 
 ### Get all Models `GET api/model`
@@ -327,10 +328,14 @@ Deletes a single model based on the id. The model can only be deleted when it be
 
 - Mark the model with [id] as deleted
 - Create a new delete request for the model
+- Create Audit Event
 
 ### Update Model `PATCH api/model/[id]`
 
 Changes the name or the access type of a model. Always update the updatedAt value as well. A model can only be updated when it belongs to the user.
+
+- Update name and access type of the model
+- Create Audit Event
 
 ### Download Model `GET api/model/download/[id]`
 
@@ -338,11 +343,14 @@ Download a model. A model can only be downloaded when it belongs to the user.
 
 Either download the model to the client or create a blob url to redirect the user to the file in the bucket.
 
+Create Audit Event when downloaded
+
 ### Start new Dataset creation `POST api/dataset/create`
 
 Start the creation of a new dataset based on a selected model.
 
 - Create a new task with status pending and necessary informations
+- Create Audit Event
 
 ### Get all Datasets `GET api/dataset`
 
@@ -356,18 +364,24 @@ Return details of a specific dataset, not the whole dataset! Return the dataset 
 
 Update name and access type of a dataset. Only update the values if the dataset belongs to the user.
 
+- Update name and access type of the dataset
+- Create Audit Event
+
 ### Delete Dataset `DELETE api/dataset/[id]`
 
 Deletes a single dataset based in the is. The dataset can only be deleted whin it belongs to the user.
 
 - Mark the dataset with [id] as deleted
 - Create a new Data request with type delete for the dataset
+- Create Audit Event
 
 ### Download Dataset `GET api/dataset/download/[id]`
 
 Download a dataset. A dataset can only be downloaded when it belongs to the user.
 
 Either download the dataset to the client or create a blob url to redirect the user to the file in the bucket.
+
+- Create Audit Event
 
 ### Get all Networks `GET api/network`
 
@@ -381,12 +395,16 @@ Return details of a specific network, not the whole network! Return the network 
 
 Update name and access type of a network. Only update the values if the network belongs to the user.
 
+- Update name and access type of the network
+- Create Audit Event
+
 ### Delete Network `DELETE api/network/[id]`
 
 Deletes a single dataset based in the is. The dataset can only be deleted whin it belongs to the user.
 
 - Mark the network with [id] as deleted
 - Create a new Data Request with type delete for the network
+- Create Audit Event
 
 ### Download Network `GET api/network/download/[id]`
 
@@ -394,11 +412,14 @@ Download a dataset. A dataset can only be downloaded when it belongs to the user
 
 Either download the dataset to the client or create a blob url to redirect the user to the file in the bucket.
 
+- Create Audit Event
+
 ### Start Training `POST api/network/train`
 
 Start the training of a new model based on the selected dataset and the network architecture, which can be something like YOLO, ....
 
 - Schedule a new task with the appropriate type and necessary informations
+- Create Audit Event
 
 ### Get Network Architectures `GET api/networkArchitectures`
 
@@ -417,6 +438,7 @@ Return details of a specific task that belongs to the user.
 Stop a running task.
 
 - Schedule a new stop request for the task
+- Create Audit Event
 
 ### Task Finished `POST api/task/[id]`
 
@@ -424,6 +446,7 @@ Called when a task finishes on our servers.
 
 - Mark task as finished.
 - Create new Notification that task has completed.
+- Create Audit Event
 
 ### Download Task Log `GET api/task/download/[id]`
 
@@ -431,9 +454,13 @@ Download a log output of a task. A log output can only be downloaded when it bel
 
 Either download the log output to the client or create a blob url to redirect the user to the file in the bucket.
 
+- Create Audit Event
+
 ### Request Download `POST api/download/[id]`
 
 Create a download request for a specific type of data with the id [id]. Set the status of the request to pending.
+
+- Create Audit Event
 
 ### Get Download Status `GET api/download/status/[id]?type=[type]`
 
@@ -656,6 +683,43 @@ interface StopRequest {
   _id: ObjectId;
   taskId: ObectId;
   userId: ObjectId;
+  createdAt: Date;
+}
+```
+
+### Audit Event
+
+```typescript
+type AuditEventType =
+  | "CREATE_MODEL"
+  | "UPDATE_MODEL"
+  | "DELETE_MODEL"
+  | "DOWNLOAD_MODEL"
+  | "REQUEST_MODEL_DOWNLOAD"
+  | "CREATE_DATASET"
+  | "DATASET_CREATED"
+  | "CREATE_DATASET"
+  | "UPDATE_DATASET"
+  | "DELETE_DATASET"
+  | "DOWNLOAD_DATASET"
+  | "REQUEST_DATASET_DOWNLOAD"
+  | "TRAING_NETWORK"
+  | "NETWORK_TRAINED"
+  | "CREATE_NETWORK"
+  | "UPDATE_NETWORK"
+  | "DELETE_NETWORK"
+  | "DOWNLOAD_NETWORK"
+  | "REQUEST_NETWORK_DOWNLOAD"
+  | "STOP_TASK"
+  | "CREATE_USER"
+  | "LOG_IN_USER";
+```
+
+```typescript
+interface AuditEvent {
+  _id: ObjectId;
+  userId: ObjectId | undefined;
+  type: AuditEventType;
   createdAt: Date;
 }
 ```
