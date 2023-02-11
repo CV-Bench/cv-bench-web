@@ -1,24 +1,26 @@
 import classNames from "classnames";
 import { ForwardRefExoticComponent, SVGProps } from "react";
 import { SvgIconComponent } from "@mui/icons-material";
+import Link from "next/link";
 
 const SideNavItem = ({
-  item
+  item,
+  active
 }: {
   item: {
     name: string;
     href: string;
     icon: SvgIconComponent;
-    current: boolean;
   };
+  active: boolean;
 }) => {
   return (
     <>
-      <a
+      <Link
         key={item.name}
         href={item.href}
         className={classNames(
-          item.current
+          active
             ? "bg-gray-900 text-white"
             : "text-gray-300 hover:bg-gray-700 hover:text-white",
           "group flex items-center px-2 py-2 text-base font-medium rounded-md"
@@ -26,7 +28,7 @@ const SideNavItem = ({
       >
         <item.icon
           className={classNames(
-            item.current
+            active
               ? "text-gray-300"
               : "text-gray-400 group-hover:text-gray-300",
             "mr-4 flex-shrink-0 h-6 w-6"
@@ -34,7 +36,7 @@ const SideNavItem = ({
           aria-hidden="true"
         />
         {item.name}
-      </a>
+      </Link>
     </>
   );
 };
