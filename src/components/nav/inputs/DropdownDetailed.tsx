@@ -12,7 +12,7 @@ const DropdownDetailed = ({ options }: DropdownDetailedProps) => {
         {({ open }) => (
           <>
             <div className="relative">
-              <div className="inline-flex divide-x divide-indigo-600 rounded-md shadow-sm">
+              <div className="inline-flex divide-x divide-indigo-600 rounded-md shadow-sm m-2">
                 <div className="inline-flex divide-x divide-indigo-600 rounded-md shadow-sm">
                   <div className="inline-flex items-center rounded-l-md border border-transparent bg-indigo-500 py-2 pl-3 pr-4 text-white shadow-sm">
                     <selected.icon className={"h-5 w-5"}/>
