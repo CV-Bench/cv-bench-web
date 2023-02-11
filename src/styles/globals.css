@@ -3,6 +3,29 @@
 @tailwind utilities;
 @tailwind variants;
 
+:root {
+  --main-bg-color: rgb(20, 30, 50);
+}
+
 html, body {
-  background-color: rgb(20, 30, 50);
+  background-color: var(--main-bg-color);
+  overflow: hidden;
+}
+
+main::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+main::-webkit-scrollbar-track {
+  background: var(--main-bg-color);
+  padding: 5px;
+}
+main::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 40px;
+  border: 5px solid var(--main-bg-color);
+}
+
+main {
+  overflow: scroll;
 }
