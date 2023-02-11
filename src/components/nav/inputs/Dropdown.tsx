@@ -8,7 +8,7 @@ const Dropdown = ({ options }: DropdownProps) => {
   const [selected, setSelected] = useState(options[0]);
   return (
     <>
-      <Menu as="div" className="relative inline-block text-left">
+      <Menu as="div" className="relative inline-block text-left m-2">
         <div>
           <Menu.Button className="inline-flex w-full justify-center rounded-md bg-gray-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none">
             {selected.title}
