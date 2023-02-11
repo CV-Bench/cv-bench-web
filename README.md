@@ -530,7 +530,6 @@ To make the above things possible, the _server_ will be a collection a different
 - Get all pending upload requests
 - Download the data according the request to our server
 - Delete the upload request
-- Delete the data in the bucket
 
 ### Cleanup Downloads
 
