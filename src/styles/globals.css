@@ -10,6 +10,10 @@
 html, body {
   background-color: var(--main-bg-color);
   overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 main::-webkit-scrollbar {
@@ -27,5 +31,8 @@ main::-webkit-scrollbar-thumb {
 }
 
 main {
-  overflow: scroll;
+  overflow-y: scroll;
+  min-height: calc(100vh - 64px);
+  max-height: calc(100vh - 64px);
+  padding: 30px;
 }
