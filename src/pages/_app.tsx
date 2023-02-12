@@ -8,6 +8,7 @@ import "../styles/globals.css";
 
 import type { AppProps } from "next/app";
 import type { Session } from "next-auth";
+import ModalProvider from "@/components/modal/ModalProvider";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -54,7 +55,9 @@ const AppProviderWrapper = ({
 }: AppProps<{ session: Session }>) => {
   return (
     <SessionProvider session={session}>
-      <App pageProps={pageProps} Component={Component} router={router} />
+      <ModalProvider>
+        <App pageProps={pageProps} Component={Component} router={router} />
+      </ModalProvider>
     </SessionProvider>
   );
 };
