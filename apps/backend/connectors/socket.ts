@@ -1,6 +1,8 @@
 import { Server } from "socket.io";
 import { redisClient } from "../connectors/redis";
 import { RateLimiterRedis } from "rate-limiter-flexible";
+import { sessionMiddleware } from "../middleware/session";
+import {NextFunction, Request, Response} from "express";
 
 const rateLimiter = new RateLimiterRedis({
   storeClient: redisClient,
@@ -10,6 +12,10 @@ const rateLimiter = new RateLimiterRedis({
 });
 
 const io = new Server(parseInt(process.env.SOCKET_PORT! || "3002"), {});
+
+io.use((socket, next) => {
+    sessionMiddleware(socket.request as Request, {} as Response, next as NextFunction);
+});
 
 io.on("connection", (socket) => {
   socket.onAny(async (event, ...args) => {
