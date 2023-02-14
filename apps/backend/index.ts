@@ -15,12 +15,16 @@ declare module "express-session" {
 }
 
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 dotenv.config({ path: "../../.env" });
 
 const app: Express = express();
 const port = process.env.EXPRESS_PORT || 3001;
 
+
+//development middleware
+if (app.get("env") === "development") app.use(cors());
 //apply middleware
 app.use(sessionMiddleware);
 app.use(cookieParser(process.env.COOKIE_SECRET));

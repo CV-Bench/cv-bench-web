@@ -14,15 +14,16 @@ const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  useEffect(() => {
-    if (status === "unauthenticated") signIn();
-  }, [status]);
+  // useEffect(() => {
+  //   if (status === "unauthenticated") signIn();
+  // }, [status]);
 
   console.log(session);
 
   return (
     <>
-      {status === "authenticated" ? (
+      {/* {status === "authenticated" ? ( */}
+      {true ? (
         <NavLayout>
           <Component {...pageProps} />
         </NavLayout>

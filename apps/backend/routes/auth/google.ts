@@ -4,7 +4,8 @@ import { BaseClient, Issuer } from "openid-client";
 import { Router } from "express";
 
 const googleAuthRouter = Router();
-const redirectUri = (process.env.HOST_DOMAIN || "http://localhost") + "/auth/google/callback";
+const redirectUri =
+  (process.env.HOST_DOMAIN || "http://localhost") + "/auth/google/callback";
 
 let googleIssuer: Issuer<BaseClient>;
 let googleClient: BaseClient;
@@ -25,27 +26,28 @@ Issuer.discover("https://accounts.google.com")
   });
 
 const googleAuthLink = async (req: Request, res: Response) => {
-  res.send(
+  res.status(200).send(
     googleClient.authorizationUrl({
       scope: "openid email profile",
       response_mode: "form_post",
       redirect_uri: redirectUri,
-      nonce: req.session.id
+      nonce: req.session.id,
     })
   );
 };
 
 const googleAuthCallback = async (req: Request, res: Response) => {
-    try {
-        const params = googleClient.callbackParams(req);
-        const tokenSet = await googleClient.callback(redirectUri, params, {nonce: req.session.id});
-        req.session.tokenSet = tokenSet;
-        req.session.tokenClaims = tokenSet.claims();
-        res.send(tokenSet.id_token);
-    }
-    catch (e:any){
-        res.status(422).send(JSON.stringify(e));
-    }
+  try {
+    const params = googleClient.callbackParams(req);
+    const tokenSet = await googleClient.callback(redirectUri, params, {
+      nonce: req.session.id,
+    });
+    req.session.tokenSet = tokenSet;
+    req.session.tokenClaims = tokenSet.claims();
+    res.send(tokenSet.id_token);
+  } catch (e: any) {
+    res.status(422).send(JSON.stringify(e));
+  }
 };
 
 googleAuthRouter.get("/link", googleAuthLink);
