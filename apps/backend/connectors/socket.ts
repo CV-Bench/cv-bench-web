@@ -11,7 +11,7 @@ const rateLimiter = new RateLimiterRedis({
   duration: 1, //per 1 second
 });
 
-const io = new Server(parseInt(process.env.SOCKET_PORT! || "3002"), {});
+const io = new Server(parseInt(process.env.SOCKET_PORT || "3002"), {});
 
 io.use((socket, next) => {
     sessionMiddleware(socket.request as Request, {} as Response, next as NextFunction);
