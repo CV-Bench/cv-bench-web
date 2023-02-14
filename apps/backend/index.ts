@@ -3,11 +3,12 @@ import dotenv from 'dotenv';
 import { sess } from './middleware/session';
 import cookieParser from "cookie-parser";
 import helmet from 'helmet';
+import googleAuth from './routes/auth/google';
 
-dotenv.config();
+dotenv.config({path: "../../.env"});
 
 const app: Express = express();
-const port = process.env.PORT || 3001;
+const port = process.env.EXPRESS_PORT || 3001;
 
 //apply middleware
 app.use(sess);
@@ -17,6 +18,8 @@ app.use(helmet());
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
 });
+
+app.get("/auth/google/", googleAuth);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
