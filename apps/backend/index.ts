@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { sess } from './middleware/session';
+import { sessionMiddleware } from './middleware/session';
 import cookieParser from "cookie-parser";
 import helmet from 'helmet';
 import googleAuth from './routes/auth/google';
@@ -12,7 +12,7 @@ const app: Express = express();
 const port = process.env.EXPRESS_PORT || 3001;
 
 //apply middleware
-app.use(sess);
+app.use(sessionMiddleware);
 app.use(cookieParser(process.env.REDIS_SECRET));
 app.use(helmet());
 app.use(rateLimiterMiddleware);

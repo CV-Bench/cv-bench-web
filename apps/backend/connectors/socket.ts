@@ -16,7 +16,7 @@ io.on("connection", (socket) => {
     try {
       await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
       socket.emit(event, args);
-    } catch (rejRes:any) {
+    } catch (rejRes: any) {
       // no available points to consume
       // emit error or warning message
       socket.emit("blocked", { "retry-ms": rejRes.msBeforeNext });

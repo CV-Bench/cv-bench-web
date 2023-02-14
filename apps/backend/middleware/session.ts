@@ -20,4 +20,4 @@ const sessionOptions = {
   store: new RedisStore({client: redisClient, ttl: 360000})
 };
 
-export const sess = session(sessionOptions);
+export const sessionMiddleware = session(sessionOptions);
