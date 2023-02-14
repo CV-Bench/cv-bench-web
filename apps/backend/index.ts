@@ -13,7 +13,7 @@ const port = process.env.EXPRESS_PORT || 3001;
 
 //apply middleware
 app.use(sessionMiddleware);
-app.use(cookieParser(process.env.REDIS_SECRET));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(helmet());
 app.use(rateLimiterMiddleware);
 
