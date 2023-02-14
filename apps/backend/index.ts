@@ -4,6 +4,7 @@ import { sess } from './middleware/session';
 import cookieParser from "cookie-parser";
 import helmet from 'helmet';
 import googleAuth from './routes/auth/google';
+import rateLimiterMiddleware from './middleware/rateLimiter';
 
 dotenv.config({path: "../../.env"});
 
@@ -14,6 +15,7 @@ const port = process.env.EXPRESS_PORT || 3001;
 app.use(sess);
 app.use(cookieParser(process.env.REDIS_SECRET));
 app.use(helmet());
+app.use(rateLimiterMiddleware);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
