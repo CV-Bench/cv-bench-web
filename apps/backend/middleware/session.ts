@@ -4,7 +4,7 @@ import session from "express-session";
 import { Request } from "express";
 
 const sessionOptions = {
-  secret: process.env?.REDIS_SECRET || "secret",
+  secret: process.env?.SESSION_SECRET || "secret",
   genid: (req: Request) => {
     return uuid();
   },
