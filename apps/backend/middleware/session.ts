@@ -12,7 +12,6 @@ const sessionOptions = {
   cookie: {
     httpOnly: true,
     secure: false,
-    // sameSite: true,
     maxAge: 360000,
   },
   resave: false,

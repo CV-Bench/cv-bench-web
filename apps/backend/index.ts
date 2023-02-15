@@ -6,6 +6,8 @@ import helmet from "helmet";
 import googleAuthRouter from "./routes/auth/google";
 import rateLimiterMiddleware from "./middleware/rateLimiter";
 import { IdTokenClaims, TokenSet } from "openid-client";
+import logger from "./util/logger";
+import loggerMiddleware from "./middleware/logger";
 
 declare module "express-session" {
   interface SessionData {
@@ -28,6 +30,7 @@ if (app.get("env") === "development") app.use(cors());
 //apply middleware
 app.use(sessionMiddleware);
 app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(loggerMiddleware);
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(
@@ -48,5 +51,5 @@ app.post("/", (req, res) => {
 app.use("/auth/google/", googleAuthRouter);
 
 app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+  logger.info("EXPRESS SERVER", `⚡️ Server is running at http://localhost:${port}`);
 });
