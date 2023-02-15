@@ -20,7 +20,7 @@ const formatLoggerOutput = (title: loggerTitle, args:string[]):string => {
 }
 
 //TODO needs to be moved
-type loggerTitle = "EXPRESS SERVER" | "EXPRESS REQUEST" | "REDIS CLIENT";
+type loggerTitle = "EXPRESS SERVER" | "EXPRESS REQUEST" | "REDIS CLIENT" | "MONGO CLIENT";
 
 const logger = {
     debug: (title:loggerTitle, ...args:string[]) => baseLogger.debug(formatLoggerOutput(title, args)),
