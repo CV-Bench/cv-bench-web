@@ -9,12 +9,12 @@ export interface ModelPreviewProps {
 
 const ModelPreview: React.FC<ModelPreviewProps> = () => {
 
-  
+
   return (
     <Canvas className="h-screen">
       <pointLight position={[10, 10, 10]} />
-      <ModelObject modelPath="/teapot.obj"/>
-      <OrbitControls/>
+      <ModelObject modelPath="/teapot.obj" />
+      <OrbitControls />
     </Canvas>
   );
 };

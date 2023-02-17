@@ -97,21 +97,21 @@ const Workspace: React.FC<WorkspaceProps> = () => {
   return (
     <div className="relative h-full flex">
       <ScenePropertiesEditor properties={properties} setProperties={setProperties} />
-      <Canvas className="flex-1" camera={{layers: allLayers, up: [0, 0, 1], position: [0, 0, 3] }}>
-        <ambientLight intensity={.1} layers={allLayers}/>
+      <Canvas className="flex-1" camera={{ layers: allLayers, up: [0, 0, 1], position: [0, 0, 3] }}>
+        <ambientLight intensity={.1} layers={allLayers} />
         <pointLight position={[0, 0, 3]} />
         <directionalLight layers={allLayers} />
-        <PositionedObject { ...properties }>
-          <ModelObject modelPath="/big_dolph.ply"/>
+        <PositionedObject {...properties}>
+          <ModelObject modelPath="/big_dolph.ply" />
         </PositionedObject>
-        <CameraSphere { ...properties } />
-        <RenderCamera { ...properties } />
-      
+        <CameraSphere {...properties} />
+        <RenderCamera {...properties} />
 
-        <OrbitControls target={[0, 0, 0]} makeDefault/>
+
+        <OrbitControls target={[0, 0, 0]} makeDefault />
       </Canvas>
     </div>
-  
+
   );
 };
 

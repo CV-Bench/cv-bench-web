@@ -4,17 +4,17 @@ import { useMemo, useRef } from "react";
 import { PerspectiveCamera } from "three";
 
 export interface RenderCameraControlsProps {
-    renderCameraRef: React.MutableRefObject<PerspectiveCamera>;
+  renderCameraRef: React.MutableRefObject<PerspectiveCamera>;
 }
 
 const RenderCameraControls: React.FC<RenderCameraControlsProps> = ({ renderCameraRef }) => {
-    const gl = useThree((state) => state.gl)
+  const gl = useThree((state) => state.gl)
 
-    return useFrame((state, delta) => {
-        const camera = renderCameraRef.current;
+  return useFrame((state, delta) => {
+    const camera = renderCameraRef.current;
 
-        
-        camera.updateProjectionMatrix();
-    },1);
+
+    camera.updateProjectionMatrix();
+  }, 1);
 }
 export default RenderCameraControls;
