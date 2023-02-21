@@ -1,4 +1,3 @@
-import * as bson from 'bson';
 import * as z from 'zod';
 
 declare enum ModelType {
@@ -6,31 +5,31 @@ declare enum ModelType {
     "2D" = 1
 }
 declare const ModelBody: z.ZodObject<{
-    _id: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    _id: z.ZodAny;
     name: z.ZodString;
     description: z.ZodString;
     createdAt: z.ZodDate;
-    userId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    userId: z.ZodAny;
     domainTags: z.ZodArray<z.ZodString, "many">;
     accessType: z.ZodNativeEnum<typeof AccessType>;
     updatedAt: z.ZodDate;
     modelType: z.ZodNativeEnum<typeof ModelType>;
 }, "strip", z.ZodTypeAny, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
     name: string;
     description: string;
     createdAt: Date;
-    userId: bson.ObjectId;
     domainTags: string[];
     accessType: AccessType;
     updatedAt: Date;
     modelType: ModelType;
 }, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
     name: string;
     description: string;
     createdAt: Date;
-    userId: bson.ObjectId;
     domainTags: string[];
     accessType: AccessType;
     updatedAt: Date;
@@ -59,64 +58,64 @@ declare enum DatasetType {
     "BLENDER_3D" = 0
 }
 declare const DatasetBody: z.ZodObject<{
-    _id: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    _id: z.ZodAny;
     name: z.ZodString;
     description: z.ZodString;
     createdAt: z.ZodDate;
-    userId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    userId: z.ZodAny;
     domainTags: z.ZodArray<z.ZodString, "many">;
     accessType: z.ZodNativeEnum<typeof AccessType>;
     updatedAt: z.ZodDate;
-    models: z.ZodArray<z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>, "many">;
+    models: z.ZodArray<z.ZodAny, "many">;
     datasetType: z.ZodNativeEnum<typeof DatasetType>;
-    configurationId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    configurationId: z.ZodAny;
 }, "strip", z.ZodTypeAny, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
+    configurationId?: any;
     name: string;
     description: string;
     createdAt: Date;
-    userId: bson.ObjectId;
     domainTags: string[];
     accessType: AccessType;
     updatedAt: Date;
-    models: bson.ObjectId[];
+    models: any[];
     datasetType: DatasetType.BLENDER_3D;
-    configurationId: bson.ObjectId;
 }, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
+    configurationId?: any;
     name: string;
     description: string;
     createdAt: Date;
-    userId: bson.ObjectId;
     domainTags: string[];
     accessType: AccessType;
     updatedAt: Date;
-    models: bson.ObjectId[];
+    models: any[];
     datasetType: DatasetType.BLENDER_3D;
-    configurationId: bson.ObjectId;
 }>;
 type DatasetDb = z.infer<typeof DatasetBody>;
 declare const PostDatasetBody: z.ZodObject<{
     name: z.ZodString;
     description: z.ZodString;
     accessType: z.ZodNativeEnum<typeof AccessType>;
-    models: z.ZodArray<z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>, "many">;
+    models: z.ZodArray<z.ZodAny, "many">;
     datasetType: z.ZodNativeEnum<typeof DatasetType>;
-    configurationId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    configurationId: z.ZodAny;
 }, "strip", z.ZodTypeAny, {
+    configurationId?: any;
     name: string;
     description: string;
     accessType: AccessType;
-    models: bson.ObjectId[];
+    models: any[];
     datasetType: DatasetType.BLENDER_3D;
-    configurationId: bson.ObjectId;
 }, {
+    configurationId?: any;
     name: string;
     description: string;
     accessType: AccessType;
-    models: bson.ObjectId[];
+    models: any[];
     datasetType: DatasetType.BLENDER_3D;
-    configurationId: bson.ObjectId;
 }>;
 type PostDataset = z.infer<typeof PostDatasetBody>;
 
@@ -265,8 +264,8 @@ declare const BlenderConfigurationObject: z.ZodObject<{
 type BlenderConfiguration = z.infer<typeof BlenderConfigurationObject>;
 type BlenderConfigurationKey = keyof BlenderConfiguration;
 declare const DatasetConfigurationBody: z.ZodObject<{
-    _id: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
-    userId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    _id: z.ZodAny;
+    userId: z.ZodAny;
     name: z.ZodString;
     createdAt: z.ZodString;
     configurationType: z.ZodNativeEnum<typeof ConfigurationType>;
@@ -401,10 +400,10 @@ declare const DatasetConfigurationBody: z.ZodObject<{
         camLensUnit: CamLensUnit;
     }>;
 }, "strip", z.ZodTypeAny, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
     name: string;
     createdAt: string;
-    userId: bson.ObjectId;
     configurationType: ConfigurationType.BLENDER;
     configuration: {
         maxDistractorObjects: number;
@@ -451,10 +450,10 @@ declare const DatasetConfigurationBody: z.ZodObject<{
         numberOfRenders: number;
     };
 }, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
     name: string;
     createdAt: string;
-    userId: bson.ObjectId;
     configurationType: ConfigurationType.BLENDER;
     configuration: {
         numberOfObjects?: number | undefined;
@@ -503,8 +502,8 @@ declare const DatasetConfigurationBody: z.ZodObject<{
 }>;
 type DatasetConfigurationDb = z.infer<typeof DatasetConfigurationBody>;
 declare const PostDatasetConfigurationBody: z.ZodObject<Pick<{
-    _id: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
-    userId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    _id: z.ZodAny;
+    userId: z.ZodAny;
     name: z.ZodString;
     createdAt: z.ZodString;
     configurationType: z.ZodNativeEnum<typeof ConfigurationType>;
@@ -759,84 +758,84 @@ declare enum AuditEventType {
     STOP_TASK = "STOP_TASK"
 }
 declare const AuditEventBody: z.ZodObject<{
-    _id: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
-    userId: z.ZodOptional<z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>>;
+    _id: z.ZodAny;
+    userId: z.ZodOptional<z.ZodAny>;
     type: z.ZodNativeEnum<typeof AuditEventType>;
     createdAt: z.ZodDate;
 }, "strip", z.ZodTypeAny, {
-    userId?: bson.ObjectId | undefined;
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
     createdAt: Date;
     type: AuditEventType;
 }, {
-    userId?: bson.ObjectId | undefined;
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
     createdAt: Date;
     type: AuditEventType;
 }>;
 type AuditEventDb = z.infer<typeof AuditEventBody>;
 
 declare const NetworkBody: z.ZodObject<{
-    _id: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    _id: z.ZodAny;
     name: z.ZodString;
     description: z.ZodString;
     createdAt: z.ZodDate;
-    userId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    userId: z.ZodAny;
     domainTags: z.ZodArray<z.ZodString, "many">;
     accessType: z.ZodNativeEnum<typeof AccessType>;
     updatedAt: z.ZodDate;
-    datasetId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
-    networkArchitectureId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    datasetId: z.ZodAny;
+    networkArchitectureId: z.ZodAny;
 }, "strip", z.ZodTypeAny, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
+    datasetId?: any;
+    networkArchitectureId?: any;
     name: string;
     description: string;
     createdAt: Date;
-    userId: bson.ObjectId;
     domainTags: string[];
     accessType: AccessType;
     updatedAt: Date;
-    datasetId: bson.ObjectId;
-    networkArchitectureId: bson.ObjectId;
 }, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
+    datasetId?: any;
+    networkArchitectureId?: any;
     name: string;
     description: string;
     createdAt: Date;
-    userId: bson.ObjectId;
     domainTags: string[];
     accessType: AccessType;
     updatedAt: Date;
-    datasetId: bson.ObjectId;
-    networkArchitectureId: bson.ObjectId;
 }>;
 type NetworkDb = z.infer<typeof NetworkBody>;
 declare const PostNetworkBody: z.ZodObject<{
     name: z.ZodString;
     description: z.ZodString;
     accessType: z.ZodNativeEnum<typeof AccessType>;
-    datasetId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
-    networkArchitectureId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    datasetId: z.ZodAny;
+    networkArchitectureId: z.ZodAny;
 }, "strip", z.ZodTypeAny, {
+    datasetId?: any;
+    networkArchitectureId?: any;
     name: string;
     description: string;
     accessType: AccessType;
-    datasetId: bson.ObjectId;
-    networkArchitectureId: bson.ObjectId;
 }, {
+    datasetId?: any;
+    networkArchitectureId?: any;
     name: string;
     description: string;
     accessType: AccessType;
-    datasetId: bson.ObjectId;
-    networkArchitectureId: bson.ObjectId;
 }>;
 type PostNetwork = z.infer<typeof PostNetworkBody>;
 
 declare enum NotificationType {
 }
 declare const NotificationBody: z.ZodObject<{
-    _id: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
-    userId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    _id: z.ZodAny;
+    userId: z.ZodAny;
     createdAt: z.ZodDate;
     updatedAt: z.ZodDate;
     isRead: z.ZodBoolean;
@@ -844,20 +843,20 @@ declare const NotificationBody: z.ZodObject<{
     title: z.ZodString;
     type: z.ZodNativeEnum<typeof NotificationType>;
 }, "strip", z.ZodTypeAny, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
     description: string;
     createdAt: Date;
     type: string;
-    userId: bson.ObjectId;
     updatedAt: Date;
     isRead: boolean;
     title: string;
 }, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
     description: string;
     createdAt: Date;
     type: string;
-    userId: bson.ObjectId;
     updatedAt: Date;
     isRead: boolean;
     title: string;
@@ -875,84 +874,84 @@ declare enum TaskType {
     CREATE_DATASET = "CREATE_DATASET"
 }
 declare const TaskBody: z.ZodObject<{
-    _id: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
-    userId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    _id: z.ZodAny;
+    userId: z.ZodAny;
     createdAt: z.ZodDate;
     updatedAt: z.ZodDate;
     status: z.ZodNativeEnum<typeof TaskStatus>;
     type: z.ZodNativeEnum<typeof TaskType>;
     info: z.ZodObject<{
-        modelId: z.ZodOptional<z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>>;
-        datasetId: z.ZodOptional<z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>>;
-        networkArchitectureId: z.ZodOptional<z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>>;
+        modelId: z.ZodOptional<z.ZodAny>;
+        datasetId: z.ZodOptional<z.ZodAny>;
+        networkArchitectureId: z.ZodOptional<z.ZodAny>;
     }, "strip", z.ZodTypeAny, {
-        datasetId?: bson.ObjectId | undefined;
-        networkArchitectureId?: bson.ObjectId | undefined;
-        modelId?: bson.ObjectId | undefined;
+        datasetId?: any;
+        networkArchitectureId?: any;
+        modelId?: any;
     }, {
-        datasetId?: bson.ObjectId | undefined;
-        networkArchitectureId?: bson.ObjectId | undefined;
-        modelId?: bson.ObjectId | undefined;
+        datasetId?: any;
+        networkArchitectureId?: any;
+        modelId?: any;
     }>;
 }, "strip", z.ZodTypeAny, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
     createdAt: Date;
     status: TaskStatus;
     type: TaskType;
-    userId: bson.ObjectId;
     updatedAt: Date;
     info: {
-        datasetId?: bson.ObjectId | undefined;
-        networkArchitectureId?: bson.ObjectId | undefined;
-        modelId?: bson.ObjectId | undefined;
+        datasetId?: any;
+        networkArchitectureId?: any;
+        modelId?: any;
     };
 }, {
-    _id: bson.ObjectId;
+    _id?: any;
+    userId?: any;
     createdAt: Date;
     status: TaskStatus;
     type: TaskType;
-    userId: bson.ObjectId;
     updatedAt: Date;
     info: {
-        datasetId?: bson.ObjectId | undefined;
-        networkArchitectureId?: bson.ObjectId | undefined;
-        modelId?: bson.ObjectId | undefined;
+        datasetId?: any;
+        networkArchitectureId?: any;
+        modelId?: any;
     };
 }>;
 type TaskDb = z.infer<typeof TaskBody>;
 declare const PostTaskBody: z.ZodObject<Pick<{
-    _id: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
-    userId: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    _id: z.ZodAny;
+    userId: z.ZodAny;
     createdAt: z.ZodDate;
     updatedAt: z.ZodDate;
     status: z.ZodNativeEnum<typeof TaskStatus>;
     type: z.ZodNativeEnum<typeof TaskType>;
     info: z.ZodObject<{
-        modelId: z.ZodOptional<z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>>;
-        datasetId: z.ZodOptional<z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>>;
-        networkArchitectureId: z.ZodOptional<z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>>;
+        modelId: z.ZodOptional<z.ZodAny>;
+        datasetId: z.ZodOptional<z.ZodAny>;
+        networkArchitectureId: z.ZodOptional<z.ZodAny>;
     }, "strip", z.ZodTypeAny, {
-        datasetId?: bson.ObjectId | undefined;
-        networkArchitectureId?: bson.ObjectId | undefined;
-        modelId?: bson.ObjectId | undefined;
+        datasetId?: any;
+        networkArchitectureId?: any;
+        modelId?: any;
     }, {
-        datasetId?: bson.ObjectId | undefined;
-        networkArchitectureId?: bson.ObjectId | undefined;
-        modelId?: bson.ObjectId | undefined;
+        datasetId?: any;
+        networkArchitectureId?: any;
+        modelId?: any;
     }>;
 }, "type" | "info">, "strip", z.ZodTypeAny, {
     type: TaskType;
     info: {
-        datasetId?: bson.ObjectId | undefined;
-        networkArchitectureId?: bson.ObjectId | undefined;
-        modelId?: bson.ObjectId | undefined;
+        datasetId?: any;
+        networkArchitectureId?: any;
+        modelId?: any;
     };
 }, {
     type: TaskType;
     info: {
-        datasetId?: bson.ObjectId | undefined;
-        networkArchitectureId?: bson.ObjectId | undefined;
-        modelId?: bson.ObjectId | undefined;
+        datasetId?: any;
+        networkArchitectureId?: any;
+        modelId?: any;
     };
 }>;
 type PostTask = z.infer<typeof PostTaskBody>;
@@ -970,21 +969,21 @@ declare enum DatasetFormat {
     COCO = "COCO"
 }
 declare const NetworkArchitectureBody: z.ZodObject<{
-    _id: z.ZodType<bson.ObjectId, z.ZodTypeDef, bson.ObjectId>;
+    _id: z.ZodAny;
     name: z.ZodString;
     identifier: z.ZodString;
     description: z.ZodString;
     createdAt: z.ZodDate;
     requiredDatasetFormat: z.ZodNativeEnum<typeof DatasetFormat>;
 }, "strip", z.ZodTypeAny, {
-    _id: bson.ObjectId;
+    _id?: any;
     name: string;
     identifier: string;
     description: string;
     createdAt: Date;
     requiredDatasetFormat: DatasetFormat.COCO;
 }, {
-    _id: bson.ObjectId;
+    _id?: any;
     name: string;
     identifier: string;
     description: string;

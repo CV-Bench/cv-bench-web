@@ -3,11 +3,11 @@ require("dotenv").config({ path: "../../.env" });
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ["ui", "tsconfig", "shared-types"]
+  transpilePackages: ["ui", "tsconfig", "types"]
 };
 
 module.exports = {
-  nextConfig,
+  ...nextConfig,
   async headers() {
     return [
       {

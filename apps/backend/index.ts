@@ -8,9 +8,9 @@ import rateLimiterMiddleware from "./middleware/rateLimiter";
 import { IdTokenClaims, TokenSet } from "openid-client";
 import logger from "./util/logger";
 import loggerMiddleware from "./middleware/logger";
-import * as z from "zod";
+import type Zod from "zod";
 import validatorMiddleware from "./middleware/validator";
-import { getModel } from "./routes/model/get";
+import getModel from "./routes/model/get";
 import { PostModelBody } from "types";
 
 declare module "express-session" {
@@ -31,16 +31,17 @@ const port = process.env.EXPRESS_PORT || 3001;
 //development middleware
 if (app.get("env") === "development") app.use(cors());
 //apply middleware
-app.use(sessionMiddleware);
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(loggerMiddleware);
-app.use(helmet());
 app.use(bodyParser.json());
+app.use(cookieParser(process.env.COOKIE_SECRET));
+// app.use(rateLimiterMiddleware);
+app.use(helmet());
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
+app.use(sessionMiddleware);
+app.use(loggerMiddleware);
 // app.use(rateLimiterMiddleware);
 
 const post = (
@@ -54,9 +55,11 @@ const post = (
     ...handlers
   );
 
+//get routes
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
+app.get("/model/:id", getModel);
 
 app.post("/", (req, res) => {
   res.send(JSON.stringify(req.body));

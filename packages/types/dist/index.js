@@ -62,8 +62,7 @@ var z8 = __toESM(require("zod"));
 
 // src/utils.ts
 var z = __toESM(require("zod"));
-var import_mongodb = require("mongodb");
-var ObjId = z.instanceof(import_mongodb.ObjectId);
+var ObjId = z.any();
 var DataBody = z.object({
   _id: ObjId,
   userId: ObjId,

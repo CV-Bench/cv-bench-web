@@ -3,8 +3,7 @@ import * as z8 from "zod";
 
 // src/utils.ts
 import * as z from "zod";
-import { ObjectId } from "mongodb";
-var ObjId = z.instanceof(ObjectId);
+var ObjId = z.any();
 var DataBody = z.object({
   _id: ObjId,
   userId: ObjId,

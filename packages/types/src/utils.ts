@@ -1,10 +1,8 @@
 import * as z from "zod";
 
-import { ObjectId } from "mongodb";
-
 import { AccessType } from ".";
 
-export const ObjId = z.instanceof(ObjectId);
+export const ObjId = z.any();
 
 export const DataBody = z.object({
   _id: ObjId,

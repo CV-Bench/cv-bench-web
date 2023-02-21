@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
+import Model from "../../connectors/mongo/model";
 
-export const getModel = (req: Request, res: Response) => {
-  console.log(req);
+Model;
 
-  console.log("TEST");
+const getModel = (req: Request, res: Response) => {};
 
-  res.end();
-};
+export default getModel;
