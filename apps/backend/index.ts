@@ -25,21 +25,20 @@ dotenv.config({ path: "../../.env" });
 const app: Express = express();
 const port = process.env.EXPRESS_PORT || 3001;
 
-
 //development middleware
 if (app.get("env") === "development") app.use(cors());
 //apply middleware
-app.use(sessionMiddleware);
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(loggerMiddleware);
-app.use(helmet());
 app.use(bodyParser.json());
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(rateLimiterMiddleware);
+app.use(helmet());
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
-app.use(rateLimiterMiddleware);
+app.use(sessionMiddleware);
+app.use(loggerMiddleware);
 
 //get routes
 app.get("/", (req: Request, res: Response) => {
@@ -54,5 +53,8 @@ app.post("/", (req, res) => {
 app.use("/auth/google/", googleAuthRouter);
 
 app.listen(port, () => {
-  logger.info("EXPRESS SERVER", `⚡️ Server is running at http://localhost:${port}`);
+  logger.info(
+    "EXPRESS SERVER",
+    `⚡️ Server is running at http://localhost:${port}`
+  );
 });
