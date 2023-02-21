@@ -25,7 +25,7 @@ const NavLayout = ({children}:{children:ReactElement<any, any>}) => {
       <div>
         <SideNavContainer sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
 
-        <div className="flex flex-col md:pl-64">
+        <div className="md:pl-64">
           <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow ">
             <button
               type="button"

@@ -31,8 +31,8 @@ main::-webkit-scrollbar-thumb {
 }
 
 main {
-  overflow-y: scroll;
-  min-height: calc(100vh - 64px);
+  overflow-y: auto;
+  height: calc(100vh - 64px);
   max-height: calc(100vh - 64px);
   padding: 30px;
 }
