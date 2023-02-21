@@ -11,7 +11,6 @@ import loggerMiddleware from "./middleware/logger";
 import type Zod from "zod";
 import validatorMiddleware from "./middleware/validator";
 import getModel from "./routes/model/get";
-import { PostModelBody } from "types";
 
 declare module "express-session" {
   interface SessionData {
