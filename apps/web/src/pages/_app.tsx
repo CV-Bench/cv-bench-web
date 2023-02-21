@@ -4,6 +4,9 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { MutatingDots } from "react-loader-spinner";
 import ModalProvider from "@/components/modal/ModalProvider";
+import { PostModelBody } from "types";
+
+console.log(PostModelBody);
 
 import "../styles/globals.css";
 

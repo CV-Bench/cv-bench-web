@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, RequestHandler, Response } from "express";
 import dotenv from "dotenv";
 import { sessionMiddleware } from "./middleware/session";
 import cookieParser from "cookie-parser";
@@ -8,7 +8,10 @@ import rateLimiterMiddleware from "./middleware/rateLimiter";
 import { IdTokenClaims, TokenSet } from "openid-client";
 import logger from "./util/logger";
 import loggerMiddleware from "./middleware/logger";
+import type Zod from "zod";
+import validatorMiddleware from "./middleware/validator";
 import getModel from "./routes/model/get";
+import { PostModelBody } from "types";
 
 declare module "express-session" {
   interface SessionData {
@@ -30,7 +33,7 @@ if (app.get("env") === "development") app.use(cors());
 //apply middleware
 app.use(bodyParser.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(rateLimiterMiddleware);
+// app.use(rateLimiterMiddleware);
 app.use(helmet());
 app.use(
   bodyParser.urlencoded({
@@ -39,6 +42,18 @@ app.use(
 );
 app.use(sessionMiddleware);
 app.use(loggerMiddleware);
+// app.use(rateLimiterMiddleware);
+
+const post = (
+  uri: string,
+  bodyObject: Zod.AnyZodObject,
+  ...handlers: Array<RequestHandler>
+) =>
+  app.post(
+    uri,
+    (req, res, next) => validatorMiddleware(req, res, next, bodyObject),
+    ...handlers
+  );
 
 //get routes
 app.get("/", (req: Request, res: Response) => {
@@ -49,6 +64,10 @@ app.get("/model/:id", getModel);
 app.post("/", (req, res) => {
   res.send(JSON.stringify(req.body));
 });
+
+app.get("/model", getModel);
+
+post("/model", PostModelBody);
 
 app.use("/auth/google/", googleAuthRouter);
 
