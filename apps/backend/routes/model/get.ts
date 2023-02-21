@@ -1,5 +1,9 @@
-import { Request, Response } from "express"
+import { Request, Response } from "express";
 
-const getModel = (req: Request, res: Response) => {
-    
-}
+export const getModel = (req: Request, res: Response) => {
+  console.log(req);
+
+  console.log("TEST");
+
+  res.end();
+};

@@ -1,0 +1,23 @@
+{
+  "name": "types",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "dev": "tsup --watch",
+    "build": "tsup"
+  },
+  "dependencies": {
+    "eslint": "^8.34.0",
+    "eslint-config-custom": "*",
+    "mongodb": "^5.0.1",
+    "tsconfig": "*",
+    "typescript": "^4.9.5",
+    "zod": "^3.20.6"
+  },
+  "devDependencies": {
+    "tsup": "^6.6.3"
+  }
+}
