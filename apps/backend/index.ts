@@ -8,6 +8,7 @@ import rateLimiterMiddleware from "./middleware/rateLimiter";
 import { IdTokenClaims, TokenSet } from "openid-client";
 import logger from "./util/logger";
 import loggerMiddleware from "./middleware/logger";
+import getModel from "./routes/model/get";
 
 declare module "express-session" {
   interface SessionData {
@@ -40,9 +41,11 @@ app.use(
 );
 app.use(rateLimiterMiddleware);
 
+//get routes
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
+app.get("/model/:id", getModel);
 
 app.post("/", (req, res) => {
   res.send(JSON.stringify(req.body));
