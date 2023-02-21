@@ -1,7 +1,5 @@
-import { Request, Response } from "express"
+import { Request, Response } from "express";
 
-const getNetwork = (req: Request, res: Response) => {
-    
-}
+const getNetworks = (req: Request, res: Response) => {};
 
-export default getNetwork;
+export default getNetworks;

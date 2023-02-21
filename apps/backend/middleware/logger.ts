@@ -1,14 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "../util/logger";
 
-const loggerMiddleware = (req:Request, res:Response, next:NextFunction) => {
-    logger.debug(
-        "EXPRESS REQUEST",
-        `Session: ${req.session.id}`,
-        `Route: ${req.url}`
-    );
+const loggerMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  logger.debug(
+    "EXPRESS REQUEST",
+    `Session: ${req.session.id}`,
+    `Method: ${req.method}`,
+    `Route: ${req.url}`
+  );
 
-    next();
-}
+  next();
+};
 
 export default loggerMiddleware;

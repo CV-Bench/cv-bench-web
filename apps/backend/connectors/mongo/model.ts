@@ -1,4 +1,5 @@
 import { Collection, ObjectId } from "mongodb";
+import { ModelDb } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
 
@@ -15,17 +16,17 @@ prepareCollection(MODEL_COLLECTION_NAME).then((collection) => {
  * @param id The id of the model being requested
  * @returns The requested model from the database
  */
-const getModel = (id: string) => {
+const getModel = (id: string):Promise<ModelDb> => {
   return collectionRequest(MODEL_COLLECTION_NAME, async () => {
     return modelCollection.findOne({ _id: new ObjectId(id) });
-  });
+  }) as Promise<ModelDb>;
 };
 
 /**
  * @param model The model to be insterted
  * @returns Resolves if successful, rejects if not
  */
-const insertModel = (model: any) => {
+const insertModel = (model: ModelDb) => {
   return collectionRequest(MODEL_COLLECTION_NAME, async () => {
     return modelCollection.insertOne(model);
   });
@@ -35,7 +36,5 @@ const Model = {
   get: getModel,
   insert: insertModel,
 };
-
-getModel("63F4BB37490C602A82740B43");
 
 export default Model;
