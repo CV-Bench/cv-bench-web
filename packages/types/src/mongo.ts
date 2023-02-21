@@ -1,5 +1,10 @@
 import { Collection } from "mongodb";
 
-export type CollectionName = "models" | "users" | "datasets" | "networks";
+export enum CollectionName {
+    MODEL = "models",
+    USER = "users",
+    DATASET = "datasets",
+    NETWORK = "networks"
+};
 
 export type CollectionCollection = {[name in CollectionName]?: Collection};

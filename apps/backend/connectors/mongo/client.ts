@@ -43,10 +43,10 @@ export const prepareCollection = (collectionName: CollectionName) => {
   });
 };
 
-export const collectionRequest = (
+export const collectionRequest = <T>(
   collectionName: CollectionName,
-  request: () => Promise<any>
-) => {
+  request: (collection:Collection) => Promise<any>
+):Promise<T> => {
   return new Promise((resolve, reject) => {
     if (!collections[collectionName]) {
       clientNotReady().then(
@@ -58,8 +58,8 @@ export const collectionRequest = (
       return;
     }
 
-    request()
-      .then((result) => {
+    request(collections[collectionName]!)
+      .then((result:T) => {
         resolve(result);
         logger.debug(
           "MONGO CLIENT",
