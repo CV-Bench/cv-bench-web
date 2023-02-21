@@ -37,3 +37,4 @@ export * from "./audit";
 export * from "./network";
 export * from "./notification";
 export * from "./task";
+export * from "./mongo";
