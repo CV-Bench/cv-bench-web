@@ -11,6 +11,10 @@ new Promise<Collection>((resolve, reject) => {
   modelCollection = collection;
 });
 
+/**
+ * @param id The id of the model being requested
+ * @returns The requested model from the database
+ */
 const getModel = (id: string) => {
   return new Promise((resolve, reject) => {
     if (!modelCollection) {
@@ -32,6 +36,10 @@ const getModel = (id: string) => {
   });
 };
 
+/**
+ * @param model The model to be insterted
+ * @returns Resolves if successful, rejects if not
+ */
 const insertModel = (model: any) => {
   logger.debug("MONGO CLIENT", "insert");
 

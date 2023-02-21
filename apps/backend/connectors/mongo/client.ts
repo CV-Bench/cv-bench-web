@@ -20,6 +20,10 @@ export const cvBenchDb = new Promise<Db>((resolve, reject) => {
     });
 });
 
+/**
+ * @returns Resolves once the mongo db is ready
+ * @description Is used to defer database actions
+ */
 export const clientNotReady = () => {
   logger.warning("MONGO CLIENT", "Mongo Client wasn't ready!");
 
