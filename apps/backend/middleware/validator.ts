@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { findRouteValidator } from "types";
+import { findRouteValidator, loggerTitle } from "types";
 import logger from "../util/logger";
 
 const validatorMiddleware = (
@@ -17,7 +17,7 @@ const validatorMiddleware = (
     next();
   } catch (e) {
     logger.error(
-      "EXPRESS REQUEST",
+      loggerTitle.EXPRESS_SERVER,
       `Request on Route: ${(req.path + req.method).toLowerCase()}`,
       "Failed to pass Validator!"
     );
