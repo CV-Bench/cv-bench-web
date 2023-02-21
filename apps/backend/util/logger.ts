@@ -1,4 +1,6 @@
 import Logger, { LoggerOptions } from "@ptkdev/logger";
+import { loggerTitle } from "types";
+import loggerConfig from "./loggerConfig";
 
 const loggerOptions: LoggerOptions = {
     write: true,
@@ -9,6 +11,7 @@ const loggerOptions: LoggerOptions = {
 };
 
 const baseLogger = new Logger(loggerOptions);
+const isProd = process.env.NODE_ENV === "production";
 
 const formatLoggerOutput = (title: loggerTitle, args:string[]):string => {
     let out = `\n${title}:`;
@@ -20,7 +23,6 @@ const formatLoggerOutput = (title: loggerTitle, args:string[]):string => {
 }
 
 //TODO needs to be moved
-type loggerTitle = "EXPRESS SERVER" | "EXPRESS REQUEST" | "REDIS CLIENT" | "MONGO CLIENT";
 
 const logger = {
     debug: (title:loggerTitle, ...args:string[]) => baseLogger.debug(formatLoggerOutput(title, args)),
@@ -31,5 +33,19 @@ const logger = {
     stackoverflow: (title:loggerTitle, ...args:string[]) => baseLogger.stackoverflow(formatLoggerOutput(title, args)),
     docs: (title:loggerTitle, ...args:string[]) => baseLogger.docs(formatLoggerOutput(title, args))
 };
+
+
+if(isProd){
+    logger.debug = ()=>{};
+    logger.sponsor = ()=>{};
+    logger.stackoverflow = ()=>{};
+    logger.docs = ()=>{};
+}
+else {
+    logger.debug = (title:loggerTitle, ...args:string[]) => {
+        if(loggerConfig.debugFilter[title])
+            baseLogger.debug(formatLoggerOutput(title, args));
+    }
+}
 
 export default logger;

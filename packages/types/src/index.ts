@@ -16,6 +16,13 @@ export enum DatasetFormat {
   COCO = "COCO",
 }
 
+export enum loggerTitle {
+  EXPRESS_SERVER = "EXPRESS SERVER",
+  EXPRESS_REQUEST = "EXPRESS REQUEST",
+  REDIS_CLIENT = "REDIS CLIENT",
+  MONGO_CLIENT = "MONGO CLIENT"
+}
+
 export const NetworkArchitectureBody = z.object({
   _id: ObjId,
   name: z.string(),

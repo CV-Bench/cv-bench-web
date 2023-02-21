@@ -1,5 +1,5 @@
 import { Collection, Db, MongoClient } from "mongodb";
-import { CollectionCollection, CollectionName } from "types";
+import { CollectionCollection, CollectionName, loggerTitle } from "types";
 import logger from "../../util/logger";
 
 /**
@@ -11,20 +11,20 @@ export const cvBenchDb = new Promise<Db>((resolve, reject) => {
   mongoClient
     .connect()
     .then(() => {
-      logger.info("MONGO CLIENT", "Client connected");
+      logger.info(loggerTitle.MONGO_CLIENT, "Client connected");
 
       resolve(mongoClient.db("cvBench"));
     })
     .catch((e) => {
       reject(e);
-      logger.error("MONGO CLIENT", e);
+      logger.error(loggerTitle.MONGO_CLIENT, e);
     });
 });
 
 let collections: CollectionCollection = {};
 
 export const prepareCollection = (collectionName: CollectionName) => {
-  logger.debug("MONGO CLIENT", `Preparing Collection: ${collectionName}`);
+  logger.debug(loggerTitle.MONGO_CLIENT, `Preparing Collection: ${collectionName}`);
   return new Promise<Collection>((resolve, reject) => {
     cvBenchDb
       .then((db) => {
@@ -35,7 +35,7 @@ export const prepareCollection = (collectionName: CollectionName) => {
       .catch((e) => {
         reject(e);
         logger.error(
-          "MONGO CLIENT",
+          loggerTitle.MONGO_CLIENT,
           `Error Preparing Collection: ${collectionName}`,
           e
         );
@@ -62,7 +62,7 @@ export const collectionRequest = <T>(
       .then((result:T) => {
         resolve(result);
         logger.debug(
-          "MONGO CLIENT",
+          loggerTitle.MONGO_CLIENT,
           "Collection Request Resolved!",
           `Collection: ${collectionName}`,
           `Result: ${JSON.stringify(result)}`
@@ -71,7 +71,7 @@ export const collectionRequest = <T>(
       .catch((e) => {
         reject(e);
         logger.error(
-          "MONGO CLIENT",
+          loggerTitle.MONGO_CLIENT,
           "Collection Request Failed!",
           `Collection: ${collectionName}`,
           e
@@ -85,13 +85,13 @@ export const collectionRequest = <T>(
  * @description Is used to defer database actions
  */
 export const clientNotReady = () => {
-  logger.warning("MONGO CLIENT", "Mongo Client wasn't ready!");
+  logger.warning(loggerTitle.MONGO_CLIENT, "Mongo Client wasn't ready!");
 
   return new Promise((resolve, reject) => {
     cvBenchDb
       .then(() => {
         setTimeout(() => {
-          logger.debug("MONGO CLIENT", "Mongo Client ready!");
+          logger.debug(loggerTitle.MONGO_CLIENT, "Mongo Client ready!");
           resolve(true);
         }, 100);
       })

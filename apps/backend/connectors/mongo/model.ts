@@ -1,11 +1,11 @@
 import { Collection, InsertOneResult, ObjectId } from "mongodb";
-import { CollectionName, ModelDb } from "types";
+import { CollectionName, loggerTitle, ModelDb } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
 
 
 prepareCollection(CollectionName.MODEL).then((collection) => {
-  logger.debug("MONGO CLIENT", `Collection Ready: ${collection.namespace}`);
+  logger.debug(loggerTitle.MONGO_CLIENT, `Collection Ready: ${collection.namespace}`);
 });
 
 /**

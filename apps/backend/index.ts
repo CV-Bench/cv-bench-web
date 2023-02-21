@@ -8,7 +8,7 @@ import { IdTokenClaims, TokenSet } from "openid-client";
 import logger from "./util/logger";
 import loggerMiddleware from "./middleware/logger";
 import validatorMiddleware from "./middleware/validator";
-import { RouteNames, route } from "types";
+import { RouteNames, route, loggerTitle } from "types";
 
 import getModel from "./routes/model/[id]/get";
 import deleteModel from "./routes/model/[id]/delete";
@@ -98,7 +98,7 @@ app.use("/auth/google/", googleAuthRouter);
 
 app.listen(port, () => {
   logger.info(
-    "EXPRESS SERVER",
+    loggerTitle.EXPRESS_SERVER,
     `⚡️ Server is running at http://localhost:${port}`
   );
 });
