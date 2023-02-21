@@ -20,3 +20,7 @@ export const PostDataBody = DataBody.pick({
   description: true,
   accessType: true,
 });
+
+export type RouteName = "model" | "auth" | "dataset" | "network";
+
+export type httpMethod = "get" | "post" | "put" | "delete";

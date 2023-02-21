@@ -32,6 +32,7 @@ const port = process.env.EXPRESS_PORT || 3001;
 if (app.get("env") === "development") app.use(cors());
 //apply middleware
 app.use(bodyParser.json());
+app.use(validatorMiddleware);
 app.use(cookieParser(process.env.COOKIE_SECRET));
 // app.use(rateLimiterMiddleware);
 app.use(helmet());
@@ -44,16 +45,16 @@ app.use(sessionMiddleware);
 app.use(loggerMiddleware);
 // app.use(rateLimiterMiddleware);
 
-const post = (
-  uri: string,
-  bodyObject: Zod.AnyZodObject,
-  ...handlers: Array<RequestHandler>
-) =>
-  app.post(
-    uri,
-    (req, res, next) => validatorMiddleware(req, res, next, bodyObject),
-    ...handlers
-  );
+// const post = (
+//   uri: string,
+//   bodyObject: Zod.AnyZodObject,
+//   ...handlers: Array<RequestHandler>
+// ) =>
+//   app.post(
+//     uri,
+//     (req, res, next) => validatorMiddleware(req, res, next, bodyObject),
+//     ...handlers
+//   );
 
 //get routes
 app.get("/", (req: Request, res: Response) => {
@@ -67,7 +68,7 @@ app.post("/", (req, res) => {
 
 app.get("/model", getModel);
 
-post("/model", PostModelBody);
+// post("/model", PostModelBody);
 
 app.use("/auth/google/", googleAuthRouter);
 
