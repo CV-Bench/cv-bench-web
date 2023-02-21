@@ -27,7 +27,8 @@ export const NetworkArchitectureBody = z.object({
 
 export type NetworkArchitecture = z.infer<typeof NetworkArchitectureBody>;
 
-export type Route = {[route in `/${RouteName}/${httpMethod}`]?: z.AnyZodObject};
+export type RouteMethodName = `/${RouteName}/${httpMethod}`;
+export type Route = {[route in RouteMethodName]?: z.AnyZodObject};
 
 export * from "./model";
 export * from "./dataset";
