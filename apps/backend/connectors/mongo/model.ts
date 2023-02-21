@@ -1,13 +1,13 @@
 import { Collection, ObjectId } from "mongodb";
 import logger from "../../util/logger";
-import mongo, { clientNotReady } from "./";
-import mongoClient, { cvBenchDb } from "./";
+import { collectionRequest, prepareCollection } from "./";
 
-export let modelCollection: Collection;
+let modelCollection: Collection;
 
-new Promise<Collection>((resolve, reject) => {
-  cvBenchDb.then((db) => resolve(db.collection("models")));
-}).then((collection) => {
+const MODEL_COLLECTION_NAME = "models";
+
+prepareCollection(MODEL_COLLECTION_NAME).then((collection) => {
+  logger.debug("MONGO CLIENT", `Collection Ready: ${collection.namespace}`);
   modelCollection = collection;
 });
 
@@ -16,23 +16,8 @@ new Promise<Collection>((resolve, reject) => {
  * @returns The requested model from the database
  */
 const getModel = (id: string) => {
-  return new Promise((resolve, reject) => {
-    if (!modelCollection) {
-        clientNotReady().then(
-          () => {
-            resolve(getModel(id));
-          },
-          (e: any) => reject(e)
-        );
-        return;
-      }
-
-    modelCollection
-      .findOne({ _id: new ObjectId(id) })
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((e) => reject(e));
+  return collectionRequest(MODEL_COLLECTION_NAME, async () => {
+    return modelCollection.findOne({ _id: new ObjectId(id) });
   });
 };
 
@@ -41,22 +26,8 @@ const getModel = (id: string) => {
  * @returns Resolves if successful, rejects if not
  */
 const insertModel = (model: any) => {
-  logger.debug("MONGO CLIENT", "insert");
-
-  return new Promise((resolve, reject) => {
-    if (!modelCollection) {
-      clientNotReady().then(
-        () => {
-          resolve(insertModel(model));
-        },
-        (e: any) => reject(e)
-      );
-      return;
-    }
-    modelCollection
-      .insertOne(model)
-      .then(resolve)
-      .catch((e) => reject(e));
+  return collectionRequest(MODEL_COLLECTION_NAME, async () => {
+    return modelCollection.insertOne(model);
   });
 };
 
@@ -64,5 +35,7 @@ const Model = {
   get: getModel,
   insert: insertModel,
 };
+
+getModel("63F4BB37490C602A82740B43");
 
 export default Model;
