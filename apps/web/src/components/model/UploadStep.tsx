@@ -6,7 +6,10 @@ import InputLabel from "../inputs/InputLabel"
 import RadioGroupSelection from "../inputs/RadioGroupSelection"
 
 export interface UploadStepProps {
+  name?: string;
+  setName?: string;
 
+  accessType?: string
 }
 
 const UploadStep: React.FC<UploadStepProps> = () => {

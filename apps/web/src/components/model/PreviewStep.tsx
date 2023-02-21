@@ -3,6 +3,7 @@ import Card from "../Card"
 import FileInput, { SelectedFile } from "../inputs/FileInput"
 import InputLabel from "../inputs/InputLabel"
 import TagInput from "../inputs/TagInput"
+import ModelPreview from "../visualization/ModelPreview"
 
 export interface PreviewStepProps {
   tags?: string[];
@@ -13,7 +14,7 @@ export interface PreviewStepProps {
   onSelectTags: (val: string[]) => void;
 }
 
-const PreviewStep: React.FC<PreviewStepProps> = ({onSelectModel, onSelectMaterials, onSelectTags, model, materials, tags}) => {
+const PreviewStep: React.FC<PreviewStepProps> = ({ onSelectModel, onSelectMaterials, onSelectTags, model, materials, tags }) => {
 
   return (
     <div className="lg:flex min-h-full">
@@ -21,11 +22,11 @@ const PreviewStep: React.FC<PreviewStepProps> = ({onSelectModel, onSelectMateria
         <Card className="flex flex-col justify-around h-full">
           <div>
             <InputLabel>3D Model</InputLabel>
-            <FileInput selectedFiles={model && [model]} setSelectedFiles={(val) => onSelectModel(val[0])} accept={['.obj', '.ply']} />
+            <FileInput className="min-h-[84px] h-[80px]" selectedFiles={model && [model]} setSelectedFiles={(val) => onSelectModel(val[0])} accept={['.obj', '.ply']} />
           </div>
           <div>
             <InputLabel>Materials</InputLabel>
-            <FileInput selectedFiles={materials} setSelectedFiles={onSelectMaterials} accept={['.mtl']} multiple={true} />
+            <FileInput className="min-h-[118px] h-[118px]" selectedFiles={materials} setSelectedFiles={onSelectMaterials} accept={['.mtl']} multiple={true} />
           </div>
 
 
@@ -37,10 +38,10 @@ const PreviewStep: React.FC<PreviewStepProps> = ({onSelectModel, onSelectMateria
       </div>
       <div className="lg:w-2/3 lg:pl-2 lg:pt-0 pt-2 min-h-full">
         <Card className="h-full">
-          <h1>PREVIEW</h1>
+          <ModelPreview model={model} materials={materials} />
         </Card>
       </div>
-      
+
     </div>
   )
 }

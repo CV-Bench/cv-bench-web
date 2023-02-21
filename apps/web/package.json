@@ -22,6 +22,7 @@
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
     "@types/three": "^0.149.0",
+    "camera-controls": "^2.3.0",
     "classnames": "^2.3.2",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",

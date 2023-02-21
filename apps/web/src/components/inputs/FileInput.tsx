@@ -1,6 +1,5 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { ChangeEventHandler, useRef } from "react";
-import Card from "../Card";
+import { ChangeEventHandler, DragEventHandler, useRef } from "react";
 
 export interface SelectedFile {
   filename: string;
@@ -15,7 +14,7 @@ export interface FileInputProps {
   setSelectedFiles: (val: SelectedFile[]) => void;
 }
 
-const FileInput: React.FC<FileInputProps> = ({className, accept, multiple, setSelectedFiles, selectedFiles=[]}) => {
+const FileInput: React.FC<FileInputProps> = ({ className, accept, multiple, setSelectedFiles, selectedFiles = [] }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const acceptTypes = accept.join(',');
 
@@ -32,47 +31,61 @@ const FileInput: React.FC<FileInputProps> = ({className, accept, multiple, setSe
     setSelectedFiles([...selectedFiles]);
   }
 
-  const onClick = () => fileInputRef.current?.click();
+  const handleDragOver: DragEventHandler<HTMLDivElement> = (event) => event.preventDefault();
+
+  const handleDrop: DragEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault();
+    loadFiles(event.dataTransfer.files);
+  };
+
+  const handleClick = () => fileInputRef.current?.click();
+
+  const loadFiles = async (files: FileList) => {
+    const filesToLoad = Array.from(files).map(file => new Promise<SelectedFile>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (result) => {
+        resolve({
+          filename: file.name,
+          data: result.target?.result as string
+        });
+      }
+      reader.onabort = () => reject();
+      reader.readAsDataURL(file);
+    }))
+    const selectedFiles = await Promise.all(filesToLoad);
+    addFiles(...selectedFiles);
+  }
+
   const onSelectFile: ChangeEventHandler<HTMLInputElement> = async (ev) => {
     if (ev.target.files && ev.target.files.length > 0) {
-      const filesToLoad = Array.from(ev.target.files).map(file => new Promise<SelectedFile>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (result) => {
-          resolve({
-            filename: file.name,
-            data: result.target?.result as string
-          });
-        }
-        reader.onabort = () => reject();
-        reader.readAsDataURL(file);
-      }))
-      const selectedFiles = await Promise.all(filesToLoad);
-      addFiles(...selectedFiles);
+      await loadFiles(ev.target.files);
     }
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   }
 
-  return(          
-    <div className={`rounded-lg bg-indigo-900 p-0 ${className}`}>
+  return (
+    <div className={`rounded-lg bg-indigo-800 text-white ${className}`}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}>
+
+      <div onClick={handleClick} className={`text-center ${(selectedFiles.length == 0 ? 'min-h-full' : 'min-h-[3rem]')} rounded-lg flex justify-center items-center cursor-pointer transition-all bg-indigo-600 hover:bg-indigo-400`}>
+        Click or drag & drop your files ({accept.join(' / ')})
+      </div>
+
       <div className="text-white text-center">
-
-        <div className={`${selectedFiles.length > 0 ? 'rounded-t-lg' : 'rounded-lg'} text-sm p-3 bg-indigo-700 cursor-pointer hover:bg-indigo-600 transition-all`}  onClick={onClick}>
-          Click or drag & drop your files ({accept.join(' / ')})
-        </div>
-
         {
           selectedFiles.length > 0 &&
           <div className="text-sm p-2">
             <ul className="flex flex-col items-center">
-            {selectedFiles.map((file, idx) => (
-              <li className="flex" key={idx}>{file.filename} <XMarkIcon onClick={() => removeFile(file)} className="h-6 w-6" /></li>
-            ))}
+              {selectedFiles.map((file, idx) => (
+                <li className="flex" key={idx}>{file.filename} <XMarkIcon onClick={() => removeFile(file)} className="h-6 w-6" /></li>
+              ))}
             </ul>
           </div>
         }
-        
+
       </div>
       <input ref={fileInputRef} accept={acceptTypes} type="file" onChange={onSelectFile} multiple={multiple} hidden />
     </div>

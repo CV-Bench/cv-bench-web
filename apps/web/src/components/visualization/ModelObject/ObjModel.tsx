@@ -1,11 +1,15 @@
 import { useLoader } from "@react-three/fiber";
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
-import React from "react";
+import React, { Ref } from "react";
 import { ModelObjectProps } from "./ModelObject";
 
+export interface ObjModelProps {
+  modelPath: string;
+  materialPaths?: string[];
+}
 
-const ObjModel: React.FC<ModelObjectProps> = ({ modelPath, materialPaths }) => {
+const ObjModel: React.FC<ObjModelProps> = ({ modelPath, materialPaths }) => {
 
   const loadObjAndSetMaterials = (objLoader: OBJLoader, materials: MTLLoader.MaterialCreator[] | null) => {
     if (!materials) {
@@ -13,7 +17,7 @@ const ObjModel: React.FC<ModelObjectProps> = ({ modelPath, materialPaths }) => {
     }
     materials.forEach(mtlCreator => {
       mtlCreator.preload();
-      
+
       objLoader.setMaterials(mtlCreator);
     });
   }

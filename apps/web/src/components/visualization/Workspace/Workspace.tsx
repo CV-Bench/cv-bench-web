@@ -102,7 +102,7 @@ const Workspace: React.FC<WorkspaceProps> = () => {
         <pointLight position={[0, 0, 3]} />
         <directionalLight layers={allLayers} />
         <PositionedObject {...properties}>
-          <ModelObject modelPath="/big_dolph.ply" />
+          <ModelObject model="/big_dolph.ply" />
         </PositionedObject>
         <CameraSphere {...properties} />
         <RenderCamera {...properties} />

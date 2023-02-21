@@ -1,20 +1,24 @@
-import React, { Suspense, useState } from "react";
+import { SelectedFile } from "@/components/inputs/FileInput";
+import React, { Ref, Suspense, useState } from "react";
 import ObjModel from "./ObjModel";
 import PlyModel from "./PlyModel";
 
 export interface ModelObjectProps {
-  modelPath: string;
-  materialPaths?: string[];
+  model: SelectedFile | string;
+  materials?: SelectedFile[] | string[];
 }
 
-const ModelObject: React.FC<ModelObjectProps> = ({ modelPath, materialPaths }) => {
-  const fileExt = modelPath.toLocaleLowerCase().split('.').pop();
+const ModelObject: React.FC<ModelObjectProps> = ({ model, materials }) => {
+  const filePath = typeof model == 'string' ? model : model.data;
+  const fileName = typeof model == 'string' ? model : model.filename;
+  const fileExt = fileName.toLocaleLowerCase().split('.').pop();
+  const materialPaths = materials?.map(x => typeof x === 'string' ? x : x.data);
 
   switch (fileExt) {
     case 'obj':
-      return (<ObjModel modelPath={modelPath} materialPaths={materialPaths}/>)
+      return (<ObjModel modelPath={filePath} materialPaths={materialPaths} />)
     case 'ply':
-      return (<PlyModel modelPath={modelPath} />)
+      return (<PlyModel model={filePath} />)
     default:
       console.error("Invalid file format");
       return (<></>)
