@@ -38,7 +38,7 @@ const NavLayout = ({children}:{children:ReactElement<any, any>}) => {
             <TopNavContainer />
           </div>
 
-          <main className="flex-1">
+          <main>
             {children}
           </main>
         </div>
