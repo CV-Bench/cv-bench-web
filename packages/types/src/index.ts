@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { httpMethod, ObjId, RouteName } from "./utils";
+import { ObjId } from "./utils";
 
 export enum AccessType {
   PUBLIC = "PUBLIC",
@@ -27,9 +27,6 @@ export const NetworkArchitectureBody = z.object({
 
 export type NetworkArchitecture = z.infer<typeof NetworkArchitectureBody>;
 
-export type RouteMethodName = `/${RouteName}/${httpMethod}`;
-export type Route = {[route in RouteMethodName]?: z.AnyZodObject};
-
 export * from "./model";
 export * from "./dataset";
 export * from "./datasetConfiguration";
@@ -37,4 +34,5 @@ export * from "./audit";
 export * from "./network";
 export * from "./notification";
 export * from "./task";
+export * from "./routes";
 export * from "./mongo";

@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { PostModelBody, Route, RouteMethodName } from "types";
+import { findRouteValidator } from "types";
 import logger from "../util/logger";
-
-const validatorMap: Route = {
-  "/model/post": PostModelBody,
-};
 
 const validatorMiddleware = (
   req: Request,
@@ -12,8 +8,12 @@ const validatorMiddleware = (
   next: NextFunction
 ) => {
   try {
-    const validator = validatorMap[(req.path + req.method).toLowerCase() as RouteMethodName];
-    if (validator) req.body = validator.parse(req.body);
+    const route = findRouteValidator(req.path + req.method);
+
+    if (route) {
+      req.body = route.validator.parse(req.body);
+    }
+
     next();
   } catch (e) {
     logger.error(

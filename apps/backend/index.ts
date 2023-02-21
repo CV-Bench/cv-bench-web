@@ -1,16 +1,32 @@
-import express, { Express, Request, RequestHandler, Response } from "express";
+import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { sessionMiddleware } from "./middleware/session";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import googleAuthRouter from "./routes/auth/google";
-import rateLimiterMiddleware from "./middleware/rateLimiter";
 import { IdTokenClaims, TokenSet } from "openid-client";
 import logger from "./util/logger";
 import loggerMiddleware from "./middleware/logger";
-import type Zod from "zod";
 import validatorMiddleware from "./middleware/validator";
-import getModel from "./routes/model/get";
+import { RouteNames, route } from "types";
+
+import getModel from "./routes/model/[id]/get";
+import deleteModel from "./routes/model/[id]/delete";
+import getModels from "./routes/model/get";
+import patchModel from "./routes/model/[id]/patch";
+import postModel from "./routes/model/[id]/post";
+
+import getDataset from "./routes/dataset/[id]/get";
+import deleteDataset from "./routes/dataset/[id]/delete";
+import getDatasets from "./routes/dataset/get";
+import patchDataset from "./routes/dataset/[id]/patch";
+import postDataset from "./routes/dataset/[id]/post";
+
+import getNetwork from "./routes/network/[id]/get";
+import deleteNetwork from "./routes/network/[id]/delete";
+import getNetworks from "./routes/network/get";
+import patchNetwork from "./routes/network/[id]/patch";
+import postNetwork from "./routes/network/[id]/post";
 
 declare module "express-session" {
   interface SessionData {
@@ -31,7 +47,6 @@ const port = process.env.EXPRESS_PORT || 3001;
 if (app.get("env") === "development") app.use(cors());
 //apply middleware
 app.use(bodyParser.json());
-app.use(validatorMiddleware);
 app.use(cookieParser(process.env.COOKIE_SECRET));
 // app.use(rateLimiterMiddleware);
 app.use(helmet());
@@ -41,31 +56,41 @@ app.use(
   })
 );
 app.use(sessionMiddleware);
+app.use(validatorMiddleware);
 app.use(loggerMiddleware);
 // app.use(rateLimiterMiddleware);
 
-// const post = (
-//   uri: string,
-//   bodyObject: Zod.AnyZodObject,
-//   ...handlers: Array<RequestHandler>
-// ) =>
-//   app.post(
-//     uri,
-//     (req, res, next) => validatorMiddleware(req, res, next, bodyObject),
-//     ...handlers
-//   );
+// MODEL ROUTES
+app.get(route(RouteNames.GET_MODELS), getModels);
+app.get(route(RouteNames.GET_MODEL), getModel);
+app.get(route(RouteNames.DELETE_MODEL), deleteModel);
+app.get(route(RouteNames.PATCH_MODEL), patchModel);
+app.get(route(RouteNames.POST_MODEL), postModel);
+
+// DATASET ROUTES
+app.get(route(RouteNames.GET_DATASETS), getDatasets);
+app.get(route(RouteNames.GET_DATASET), getDataset);
+app.get(route(RouteNames.DELETE_DATASET), deleteDataset);
+app.get(route(RouteNames.PATCH_DATASET), patchDataset);
+app.get(route(RouteNames.POST_DATASET), postDataset);
+
+// NETWORK ROUTES
+app.get(route(RouteNames.GET_NETWORKS), getNetworks);
+app.get(route(RouteNames.GET_NETWORK), getNetwork);
+app.get(route(RouteNames.DELETE_NETWORK), deleteNetwork);
+app.get(route(RouteNames.PATCH_NETWORK), patchNetwork);
+app.get(route(RouteNames.POST_NETWORK), postNetwork);
 
 //get routes
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
-app.get("/model/:id", getModel);
 
 app.post("/", (req, res) => {
   res.send(JSON.stringify(req.body));
 });
 
-app.get("/model", getModel);
+// app.get("/model", getModel);
 
 // post("/model", PostModelBody);
 

@@ -1,7 +1,5 @@
-import { Request, Response } from "express"
+import { Request, Response } from "express";
 
-const getDataset = (req: Request, res: Response) => {
-    
-}
+const getDatasets = (req: Request, res: Response) => {};
 
-export default getDataset;
+export default getDatasets;
