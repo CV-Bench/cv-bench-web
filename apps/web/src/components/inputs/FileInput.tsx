@@ -11,12 +11,11 @@ export interface FileInputProps {
   className?: string;
   multiple?: boolean;
   accept: string[];
-  title: string;
   selectedFiles?: SelectedFile[];
   setSelectedFiles: (val: SelectedFile[]) => void;
 }
 
-const FileInput: React.FC<FileInputProps> = ({className, title, accept, multiple, setSelectedFiles, selectedFiles=[]}) => {
+const FileInput: React.FC<FileInputProps> = ({className, accept, multiple, setSelectedFiles, selectedFiles=[]}) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const acceptTypes = accept.join(',');
 
@@ -56,17 +55,13 @@ const FileInput: React.FC<FileInputProps> = ({className, title, accept, multiple
   }
 
   return(          
-    <Card className={`transition-all bg-indigo-900 p-0 ${className}`}>
+    <div className={`rounded-lg bg-indigo-900 p-0 ${className}`}>
       <div className="text-white text-center">
-        <div className="bg-indigo-700 cursor-pointer hover:bg-indigo-800 rounded-t-lg p-2" onClick={onClick}>
-          {title}
+
+        <div className={`${selectedFiles.length > 0 ? 'rounded-t-lg' : 'rounded-lg'} text-sm p-3 bg-indigo-700 cursor-pointer hover:bg-indigo-600 transition-all`}  onClick={onClick}>
+          Click or drag & drop your files ({accept.join(' / ')})
         </div>
-        {
-          selectedFiles.length == 0 &&
-          <div className="text-sm p-2">
-            Click or drag & drop your files ({accept.join(' / ')})
-          </div>
-        }
+
         {
           selectedFiles.length > 0 &&
           <div className="text-sm p-2">
@@ -80,7 +75,7 @@ const FileInput: React.FC<FileInputProps> = ({className, title, accept, multiple
         
       </div>
       <input ref={fileInputRef} accept={acceptTypes} type="file" onChange={onSelectFile} multiple={multiple} hidden />
-    </Card>
+    </div>
   );
 }
 
