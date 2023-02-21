@@ -3,13 +3,6 @@ import { PostModelBody } from "./model";
 import { PostDatasetBody } from "./dataset";
 import { PostNetworkBody } from "./network";
 
-export type RouteName = "model" | "auth" | "dataset" | "network";
-
-export type httpMethod = "get" | "post" | "patch" | "delete";
-
-export type RouteMethodName = `/${RouteName}/${httpMethod}`;
-export type Route = { [route in RouteMethodName]?: z.AnyZodObject };
-
 export enum RouteNames {
   GET_MODELS = "GET_MODELS",
   GET_MODEL = "GET_MODEL",
