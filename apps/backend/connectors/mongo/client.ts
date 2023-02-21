@@ -13,10 +13,6 @@ export const cvBenchDb = new Promise<Db>((resolve, reject) => {
       logger.info("MONGO CLIENT", "Client connected");
 
       resolve(mongoClient.db("cvBench"));
-
-      //sample
-      //const db = mongoClient.db("dbname");
-      //const collection = db.collection("collectionname");
     })
     .catch((e) => {
       reject(e);
