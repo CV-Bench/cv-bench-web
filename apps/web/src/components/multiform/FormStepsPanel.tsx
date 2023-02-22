@@ -82,7 +82,7 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
   };
 
   return (
-    <div className="container h-full flex flex-col mx-auto space-y-8">
+    <div className="container min-h-full flex flex-col mx-auto space-y-8">
       <div className="mx-auto overflow-hidden w-full lg:flex divide-x divide-gray-700">
         {steps.map(({ name, description }, index) => (
           <button
@@ -134,7 +134,7 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
           </button>
         ))}
       </div>
-      <div className="flex-1">{steps[activeStep].component}</div>
+      <div className="flex-1 flex flex-col">{steps[activeStep].component}</div>
       <div className="flex justify-between">
         <div>
           {activeStep >= 1 && (

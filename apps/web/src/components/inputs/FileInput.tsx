@@ -1,24 +1,24 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChangeEventHandler, DragEventHandler, useRef } from "react";
 
-export interface SelectedFile {
+export interface UrlFile {
   filename: string;
-  data: string;
+  url: string;
 }
 
 export interface FileInputProps {
   className?: string;
   multiple?: boolean;
   accept: string[];
-  selectedFiles?: SelectedFile[];
-  setSelectedFiles: (val: SelectedFile[]) => void;
+  selectedFiles?: UrlFile[];
+  setSelectedFiles: (val: UrlFile[]) => void;
 }
 
 const FileInput: React.FC<FileInputProps> = ({ className, accept, multiple, setSelectedFiles, selectedFiles = [] }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const acceptTypes = accept.join(',');
 
-  const addFiles = (...files: SelectedFile[]) => {
+  const addFiles = (...files: UrlFile[]) => {
     if (multiple) {
       setSelectedFiles([...selectedFiles, ...files]);
       return;
@@ -26,7 +26,7 @@ const FileInput: React.FC<FileInputProps> = ({ className, accept, multiple, setS
     setSelectedFiles([...files]);
   }
 
-  const removeFile = (file: SelectedFile) => {
+  const removeFile = (file: UrlFile) => {
     selectedFiles.splice(selectedFiles.indexOf(file), 1);
     setSelectedFiles([...selectedFiles]);
   }
@@ -41,12 +41,12 @@ const FileInput: React.FC<FileInputProps> = ({ className, accept, multiple, setS
   const handleClick = () => fileInputRef.current?.click();
 
   const loadFiles = async (files: FileList) => {
-    const filesToLoad = Array.from(files).map(file => new Promise<SelectedFile>((resolve, reject) => {
+    const filesToLoad = Array.from(files).map(file => new Promise<UrlFile>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (result) => {
         resolve({
           filename: file.name,
-          data: result.target?.result as string
+          url: result.target?.result as string
         });
       }
       reader.onabort = () => reject();
@@ -70,7 +70,7 @@ const FileInput: React.FC<FileInputProps> = ({ className, accept, multiple, setS
       onDragOver={handleDragOver}
       onDrop={handleDrop}>
 
-      <div onClick={handleClick} className={`text-center ${(selectedFiles.length == 0 ? 'min-h-full' : 'min-h-[3rem]')} rounded-lg flex justify-center items-center cursor-pointer transition-all bg-indigo-600 hover:bg-indigo-400`}>
+      <div onClick={handleClick} className={`text-center ${(selectedFiles.length == 0 ? 'min-h-[6rem]' : 'min-h-[3rem]')} rounded-lg flex justify-center items-center cursor-pointer transition-all bg-indigo-600 hover:bg-indigo-400`}>
         Click or drag & drop your files ({accept.join(' / ')})
       </div>
 

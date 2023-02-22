@@ -1,24 +1,28 @@
-import { SelectedFile } from "@/components/inputs/FileInput";
-import React, { Ref, Suspense, useState } from "react";
+import { UrlFile } from "@/components/inputs/FileInput";
+import React from "react";
 import ObjModel from "./ObjModel";
 import PlyModel from "./PlyModel";
+import * as THREE from 'three';
 
 export interface ModelObjectProps {
-  model: SelectedFile | string;
-  materials?: SelectedFile[] | string[];
+  model: UrlFile | string;
+  modelAssets?: UrlFile[] | string[];
+  onUpdate?: (obj: THREE.Object3D) => void;
 }
 
-const ModelObject: React.FC<ModelObjectProps> = ({ model, materials }) => {
-  const filePath = typeof model == 'string' ? model : model.data;
-  const fileName = typeof model == 'string' ? model : model.filename;
-  const fileExt = fileName.toLocaleLowerCase().split('.').pop();
-  const materialPaths = materials?.map(x => typeof x === 'string' ? x : x.data);
+const ModelObject: React.FC<ModelObjectProps> = ({ model, modelAssets, onUpdate }) => {
+  const mapStringToUrlFile = (pathOrUrlFile: UrlFile | string) => 
+    typeof pathOrUrlFile == 'string' ? { filename: pathOrUrlFile.replace(/^.*[\\\/]/, ''), url: pathOrUrlFile } : pathOrUrlFile
+  
+  const urlModel = mapStringToUrlFile(model);
+  const fileExt = urlModel.filename.toLocaleLowerCase().split('.').pop();
+  const urlMaterials = modelAssets?.map(mapStringToUrlFile);
 
   switch (fileExt) {
     case 'obj':
-      return (<ObjModel modelPath={filePath} materialPaths={materialPaths} />)
+      return (<ObjModel onUpdate={onUpdate} model={urlModel} modelAssets={urlMaterials} />)
     case 'ply':
-      return (<PlyModel model={filePath} />)
+      return (<PlyModel onUpdate={onUpdate} model={urlModel} />)
     default:
       console.error("Invalid file format");
       return (<></>)

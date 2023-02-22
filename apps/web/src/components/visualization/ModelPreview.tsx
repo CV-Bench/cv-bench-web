@@ -1,16 +1,18 @@
 import { OrbitControls } from "@react-three/drei";
-import { Canvas, useLoader, useThree } from "@react-three/fiber";
-import React, { useEffect, useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import React, { useRef } from "react";
 import * as THREE from "three";
-import { SelectedFile } from "../inputs/FileInput";
-import ModelObject from "./ModelObject/ModelObject";
+import { UrlFile } from "../inputs/FileInput";
+import AutoFitModelObject from "./ModelObject/AutoFitModelObject";
 
 export interface ModelPreviewProps {
-  model?: SelectedFile | string;
-  materials?: SelectedFile[] | string[];
+  model?: UrlFile | string;
+  modelAssets?: UrlFile[] | string[];
+
+  onThumbnailUpdate?: (dataUrl: string) => void;
 }
 
-const ModelPreview: React.FC<ModelPreviewProps> = ({ model: modelPath, materials: materialPaths = [] }) => {
+const ModelPreview: React.FC<ModelPreviewProps> = ({ model: modelPath, modelAssets = [], onThumbnailUpdate }) => {
   const orbitControlsRef = useRef<any>(null!);
   const allLayers = new THREE.Layers();
   allLayers.enableAll();
@@ -20,9 +22,8 @@ const ModelPreview: React.FC<ModelPreviewProps> = ({ model: modelPath, materials
       <ambientLight intensity={.1} />
       <pointLight position={[0, 0, 3]} />
       <directionalLight />
-
       {modelPath &&
-        <ModelObject model={modelPath} materials={materialPaths} />
+        <AutoFitModelObject onThumbnailUpdate={onThumbnailUpdate} orbitControls={orbitControlsRef} model={modelPath} modelAssets={modelAssets} />
       }
 
       <OrbitControls ref={orbitControlsRef} />
