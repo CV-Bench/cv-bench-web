@@ -66,11 +66,11 @@ const FileInput: React.FC<FileInputProps> = ({ className, accept, multiple, setS
   }
 
   return (
-    <div className={`rounded-lg bg-indigo-800 text-white ${className}`}
+    <div className={`rounded-lg bg-indigo-800 text-white ${className} overflow-hidden`}
       onDragOver={handleDragOver}
       onDrop={handleDrop}>
 
-      <div onClick={handleClick} className={`text-center ${(selectedFiles.length == 0 ? 'min-h-[6rem]' : 'min-h-[3rem]')} rounded-lg flex justify-center items-center cursor-pointer transition-all bg-indigo-600 hover:bg-indigo-400`}>
+      <div onClick={handleClick} className={`text-center ${(selectedFiles.length == 0 ? 'min-h-[6rem]' : 'min-h-[3rem]')} rounded-lg flex justify-center items-center cursor-pointer transition-all duration-500 bg-indigo-600 hover:bg-indigo-400`}>
         Click or drag & drop your files ({accept.join(' / ')})
       </div>
 
