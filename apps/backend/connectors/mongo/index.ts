@@ -1,4 +1,13 @@
-export {default, cvBenchDb, clientNotReady, prepareCollection, collectionRequest} from "./client";
+export {
+  cvBenchDb,
+  clientNotReady,
+  prepareCollection,
+  collectionRequest,
+} from "./client";
 
-export {default as Model} from "./model";
-export {default as Dataset} from "./dataset";
+import { default as Model } from "./model";
+import { default as Dataset } from "./dataset";
+
+const Database = { Model, Dataset };
+
+export default Database;

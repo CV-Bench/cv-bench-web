@@ -1,36 +1,71 @@
 import { Collection, InsertOneResult, ObjectId } from "mongodb";
-import { CollectionName, DatasetDb, loggerTitle } from "types";
+import { AccessType, CollectionName, DatasetDb, loggerTitle } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
-
+import { isUsersOrPublic } from "./utils";
 
 prepareCollection(CollectionName.DATASET).then((collection) => {
-  logger.debug(loggerTitle.MONGO_CLIENT, `Collection Ready: ${collection.namespace}`);
+  logger.debug(
+    loggerTitle.MONGO_CLIENT,
+    `Collection Ready: ${collection.namespace}`
+  );
 });
 
-/**
- * @param id The id of the dataset being requested
- * @returns The requested dataset from the database
- */
-const getDataset = (id: string) => {
-  return collectionRequest<DatasetDb>(CollectionName.DATASET, async (collection) => {
-    return collection.findOne({ _id: new ObjectId(id) });
+const findOne = (id: string | ObjectId, userId: string) =>
+  collectionRequest<DatasetDb>(CollectionName.DATASET, async (collection) => {
+    return collection.findOne({
+      _id: new ObjectId(id),
+      ...isUsersOrPublic(userId),
+    });
   });
-};
 
-/**
- * @param dataset The dataset to be insterted
- * @returns InsertOneResult
- */
-const insertDataset = (dataset: DatasetDb) => {
-  return collectionRequest<InsertOneResult>(CollectionName.DATASET, async (collection) => {
-    return collection.insertOne(dataset);
+const insert = (model: Omit<DatasetDb, "_id">) =>
+  collectionRequest<InsertOneResult>(
+    CollectionName.DATASET,
+    async (collection) => {
+      return collection.insertOne(model);
+    }
+  );
+
+const updateOne = (
+  id: string | ObjectId,
+  userId: string | ObjectId,
+  update: Partial<DatasetDb>
+) =>
+  collectionRequest<DatasetDb>(CollectionName.DATASET, async (collection) => {
+    return collection.updateOne(
+      {
+        _id: new ObjectId(id),
+        userId: new ObjectId(userId),
+      },
+      { $set: update }
+    );
   });
-};
+
+const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
+  collectionRequest<DatasetDb>(CollectionName.DATASET, async (collection) => {
+    return collection.deleteOne({
+      _id: new ObjectId(id),
+      userId: new ObjectId(userId),
+    });
+  });
+
+const find = (userId: string | ObjectId) =>
+  collectionRequest<DatasetDb>(CollectionName.DATASET, async (collection) => {
+    return collection.findOne({
+      $or: [
+        { userId: new ObjectId(userId) },
+        { accessType: AccessType.PUBLIC },
+      ],
+    });
+  });
 
 const Dataset = {
-  get: getDataset,
-  insert: insertDataset,
+  findOne,
+  insert,
+  updateOne,
+  deleteOne,
+  find,
 };
 
 export default Dataset;

@@ -21,6 +21,7 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.276.0",
     "concurrently": "^7.6.0"
   },
   "packageManager": "npm@8.19.2"

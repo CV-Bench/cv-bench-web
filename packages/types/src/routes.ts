@@ -6,9 +6,18 @@ import { PostNetworkBody } from "./network";
 export enum RouteNames {
   GET_MODELS = "GET_MODELS",
   GET_MODEL = "GET_MODEL",
+  GET_MODEL_OBJ = "GET_MODEL_OBJ",
   DELETE_MODEL = "DELETE_MODEL",
   PATCH_MODEL = "PATCH_MODEL",
   POST_MODEL = "POST_MODEL",
+  DOWNLOAD_MODEL = "DOWNLOAD_MODEL",
+
+  GET_BACKGROUNDS = "GET_BACKGROUNDS",
+  GET_BACKGROUND = "GET_BACKGROUND",
+  DELETE_BACKGROUND = "DELETE_BACKGROUND",
+  POST_BACKGROUND = "POST_BACKGROUND",
+  PATCH_BACKGROUND = "PATCH_BACKGROUND",
+  DOWNLOAD_BACKGROUND = "DOWNLOAD_BACKGROUND",
 
   GET_DATASETS = "GET_DATASETS",
   GET_DATASET = "GET_DATASET",
@@ -57,6 +66,12 @@ export const Routes: {
     z.object({}),
     (id: string) => "/model/" + id
   ),
+  [RouteNames.GET_MODEL_OBJ]: createRoute(
+    "/modelObject/:id",
+    /^\/modelObject\/.*\/?get$/,
+    z.object({}),
+    (id: string) => "/modelObject/" + id
+  ),
   [RouteNames.DELETE_MODEL]: createRoute(
     "/model/:id",
     /^\/model\/.*\/?delete?$/,
@@ -74,6 +89,55 @@ export const Routes: {
     /^\/model\/.*\/?post$/,
     PostModelBody,
     (id: string) => "/model/" + id
+  ),
+  [RouteNames.DOWNLOAD_MODEL]: createRoute(
+    "/model/download/:id",
+    /^\/model\/download\/.*\/?get$/,
+    z.object({}),
+    (id: string) => "/model/download/" + id
+  ),
+
+  [RouteNames.GET_BACKGROUNDS]: createRoute(
+    "/background",
+    /^\/background\/?get$/,
+    z.object({}),
+    () => "/background"
+  ),
+  [RouteNames.GET_BACKGROUND]: createRoute(
+    "/background/:id",
+    /^\/background\/.*\/?get?$/,
+    z.object({}),
+    (id: string) => "/background/" + id
+  ),
+  [RouteNames.GET_BACKGROUND]: createRoute(
+    "/backgroundObject/:id",
+    /^\/backgroundObject\/.*\/?get$/,
+    z.object({}),
+    (id: string) => "/backgroundObject/" + id
+  ),
+  [RouteNames.DELETE_BACKGROUND]: createRoute(
+    "/background/:id",
+    /^\/background\/.*\/?delete?$/,
+    z.object({}),
+    (id: string) => "/background/" + id
+  ),
+  [RouteNames.PATCH_BACKGROUND]: createRoute(
+    "/background/:id",
+    /^\/background\/.*\/?patch?$/,
+    z.object({}),
+    (id: string) => "/background/" + id
+  ),
+  [RouteNames.POST_BACKGROUND]: createRoute(
+    "/background/:id",
+    /^\/background\/.*\/?post$/,
+    PostModelBody,
+    (id: string) => "/background/" + id
+  ),
+  [RouteNames.DOWNLOAD_BACKGROUND]: createRoute(
+    "/background/download/:id",
+    /^\/background\/download\/.*\/?get$/,
+    z.object({}),
+    (id: string) => "/background/download/" + id
   ),
 
   [RouteNames.GET_DATASETS]: createRoute(

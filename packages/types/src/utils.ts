@@ -19,4 +19,9 @@ export const PostDataBody = DataBody.pick({
   name: true,
   description: true,
   accessType: true,
+  domainTags: true,
 });
+
+export type OmitFirst<T extends any[]> = T extends [any, ...infer R]
+  ? R
+  : never;

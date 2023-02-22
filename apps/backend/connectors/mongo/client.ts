@@ -24,7 +24,10 @@ export const cvBenchDb = new Promise<Db>((resolve, reject) => {
 let collections: CollectionCollection = {};
 
 export const prepareCollection = (collectionName: CollectionName) => {
-  logger.debug(loggerTitle.MONGO_CLIENT, `Preparing Collection: ${collectionName}`);
+  logger.debug(
+    loggerTitle.MONGO_CLIENT,
+    `Preparing Collection: ${collectionName}`
+  );
   return new Promise<Collection>((resolve, reject) => {
     cvBenchDb
       .then((db) => {
@@ -45,8 +48,8 @@ export const prepareCollection = (collectionName: CollectionName) => {
 
 export const collectionRequest = <T>(
   collectionName: CollectionName,
-  request: (collection:Collection) => Promise<any>
-):Promise<T> => {
+  request: (collection: Collection) => Promise<any>
+): Promise<T> => {
   return new Promise((resolve, reject) => {
     if (!collections[collectionName]) {
       clientNotReady().then(
@@ -59,7 +62,7 @@ export const collectionRequest = <T>(
     }
 
     request(collections[collectionName]!)
-      .then((result:T) => {
+      .then((result: T) => {
         resolve(result);
         logger.debug(
           loggerTitle.MONGO_CLIENT,
@@ -98,5 +101,3 @@ export const clientNotReady = () => {
       .catch((e) => reject(e));
   });
 };
-
-export default mongoClient;

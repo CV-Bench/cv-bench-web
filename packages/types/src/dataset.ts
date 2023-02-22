@@ -13,7 +13,13 @@ export const DatasetBody = DataBody.extend({
 
 export type DatasetDb = z.infer<typeof DatasetBody>;
 
+// POST
 export const PostDatasetBody = PostDataBody.merge(
   DatasetBody.pick({ models: true, datasetType: true, configurationId: true })
 );
 export type PostDataset = z.infer<typeof PostDatasetBody>;
+
+// PATCH
+export const PatchDatasetBody = PostDataBody;
+
+export type PatchDataset = z.infer<typeof PatchDatasetBody>;
