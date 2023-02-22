@@ -5,6 +5,7 @@ import { UrlFile } from "@/components/inputs/FileInput";
 
 export interface PlyModelProps {
   model: UrlFile;
+  
   onUpdate?: (obj: THREE.Object3D) => void;
 }
 

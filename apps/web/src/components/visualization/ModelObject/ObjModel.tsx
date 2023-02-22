@@ -7,6 +7,7 @@ import * as THREE from 'three';
 export interface ObjModelProps {
   model: UrlFile;
   modelAssets?: UrlFile[];
+  
   onUpdate?: (obj: THREE.Object3D) => void;
 }
 

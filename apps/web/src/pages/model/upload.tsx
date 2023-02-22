@@ -37,7 +37,7 @@ const UploadModel = () => {
       thumbnail={formData.thumbnail}
       onThumbnailUpdate={onThumbnailUpdate}
       onSelectTags={onSelectTags}
-      onSelectMaterials={onSelectMaterials}
+      onSelectModelAssets={onSelectMaterials}
       onSelectModel={onSelectModel} />),
       validation: z.object({ model: z.object({ filename: z.string(), url: z.string() }), tags: z.array(z.string()) })
     },

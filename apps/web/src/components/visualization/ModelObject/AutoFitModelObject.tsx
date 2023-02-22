@@ -9,6 +9,7 @@ export interface AutoFitModelObjectProps {
   model: UrlFile | string;
   modelAssets?: UrlFile[] | string[];
   orbitControls?: React.MutableRefObject<OrbitControls>;
+  
   onThumbnailUpdate?: (dataUrl: string) => void;
 }
 
@@ -46,6 +47,7 @@ const AutoFitModelObject: React.FC<AutoFitModelObjectProps> = ({ model, modelAss
 
       orbitControls.current.update();
     }
+    
     if (onThumbnailUpdate) {
       gl.render(scene, camera);
       onThumbnailUpdate(gl.domElement.toDataURL());

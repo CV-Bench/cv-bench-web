@@ -8,16 +8,19 @@ import ModelPreview from "../../visualization/ModelPreview"
 
 export interface PreviewStepProps {
   thumbnail?: UrlFile;
-  tags?: string[];
-  model?: UrlFile;
-  modelAssets?: UrlFile[];
   onThumbnailUpdate: (val: UrlFile) => void;
-  onSelectModel: (val: UrlFile) => void;
-  onSelectMaterials: (val: UrlFile[]) => void;
+
+  tags?: string[];
   onSelectTags: (val: string[]) => void;
+  
+  model?: UrlFile;
+  onSelectModel: (val: UrlFile) => void;
+  
+  modelAssets?: UrlFile[];
+  onSelectModelAssets: (val: UrlFile[]) => void;
 }
 
-const PreviewStep: React.FC<PreviewStepProps> = ({ onSelectModel, onSelectMaterials, onSelectTags, onThumbnailUpdate, model, modelAssets, tags, thumbnail }) => {
+const PreviewStep: React.FC<PreviewStepProps> = ({ thumbnail, onThumbnailUpdate, tags, onSelectTags, model, onSelectModel, modelAssets, onSelectModelAssets  }) => {
 
   return (
     <div className="lg:flex flex-1">
@@ -37,7 +40,7 @@ const PreviewStep: React.FC<PreviewStepProps> = ({ onSelectModel, onSelectMateri
           </div>
           <div>
             <InputLabel>Materials & Textures</InputLabel>
-            <FileInput selectedFiles={modelAssets} setSelectedFiles={onSelectMaterials} accept={['.mtl', 'image/*']} multiple={true} />
+            <FileInput selectedFiles={modelAssets} setSelectedFiles={onSelectModelAssets} accept={['.mtl', 'image/*']} multiple={true} />
           </div>
 
 
