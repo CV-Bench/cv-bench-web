@@ -1,9 +1,24 @@
+import Table, { TableHeader, TableItem } from "@/components/Table";
+
 const ModelList = () => {
-   
-    return (
-        <>
-        </>
-    )
+  const data: TableItem[] = [{ id: '0', name: 'TEST', href: '/model/1' }];
+  const header: TableHeader[] = [
+    {
+      key: 'id',
+      title: 'ID'
+    },
+    {
+      key: 'name',
+      title: 'Name'
+    }
+  ];
+
+
+  return (
+    <div className="h-full text-white">
+      <Table data={data} header={header}/>
+    </div>
+  )
 }
 
 export default ModelList;

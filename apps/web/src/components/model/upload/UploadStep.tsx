@@ -1,8 +1,10 @@
 import Button from "@/components/Button";
 import Card from "@/components/Card";
+import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 import RadioGroupSelection from "@/components/inputs/RadioGroupSelection";
+import { AccessType } from "@/types/accessType";
 import React from "react"
 
 
@@ -10,8 +12,8 @@ export interface UploadStepProps {
   name?: string;
   setName: (val: string) => void;
 
-  accessType?: string;
-  setAccessType: (val: string) => void;
+  accessType?: AccessType;
+  setAccessType: (val: AccessType) => void;
 }
 
 const UploadStep: React.FC<UploadStepProps> = ({ name, setName, accessType, setAccessType }) => {
@@ -21,13 +23,9 @@ const UploadStep: React.FC<UploadStepProps> = ({ name, setName, accessType, setA
       <div className="flex-1 pr-4">
         <div>
           <InputLabel>Name</InputLabel>
-          <InputField type="text" placeholder="Name" value={name ?? ''} onChange={e => setName((e.target as HTMLInputElement).value ?? '')}></InputField>
+          <InputField value={name} onChange={(e) => setName((e.target as HTMLInputElement).value)} type="text" />
         </div>
-
-        <div className="mt-3">
-          <InputLabel>Access Type</InputLabel>
-          <RadioGroupSelection values={['Private', 'Public']} selected={accessType ?? 'Private'} onSelect={(val) => setAccessType(val.toString())} />
-        </div>
+        <AccessTypeInput className="mt-3" accessType={accessType} setAccessType={setAccessType} />
       </div>
       <div className="border-l -my-4 border-indigo-50">
 

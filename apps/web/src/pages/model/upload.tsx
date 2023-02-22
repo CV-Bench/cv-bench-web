@@ -2,6 +2,7 @@ import { UrlFile } from "@/components/inputs/FileInput";
 import PreviewStep from "@/components/model/upload/PreviewStep";
 import UploadStep from "@/components/model/upload/UploadStep";
 import FormStepsPanel, { FormStep } from "@/components/multiform/FormStepsPanel";
+import { AccessType } from "@/types/accessType";
 import { useState } from "react";
 import * as z from "zod";
 
@@ -12,7 +13,7 @@ export interface UploadModelFormData {
   thumbnail?: UrlFile;
 
   name?: string;
-  accessType?: string;
+  accessType?: AccessType;
 }
 
 const UploadModel = () => {
@@ -24,7 +25,7 @@ const UploadModel = () => {
   const onSelectMaterials = (val: UrlFile[]) => setFormData({ ...formData, modelAssets: val });
 
   const onSetName = (val: string) => setFormData({ ...formData, name: val });
-  const onSetAccessType = (val: string) => setFormData({ ...formData, accessType: val });
+  const onSetAccessType = (val: AccessType) => setFormData({ ...formData, accessType: val });
 
   const steps: FormStep[] = [
     {

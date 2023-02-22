@@ -13,7 +13,6 @@ export interface ModelPreviewProps {
 }
 
 const ModelPreview: React.FC<ModelPreviewProps> = ({ model: modelPath, modelAssets = [], onThumbnailUpdate }) => {
-  const orbitControlsRef = useRef<any>(null!);
   const allLayers = new THREE.Layers();
   allLayers.enableAll();
 
@@ -23,10 +22,10 @@ const ModelPreview: React.FC<ModelPreviewProps> = ({ model: modelPath, modelAsse
       <pointLight position={[0, 0, 3]} />
       <directionalLight />
       {modelPath &&
-        <AutoFitModelObject onThumbnailUpdate={onThumbnailUpdate} orbitControls={orbitControlsRef} model={modelPath} modelAssets={modelAssets} />
+        <AutoFitModelObject onThumbnailUpdate={onThumbnailUpdate} model={modelPath} modelAssets={modelAssets} />
       }
 
-      <OrbitControls ref={orbitControlsRef} />
+      <OrbitControls makeDefault />
     </Canvas>
   );
 };
