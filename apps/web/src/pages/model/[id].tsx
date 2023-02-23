@@ -19,7 +19,7 @@ const ModelId = () => {
     name: 'Test Model',
     model: {
       filename: 'big_dolph.ply',
-      url: '/big_dolph.ply'
+      dataUrl: '/big_dolph.ply'
     },
     modelAssets: [],
     tags: ['Test', 'Idk'],

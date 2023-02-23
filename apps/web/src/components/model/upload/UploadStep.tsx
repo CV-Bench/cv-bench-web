@@ -3,9 +3,8 @@ import Card from "@/components/Card";
 import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
-import RadioGroupSelection from "@/components/inputs/RadioGroupSelection";
-import { AccessType } from "@/types/accessType";
 import React from "react"
+import { AccessType } from "types";
 
 
 export interface UploadStepProps {
@@ -31,8 +30,8 @@ const UploadStep: React.FC<UploadStepProps> = ({ name, setName, accessType, setA
 
       </div>
       <div className="flex-1 pl-4">
-        <InputLabel>Upload</InputLabel>
-        <Button className="m-2">Upload</Button>
+        {/* <InputLabel>Upload</InputLabel>
+        <Button className="m-2">Upload</Button> */}
       </div>
     </Card>
   )

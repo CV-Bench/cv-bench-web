@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 });
 
 //apply middleware
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 // app.use(rateLimiterMiddleware);
 app.use(helmet());

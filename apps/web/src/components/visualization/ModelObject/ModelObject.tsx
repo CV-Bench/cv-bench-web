@@ -1,17 +1,17 @@
-import { UrlFile } from "@/components/inputs/FileInput";
 import React from "react";
 import ObjModel from "./ObjModel";
 import PlyModel from "./PlyModel";
 import * as THREE from 'three';
+import { DataUrlFile } from "types";
 
 export interface ModelObjectProps {
-  model: UrlFile | string;
-  modelAssets?: UrlFile[] | string[];
+  model: DataUrlFile | string;
+  modelAssets?: DataUrlFile[] | string[];
   onUpdate?: (obj: THREE.Object3D) => void;
 }
 
 const ModelObject: React.FC<ModelObjectProps> = ({ model, modelAssets, onUpdate }) => {
-  const mapStringToUrlFile = (pathOrUrlFile: UrlFile | string) => 
+  const mapStringToUrlFile = (pathOrUrlFile: DataUrlFile | string) => 
     typeof pathOrUrlFile == 'string' ? { filename: pathOrUrlFile.replace(/^.*[\\\/]/, ''), url: pathOrUrlFile } : pathOrUrlFile
   
   const urlModel = mapStringToUrlFile(model);

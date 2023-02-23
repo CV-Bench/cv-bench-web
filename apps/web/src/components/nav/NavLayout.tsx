@@ -3,9 +3,12 @@ import Navbar from "./Navbar";
 
 const NavLayout = ({ children }: { children: ReactElement<any, any> }) => (
   <>
-    <Navbar />
-
-    {children}
+    <div className="h-full flex flex-col">
+      <Navbar />
+      <div className="flex-1 overflow-auto m-4">
+        {children}
+      </div>
+    </div>
   </>
 );
 

@@ -2,12 +2,12 @@ import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React, { useRef } from "react";
 import * as THREE from "three";
-import { UrlFile } from "../inputs/FileInput";
+import { DataUrlFile } from "types";
 import AutoFitModelObject from "./ModelObject/AutoFitModelObject";
 
 export interface ModelPreviewProps {
-  model?: UrlFile | string;
-  modelAssets?: UrlFile[] | string[];
+  model?: DataUrlFile | string;
+  modelAssets?: DataUrlFile[] | string[];
 
   onThumbnailUpdate?: (dataUrl: string) => void;
 }

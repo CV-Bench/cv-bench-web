@@ -1,4 +1,5 @@
 import Table, { TableHeader, TableItem } from "@/components/Table";
+import { useModelList } from "@/hooks/model";
 
 const ModelList = () => {
   // GET MODEL LIST WITH

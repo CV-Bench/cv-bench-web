@@ -1,13 +1,13 @@
-import { UrlFile } from "@/components/inputs/FileInput";
 import React, { useEffect, useState } from "react";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
 import { useThree } from "@react-three/fiber";
 import ModelObject from "./ModelObject";
+import { DataUrlFile } from "types";
 
 export interface AutoFitModelObjectProps {
-  model: UrlFile | string;
-  modelAssets?: UrlFile[] | string[];
+  model: DataUrlFile | string;
+  modelAssets?: DataUrlFile[] | string[];
   
   onThumbnailUpdate?: (dataUrl: string) => void;
 }

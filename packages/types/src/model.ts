@@ -13,10 +13,20 @@ export const ModelBody = DataBody.extend({
 
 export type ModelDb = z.infer<typeof ModelBody>;
 
+export const DataUrlFileBody = z.object({
+  filename: z.string(),
+  dataUrl: z.string()
+})
+
+export type DataUrlFile = z.infer<typeof DataUrlFileBody>;
+
+
 // POST
 export const PostModelBody = PostDataBody.extend({
   modelType: z.nativeEnum(ModelType),
-  // TODO: extend with necessary data to upload .obj and .ply
+  previewImage: z.string(),
+  modelObject: DataUrlFileBody,
+  modelAssets: z.array(DataUrlFileBody).optional()
 });
 export type PostModel = z.infer<typeof PostModelBody>;
 

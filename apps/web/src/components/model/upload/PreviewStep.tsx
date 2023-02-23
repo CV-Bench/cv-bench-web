@@ -1,23 +1,24 @@
+import FileInput from "@/components/inputs/FileInput"
 import Image from "next/image"
 import React from "react"
+import { DataUrlFile } from "types"
 import Card from "../../Card"
-import FileInput, { UrlFile } from "../../inputs/FileInput"
 import InputLabel from "../../inputs/InputLabel"
 import TagInput from "../../inputs/TagInput"
 import ModelPreview from "../../visualization/ModelPreview"
 
 export interface PreviewStepProps {
-  thumbnail?: UrlFile;
-  onThumbnailUpdate: (val: UrlFile) => void;
+  thumbnail?: string;
+  onThumbnailUpdate: (val: string) => void;
 
   tags?: string[];
   onSelectTags: (val: string[]) => void;
   
-  model?: UrlFile;
-  onSelectModel: (val: UrlFile) => void;
+  model?: DataUrlFile;
+  onSelectModel: (val: DataUrlFile) => void;
   
-  modelAssets?: UrlFile[];
-  onSelectModelAssets: (val: UrlFile[]) => void;
+  modelAssets?: DataUrlFile[];
+  onSelectModelAssets: (val: DataUrlFile[]) => void;
 }
 
 const PreviewStep: React.FC<PreviewStepProps> = ({ thumbnail, onThumbnailUpdate, tags, onSelectTags, model, onSelectModel, modelAssets, onSelectModelAssets  }) => {
@@ -29,7 +30,7 @@ const PreviewStep: React.FC<PreviewStepProps> = ({ thumbnail, onThumbnailUpdate,
           <div>
             <InputLabel>Thumbnail</InputLabel>
             <div className="relative min-h-[180px]">
-              {thumbnail && <Image className="mx-auto object-contain" alt="Preview Thumbnail" fill src={thumbnail?.url} />}
+              {thumbnail && <Image className="mx-auto object-contain" alt="Preview Thumbnail" fill src={thumbnail} />}
             </div>
           </div>
           
@@ -51,7 +52,7 @@ const PreviewStep: React.FC<PreviewStepProps> = ({ thumbnail, onThumbnailUpdate,
       </div>
       <div className="lg:w-2/3 lg:pl-2 lg:pt-0 pt-2 min-h-full">
         <Card className="h-full">
-          <ModelPreview onThumbnailUpdate={(url) => onThumbnailUpdate({ filename: '', url})} model={model} modelAssets={modelAssets} />
+          <ModelPreview onThumbnailUpdate={onThumbnailUpdate} model={model} modelAssets={modelAssets} />
         </Card>
       </div>
 

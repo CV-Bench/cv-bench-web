@@ -1,24 +1,22 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChangeEventHandler, DragEventHandler, useRef } from "react";
+import { DataUrlFile } from "types";
 
-export interface UrlFile {
-  filename: string;
-  url: string;
-}
+
 
 export interface FileInputProps {
   className?: string;
   multiple?: boolean;
   accept: string[];
-  selectedFiles?: UrlFile[];
-  setSelectedFiles: (val: UrlFile[]) => void;
+  selectedFiles?: DataUrlFile[];
+  setSelectedFiles: (val: DataUrlFile[]) => void;
 }
 
 const FileInput: React.FC<FileInputProps> = ({ className, accept, multiple, setSelectedFiles, selectedFiles = [] }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const acceptTypes = accept.join(',');
 
-  const addFiles = (...files: UrlFile[]) => {
+  const addFiles = (...files: DataUrlFile[]) => {
     if (multiple) {
       setSelectedFiles([...selectedFiles, ...files]);
       return;
@@ -26,7 +24,7 @@ const FileInput: React.FC<FileInputProps> = ({ className, accept, multiple, setS
     setSelectedFiles([...files]);
   }
 
-  const removeFile = (file: UrlFile) => {
+  const removeFile = (file: DataUrlFile) => {
     selectedFiles.splice(selectedFiles.indexOf(file), 1);
     setSelectedFiles([...selectedFiles]);
   }
@@ -41,12 +39,12 @@ const FileInput: React.FC<FileInputProps> = ({ className, accept, multiple, setS
   const handleClick = () => fileInputRef.current?.click();
 
   const loadFiles = async (files: FileList) => {
-    const filesToLoad = Array.from(files).map(file => new Promise<UrlFile>((resolve, reject) => {
+    const filesToLoad = Array.from(files).map(file => new Promise<DataUrlFile>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (result) => {
         resolve({
           filename: file.name,
-          url: result.target?.result as string
+          dataUrl: result.target?.result as string
         });
       }
       reader.onabort = () => reject();

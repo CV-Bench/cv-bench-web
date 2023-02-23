@@ -1,20 +1,20 @@
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
-import { UrlFile } from "@/components/inputs/FileInput";
 import React, { useState } from "react";
 import * as THREE from 'three';
+import { DataUrlFile } from 'types';
 
 export interface ObjModelProps {
-  model: UrlFile;
-  modelAssets?: UrlFile[];
+  model: DataUrlFile;
+  modelAssets?: DataUrlFile[];
   
   onUpdate?: (obj: THREE.Object3D) => void;
 }
 
 export interface ObjModelState {
   threeModel?: THREE.Group;
-  model?: UrlFile;
-  modelAssets?: UrlFile[];
+  model?: DataUrlFile;
+  modelAssets?: DataUrlFile[];
 }
 
 const ObjModel: React.FC<ObjModelProps> = ({ model, modelAssets, onUpdate }) => {
@@ -27,7 +27,7 @@ const ObjModel: React.FC<ObjModelProps> = ({ model, modelAssets, onUpdate }) => 
       const filename = url.replace(/^.*[\\\/]/, '');
       const findFile = modelAssets?.find(x => x.filename == filename);
       if (findFile) {
-        return findFile.url;
+        return findFile.dataUrl;
       }
       console.error("Found missing url for file ", filename);
     }
@@ -42,14 +42,14 @@ const ObjModel: React.FC<ObjModelProps> = ({ model, modelAssets, onUpdate }) => 
     if (modelAssets) {
       const mtlLoader = new MTLLoader(manager);
       const materials = modelAssets.filter(x => x.filename.toLowerCase().endsWith('mtl'));
-      const loadedMtls = await Promise.all(materials.map(async mat => await mtlLoader.loadAsync(mat.url)));
+      const loadedMtls = await Promise.all(materials.map(async mat => await mtlLoader.loadAsync(mat.dataUrl)));
       loadedMtls.forEach(x => {
         x.preload();
         objLoader.setMaterials(x);
       });
     }
 
-    const objModel = await objLoader.loadAsync(model.url);
+    const objModel = await objLoader.loadAsync(model.dataUrl);
 
     setState({
       model,
@@ -59,8 +59,8 @@ const ObjModel: React.FC<ObjModelProps> = ({ model, modelAssets, onUpdate }) => 
   }
 
   // Only reload object if actual paths have changed
-  const compareUrlFile = (a?: UrlFile, b?: UrlFile) => a?.url == b?.url;
-  const compareUrlFiles = (a: UrlFile[], b: UrlFile[]) => a.length == b.length && a?.every((x, i) => compareUrlFile(x, b[i]));
+  const compareUrlFile = (a?: DataUrlFile, b?: DataUrlFile) => a?.dataUrl == b?.dataUrl;
+  const compareUrlFiles = (a: DataUrlFile[], b: DataUrlFile[]) => a.length == b.length && a?.every((x, i) => compareUrlFile(x, b[i]));
   if (!compareUrlFile(model, state.model) || !compareUrlFiles(state.modelAssets ?? [], modelAssets ?? [])) {
     loadObj();
   }

@@ -1,28 +1,32 @@
-import { UrlFile } from "@/components/inputs/FileInput";
 import PreviewStep from "@/components/model/upload/PreviewStep";
 import UploadStep from "@/components/model/upload/UploadStep";
 import FormStepsPanel, { FormStep } from "@/components/multiform/FormStepsPanel";
-import { AccessType } from "@/types/accessType";
 import { useState } from "react";
+import { api } from "@/network";
+import { AccessType, DataUrlFile, DataUrlFileBody, ModelType, PostModel, PostModelBody } from "types";
 import * as z from "zod";
 
 export interface UploadModelFormData {
-  tags?: string[];
-  model?: UrlFile;
-  modelAssets?: UrlFile[];
-  thumbnail?: UrlFile;
-
-  name?: string;
-  accessType?: AccessType;
+  domainTags: string[];
+  name: string;
+  accessType: AccessType;
+  
+  previewImage?: string;
+  modelObject?: DataUrlFile;
+  modelAssets?: DataUrlFile[];
 }
 
 const UploadModel = () => {
-  const [formData, setFormData] = useState<UploadModelFormData>({});
+  const [formData, setFormData] = useState<UploadModelFormData>({
+    accessType: AccessType.PRIVATE,
+    name: '', 
+    domainTags: []
+  });
 
-  const onThumbnailUpdate = (val: UrlFile) => setFormData({ ...formData, thumbnail: val });
-  const onSelectTags = (val: string[]) => setFormData({ ...formData, tags: val });
-  const onSelectModel = (val: UrlFile) => setFormData({ ...formData, model: val });
-  const onSelectMaterials = (val: UrlFile[]) => setFormData({ ...formData, modelAssets: val });
+  const onThumbnailUpdate = (val: string) => setFormData({ ...formData, previewImage: val });
+  const onSelectTags = (val: string[]) => setFormData({ ...formData, domainTags: val });
+  const onSelectModel = (val: DataUrlFile) => setFormData({ ...formData, modelObject: val });
+  const onSelectMaterials = (val: DataUrlFile[]) => setFormData({ ...formData, modelAssets: val });
 
   const onSetName = (val: string) => setFormData({ ...formData, name: val });
   const onSetAccessType = (val: AccessType) => setFormData({ ...formData, accessType: val });
@@ -32,15 +36,15 @@ const UploadModel = () => {
       name: 'Preview',
       description: 'tbd',
       component: (<PreviewStep
-      tags={formData.tags}
+      tags={formData.domainTags}
       modelAssets={formData.modelAssets}
-      model={formData.model}
-      thumbnail={formData.thumbnail}
+      model={formData.modelObject}
+      thumbnail={formData.previewImage}
       onThumbnailUpdate={onThumbnailUpdate}
       onSelectTags={onSelectTags}
       onSelectModelAssets={onSelectMaterials}
       onSelectModel={onSelectModel} />),
-      validation: z.object({ model: z.object({ filename: z.string(), url: z.string() }), tags: z.array(z.string()) })
+      validation: z.object({ previewImage: z.string(), modelObject: DataUrlFileBody })
     },
     {
       name: 'Upload',
@@ -51,11 +55,20 @@ const UploadModel = () => {
         setName={onSetName}
         setAccessType={onSetAccessType}
         />),
-      validation: z.object({ modelObj: z.string() })
+      validation: z.object({ name: z.string().min(1), accessType: z.nativeEnum(AccessType) })
     }
   ];
 
-  const handleUpload = () => console.log("Upload");
+  const handleUpload = () => {
+    api.postModel({
+      ...formData,
+      previewImage: formData.previewImage as string,
+      modelObject: formData.modelObject as DataUrlFile,
+      description: '',
+      modelType: ModelType["3D"]
+    } as any).then(x => console.log("RESULT", x))
+    
+  }
 
   return (<>
     <FormStepsPanel
