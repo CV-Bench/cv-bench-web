@@ -1,17 +1,6 @@
 import * as z from "zod";
 import { ObjId } from "./utils";
 
-export enum AccessType {
-  PUBLIC = "PUBLIC",
-  PRIVATE = "PRIVATE",
-}
-
-export enum DataType {
-  MODEL = "MODEL",
-  DATASET = "DATASET",
-  NETWORK = "NETWORK",
-}
-
 export enum DatasetFormat {
   COCO = "COCO",
 }
@@ -34,6 +23,7 @@ export const NetworkArchitectureBody = z.object({
 
 export type NetworkArchitecture = z.infer<typeof NetworkArchitectureBody>;
 
+export * from "./utils";
 export * from "./model";
 export * from "./dataset";
 export * from "./datasetConfiguration";
