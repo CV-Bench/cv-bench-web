@@ -1,10 +1,10 @@
-import { Collection, InsertOneResult, ObjectId } from "mongodb";
-import { AccessType, CollectionName, BackgroundDb, loggerTitle } from "types";
+import { InsertOneResult, ObjectId } from "mongodb";
+import { CollectionName, BackgroundDb, loggerTitle, AccessType } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
 import { isUsersOrPublic } from "./utils";
 
-prepareCollection(CollectionName.BACKGROUNDS).then((collection) => {
+prepareCollection(CollectionName.BACKGROUND).then((collection) => {
   logger.debug(
     loggerTitle.MONGO_CLIENT,
     `Collection Ready: ${collection.namespace}`
@@ -13,7 +13,7 @@ prepareCollection(CollectionName.BACKGROUNDS).then((collection) => {
 
 const findOne = (id: string | ObjectId, userId: string) =>
   collectionRequest<BackgroundDb>(
-    CollectionName.BACKGROUNDS,
+    CollectionName.BACKGROUND,
     async (collection) => {
       return collection.findOne({
         _id: new ObjectId(id),
@@ -24,7 +24,7 @@ const findOne = (id: string | ObjectId, userId: string) =>
 
 const insert = (model: Omit<BackgroundDb, "_id">) =>
   collectionRequest<InsertOneResult>(
-    CollectionName.BACKGROUNDS,
+    CollectionName.BACKGROUND,
     async (collection) => {
       return collection.insertOne(model);
     }
@@ -36,7 +36,7 @@ const updateOne = (
   update: Partial<BackgroundDb>
 ) =>
   collectionRequest<BackgroundDb>(
-    CollectionName.BACKGROUNDS,
+    CollectionName.BACKGROUND,
     async (collection) => {
       return collection.updateOne(
         {
@@ -50,7 +50,7 @@ const updateOne = (
 
 const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
   collectionRequest<BackgroundDb>(
-    CollectionName.BACKGROUNDS,
+    CollectionName.BACKGROUND,
     async (collection) => {
       return collection.deleteOne({
         _id: new ObjectId(id),
@@ -61,7 +61,7 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
 
 const find = (userId: string | ObjectId) =>
   collectionRequest<BackgroundDb>(
-    CollectionName.BACKGROUNDS,
+    CollectionName.BACKGROUND,
     async (collection) => {
       return collection.findOne({
         $or: [

@@ -1,0 +1,18 @@
+{
+  "name": "sample-data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create": "npx ts-node index.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "lorem-ipsum": "^2.0.8",
+    "mongodb": "^5.0.1",
+    "types": "*"
+  },
+  "author": "",
+  "license": "ISC"
+}

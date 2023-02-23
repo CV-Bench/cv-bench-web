@@ -1,7 +1,6 @@
 import * as z from "zod";
 import { AccessType, ObjId } from "./utils";
 
-
 export enum DatasetFormat {
   COCO = "COCO",
 }
@@ -24,6 +23,7 @@ export const NetworkArchitectureBody = z.object({
 
 export type NetworkArchitecture = z.infer<typeof NetworkArchitectureBody>;
 
+export * from "./utils";
 export * from "./model";
 export * from "./dataset";
 export * from "./datasetConfiguration";

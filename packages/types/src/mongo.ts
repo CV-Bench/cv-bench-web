@@ -2,7 +2,7 @@ import { Collection } from "mongodb";
 
 export enum CollectionName {
   MODEL = "models",
-  BACKGROUNDS = "backgrounds",
+  BACKGROUND = "backgrounds",
   USER = "users",
   DATASET = "datasets",
   NETWORK = "networks",

@@ -8,7 +8,7 @@ import {
   GetObjectCommandOutput,
 } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
-import { Bucket } from "types";
+import { Bucket, createBucketKey } from "types";
 import { Background } from "./backgorund";
 import { Model } from "./model";
 
@@ -33,9 +33,9 @@ export const putObject = (
 ) =>
   s3Client
     .putObject({
-      Bucket: bucket,
+      Bucket: process.env.BUCKET_NAME,
       Body: body,
-      Key: key,
+      Key: createBucketKey(bucket, key),
       ...(options.options || {}),
     })
     .then(options.onSuccess)
@@ -52,8 +52,8 @@ export const deleteObject = (
 ) =>
   s3Client
     .deleteObject({
-      Bucket: bucket,
-      Key: key,
+      Bucket: process.env.BUCKET_NAME,
+      Key: createBucketKey(bucket, key),
       ...(options.options || {}),
     })
     .then(options.onSuccess)
@@ -70,8 +70,8 @@ export const getObject = (
 ) =>
   s3Client
     .getObject({
-      Bucket: bucket,
-      Key: key,
+      Bucket: process.env.BUCKET_NAME,
+      Key: createBucketKey(bucket, key),
       ...(options.options || {}),
     })
     .then(options.onSuccess)

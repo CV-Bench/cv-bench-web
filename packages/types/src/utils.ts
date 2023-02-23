@@ -15,7 +15,7 @@ export const ObjId = z.any();
 
 export const DataBody = z.object({
   _id: ObjId,
-  userId: ObjId,
+  userId: ObjId.optional(),
   name: z.string(),
   description: z.string(),
   domainTags: z.array(z.string()),
