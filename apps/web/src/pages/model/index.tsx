@@ -1,6 +1,10 @@
 import Table, { TableHeader, TableItem } from "@/components/Table";
 
 const ModelList = () => {
+  // GET MODEL LIST WITH
+  const { data: models } = useModelList();
+
+  console.log("MODELS", models);
   const data: TableItem[] = [{ id: '0', name: 'TEST', href: '/model/1' }];
   const header: TableHeader[] = [
     {

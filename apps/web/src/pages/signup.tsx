@@ -1,11 +1,20 @@
 import Button from "@/components/Button";
-import { signIn } from "next-auth/react";
+import axios from "axios";
+import Link from "next/link";
+import { useEffect } from "react";
+// import { signIn } from "next-auth/react";
+import useSWR from "swr";
+
+const fetcher = (url:string) => axios.get(url).then(res => {console.log(res);return res.data;});
 
 const Signup = () => {
-  signIn();
+  // signIn();
+  const {data, isLoading, error} = useSWR("http://localhost/auth/google/link", fetcher);
+
   return (
     <>
-      <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+    {isLoading ? "" : <Link href={data || ""}>GOOGLE LOGIN</Link>}
+      {/* <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
             className="mx-auto h-12 w-auto"
@@ -166,7 +175,7 @@ const Signup = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

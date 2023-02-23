@@ -10,6 +10,10 @@ import { useState } from "react";
 import { UploadModelFormData } from "./upload";
 
 const ModelId = () => {
+  // GET MODEL WITH
+  // const model = useModel(id)
+
+
   // ToDo: Needs to be fetched from Backend
   const [model, setModel] = useState<UploadModelFormData>({
     name: 'Test Model',
