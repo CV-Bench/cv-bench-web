@@ -5,7 +5,8 @@ import logger from "../../util/logger";
 /**
  * @see https://www.npmjs.com/package/mongodb
  */
-const mongoClient = new MongoClient("mongodb://localhost:27017");
+
+const mongoClient = new MongoClient(process.env.MONGO_CONNECTION_URL || "");
 
 export const cvBenchDb = new Promise<Db>((resolve, reject) => {
   mongoClient
@@ -13,7 +14,7 @@ export const cvBenchDb = new Promise<Db>((resolve, reject) => {
     .then(() => {
       logger.info(loggerTitle.MONGO_CLIENT, "Client connected");
 
-      resolve(mongoClient.db("cvBench"));
+      resolve(mongoClient.db(process.env.MONGO_DATABASE_NAME));
     })
     .catch((e) => {
       reject(e);

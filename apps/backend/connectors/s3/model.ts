@@ -14,6 +14,6 @@ const getModel = (...args: OmitFirst<Parameters<typeof getObject>>) =>
 
 export const Model = {
   put: putModel,
-  deleteModel: deleteModel,
-  getModel: getModel,
+  delete: deleteModel,
+  get: getModel,
 };

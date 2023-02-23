@@ -1,4 +1,4 @@
-import { Collection, InsertOneResult, ObjectId } from "mongodb";
+import { Collection, FindCursor, InsertOneResult, ObjectId } from "mongodb";
 import { AccessType, CollectionName, loggerTitle, ModelDb } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
@@ -51,14 +51,17 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
   });
 
 const find = (userId: string | ObjectId) =>
-  collectionRequest<ModelDb>(CollectionName.MODEL, async (collection) => {
-    return collection.findOne({
-      $or: [
-        { userId: new ObjectId(userId) },
-        { accessType: AccessType.PUBLIC },
-      ],
-    });
-  });
+  collectionRequest<FindCursor<ModelDb>>(
+    CollectionName.MODEL,
+    async (collection) => {
+      return collection.find({
+        $or: [
+          { userId: new ObjectId(userId) },
+          { accessType: AccessType.PUBLIC },
+        ],
+      });
+    }
+  );
 
 const Model = {
   findOne,

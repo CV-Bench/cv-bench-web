@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
-import Database from "../../connectors/mongo";
 
-const uploadModel = (req: Request, res: Response) => {};
+const uploadModel = async (req: Request, res: Response) => {
+  console.log("UPLOAD MODEL");
+
+  res.end();
+};
 
 export default uploadModel;

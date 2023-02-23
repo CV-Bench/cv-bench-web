@@ -4,15 +4,14 @@ import { PostDatasetBody } from "./dataset";
 import { PostNetworkBody } from "./network";
 
 export enum RouteNames {
-  GET_MODELS = "GET_MODELS",
+  GET_MODEL_LIST = "GET_MODEL_LIST",
   GET_MODEL = "GET_MODEL",
-  GET_MODEL_OBJ = "GET_MODEL_OBJ",
   DELETE_MODEL = "DELETE_MODEL",
   PATCH_MODEL = "PATCH_MODEL",
   POST_MODEL = "POST_MODEL",
   DOWNLOAD_MODEL = "DOWNLOAD_MODEL",
 
-  GET_BACKGROUNDS = "GET_BACKGROUNDS",
+  GET_BACKGROUND_LIST = "GET_BACKGROUND_LIST",
   GET_BACKGROUND = "GET_BACKGROUND",
   DELETE_BACKGROUND = "DELETE_BACKGROUND",
   POST_BACKGROUND = "POST_BACKGROUND",
@@ -36,14 +35,14 @@ interface RouteType {
   route: string;
   routeRegex: RegExp;
   validator: Zod.AnyZodObject;
-  createRoutePath: (() => string) | ((id: string) => string);
+  createRoutePath: (id?: string) => string;
 }
 
 const createRoute = (
   route: string,
   routeRegex: RegExp,
   validator: Zod.AnyZodObject,
-  createRoutePath: (() => string) | ((id: string) => string)
+  createRoutePath: (id?: string) => string
 ): RouteType => ({
   route,
   routeRegex,
@@ -54,50 +53,44 @@ const createRoute = (
 export const Routes: {
   [key in RouteNames]: RouteType;
 } = {
-  [RouteNames.GET_MODELS]: createRoute(
+  [RouteNames.GET_MODEL_LIST]: createRoute(
     "/model",
     /^\/model\/?get$/,
     z.object({}),
     () => "/model"
   ),
+  [RouteNames.POST_MODEL]: createRoute(
+    "/model",
+    /^\/model\/?post$/,
+    PostModelBody,
+    () => "/model/"
+  ),
   [RouteNames.GET_MODEL]: createRoute(
     "/model/:id",
     /^\/model\/.*\/?get?$/,
     z.object({}),
-    (id: string) => "/model/" + id
-  ),
-  [RouteNames.GET_MODEL_OBJ]: createRoute(
-    "/modelObject/:id",
-    /^\/modelObject\/.*\/?get$/,
-    z.object({}),
-    (id: string) => "/modelObject/" + id
+    (id?: string) => "/model/" + id
   ),
   [RouteNames.DELETE_MODEL]: createRoute(
     "/model/:id",
     /^\/model\/.*\/?delete?$/,
     z.object({}),
-    (id: string) => "/model/" + id
+    (id?: string) => "/model/" + id
   ),
   [RouteNames.PATCH_MODEL]: createRoute(
     "/model/:id",
     /^\/model\/.*\/?patch?$/,
     z.object({}),
-    (id: string) => "/model/" + id
-  ),
-  [RouteNames.POST_MODEL]: createRoute(
-    "/model/:id",
-    /^\/model\/.*\/?post$/,
-    PostModelBody,
-    (id: string) => "/model/" + id
+    (id?: string) => "/model/" + id
   ),
   [RouteNames.DOWNLOAD_MODEL]: createRoute(
     "/model/download/:id",
     /^\/model\/download\/.*\/?get$/,
     z.object({}),
-    (id: string) => "/model/download/" + id
+    (id?: string) => "/model/download/" + id
   ),
 
-  [RouteNames.GET_BACKGROUNDS]: createRoute(
+  [RouteNames.GET_BACKGROUND_LIST]: createRoute(
     "/background",
     /^\/background\/?get$/,
     z.object({}),
@@ -107,37 +100,37 @@ export const Routes: {
     "/background/:id",
     /^\/background\/.*\/?get?$/,
     z.object({}),
-    (id: string) => "/background/" + id
+    (id?: string) => "/background/" + id
   ),
   [RouteNames.GET_BACKGROUND]: createRoute(
     "/backgroundObject/:id",
     /^\/backgroundObject\/.*\/?get$/,
     z.object({}),
-    (id: string) => "/backgroundObject/" + id
+    (id?: string) => "/backgroundObject/" + id
   ),
   [RouteNames.DELETE_BACKGROUND]: createRoute(
     "/background/:id",
     /^\/background\/.*\/?delete?$/,
     z.object({}),
-    (id: string) => "/background/" + id
+    (id?: string) => "/background/" + id
   ),
   [RouteNames.PATCH_BACKGROUND]: createRoute(
     "/background/:id",
     /^\/background\/.*\/?patch?$/,
     z.object({}),
-    (id: string) => "/background/" + id
+    (id?: string) => "/background/" + id
   ),
   [RouteNames.POST_BACKGROUND]: createRoute(
     "/background/:id",
     /^\/background\/.*\/?post$/,
     PostModelBody,
-    (id: string) => "/background/" + id
+    (id?: string) => "/background/" + id
   ),
   [RouteNames.DOWNLOAD_BACKGROUND]: createRoute(
     "/background/download/:id",
     /^\/background\/download\/.*\/?get$/,
     z.object({}),
-    (id: string) => "/background/download/" + id
+    (id?: string) => "/background/download/" + id
   ),
 
   [RouteNames.GET_DATASETS]: createRoute(
@@ -150,25 +143,25 @@ export const Routes: {
     "/dataset/:id",
     /^\/dataset\/.*\/?get?$/,
     z.object({}),
-    (id: string) => "/dataset/" + id
+    (id?: string) => "/dataset/" + id
   ),
   [RouteNames.DELETE_DATASET]: createRoute(
     "/dataset/:id",
     /^\/dataset\/.*\/?delete?$/,
     z.object({}),
-    (id: string) => "/dataset/" + id
+    (id?: string) => "/dataset/" + id
   ),
   [RouteNames.PATCH_DATASET]: createRoute(
     "/dataset/:id",
     /^\/dataset\/.*\/?patch?$/,
     z.object({}),
-    (id: string) => "/dataset/" + id
+    (id?: string) => "/dataset/" + id
   ),
   [RouteNames.POST_DATASET]: createRoute(
     "/dataset/:id",
     /^\/dataset\/.*\/?post$/,
     PostDatasetBody,
-    (id: string) => "/dataset/" + id
+    (id?: string) => "/dataset/" + id
   ),
 
   [RouteNames.GET_NETWORKS]: createRoute(
@@ -181,31 +174,33 @@ export const Routes: {
     "/network/:id",
     /^\/network\/.*\/?get?$/,
     z.object({}),
-    (id: string) => "/network/" + id
+    (id?: string) => "/network/" + id
   ),
   [RouteNames.DELETE_NETWORK]: createRoute(
     "/network/:id",
     /^\/network\/.*\/?delete?$/,
     z.object({}),
-    (id: string) => "/network/" + id
+    (id?: string) => "/network/" + id
   ),
   [RouteNames.PATCH_NETWORK]: createRoute(
     "/network/:id",
     /^\/network\/.*\/?patch?$/,
     z.object({}),
-    (id: string) => "/network/" + id
+    (id?: string) => "/network/" + id
   ),
   [RouteNames.POST_NETWORK]: createRoute(
     "/network/:id",
     /^\/network\/.*\/?post$/,
     PostNetworkBody,
-    (id: string) => "/network/" + id
+    (id?: string) => "/network/" + id
   ),
 };
 
 export const findRouteValidator = (currentRoute: string) =>
-  Object.values(Routes).find(({ route }) =>
-    currentRoute.toLowerCase().match(route)
+  Object.values(Routes).find(({ routeRegex }) =>
+    currentRoute.toLowerCase().match(routeRegex)
   );
 
 export const route = (routeName: RouteNames) => Routes[routeName].route;
+export const getRoute = (routeName: RouteNames) =>
+  Routes[routeName].createRoutePath;

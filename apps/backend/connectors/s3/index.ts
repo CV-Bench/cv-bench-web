@@ -81,3 +81,5 @@ const S3 = {
   Model,
   Background,
 };
+
+export default S3;

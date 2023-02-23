@@ -1,5 +1,10 @@
+import { useModel } from "@/hooks/model";
+
 const ModelId = () => {
-    return(<></>);
-}
+  // GET MODEL WITH
+  // const model = useModel(id)
+
+  return <></>;
+};
 
 export default ModelId;
