@@ -13,7 +13,7 @@ const uploadModel = async (req: Request, res: Response) => {
 
   const result = await Database.Model.insert({...dbModel, createdAt: new Date(), updatedAt: new Date() });
 
-  const basePath = `models/${result.insertedId}`;
+  const basePath = `${result.insertedId}`;
   const fileExt = modelObject.filename.split('.').pop();
   modelObject.filename = `model.${fileExt}`;
 

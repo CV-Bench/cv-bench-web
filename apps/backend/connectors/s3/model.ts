@@ -1,6 +1,6 @@
 import { Bucket } from "types";
 
-import { putObject, getObject, deleteObject } from ".";
+import { putObject, getObject, deleteObject, listObjects } from ".";
 import { OmitFirst } from "types/src/utils";
 
 const putModel = (...args: OmitFirst<Parameters<typeof putObject>>) =>
@@ -12,8 +12,12 @@ const deleteModel = (...args: OmitFirst<Parameters<typeof deleteObject>>) =>
 const getModel = (...args: OmitFirst<Parameters<typeof getObject>>) =>
   getObject(Bucket.MODELS, ...args);
 
+const listModels = (...args: OmitFirst<Parameters<typeof listObjects>>) =>
+  listObjects(Bucket.MODELS, ...args);
+
 export const Model = {
   put: putModel,
   delete: deleteModel,
   get: getModel,
+  list: listModels
 };
