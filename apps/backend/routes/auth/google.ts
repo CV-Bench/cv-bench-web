@@ -53,7 +53,6 @@ const googleAuthCallback = async (req: Request, res: Response) => {
       nonce: req.session.nonce,
     });
     const tokenClaims = tokenSet.claims();
-    delete req.session.nonce;
     req.session.user = {
       id: tokenSet.id_token!,
       name: tokenClaims.name!,
@@ -63,11 +62,14 @@ const googleAuthCallback = async (req: Request, res: Response) => {
       loggedInAt: new Date(),
       provider: AuthProvider.GOOGLE
     };
-    res.send(tokenSet.id_token);
+    res.setHeader("content-type", "text/html");
+    res.setHeader("content-security-policy", "script-src 'unsafe-inline'");
+    res.status(200).send("<html><body><script>location.href = 'http://localhost:3000/signup?user="+JSON.stringify(req.session.user)+"'</script></body></html>");
   } catch (e: any) {
     logger.error(loggerTitle.AUTH_CLIENT, e);
-    res.status(422).send(JSON.stringify(e));
+    res.status(422).end();
   }
+  delete req.session.nonce;
 };
 
 googleAuthRouter.get("/link", googleAuthLink);
