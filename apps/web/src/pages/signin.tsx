@@ -1,4 +1,5 @@
 import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
 import { MutatingDots } from "react-loader-spinner";
 import useSWR from "swr";
@@ -32,7 +33,17 @@ const Signin = () => {
           visible={true}
         />
       ) : (
-        <Link href={data || ""}>GOOGLE LOGIN</Link>
+        <div className="flex items-center justify-center h-screen">
+          <Link href={data}>
+            <Image
+              src="/btn_google_signin_dark_normal_web@2x.png"
+              alt="google login button"
+              width={382}
+              height={92}
+              className="hover:opacity-70"
+            />
+          </Link>
+        </div>
       )}
     </>
   );
