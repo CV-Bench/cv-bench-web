@@ -34,6 +34,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         tmp = SessionUser.parse(tmp);
         setUser(tmp);
       } catch (e) {
+        router.push("/signin");
         setUser(undefined);
       }
     }
