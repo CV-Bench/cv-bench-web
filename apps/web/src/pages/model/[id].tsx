@@ -5,28 +5,29 @@ import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
 import ModelPreview from "@/components/visualization/ModelPreview";
-import { AccessType } from "@/types/accessType";
+import { useModel } from "@/hooks/model";
+import { useRouter } from "next/router";
 import { useState } from "react";
+import { AccessType } from "types";
 import { UploadModelFormData } from "./upload";
 
 const ModelId = () => {
-  // GET MODEL WITH
-  // const model = useModel(id)
+  const router = useRouter()
+  const { id } = router.query
 
+  // GET MODEL WITH
+  const apiModel = useModel(id as string)
+  console.log(apiModel)
 
   // ToDo: Needs to be fetched from Backend
   const [model, setModel] = useState<UploadModelFormData>({
     name: 'Test Model',
-    model: {
-      filename: 'big_dolph.ply',
-      dataUrl: '/big_dolph.ply'
-    },
     modelAssets: [],
-    tags: ['Test', 'Idk'],
-    accessType: 'Public'
+    domainTags: ['Test', 'Idk'],
+    accessType: AccessType.PRIVATE
   })
 
-  const setTags = (val: string[]) => setModel({...model, tags: val});
+  const setTags = (val: string[]) => setModel({...model, domainTags: val});
   const setName = (val: string) => setModel({...model, name: val});
   const setAccessType = (val: AccessType) => setModel({...model, accessType: val});
 
@@ -38,7 +39,7 @@ const ModelId = () => {
             <InputLabel>3D Model</InputLabel>
             <Card className="bg-indigo-800">
               <ul>
-                {model.model?.filename}
+                {model.modelObject?.filename}
               </ul>
             </Card>
           </div>
@@ -53,11 +54,11 @@ const ModelId = () => {
           </div>
           <div>
             <InputLabel>Tags</InputLabel>
-            <TagInput tags={model.tags} setTags={setTags} />
+            <TagInput tags={model.domainTags} setTags={setTags} />
           </div>
         </Card>
         <Card className="flex-1 ml-2 w-3/4">
-          <ModelPreview model={model.model} modelAssets={model.modelAssets} />
+          <ModelPreview model={model.modelObject} modelAssets={model.modelAssets} />
         </Card>
       </div>
       <Card className="mt-4 flex">
