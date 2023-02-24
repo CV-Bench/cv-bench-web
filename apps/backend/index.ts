@@ -4,11 +4,10 @@ import { sessionMiddleware } from "./middleware/session";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import googleAuthRouter from "./routes/auth/google";
-import { IdTokenClaims, TokenSet } from "openid-client";
 import logger from "./util/logger";
 import loggerMiddleware from "./middleware/logger";
 import validatorMiddleware from "./middleware/validator";
-import { RouteNames, route, loggerTitle } from "types";
+import { RouteNames, route, loggerTitle, SessionUser } from "types";
 
 import {
   deleteModel,
@@ -27,11 +26,12 @@ import {
   uploadBackground,
 } from "./routes/background";
 import appTokenMiddleware from "./middleware/appTokenMiddleware";
+import authMiddleware from "./middleware/auth";
 
 declare module "express-session" {
   interface SessionData {
-    tokenSet?: TokenSet;
-    tokenClaims?: IdTokenClaims;
+    nonce?: string;
+    user?: SessionUser;
   }
 }
 
@@ -56,15 +56,15 @@ app.use((req, res, next) => {
 //apply middleware
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
-// app.use(rateLimiterMiddleware);
 app.use(helmet());
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
-app.use(appTokenMiddleware);
+//app.use(appTokenMiddleware);
 app.use(sessionMiddleware);
+app.use(authMiddleware);
 app.use(validatorMiddleware);
 app.use(loggerMiddleware);
 // app.use(rateLimiterMiddleware);
@@ -93,3 +93,5 @@ app.listen(port, () => {
     `⚡️ Server is running at http://localhost:${port}`
   );
 });
+
+app.get("/", (req, res) => {res.status(200).send("HI")});

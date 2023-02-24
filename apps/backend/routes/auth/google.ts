@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { generators } from "openid-client";
 import { BaseClient, Issuer } from "openid-client";
 import { Router } from "express";
+import logger from "../../util/logger";
+import { AuthProvider, loggerTitle } from "types";
 
 const googleAuthRouter = Router();
 const redirectUri =
@@ -18,6 +20,7 @@ Issuer.discover("https://accounts.google.com")
       client_id: process.env.GOOGLE_AUTH_CLIENT_ID!,
       client_secret: process.env.GOOGLE_AUTH_CLIENT_SECRET!,
       redirect_uris: [redirectUri],
+      response_types: ["id_token"],
     });
   })
   .catch((e) => {
@@ -26,26 +29,43 @@ Issuer.discover("https://accounts.google.com")
   });
 
 const googleAuthLink = async (req: Request, res: Response) => {
-  res.status(200).send(
-    googleClient.authorizationUrl({
-      scope: "openid email profile",
-      response_mode: "form_post",
-      redirect_uri: redirectUri,
-      nonce: req.session.id,
-    })
-  );
+  const nonce = generators.nonce();
+  req.session.nonce = nonce;
+
+  try {
+    res.status(200).send(
+      googleClient.authorizationUrl({
+        scope: "openid email profile",
+        response_mode: "form_post",
+        redirect_uri: redirectUri,
+        nonce: nonce,
+      })
+    );
+  } catch (e) {
+    logger.error(loggerTitle.AUTH_CLIENT, "Error creating Google Auth URL", e as string);
+  }
 };
 
 const googleAuthCallback = async (req: Request, res: Response) => {
   try {
     const params = googleClient.callbackParams(req);
     const tokenSet = await googleClient.callback(redirectUri, params, {
-      nonce: req.session.id,
+      nonce: req.session.nonce,
     });
-    req.session.tokenSet = tokenSet;
-    req.session.tokenClaims = tokenSet.claims();
+    const tokenClaims = tokenSet.claims();
+    delete req.session.nonce;
+    req.session.user = {
+      id: tokenSet.id_token!,
+      name: tokenClaims.name!,
+      email: tokenClaims.email!,
+      picture: tokenClaims.picture!,
+      locale: tokenClaims.locale!,
+      loggedInAt: new Date(),
+      provider: AuthProvider.GOOGLE
+    };
     res.send(tokenSet.id_token);
   } catch (e: any) {
+    logger.error(loggerTitle.AUTH_CLIENT, e);
     res.status(422).send(JSON.stringify(e));
   }
 };

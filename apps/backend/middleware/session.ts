@@ -14,8 +14,8 @@ const sessionOptions = {
     secure: false,
     maxAge: 360000,
   },
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   store: new RedisStore({client: redisClient, ttl: 360000})
 };
 
