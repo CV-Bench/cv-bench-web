@@ -6,10 +6,10 @@ const ModelList = () => {
   const { data: models } = useModelList();
 
   console.log("MODELS", models);
-  const data: TableItem[] = [{ id: '0', name: 'TEST', href: '/model/1' }];
+  const data: TableItem[] = models?.map(model => { return { ...model, href: `/model/${model._id}` } }) ?? [];
   const header: TableHeader[] = [
     {
-      key: 'id',
+      key: '_id',
       title: 'ID'
     },
     {

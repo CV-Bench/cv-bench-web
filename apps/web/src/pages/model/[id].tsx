@@ -16,17 +16,17 @@ const ModelId = () => {
   const { id } = router.query
 
   // GET MODEL WITH
-  const apiModel = useModel(id as string)
+  const {data: apiModel} = useModel(id as string)
   console.log(apiModel)
-
   // ToDo: Needs to be fetched from Backend
   const [model, setModel] = useState<UploadModelFormData>({
     name: 'Test Model',
     modelAssets: [],
     domainTags: ['Test', 'Idk'],
-    accessType: AccessType.PRIVATE
+    accessType: AccessType.PRIVATE,
+    ...apiModel
   })
-
+  console.log(model.modelObject)
   const setTags = (val: string[]) => setModel({...model, domainTags: val});
   const setName = (val: string) => setModel({...model, name: val});
   const setAccessType = (val: AccessType) => setModel({...model, accessType: val});

@@ -2,6 +2,10 @@ import { Request, Response, NextFunction } from "express";
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     //user is logged in
+    if (req.method == 'OPTIONS') {
+      next();
+      return;
+    }
     if(req.session.user)
         next();
     else {

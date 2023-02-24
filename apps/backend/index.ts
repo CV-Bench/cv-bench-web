@@ -64,7 +64,7 @@ app.use(
 );
 //app.use(appTokenMiddleware);
 app.use(sessionMiddleware);
-app.use(authMiddleware);
+//app.use(authMiddleware);
 app.use(validatorMiddleware);
 app.use(loggerMiddleware);
 // app.use(rateLimiterMiddleware);

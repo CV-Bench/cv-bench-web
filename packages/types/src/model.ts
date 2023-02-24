@@ -24,7 +24,6 @@ export type DataUrlFile = z.infer<typeof DataUrlFileBody>;
 // POST
 export const PostModelBody = PostDataBody.extend({
   modelType: z.nativeEnum(ModelType),
-  previewImage: z.string(),
   modelObject: DataUrlFileBody,
   modelAssets: z.array(DataUrlFileBody).optional()
 });
@@ -41,9 +40,13 @@ export const PatchModelBody = PostDataBody;
 export type PatchModel = z.infer<typeof PatchModelBody>;
 
 // GET SINGLE MODEL
-export const GetModelBody = ModelBody;
+export const GetModelBody = ModelBody.extend({
+  modelType: z.nativeEnum(ModelType),
+  modelObject: DataUrlFileBody,
+  modelAssets: z.array(DataUrlFileBody).optional()
+});
 export type GetModel = z.infer<typeof GetModelBody>;
 
 // GET MODELS
-export const GetModelListBody = z.array(GetModelBody);
+export const GetModelListBody = z.array(GetModelBody.omit({ modelAssets: true, modelObject: true }));
 export type GetModelList = z.infer<typeof GetModelListBody>;
