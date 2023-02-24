@@ -1,15 +1,26 @@
 import Button from "@/components/Button";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 // import { signIn } from "next-auth/react";
 import useSWR from "swr";
+import { SessionUser } from "types";
 
-const fetcher = (url:string) => axios.get(url).then(res => {console.log(res);return res.data;});
+const fetcher = (url:string) => axios.get(url, {withCredentials: true}).then(res => (res.data));
 
 const Signup = () => {
   // signIn();
   const {data, isLoading, error} = useSWR("http://localhost/auth/google/link", fetcher);
+  const router = useRouter();
+  let user:SessionUser;
+  let userString = router.query["user"] as string;
+  if(userString){
+    user = JSON.parse(userString);
+    user.loggedInAt = new Date(user.loggedInAt);
+    user = SessionUser.parse(user);
+  }
+  console.log(user!);
 
   return (
     <>

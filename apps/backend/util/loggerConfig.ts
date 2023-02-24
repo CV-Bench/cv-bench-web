@@ -10,7 +10,8 @@ const loggerConfig : {
         "EXPRESS SERVER": true,
         "EXPRESS REQUEST": true,
         "MONGO CLIENT": true,
-        "REDIS CLIENT": true
+        "REDIS CLIENT": true,
+        "AUTH CLIENT": true
     }
 };
 
