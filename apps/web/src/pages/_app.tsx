@@ -22,7 +22,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   const [user, setUser] = useState(undefined as SessionUser | undefined);
 
   const { data, isLoading, error } = useSWR(
-    "http://localhost/auth/user",
+    (process.env.HOST_DOMAIN || "http://localhost:3001") + "/auth/user",
     fetcher
   );
 
@@ -33,6 +33,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         tmp.loggedInAt = new Date(tmp.loggedInAt);
         tmp = SessionUser.parse(tmp);
         setUser(tmp);
+        router.push("/");
       } catch (e) {
         router.push("/signin");
         setUser(undefined);

@@ -9,7 +9,7 @@ const fetcher = (url: string) =>
 
 const Signin = () => {
   const { data, isLoading, error } = useSWR(
-    "http://localhost/auth/google/link",
+    (process.env.HOST_DOMAIN || "http://localhost:3001") + "/auth/google/link",
     fetcher
   );
 
