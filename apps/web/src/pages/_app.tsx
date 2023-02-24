@@ -26,6 +26,8 @@ const App = ({ Component, pageProps }: AppProps) => {
     fetcher
   );
 
+  console.log(data);
+
   useEffect(() => {
     if (!isLoading) {
       try {
