@@ -27,6 +27,7 @@ import {
 } from "./routes/background";
 import appTokenMiddleware from "./middleware/appTokenMiddleware";
 import authMiddleware from "./middleware/auth";
+import getUser from "./routes/auth/getUser";
 
 declare module "express-session" {
   interface SessionData {
@@ -69,7 +70,10 @@ app.use(validatorMiddleware);
 app.use(loggerMiddleware);
 // app.use(rateLimiterMiddleware);
 
+// AUTH ROUTES
+// TODO make routes complient with other routes
 app.use("/auth/google/", googleAuthRouter);
+app.get("/auth/user", getUser);
 
 // MODEL ROUTES
 app.get(route(RouteNames.GET_MODEL_LIST), getModelList);
