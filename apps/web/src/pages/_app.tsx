@@ -22,9 +22,11 @@ const App = ({ Component, pageProps }: AppProps) => {
   const [user, setUser] = useState(undefined as SessionUser | undefined);
 
   const { data, isLoading, error } = useSWR(
-    "http://localhost/auth/user",
+    "http://localhost:3001/auth/user",
     fetcher
   );
+
+  console.log(data);
 
   useEffect(() => {
     if (!isLoading) {

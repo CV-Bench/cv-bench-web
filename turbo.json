@@ -34,6 +34,7 @@
     "NEXT_PUBLIC_APP_TOKEN_KEY",
     "NEXT_PUBLIC_APP_TOKEN",
     "NODE_ENV",
-    "BUCKET_NAME"
+    "BUCKET_NAME",
+    "HOST_DOMAIN"
   ]
 }

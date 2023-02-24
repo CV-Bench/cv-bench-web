@@ -8,6 +8,8 @@ const getModel = (req: Request, res: Response) => {
   //   res.status(200).json(model)
   // );
   // S3.Model.get(req.params.id).then((model) => res.status(200).send(model));
+
+  console.log(req);
 };
 
 export default getModel;
