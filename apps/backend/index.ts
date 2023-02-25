@@ -28,6 +28,7 @@ import {
 import appTokenMiddleware from "./middleware/appTokenMiddleware";
 import authMiddleware from "./middleware/auth";
 import getUser from "./routes/auth/getUser";
+import microsoftAuthRouter from "./routes/auth/microsoft";
 
 declare module "express-session" {
   interface SessionData {
@@ -73,6 +74,7 @@ app.use(loggerMiddleware);
 // AUTH ROUTES
 // TODO make routes complient with other routes
 app.use("/auth/google/", googleAuthRouter);
+app.use("/auth/microsoft", microsoftAuthRouter);
 app.get("/auth/user", getUser);
 
 // MODEL ROUTES

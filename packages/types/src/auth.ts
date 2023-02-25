@@ -5,9 +5,9 @@ export const SessionUser = z.object({
   name: z.string(),
   loggedInAt: z.date(),
   email: z.string().email(),
-  picture: z.string().url(),
+  picture: z.string().url().optional(),
   provider: z.string().url(),
-  locale: z.string(),
+  locale: z.string().optional(),
 });
 
 export type SessionUser = z.infer<typeof SessionUser>;
