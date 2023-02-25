@@ -18,7 +18,7 @@ prepareCollection(CollectionName.USER).then((collection) => {
 const findOne = (id: string | ObjectId) =>
   collectionRequest<SessionUser>(CollectionName.USER, async (collection) => {
     return collection.findOne({
-      _id: new ObjectId(id),
+      id: id,
     });
   });
 

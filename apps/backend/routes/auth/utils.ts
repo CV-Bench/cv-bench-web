@@ -4,6 +4,7 @@ import { BaseClient, Issuer } from "openid-client";
 import { Router } from "express";
 import logger from "../../util/logger";
 import { loggerTitle } from "types";
+import Database from "../../connectors/mongo";
 
 const redirectUriBase =
   (process.env.HOST_DOMAIN || "http://localhos") + "/auth";
@@ -113,11 +114,22 @@ export const createAuthCallbackHandler = (
       };
       res.setHeader("content-type", "text/html");
       res.setHeader("content-security-policy", "script-src 'unsafe-inline'");
-      res
-        .status(200)
-        .send(
-          "<html><body><script>location.href = 'http://localhost:3000/'</script></body></html>"
-        );
+      //check if user exists
+      Database.User.findOne(req.session.user.id)
+        .then((result) => {
+          if (result)
+            res
+              .status(200)
+              .send(
+                "<html><body><script>location.href = 'http://localhost:3000/'</script></body></html>"
+              );
+          else
+            res
+              .status(200)
+              .send(
+                "<html><body><script>location.href = 'http://localhost:3000/signup'</script></body></html>"
+              );
+        });
     } catch (e: any) {
       logger.error(loggerTitle.AUTH_CLIENT, e);
       res.status(422).end();
