@@ -5,14 +5,14 @@ import { Router } from "express";
 import logger from "../../util/logger";
 import { loggerTitle } from "types";
 
-const redirectUri =
-  (process.env.HOST_DOMAIN || "http://localhost:3001") +
-  "/auth/google/callback";
+const redirectUriBase =
+  (process.env.HOST_DOMAIN || "http://localhos") + "/auth";
 
 export const createAuthClient = (
   issuerDomain: string,
   clientId: string,
-  clientSecret: string
+  clientSecret: string,
+  routeName: string
 ) => {
   return new Promise<BaseClient>((resolve, reject) => {
     Issuer.discover(issuerDomain)
@@ -22,12 +22,14 @@ export const createAuthClient = (
           "Registered Auth Provider",
           `Provider: ${issuerDomain}`
         );
-        resolve(new issuer.Client({
-          client_id: clientId,
-          client_secret: clientSecret,
-          redirect_uris: [redirectUri],
-          response_types: ["id_token"],
-        }));
+        resolve(
+          new issuer.Client({
+            client_id: clientId,
+            client_secret: clientSecret,
+            redirect_uris: [redirectUriBase + routeName + "/callback"],
+            response_types: ["id_token"],
+          })
+        );
       })
       .catch((e) => {
         logger.error(
@@ -44,14 +46,24 @@ export const createAuthClient = (
 
 export const createAuthProviderRoute = (
   authProviderRouter: Router,
-  authProviderClient: BaseClient
+  authProviderClient: BaseClient,
+  routeName: string
 ) => {
-  authProviderRouter.get("/link", createAuthLinkHandler(authProviderClient));
-  authProviderRouter.post("/callback", createAuthCallbackHandler(authProviderClient));
+  authProviderRouter.get(
+    "/link",
+    createAuthLinkHandler(authProviderClient, routeName)
+  );
+  authProviderRouter.post(
+    "/callback",
+    createAuthCallbackHandler(authProviderClient, routeName)
+  );
   return;
 };
 
-export const createAuthLinkHandler = (authProviderClient: BaseClient):RequestHandler => {
+export const createAuthLinkHandler = (
+  authProviderClient: BaseClient,
+  routeName: string
+): RequestHandler => {
   return async (req: Request, res: Response) => {
     const nonce = generators.nonce();
     req.session.nonce = nonce;
@@ -61,7 +73,7 @@ export const createAuthLinkHandler = (authProviderClient: BaseClient):RequestHan
         authProviderClient.authorizationUrl({
           scope: "openid email profile",
           response_mode: "form_post",
-          redirect_uri: redirectUri,
+          redirect_uri: redirectUriBase + routeName + "/callback",
           nonce: nonce,
         })
       );
@@ -75,13 +87,20 @@ export const createAuthLinkHandler = (authProviderClient: BaseClient):RequestHan
   };
 };
 
-export const createAuthCallbackHandler = (authProviderClient: BaseClient):RequestHandler => {
+export const createAuthCallbackHandler = (
+  authProviderClient: BaseClient,
+  routeName: string
+): RequestHandler => {
   return async (req: Request, res: Response) => {
     try {
       const params = authProviderClient.callbackParams(req);
-      const tokenSet = await authProviderClient.callback(redirectUri, params, {
-        nonce: req.session.nonce,
-      });
+      const tokenSet = await authProviderClient.callback(
+        redirectUriBase + routeName + "/callback",
+        params,
+        {
+          nonce: req.session.nonce,
+        }
+      );
       const tokenClaims = tokenSet.claims();
       req.session.user = {
         id: tokenSet.id_token!,
