@@ -34,7 +34,7 @@ const Signin = () => {
         />
       ) : (
         <div className="flex items-center justify-center h-screen">
-          <Link href={data}>
+          <Link href={data || ""}>
             <Image
               src="/btn_google_signin_dark_normal_web@2x.png"
               alt="google login button"
