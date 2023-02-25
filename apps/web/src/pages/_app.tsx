@@ -35,7 +35,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         tmp.loggedInAt = new Date(tmp.loggedInAt);
         tmp = SessionUser.parse(tmp);
         setUser(tmp);
-        router.push("/");
+        if (router.pathname.startsWith("/signin")) router.push("/");
       } catch (e) {
         router.push("/signin");
         setUser(undefined);
