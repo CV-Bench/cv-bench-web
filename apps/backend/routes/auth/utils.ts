@@ -115,8 +115,11 @@ export const createAuthCallbackHandler = (
       res.setHeader("content-type", "text/html");
       res.setHeader("content-security-policy", "script-src 'unsafe-inline'");
       //check if user exists
+
+      //TODO fix database request!
       Database.User.findOne(req.session.user.id)
         .then((result) => {
+          console.log(result);
           if (result)
             res
               .status(200)
