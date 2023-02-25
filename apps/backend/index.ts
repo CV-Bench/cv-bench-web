@@ -29,6 +29,8 @@ import appTokenMiddleware from "./middleware/appTokenMiddleware";
 import authMiddleware from "./middleware/auth";
 import getUser from "./routes/auth/getUser";
 
+import socket from "./connectors/socket";
+
 declare module "express-session" {
   interface SessionData {
     nonce?: string;
@@ -64,10 +66,10 @@ app.use(
   })
 );
 //app.use(appTokenMiddleware);
-app.use(sessionMiddleware);
-app.use(authMiddleware);
-app.use(validatorMiddleware);
-app.use(loggerMiddleware);
+// app.use(sessionMiddleware);
+// app.use(authMiddleware);
+// app.use(validatorMiddleware);
+// app.use(loggerMiddleware);
 // app.use(rateLimiterMiddleware);
 
 // AUTH ROUTES
@@ -91,6 +93,8 @@ app.patch(route(RouteNames.PATCH_BACKGROUND), updateBackground);
 app.post(route(RouteNames.POST_BACKGROUND), uploadBackground);
 app.get(route(RouteNames.DOWNLOAD_BACKGROUND), downloadBackground);
 
+socket;
+
 app.listen(port, () => {
   logger.info(
     loggerTitle.EXPRESS_SERVER,
@@ -98,4 +102,6 @@ app.listen(port, () => {
   );
 });
 
-app.get("/", (req, res) => {res.status(200).send("HI")});
+app.get("/", (req, res) => {
+  res.status(200).send("HI");
+});

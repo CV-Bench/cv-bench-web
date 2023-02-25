@@ -10,7 +10,8 @@ export enum loggerTitle {
   EXPRESS_REQUEST = "EXPRESS REQUEST",
   REDIS_CLIENT = "REDIS CLIENT",
   MONGO_CLIENT = "MONGO CLIENT",
-  AUTH_CLIENT = "AUTH CLIENT"
+  AUTH_CLIENT = "AUTH CLIENT",
+  SOCKET = "SOCKET",
 }
 
 export const NetworkArchitectureBody = z.object({
@@ -37,3 +38,4 @@ export * from "./routes";
 export * from "./mongo";
 export * from "./s3";
 export * from "./auth";
+export * from "./socket";
