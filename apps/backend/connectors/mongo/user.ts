@@ -1,4 +1,4 @@
-import { Collection, FindCursor, InsertOneResult, ObjectId } from "mongodb";
+import { Collection, DeleteResult, FindCursor, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
 import {
   AccessType,
   CollectionName,
@@ -31,7 +31,7 @@ const insert = (user: SessionUser) =>
   );
 
 const updateOne = (id: string | ObjectId, update: Partial<SessionUser>) =>
-  collectionRequest<SessionUser>(CollectionName.USER, async (collection) => {
+  collectionRequest<UpdateResult>(CollectionName.USER, async (collection) => {
     return collection.updateOne(
       {
         _id: new ObjectId(id),
@@ -41,7 +41,7 @@ const updateOne = (id: string | ObjectId, update: Partial<SessionUser>) =>
   });
 
 const deleteOne = (id: string | ObjectId) =>
-  collectionRequest<SessionUser>(CollectionName.USER, async (collection) => {
+  collectionRequest<DeleteResult>(CollectionName.USER, async (collection) => {
     return collection.deleteOne({
       _id: new ObjectId(id),
     });

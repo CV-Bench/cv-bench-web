@@ -1,4 +1,4 @@
-import { InsertOneResult, ObjectId } from "mongodb";
+import { DeleteResult, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
 import { CollectionName, BackgroundDb, loggerTitle, AccessType } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
@@ -35,7 +35,7 @@ const updateOne = (
   userId: string | ObjectId,
   update: Partial<BackgroundDb>
 ) =>
-  collectionRequest<BackgroundDb>(
+  collectionRequest<UpdateResult>(
     CollectionName.BACKGROUND,
     async (collection) => {
       return collection.updateOne(
@@ -49,7 +49,7 @@ const updateOne = (
   );
 
 const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
-  collectionRequest<BackgroundDb>(
+  collectionRequest<DeleteResult>(
     CollectionName.BACKGROUND,
     async (collection) => {
       return collection.deleteOne({
