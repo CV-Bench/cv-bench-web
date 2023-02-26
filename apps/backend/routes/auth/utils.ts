@@ -5,6 +5,7 @@ import { Router } from "express";
 import logger from "../../util/logger";
 import { loggerTitle } from "types";
 import Database from "../../connectors/mongo";
+import { ObjectId } from "mongodb";
 
 const redirectUriBase =
   (process.env.HOST_DOMAIN || "http://localhos") + "/auth";
@@ -66,8 +67,12 @@ export const createAuthLinkHandler = (
   routeName: string
 ): RequestHandler => {
   return async (req: Request, res: Response) => {
+    if(!req.session.nonce)
+        req.session.nonce = {};
     const nonce = generators.nonce();
-    req.session.nonce = nonce;
+    //TODO fix with proper type
+    //@ts-ignore
+    req.session.nonce[routeName] = nonce;
 
     try {
       res.status(200).send(
@@ -94,17 +99,21 @@ export const createAuthCallbackHandler = (
 ): RequestHandler => {
   return async (req: Request, res: Response) => {
     try {
+      if(!req.session.nonce)
+        req.session.nonce = {};
       const params = authProviderClient.callbackParams(req);
       const tokenSet = await authProviderClient.callback(
         redirectUriBase + routeName + "/callback",
         params,
         {
-          nonce: req.session.nonce,
+          //TODO fix ts ignore with type
+          //@ts-ignore
+          nonce: req.session.nonce[routeName],
         }
       );
       const tokenClaims = tokenSet.claims();
       req.session.user = {
-        id: tokenSet.id_token!,
+        id: tokenClaims.sub!,
         name: tokenClaims.name!,
         email: tokenClaims.email!,
         picture: tokenClaims.picture!,
@@ -120,7 +129,7 @@ export const createAuthCallbackHandler = (
       Database.User.findOne(req.session.user.id).then((result) => {
         console.log(result);
         if (result) {
-          req.session.user!._id = result._id;
+          req.session.user!._id = new ObjectId(result._id);
           res
             .status(200)
             .send(

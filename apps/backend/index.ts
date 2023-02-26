@@ -34,7 +34,10 @@ import logout from "./routes/auth/logout";
 
 declare module "express-session" {
   interface SessionData {
-    nonce?: string;
+    nonce: {
+      "/google"?: string;
+      "/microsoft"?: string;
+    }
     user?: SessionUser;
   }
 }

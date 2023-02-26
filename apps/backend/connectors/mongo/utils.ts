@@ -7,7 +7,7 @@ export const isUsersOrPublic = (userId: string | ObjectId) => ({
 });
 
 export const hashUserId = (openIdConnectId: string) => {
-  return Crypto.createHash("shake256", { outputLength: 24 })
+  return Crypto.createHash("shake256", { outputLength: 12 })
     .update(openIdConnectId)
     .digest("hex");
 };
