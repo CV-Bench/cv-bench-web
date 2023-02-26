@@ -7,7 +7,8 @@ import { AuthProvider, loggerTitle } from "types";
 
 const googleAuthRouter = Router();
 const redirectUri =
-  (process.env.HOST_DOMAIN || "http://localhost") + "/auth/google/callback";
+  (process.env.HOST_DOMAIN || "http://localhost:3001") +
+  "/auth/google/callback";
 
 let googleIssuer: Issuer<BaseClient>;
 let googleClient: BaseClient;
@@ -42,7 +43,11 @@ const googleAuthLink = async (req: Request, res: Response) => {
       })
     );
   } catch (e) {
-    logger.error(loggerTitle.AUTH_CLIENT, "Error creating Google Auth URL", e as string);
+    logger.error(
+      loggerTitle.AUTH_CLIENT,
+      "Error creating Google Auth URL",
+      e as string
+    );
   }
 };
 
@@ -60,11 +65,15 @@ const googleAuthCallback = async (req: Request, res: Response) => {
       picture: tokenClaims.picture!,
       locale: tokenClaims.locale!,
       loggedInAt: new Date(),
-      provider: AuthProvider.GOOGLE
+      provider: AuthProvider.GOOGLE,
     };
     res.setHeader("content-type", "text/html");
     res.setHeader("content-security-policy", "script-src 'unsafe-inline'");
-    res.status(200).send("<html><body><script>location.href = 'http://localhost:3000/signup?user="+JSON.stringify(req.session.user)+"'</script></body></html>");
+    res
+      .status(200)
+      .send(
+        "<html><body><script>location.href = 'http://localhost:3000/'</script></body></html>"
+      );
   } catch (e: any) {
     logger.error(loggerTitle.AUTH_CLIENT, e);
     res.status(422).end();

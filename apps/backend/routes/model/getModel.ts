@@ -3,6 +3,7 @@ import { DataUrlFile, GetModel, ModelDb } from "types";
 import Database from "../../connectors/mongo";
 import { Model } from "../../connectors/s3/model";
 
+<<<<<<< HEAD
 const getModel = async (req: Request, res: Response) => {
   // ToDo: set user id from session when available
   const userId = 0 as any;
@@ -46,6 +47,17 @@ const getModel = async (req: Request, res: Response) => {
 
     res.json(returnModel).end();
   }});
+=======
+const getModel = (req: Request, res: Response) => {
+  // GET MODEL
+  // INCLUDE S3 MODEL
+  // Database.Model.findOne(req.params.id, req.session.userId).then((model) =>
+  //   res.status(200).json(model)
+  // );
+  // S3.Model.get(req.params.id).then((model) => res.status(200).send(model));
+
+  console.log(req);
+>>>>>>> main
 };
 
 export default getModel;
