@@ -127,7 +127,6 @@ export const createAuthCallbackHandler = (
 
       //TODO fix database request!
       Database.User.findOne(req.session.user.id).then((result) => {
-        console.log(result);
         if (result) {
           req.session.user!._id = new ObjectId(result._id);
           res
