@@ -13,9 +13,12 @@ const getModel = async (req: Request, res: Response) => {
   }
 
   const dbModel = await Database.Model.findOne(req.params.id, userId);
-  const returnModel: ModelDb & { modelObject?: DataUrlFile, modelAssets: DataUrlFile[] } = { ...dbModel, modelAssets: [] };
+  
   Model.list(dbModel._id, { onSuccess: async (bucketRes) => {
-    const mappedFiles = await Promise.all(bucketRes.Contents?.map(x => new Promise((resolve, reject) => {
+    let modelObject!: DataUrlFile;
+    let modelAssets: DataUrlFile[] = [];
+
+    await Promise.all(bucketRes.Contents?.map(x => new Promise((resolve, reject) => {
       const path = x.Key as string;
       let filename = path.replace(/^.*[\\\/]/, '')
 
@@ -26,18 +29,23 @@ const getModel = async (req: Request, res: Response) => {
         };
 
         if (filename.endsWith('.obj')) {
-          returnModel.modelObject = dataUrlFile;
+          modelObject = dataUrlFile;
         }
         else {
-          returnModel.modelAssets.push(dataUrlFile);
+          modelAssets.push(dataUrlFile);
         }
-        resolve(returnModel);
+        resolve(true);
       }, onError: () => console.error("s3 error", path)});
     })) ?? []);
+
+    const returnModel: GetModel = {
+      ...dbModel,
+      modelObject,
+      modelAssets
+    };
+
     res.json(returnModel).end();
   }});
-
-  //S3.Model.get(req.params.id).then((model) => res.status(200).send(model));
 };
 
 export default getModel;

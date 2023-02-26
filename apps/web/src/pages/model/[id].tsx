@@ -7,7 +7,7 @@ import TagInput from "@/components/inputs/TagInput";
 import ModelPreview from "@/components/visualization/ModelPreview";
 import { useModel } from "@/hooks/model";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AccessType } from "types";
 import { UploadModelFormData } from "./upload";
 
@@ -15,21 +15,27 @@ const ModelId = () => {
   const router = useRouter()
   const { id } = router.query
 
-  // GET MODEL WITH
-  const {data: apiModel} = useModel(id as string)
-  console.log(apiModel)
-  // ToDo: Needs to be fetched from Backend
+  const {data: apiModel} = useModel(id ? id as string : null)
   const [model, setModel] = useState<UploadModelFormData>({
-    name: 'Test Model',
+    name: '',
     modelAssets: [],
-    domainTags: ['Test', 'Idk'],
+    domainTags: [],
     accessType: AccessType.PRIVATE,
-    ...apiModel
   })
-  console.log(model.modelObject)
+
+  useEffect(() => {
+    if (apiModel) {
+        setModel(apiModel);
+    }
+  }, [apiModel]);
+  
   const setTags = (val: string[]) => setModel({...model, domainTags: val});
   const setName = (val: string) => setModel({...model, name: val});
   const setAccessType = (val: AccessType) => setModel({...model, accessType: val});
+
+  const onDownload = () => {
+
+  }
 
   return (<>
     <div className="h-full flex flex-col text-white">
