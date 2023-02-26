@@ -117,22 +117,22 @@ export const createAuthCallbackHandler = (
       //check if user exists
 
       //TODO fix database request!
-      Database.User.findOne(req.session.user.id)
-        .then((result) => {
-          console.log(result);
-          if (result)
-            res
-              .status(200)
-              .send(
-                "<html><body><script>location.href = 'http://localhost:3000/'</script></body></html>"
-              );
-          else
-            res
-              .status(200)
-              .send(
-                "<html><body><script>location.href = 'http://localhost:3000/signup'</script></body></html>"
-              );
-        });
+      Database.User.findOne(req.session.user.id).then((result) => {
+        console.log(result);
+        if (result) {
+          req.session.user!._id = result._id;
+          res
+            .status(200)
+            .send(
+              "<html><body><script>location.href = 'http://localhost:3000/'</script></body></html>"
+            );
+        } else
+          res
+            .status(200)
+            .send(
+              "<html><body><script>location.href = 'http://localhost:3000/signup'</script></body></html>"
+            );
+      });
     } catch (e: any) {
       logger.error(loggerTitle.AUTH_CLIENT, e);
       res.status(422).end();

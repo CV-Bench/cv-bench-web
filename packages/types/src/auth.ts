@@ -1,6 +1,8 @@
 import * as z from "zod";
+import { ObjId } from "./utils";
 
 export const SessionUser = z.object({
+  _id: ObjId.optional(),
   id: z.string(),
   name: z.string(),
   loggedInAt: z.date(),
