@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { PostModelBody } from "./model";
+import { PatchModelBody, PostModelBody } from "./model";
 import { PostDatasetBody } from "./dataset";
 import { PostNetworkBody } from "./network";
 
@@ -80,7 +80,7 @@ export const Routes: {
   [RouteNames.PATCH_MODEL]: createRoute(
     "/model/:id",
     /^\/model\/.*\/?patch?$/,
-    z.object({}),
+    PatchModelBody,
     (id?: string) => "/model/" + id
   ),
   [RouteNames.DOWNLOAD_MODEL]: createRoute(

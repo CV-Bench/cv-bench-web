@@ -1,13 +1,13 @@
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 import React, { useState } from "react";
-import * as THREE from 'three';
 import { DataUrlFile } from 'types';
+import { LoadingManager } from 'three';
 
 export interface ObjModelProps {
   model: DataUrlFile;
   modelAssets?: DataUrlFile[];
-  
+
   onUpdate?: (obj: THREE.Object3D) => void;
 }
 
@@ -35,7 +35,7 @@ const ObjModel: React.FC<ObjModelProps> = ({ model, modelAssets, onUpdate }) => 
   }
 
   const loadObj = async () => {
-    const manager = new THREE.LoadingManager();
+    const manager = new LoadingManager();
     const objLoader = new OBJLoader(manager);
     manager.setURLModifier(fixDataURL);
 

@@ -1,7 +1,7 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import React, { useRef } from "react";
-import * as THREE from "three";
+import React from "react";
+import { Layers } from "three";
 import { DataUrlFile } from "types";
 import AutoFitModelObject from "./ModelObject/AutoFitModelObject";
 
@@ -13,7 +13,7 @@ export interface ModelPreviewProps {
 }
 
 const ModelPreview: React.FC<ModelPreviewProps> = ({ model: modelPath, modelAssets = [], onThumbnailUpdate }) => {
-  const allLayers = new THREE.Layers();
+  const allLayers = new Layers();
   allLayers.enableAll();
 
   return (

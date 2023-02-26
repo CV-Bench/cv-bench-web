@@ -46,7 +46,7 @@ const port = process.env.EXPRESS_PORT || 3001;
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, PATCH, OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
     `Origin, X-Requested-With, Content-Type, Accept, Authorization, ${process.env.NEXT_PUBLIC_APP_TOKEN_KEY}`
@@ -65,7 +65,7 @@ app.use(
 );
 //app.use(appTokenMiddleware);
 app.use(sessionMiddleware);
-//app.use(authMiddleware);
+app.use(authMiddleware);
 app.use(validatorMiddleware);
 app.use(loggerMiddleware);
 // app.use(rateLimiterMiddleware);

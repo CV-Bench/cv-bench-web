@@ -1,63 +1,55 @@
 import { Request, Response } from "express";
+import { ObjectId } from "mongodb";
 import { DataUrlFile, GetModel, ModelDb } from "types";
 import Database from "../../connectors/mongo";
 import { Model } from "../../connectors/s3/model";
 
-<<<<<<< HEAD
+const getS3Models = (id: string) => new Promise<DataUrlFile[]>((resolve, reject) => {
+  Model.list(id, {
+    onSuccess: async (result) => {
+      const files = result.Contents?.map(async x => {
+        const filename = x.Key?.replace(/^.*[\\\/]/, '') ?? '';
+        const s3Req = (await Model.get(`${id}/${filename}`));
+
+        return {
+          filename,
+          dataUrl: await s3Req.Body.transformToString()
+        }
+      }) ?? [];
+
+      resolve(await Promise.all(files))
+    }
+  });
+
+});
+
 const getModel = async (req: Request, res: Response) => {
   // ToDo: set user id from session when available
-  const userId = 0 as any;
+  const userId = new ObjectId("5d71522dc452f78e335d2d8b") as any;
 
-  if (!req.params.id  || req.params.id == "undefined") {
+  const dbModel = await Database.Model.findOne(req.params.id, userId);
+  if (!dbModel) {
     res.status(404).end();
     return;
   }
 
-  const dbModel = await Database.Model.findOne(req.params.id, userId);
-  
-  Model.list(dbModel._id, { onSuccess: async (bucketRes) => {
-    let modelObject!: DataUrlFile;
-    let modelAssets: DataUrlFile[] = [];
+  const isModel = (url: string) => url.toLowerCase().endsWith('.obj') || url.toLowerCase().endsWith('.ply');
+  const s3Files = await getS3Models(req.params.id);
+  const modelObject = s3Files.find(x => isModel(x.filename));
+  const modelAssets = s3Files.filter(x => !isModel(x.filename));
 
-    await Promise.all(bucketRes.Contents?.map(x => new Promise((resolve, reject) => {
-      const path = x.Key as string;
-      let filename = path.replace(/^.*[\\\/]/, '')
+  if (!modelObject) {
+    res.status(404).end();
+    return;
+  }
 
-      Model.get(`${dbModel._id}/${filename}`, { onSuccess: async (obj) => {
-        const dataUrlFile: DataUrlFile = {
-          filename,
-          dataUrl: await obj.Body?.transformToString() ?? ''
-        };
+  const returnModel: GetModel = {
+    ...dbModel,
+    modelObject,
+    modelAssets
+  };
 
-        if (filename.endsWith('.obj')) {
-          modelObject = dataUrlFile;
-        }
-        else {
-          modelAssets.push(dataUrlFile);
-        }
-        resolve(true);
-      }, onError: () => console.error("s3 error", path)});
-    })) ?? []);
-
-    const returnModel: GetModel = {
-      ...dbModel,
-      modelObject,
-      modelAssets
-    };
-
-    res.json(returnModel).end();
-  }});
-=======
-const getModel = (req: Request, res: Response) => {
-  // GET MODEL
-  // INCLUDE S3 MODEL
-  // Database.Model.findOne(req.params.id, req.session.userId).then((model) =>
-  //   res.status(200).json(model)
-  // );
-  // S3.Model.get(req.params.id).then((model) => res.status(200).send(model));
-
-  console.log(req);
->>>>>>> main
+  res.json(returnModel).end();
 };
 
 export default getModel;

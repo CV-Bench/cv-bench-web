@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { ObjectId } from "mongodb";
 import { DataUrlFile, loggerTitle, ModelDb, PostModel } from "types";
 import Database from "../../connectors/mongo";
 import { Model } from "../../connectors/s3/model";
@@ -8,13 +9,13 @@ const putFile = async (path: string, file: DataUrlFile) => Model.put(Buffer.from
 
 const uploadModel = async (req: Request, res: Response) => {
   // ToDo: set user id from session when available
-  const userId = 0 as any;
+  const userId = new ObjectId("5d71522dc452f78e335d2d8b") as any;
 
   let model = req.body as PostModel;
 
   let { modelObject, modelAssets, ...dbModel } = model;
 
-  const result = await Database.Model.insert({...dbModel, createdAt: new Date(), updatedAt: new Date(), userId });
+  const result = await Database.Model.insert({ ...dbModel, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), userId });
 
   const basePath = `${result.insertedId}`;
   const fileExt = modelObject.filename.split('.').pop();
@@ -25,7 +26,7 @@ const uploadModel = async (req: Request, res: Response) => {
   await putFile(basePath, modelObject);
   await Promise.all(modelAssets?.map(asset => putFile(basePath, asset)) ?? []);
 
-  res.status(200).end();
+  res.json({}).end();
 };
 
 export default uploadModel;

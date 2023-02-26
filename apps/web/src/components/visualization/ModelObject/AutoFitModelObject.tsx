@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import * as THREE from 'three';
 import { useThree } from "@react-three/fiber";
 import ModelObject from "./ModelObject";
 import { DataUrlFile } from "types";
+import { Vector3, Box3 } from "three";
 
 export interface AutoFitModelObjectProps {
   model: DataUrlFile | string;
   modelAssets?: DataUrlFile[] | string[];
-  
+
   onThumbnailUpdate?: (dataUrl: string) => void;
 }
 
-const AutoFitModelObject: React.FC<AutoFitModelObjectProps> = ({ model, modelAssets,  onThumbnailUpdate }) => {
+const AutoFitModelObject: React.FC<AutoFitModelObjectProps> = ({ model, modelAssets, onThumbnailUpdate }) => {
   const [controlsLoaded, setControlsLoaded] = useState(false);
 
   const { gl, scene, camera, controls } = useThree();
@@ -22,9 +22,9 @@ const AutoFitModelObject: React.FC<AutoFitModelObjectProps> = ({ model, modelAss
     if (orbitControls) {
       orbitControls.reset();
       const fitOffset = 1.2;
-      const size = new THREE.Vector3();
-      const center = new THREE.Vector3();
-      var box = new THREE.Box3().setFromObject(obj);
+      const size = new Vector3();
+      const center = new Vector3();
+      var box = new Box3().setFromObject(obj);
       box.getSize(size);
       box.getCenter(center);
 
@@ -49,7 +49,7 @@ const AutoFitModelObject: React.FC<AutoFitModelObjectProps> = ({ model, modelAss
 
       orbitControls.update();
     }
-    
+
     if (onThumbnailUpdate) {
       gl.render(scene, camera);
       onThumbnailUpdate(gl.domElement.toDataURL());
@@ -63,7 +63,7 @@ const AutoFitModelObject: React.FC<AutoFitModelObjectProps> = ({ model, modelAss
   }, [orbitControls]);
 
   return <>
-  {controlsLoaded && <ModelObject model={model} modelAssets={modelAssets} onUpdate={onObjectUpdate} />}
+    {controlsLoaded && <ModelObject model={model} modelAssets={modelAssets} onUpdate={onObjectUpdate} />}
   </>
 };
 

@@ -6,39 +6,65 @@ import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
 import ModelPreview from "@/components/visualization/ModelPreview";
 import { useModel } from "@/hooks/model";
+import { api } from "@/network";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { AccessType } from "types";
-import { UploadModelFormData } from "./upload";
+import { AccessType, DataUrlFile, GetModel } from "types";
 
 const ModelId = () => {
   const router = useRouter()
   const { id } = router.query
 
-  const {data: apiModel} = useModel(id ? id as string : null)
-  const [model, setModel] = useState<UploadModelFormData>({
-    name: '',
-    modelAssets: [],
-    domainTags: [],
-    accessType: AccessType.PRIVATE,
-  })
+  const { data: apiModel } = useModel(id?.toString() ?? '')
+  const [model, setModel] = useState<GetModel>();
 
   useEffect(() => {
     if (apiModel) {
-        setModel(apiModel);
+      setModel(apiModel);
     }
   }, [apiModel]);
-  
-  const setTags = (val: string[]) => setModel({...model, domainTags: val});
-  const setName = (val: string) => setModel({...model, name: val});
-  const setAccessType = (val: AccessType) => setModel({...model, accessType: val});
 
-  const onDownload = () => {
+  if (!model) {
+    return <></>
+  }
 
+  const setTags = (val: string[]) => setModel({ ...model, domainTags: val });
+  const setName = (val: string) => setModel({ ...model, name: val });
+  const setAccessType = (val: AccessType) => setModel({ ...model, accessType: val });
+
+  const downloadFile = (file: DataUrlFile) => {
+    var a = document.createElement("a");
+    a.href = file.dataUrl;
+    a.download = file.filename;
+    a.click();
+  }
+
+  const downloadModel = () => {
+    if (model.modelObject) {
+      downloadFile(model.modelObject);
+    }
+    if (model.modelAssets) {
+      model.modelAssets.forEach(file => downloadFile(file));
+    }
+  }
+
+  const deleteModel = async () => {
+    await api.deleteModel(model._id);
+    router.push('/model');
+  }
+
+  const updateModel = async () => {
+    await api.patchModel(model._id, {
+      name: model.name,
+      description: model.description,
+      domainTags: model.domainTags,
+      accessType: model.accessType
+    });
+    router.push('/model');
   }
 
   return (<>
-    <div className="h-full flex flex-col text-white">
+    <div className="h-full flex flex-col text-white container mx-auto">
       <div className="flex-1 flex">
         <Card className="mr-2 w-1/4 flex flex-col justify-around">
           <div>
@@ -78,17 +104,17 @@ const ModelId = () => {
         <div className="border-l border-white -my-4"></div>
         <div className="flex-1 px-4">
           <InputLabel>Update</InputLabel>
-          <Button>Update</Button>
+          <Button onClick={updateModel}>Update</Button>
         </div>
         <div className="border-l border-white -my-4"></div>
         <div className="flex-1 px-4">
           <InputLabel>Download</InputLabel>
-          <Button>Download</Button>
+          <Button onClick={downloadModel}>Download</Button>
         </div>
         <div className="border-l border-white -my-4"></div>
         <div className="flex-1 px-4">
           <InputLabel>Delete</InputLabel>
-          <Button>Delete</Button>
+          <Button onClick={deleteModel}>Delete</Button>
         </div>
       </Card>
     </div>

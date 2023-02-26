@@ -5,7 +5,7 @@ import { DataUrlFile } from "types";
 
 export interface PlyModelProps {
   model: DataUrlFile;
-  
+
   onUpdate?: (obj: THREE.Object3D) => void;
 }
 

@@ -1,4 +1,4 @@
-import { Collection, FindCursor, InsertOneResult, ObjectId } from "mongodb";
+import { Collection, DeleteResult, FindCursor, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
 import { AccessType, CollectionName, loggerTitle, ModelDb } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
@@ -32,7 +32,7 @@ const updateOne = (
   userId: string | ObjectId,
   update: Partial<ModelDb>
 ) =>
-  collectionRequest<ModelDb>(CollectionName.MODEL, async (collection) => {
+  collectionRequest<UpdateResult>(CollectionName.MODEL, async (collection) => {
     return collection.updateOne(
       {
         _id: new ObjectId(id),
@@ -43,7 +43,7 @@ const updateOne = (
   });
 
 const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
-  collectionRequest<ModelDb>(CollectionName.MODEL, async (collection) => {
+  collectionRequest<DeleteResult>(CollectionName.MODEL, async (collection) => {
     return collection.deleteOne({
       _id: new ObjectId(id),
       userId: new ObjectId(userId),

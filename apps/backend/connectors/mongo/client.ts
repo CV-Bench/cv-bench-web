@@ -69,7 +69,7 @@ export const collectionRequest = <T>(
           loggerTitle.MONGO_CLIENT,
           "Collection Request Resolved!",
           `Collection: ${collectionName}`,
-          `Result: ` // ${JSON.stringify(result)}
+          `Result: ${JSON.stringify(result)}`
         );
       })
       .catch((e) => {

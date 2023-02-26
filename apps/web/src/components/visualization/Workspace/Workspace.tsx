@@ -4,9 +4,9 @@ import React, { useRef, useState } from "react";
 import ModelObject from "../ModelObject/ModelObject";
 import CameraSphere from "./CameraSphere";
 import RenderCamera from "./RenderCamera";
-import * as THREE from "three";
 import PositionedObject from "./PositionedObject";
 import ScenePropertiesEditor from "./ScenePropertiesEditor/ScenePropertiesEditor";
+import { Layers } from "three";
 
 
 export interface SceneProperties {
@@ -92,7 +92,7 @@ const Workspace: React.FC<WorkspaceProps> = () => {
     showObjectOrigin: false
   })
 
-  const allLayers = new THREE.Layers();
+  const allLayers = new Layers();
   allLayers.enableAll();
   return (
     <div className="relative h-full flex">

@@ -23,6 +23,7 @@ export type DataUrlFile = z.infer<typeof DataUrlFileBody>;
 
 // POST
 export const PostModelBody = PostDataBody.extend({
+  previewImage: z.string(),
   modelType: z.nativeEnum(ModelType),
   modelObject: DataUrlFileBody,
   modelAssets: z.array(DataUrlFileBody).optional()
