@@ -6,6 +6,8 @@ import {
   DeleteObjectCommandOutput,
   GetObjectCommandInput,
   GetObjectCommandOutput,
+  ListObjectsV2CommandInput,
+  ListObjectsV2CommandOutput
 } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
 import { Bucket, createBucketKey } from "types";
@@ -76,6 +78,26 @@ export const getObject = (
     })
     .then(options.onSuccess)
     .catch(options.onError);
+
+export const listObjects = (
+  bucket: Bucket,
+  prefix: string,
+  options: {
+    options?: ListObjectsV2CommandInput;
+    onSuccess?: (out: ListObjectsV2CommandOutput) => any;
+    onError?: () => any;
+  } = {}
+) =>
+  s3Client
+    .listObjectsV2({
+      Bucket: process.env.BUCKET_NAME,
+      Prefix: createBucketKey(bucket, prefix),
+      ...(options.options || {}),
+    })
+    .then(options.onSuccess)
+    .catch(options.onError);
+
+    
 
 const S3 = {
   Model,
