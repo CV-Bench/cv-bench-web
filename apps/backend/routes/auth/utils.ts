@@ -140,6 +140,8 @@ export const createAuthCallbackHandler = (
             .send(
               "<html><body><script>location.href = 'http://localhost:3000/signup'</script></body></html>"
             );
+      }).catch(e => {
+        res.status(500).end();
       });
     } catch (e: any) {
       logger.error(loggerTitle.AUTH_CLIENT, e);
