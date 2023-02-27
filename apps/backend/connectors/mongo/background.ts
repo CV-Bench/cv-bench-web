@@ -1,4 +1,10 @@
-import { DeleteResult, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
+import {
+  DeleteResult,
+  FindCursor,
+  InsertOneResult,
+  ObjectId,
+  UpdateResult,
+} from "mongodb";
 import { CollectionName, BackgroundDb, loggerTitle, AccessType } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
@@ -69,10 +75,10 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
   );
 
 const find = (userId: string | ObjectId) =>
-  collectionRequest<BackgroundDb>(
+  collectionRequest<FindCursor<BackgroundDb>>(
     CollectionName.BACKGROUND,
     async (collection) => {
-      return collection.findOne({
+      return collection.find({
         $or: [
           { userId: new ObjectId(userId) },
           { accessType: AccessType.PUBLIC },

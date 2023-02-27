@@ -7,8 +7,6 @@ const updateBackground = (
   req: TypedRequest<PatchBackground>,
   res: Response
 ) => {
-  // UNTESTED
-
   const userId = new ObjectId("5d71522dc452f78e335d2d8b") as any;
 
   Database.Background.updateOne(req.params.id, userId, req.body)

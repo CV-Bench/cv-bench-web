@@ -4,8 +4,6 @@ import Database from "../../connectors/mongo";
 import S3 from "../../connectors/s3";
 
 const deleteBackground = (req: Request, res: Response) => {
-  // UNTESTED
-
   const userId = new ObjectId("5d71522dc452f78e335d2d8b") as any;
 
   Database.Background.findOne(req.params.id, userId)

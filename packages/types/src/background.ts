@@ -33,7 +33,13 @@ export const PatchBackgroundBody = PostDataBody.pick({
 export type PatchBackground = z.infer<typeof PatchBackgroundBody>;
 
 // GET SINGLE BACKGROUND
-export const GetBackgroundBody = BackgroundBody;
+export const GetBackgroundBody = BackgroundBody.omit({
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  createdAt: z.string().transform((d) => new Date(d)),
+  updatedAt: z.string().transform((d) => new Date(d)),
+});
 export type GetBackground = z.infer<typeof GetBackgroundBody>;
 
 // GET BACKGROUNDS

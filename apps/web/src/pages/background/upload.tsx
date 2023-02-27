@@ -7,6 +7,7 @@ import { useState } from "react";
 import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import { AccessType, PostBackground } from "types";
 import { api } from "@/network";
+import { Router, useRouter } from "next/router";
 
 export interface UploadBackgroundData {
   tags?: string[];
@@ -23,6 +24,7 @@ const UploadBackground = () => {
   const [files, setFiles] = useState<
     { file: File; content: string; name: string }[]
   >([]);
+  const { push } = useRouter();
 
   const onSelectTags = (val: string[]) =>
     setFormData({ ...formData, domainTags: val });
@@ -54,15 +56,11 @@ const UploadBackground = () => {
       });
     }
 
-    console.log(postObject);
-
     api
       .postBackgrounds(postObject)
-      .then((response) => console.log(response))
+      .then(() => push("/background"))
       .catch((e) => console.log(e));
   };
-
-  console.log(files);
 
   return (
     <>
