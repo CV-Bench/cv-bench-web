@@ -1,7 +1,7 @@
 import Dropdown from "@/components/inputs/Dropdown";
 import DropdownDetailed from "@/components/inputs/DropdownDetailed";
 import TagInput from "@/components/inputs/TagInput";
-import TextField from "@/components/inputs/TextField";
+import InputField from "@/components/inputs/InputField";
 import AlarmIcon from "@mui/icons-material/Alarm";
 import ContrastIcon from "@mui/icons-material/Contrast";
 
@@ -26,7 +26,7 @@ const CreateDataset = () => {
           ]}
         />
         <Dropdown options={[{ title: "Option 1" }, { title: "Option 2" }]} />
-        <TextField placeholder="Name" />
+        <InputField placeholder="Name" />
         <TagInput placeholder="Add Tags" />
       </div>
     </>

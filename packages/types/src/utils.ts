@@ -20,8 +20,8 @@ export const DataBody = z.object({
   description: z.string(),
   domainTags: z.array(z.string()),
   accessType: z.nativeEnum(AccessType),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
 });
 
 export const PostDataBody = DataBody.pick({
