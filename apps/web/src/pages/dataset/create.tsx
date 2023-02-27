@@ -1,9 +1,10 @@
-import Dropdown from "@/components/inputs/Dropdown";
-import DropdownDetailed from "@/components/inputs/DropdownDetailed";
-import TagInput from "@/components/inputs/TagInput";
-import InputField from "@/components/inputs/InputField";
 import AlarmIcon from "@mui/icons-material/Alarm";
 import ContrastIcon from "@mui/icons-material/Contrast";
+
+import Dropdown from "@/components/inputs/Dropdown";
+import DropdownDetailed from "@/components/inputs/DropdownDetailed";
+import InputField from "@/components/inputs/InputField";
+import TagInput from "@/components/inputs/TagInput";
 
 const CreateDataset = () => {
   return (

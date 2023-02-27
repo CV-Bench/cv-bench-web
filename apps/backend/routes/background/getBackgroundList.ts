@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 import Database from "../../connectors/mongo";
 
 const getBackgrounds = (req: Request, res: Response) => {

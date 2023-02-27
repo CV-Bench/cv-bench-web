@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 import Database from "../../connectors/mongo";
 
 const getModels = async (req: Request, res: Response) => {

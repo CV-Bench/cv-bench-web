@@ -15,7 +15,20 @@
   "devDependencies": {
     "eslint-config-custom": "*",
     "prettier": "latest",
-    "turbo": "latest"
+    "turbo": "latest",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1"
+  },
+  "prettier": {
+    "semi": true,
+    "printWidth": 80,
+    "trailingComma": "none",
+    "importOrder": [
+      "@/.*",
+      "types",
+      "^([.][.])/?.*$",
+      "^[.]/.*$"
+    ],
+    "importOrderSeparation": true
   },
   "engines": {
     "node": ">=14.0.0"

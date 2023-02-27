@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
-import { PostBackground } from "types";
 import { ObjectId } from "mongodb";
 import sharp from "sharp";
+
+import { PostBackground } from "types";
+
 import Database from "../../connectors/mongo";
 import S3 from "../../connectors/s3";
 
@@ -46,7 +48,7 @@ const uploadBackground = (
             name,
             domainTags,
             accessType,
-            previewImage: resizedImage,
+            previewImage: resizedImage
           });
 
           resolve();

@@ -1,8 +1,9 @@
 import * as z from "zod";
+
 import { DataBody, ObjId, PostDataBody } from "./utils";
 
 export enum DatasetType {
-  "BLENDER_3D",
+  "BLENDER_3D"
 }
 
 export const DatasetBody = DataBody.extend({
@@ -10,7 +11,7 @@ export const DatasetBody = DataBody.extend({
   datasetType: z.nativeEnum(DatasetType),
   configurationId: ObjId,
   size: z.number(),
-  images: z.number(),
+  images: z.number()
 });
 
 export type DatasetDb = z.infer<typeof DatasetBody>;
@@ -29,10 +30,10 @@ export type PatchDataset = z.infer<typeof PatchDatasetBody>;
 // GET
 export const GetDatasetBody = DatasetBody.omit({
   createdAt: true,
-  updatedAt: true,
+  updatedAt: true
 }).extend({
   createdAt: z.string().transform((d) => new Date(d)),
-  updatedAt: z.string().transform((d) => new Date(d)),
+  updatedAt: z.string().transform((d) => new Date(d))
 });
 
 export type GetDataset = z.infer<typeof GetDatasetBody>;

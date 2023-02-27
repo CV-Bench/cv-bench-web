@@ -4,10 +4,13 @@ import {
   FindCursor,
   InsertOneResult,
   ObjectId,
-  UpdateResult,
+  UpdateResult
 } from "mongodb";
+
 import { AccessType, CollectionName, loggerTitle, ModelDb } from "types";
+
 import logger from "../../util/logger";
+
 import { collectionRequest, prepareCollection } from "./";
 import { isUsersOrPublic } from "./utils";
 
@@ -22,7 +25,7 @@ const findOne = (id: string | ObjectId, userId: string | ObjectId) =>
   collectionRequest<ModelDb>(CollectionName.MODEL, async (collection) => {
     return collection.findOne({
       _id: new ObjectId(id),
-      ...isUsersOrPublic(userId),
+      ...isUsersOrPublic(userId)
     });
   });
 
@@ -33,7 +36,7 @@ const insert = (model: Omit<ModelDb, "_id" | "updatedAt" | "createdAt">) =>
       return collection.insertOne({
         ...model,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       });
     }
   );
@@ -47,13 +50,13 @@ const updateOne = (
     return collection.updateOne(
       {
         _id: new ObjectId(id),
-        userId: new ObjectId(userId),
+        userId: new ObjectId(userId)
       },
       {
         $set: {
           ...update,
-          updatedAt: new Date(),
-        },
+          updatedAt: new Date()
+        }
       }
     );
   });
@@ -62,7 +65,7 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
   collectionRequest<DeleteResult>(CollectionName.MODEL, async (collection) => {
     return collection.deleteOne({
       _id: new ObjectId(id),
-      userId: new ObjectId(userId),
+      userId: new ObjectId(userId)
     });
   });
 
@@ -79,7 +82,7 @@ const Model = {
   insert,
   updateOne,
   deleteOne,
-  find,
+  find
 };
 
 export default Model;

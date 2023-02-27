@@ -1,9 +1,9 @@
 import * as z from "zod";
 
-import { PatchModelBody, PostModelBody } from "./model";
-import { PatchDatasetBody, PostDatasetBody } from "./dataset";
-import { PatchNetworkBody, PostNetworkBody } from "./network";
 import { PatchBackgroundBody, PostBackgroundBody } from "./background";
+import { PatchDatasetBody, PostDatasetBody } from "./dataset";
+import { PatchModelBody, PostModelBody } from "./model";
+import { PatchNetworkBody, PostNetworkBody } from "./network";
 import { FinishTaskBody, StopTaskBody } from "./task";
 
 export enum RouteNames {
@@ -35,6 +35,8 @@ export enum RouteNames {
   STOP_TASK = "STOP_TASK",
   GET_TASK = "GET_TASK",
   GET_TASK_LIST = "GET_TASK_LIST",
+
+  GET_NETWORK_ARCHITECTURE_LIST = "GET_NETWORK_ARCHITECTURE_LIST"
 }
 
 interface RouteType {
@@ -53,7 +55,7 @@ const createRoute = (
   route,
   routeRegex,
   validator,
-  createRoutePath,
+  createRoutePath
 });
 
 export const Routes: {
@@ -207,6 +209,13 @@ export const Routes: {
     StopTaskBody,
     (id?: string) => "/task/" + id
   ),
+
+  [RouteNames.GET_NETWORK_ARCHITECTURE_LIST]: createRoute(
+    "/networkArchitecture",
+    /^\/networkArchitecture\/?get$/,
+    z.object({}),
+    () => "/networkArchitecture"
+  )
 };
 
 export const findRouteValidator = (currentRoute: string) =>

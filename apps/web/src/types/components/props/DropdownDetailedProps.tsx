@@ -5,9 +5,9 @@ type DropdownDetailedProps = {
 };
 
 type DropdownDetailedOption = {
-    title: string;
-    description: string;
-    icon: SvgIconComponent;
+  title: string;
+  description: string;
+  icon: SvgIconComponent;
 };
 
 export default DropdownDetailedProps;

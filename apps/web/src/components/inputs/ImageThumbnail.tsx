@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import React from "react";
 
 interface ImageThumbnailProps {
   source: string;

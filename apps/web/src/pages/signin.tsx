@@ -1,9 +1,10 @@
-import LoginWithButton from "@/components/auth/LoginWithButton";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { MutatingDots } from "react-loader-spinner";
 import useSWR from "swr";
+
+import LoginWithButton from "@/components/auth/LoginWithButton";
 
 const Signin = () => {
   return (

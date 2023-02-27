@@ -1,5 +1,5 @@
 const DatasetList = () => {
-    return(<></>);
-}
+  return <></>;
+};
 
 export default DatasetList;

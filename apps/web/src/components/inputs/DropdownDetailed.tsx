@@ -1,8 +1,9 @@
-import DropdownDetailedProps from "@/types/components/props/DropdownDetailedProps";
-import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import classNames from "classnames";
+import { Fragment, useState } from "react";
+
+import DropdownDetailedProps from "@/types/components/props/DropdownDetailedProps";
 
 const DropdownDetailed = ({ options }: DropdownDetailedProps) => {
   const [selected, setSelected] = useState(options[0]);
@@ -15,7 +16,7 @@ const DropdownDetailed = ({ options }: DropdownDetailedProps) => {
               <div className="inline-flex divide-x divide-indigo-600 rounded-md shadow-sm m-2">
                 <div className="inline-flex divide-x divide-indigo-600 rounded-md shadow-sm">
                   <div className="inline-flex items-center rounded-l-md border border-transparent bg-indigo-500 py-2 pl-3 pr-4 text-white shadow-sm">
-                    <selected.icon className={"h-5 w-5"}/>
+                    <selected.icon className={"h-5 w-5"} />
                     <p className="ml-2.5 text-sm font-medium">
                       {selected.title}
                     </p>
@@ -68,9 +69,7 @@ const DropdownDetailed = ({ options }: DropdownDetailedProps) => {
                               </span>
                             ) : null}
                           </div>
-                          <p
-                            className={"mt-2 text-gray-200"}
-                          >
+                          <p className={"mt-2 text-gray-200"}>
                             {option.description}
                           </p>
                         </div>

@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
+
 import { findRouteValidator, loggerTitle } from "types";
+
 import logger from "../util/logger";
 
 const validatorMiddleware = (

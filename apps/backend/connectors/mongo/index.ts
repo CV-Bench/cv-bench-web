@@ -1,15 +1,16 @@
+import Background from "./background";
+import Dataset from "./dataset";
+import Model from "./model";
+import NetworkArchitecture from "./networkArchitecture";
+import User from "./user";
+
 export {
   cvBenchDb,
   clientNotReady,
   prepareCollection,
-  collectionRequest,
+  collectionRequest
 } from "./client";
 
-import Model from "./model";
-import Dataset from "./dataset";
-import User from "./user";
-import Background from "./background";
-
-const Database = { Model, Dataset, User, Background };
+const Database = { Model, Dataset, User, Background, NetworkArchitecture };
 
 export default Database;

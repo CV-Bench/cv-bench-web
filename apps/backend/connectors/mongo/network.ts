@@ -4,10 +4,13 @@ import {
   FindCursor,
   InsertOneResult,
   ObjectId,
-  UpdateResult,
+  UpdateResult
 } from "mongodb";
+
 import { AccessType, CollectionName, NetworkDb, loggerTitle } from "types";
+
 import logger from "../../util/logger";
+
 import { collectionRequest, prepareCollection } from "./";
 import { isUsersOrPublic } from "./utils";
 
@@ -22,7 +25,7 @@ const findOne = (id: string | ObjectId, userId: string) =>
   collectionRequest<NetworkDb>(CollectionName.NETWORK, async (collection) => {
     return collection.findOne({
       _id: new ObjectId(id),
-      ...isUsersOrPublic(userId),
+      ...isUsersOrPublic(userId)
     });
   });
 
@@ -33,7 +36,7 @@ const insert = (model: Omit<NetworkDb, "_id" | "createdAt" | "updatedAt">) =>
       return collection.insertOne({
         ...model,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       });
     }
   );
@@ -49,13 +52,13 @@ const updateOne = (
       return collection.updateOne(
         {
           _id: new ObjectId(id),
-          userId: new ObjectId(userId),
+          userId: new ObjectId(userId)
         },
         {
           $set: {
             ...update,
-            updatedAt: new Date(),
-          },
+            updatedAt: new Date()
+          }
         }
       );
     }
@@ -67,7 +70,7 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
     async (collection) => {
       return collection.deleteOne({
         _id: new ObjectId(id),
-        userId: new ObjectId(userId),
+        userId: new ObjectId(userId)
       });
     }
   );
@@ -79,8 +82,8 @@ const find = (userId: string | ObjectId) =>
       return collection.findOne({
         $or: [
           { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC },
-        ],
+          { accessType: AccessType.PUBLIC }
+        ]
       });
     }
   );
@@ -90,7 +93,7 @@ const Network = {
   insert,
   updateOne,
   deleteOne,
-  find,
+  find
 };
 
 export default Network;

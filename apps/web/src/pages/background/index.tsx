@@ -1,6 +1,7 @@
-import { useBackgroundList } from "@/hooks/background";
-import BackgroundCard from "@/components/inputs/BackgroundCard";
 import Link from "next/link";
+
+import BackgroundCard from "@/components/inputs/BackgroundCard";
+import { useBackgroundList } from "@/hooks/background";
 
 const BackgroundList: React.FC = () => {
   const { data: backgrounds } = useBackgroundList();

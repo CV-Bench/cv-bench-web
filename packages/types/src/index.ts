@@ -1,8 +1,9 @@
 import * as z from "zod";
+
 import { AccessType, ObjId } from "./utils";
 
 export enum DatasetFormat {
-  COCO = "COCO",
+  COCO = "COCO"
 }
 
 export enum loggerTitle {
@@ -12,17 +13,6 @@ export enum loggerTitle {
   MONGO_CLIENT = "MONGO CLIENT",
   AUTH_CLIENT = "AUTH CLIENT"
 }
-
-export const NetworkArchitectureBody = z.object({
-  _id: ObjId,
-  name: z.string(),
-  identifier: z.string(),
-  description: z.string(),
-  createdAt: z.date(),
-  requiredDatasetFormat: z.nativeEnum(DatasetFormat),
-});
-
-export type NetworkArchitecture = z.infer<typeof NetworkArchitectureBody>;
 
 export * from "./utils";
 export * from "./model";
@@ -36,5 +26,6 @@ export * from "./task";
 export * from "./routes";
 export * from "./mongo";
 export * from "./s3";
-export {AccessType} from './utils';
+export { AccessType } from "./utils";
 export * from "./auth";
+export * from "./networkArchitecture";

@@ -7,10 +7,12 @@ import {
   GetObjectCommandInput,
   GetObjectCommandOutput,
   ListObjectsV2CommandInput,
-  ListObjectsV2CommandOutput,
+  ListObjectsV2CommandOutput
 } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
+
 import { Bucket, createBucketKey } from "types";
+
 import { Background } from "./background";
 import { Model } from "./model";
 
@@ -19,8 +21,8 @@ export const s3Client = new _S3({
   region: process.env.S3_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-  },
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ""
+  }
 });
 
 export const putObject = (
@@ -38,7 +40,7 @@ export const putObject = (
       Bucket: process.env.BUCKET_NAME,
       Body: body,
       Key: createBucketKey(bucket, key),
-      ...(options.options || {}),
+      ...(options.options || {})
     })
     .then(options.onSuccess)
     .catch(options.onError);
@@ -56,7 +58,7 @@ export const deleteObject = (
     .deleteObject({
       Bucket: process.env.BUCKET_NAME,
       Key: createBucketKey(bucket, key),
-      ...(options.options || {}),
+      ...(options.options || {})
     })
     .then(options.onSuccess)
     .catch(options.onError);
@@ -74,7 +76,7 @@ export const getObject = (
     .getObject({
       Bucket: process.env.BUCKET_NAME,
       Key: createBucketKey(bucket, key),
-      ...(options.options || {}),
+      ...(options.options || {})
     })
     .then(options.onSuccess)
     .catch(options.onError);
@@ -92,14 +94,14 @@ export const listObjects = (
     .listObjectsV2({
       Bucket: process.env.BUCKET_NAME,
       Prefix: createBucketKey(bucket, prefix),
-      ...(options.options || {}),
+      ...(options.options || {})
     })
     .then(options.onSuccess)
     .catch(options.onError);
 
 const S3 = {
   Model,
-  Background,
+  Background
 };
 
 export default S3;

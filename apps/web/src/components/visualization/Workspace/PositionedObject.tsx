@@ -1,6 +1,7 @@
 import { Box, TransformControls } from "@react-three/drei";
 import React, { PropsWithChildren } from "react";
 import { DoubleSide } from "three";
+
 import { SceneProperties } from "./Workspace";
 
 export interface PositionedObjectProps

@@ -1,9 +1,11 @@
-import { api } from "@/network";
-import useSWR from "swr";
-import { RouteNames, getRoute } from "types";
+import useSWR, { SWRResponse } from "swr";
 
-export const useModel = (id: string) =>
+import { api } from "@/network";
+
+import { GetModel, GetModelList, RouteNames, getRoute } from "types";
+
+export const useModel = (id: string): SWRResponse<GetModel> =>
   useSWR(getRoute(RouteNames.GET_MODEL)(id), () => api.getModel(id));
 
-export const useModelList = () =>
+export const useModelList = (): SWRResponse<GetModelList> =>
   useSWR(getRoute(RouteNames.GET_MODEL_LIST)(), api.getModelList);

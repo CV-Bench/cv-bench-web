@@ -1,4 +1,5 @@
 import * as z from "zod";
+
 import { ObjId } from "./utils";
 
 export enum AuthProvider {
@@ -14,7 +15,7 @@ export const SessionUser = z.object({
   email: z.string().email(),
   picture: z.string().url().optional(),
   provider: z.nativeEnum(AuthProvider),
-  locale: z.string().optional(),
+  locale: z.string().optional()
 });
 
 export type SessionUser = z.infer<typeof SessionUser>;

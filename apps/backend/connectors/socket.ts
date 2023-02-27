@@ -1,20 +1,25 @@
-import { Server } from "socket.io";
-import { redisClient } from "../connectors/redis";
+import { NextFunction, Request, Response } from "express";
 import { RateLimiterRedis } from "rate-limiter-flexible";
+import { Server } from "socket.io";
+
+import { redisClient } from "../connectors/redis";
 import { sessionMiddleware } from "../middleware/session";
-import {NextFunction, Request, Response} from "express";
 
 const rateLimiter = new RateLimiterRedis({
   storeClient: redisClient,
   keyPrefix: "rateLimiterSocket",
   points: 10, // 10 requests
-  duration: 1, //per 1 second
+  duration: 1 //per 1 second
 });
 
 const io = new Server(parseInt(process.env.SOCKET_PORT || "3002"), {});
 
 io.use((socket, next) => {
-    sessionMiddleware(socket.request as Request, {} as Response, next as NextFunction);
+  sessionMiddleware(
+    socket.request as Request,
+    {} as Response,
+    next as NextFunction
+  );
 });
 
 io.on("connection", (socket) => {

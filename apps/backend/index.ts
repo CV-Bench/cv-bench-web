@@ -1,54 +1,56 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
-import { sessionMiddleware } from "./middleware/session";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import express, { Express, Request, Response } from "express";
 import helmet from "helmet";
-import googleAuthRouter from "./routes/auth/google";
-import logger from "./util/logger";
-import loggerMiddleware from "./middleware/logger";
-import validatorMiddleware from "./middleware/validator";
+
 import {
   RouteNames,
   route,
   loggerTitle,
   SessionUser,
-  AuthProvider,
+  AuthProvider
 } from "types";
 
-import {
-  deleteModel,
-  getModel,
-  getModelList,
-  updateModel,
-  uploadModel,
-} from "./routes/model";
+import authMiddleware from "./middleware/auth";
+import loggerMiddleware from "./middleware/logger";
+import { sessionMiddleware } from "./middleware/session";
+import validatorMiddleware from "./middleware/validator";
+import getUser from "./routes/auth/getUser";
+import googleAuthRouter from "./routes/auth/google";
+import logout from "./routes/auth/logout";
+import microsoftAuthRouter from "./routes/auth/microsoft";
+import signup from "./routes/auth/signup";
 import {
   deleteBackground,
   getBackground,
   getBackgroundList,
   updateBackground,
-  uploadBackground,
+  uploadBackground
 } from "./routes/background";
-import authMiddleware from "./middleware/auth";
-import getUser from "./routes/auth/getUser";
 import {
   getDatasetList,
   getDataset,
   deleteDataset,
   createDataset,
-  updateNetwork,
+  updateNetwork
 } from "./routes/dataset";
 import updateDataset from "./routes/dataset/updateDataset";
+import {
+  deleteModel,
+  getModel,
+  getModelList,
+  updateModel,
+  uploadModel
+} from "./routes/model";
 import {
   getNetworkList,
   getNetwork,
   deleteNetwork,
-  createNetwork,
+  createNetwork
 } from "./routes/network";
+import { getNetworkArchitectureList } from "./routes/networkArchitecture";
 import { finishTask, getTask, getTaskList } from "./routes/task";
-import microsoftAuthRouter from "./routes/auth/microsoft";
-import signup from "./routes/auth/signup";
-import logout from "./routes/auth/logout";
+import logger from "./util/logger";
 
 declare module "express-session" {
   interface SessionData {
@@ -86,7 +88,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(helmet());
 app.use(
   bodyParser.urlencoded({
-    extended: true,
+    extended: true
   })
 );
 app.use(sessionMiddleware);
@@ -136,6 +138,12 @@ app.get(route(RouteNames.GET_TASK_LIST), getTaskList);
 app.get(route(RouteNames.GET_TASK), getTask);
 app.post(route(RouteNames.FINISH_TASK), finishTask);
 app.post(route(RouteNames.STOP_TASK), finishTask);
+
+// NETWORK ARCHITECTURE
+app.get(
+  route(RouteNames.GET_NETWORK_ARCHITECTURE_LIST),
+  getNetworkArchitectureList
+);
 
 app.listen(port, () => {
   logger.info(

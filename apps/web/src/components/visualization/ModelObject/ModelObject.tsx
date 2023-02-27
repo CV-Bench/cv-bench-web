@@ -1,7 +1,9 @@
 import React from "react";
+
+import { DataUrlFile } from "types";
+
 import ObjModel from "./ObjModel";
 import PlyModel from "./PlyModel";
-import { DataUrlFile } from "types";
 
 export interface ModelObjectProps {
   model: DataUrlFile | string;

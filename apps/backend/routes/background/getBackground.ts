@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
+
 import Database from "../../connectors/mongo";
 import S3 from "../../connectors/s3";
 
@@ -20,12 +21,12 @@ const getBackground = (req: Request, res: Response) => {
 
               res.status(200).json({
                 ...result,
-                previewImage: image,
+                previewImage: image
               });
             })
             .catch(() => res.status(500).end());
         },
-        onError: () => res.status(404).end(),
+        onError: () => res.status(404).end()
       });
     })
     .catch(() => res.status(500).end());

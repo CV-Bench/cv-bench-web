@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
+
 import Database from "../../connectors/mongo";
 
 const updateModel = async (req: Request, res: Response) => {

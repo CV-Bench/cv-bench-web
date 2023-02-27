@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
+
 import { DataUrlFile, loggerTitle, ModelDb, PostModel } from "types";
+
 import Database from "../../connectors/mongo";
 import { Model } from "../../connectors/s3/model";
 import logger from "../../util/logger";
@@ -17,7 +19,7 @@ const uploadModel = async (req: Request, res: Response) => {
 
   const result = await Database.Model.insert({
     ...dbModel,
-    userId,
+    userId
   });
 
   const basePath = `${result.insertedId}`;

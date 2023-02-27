@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import Dropdown from "@/components/inputs/Dropdown";
 import { useState } from "react";
+
+import Dropdown from "@/components/inputs/Dropdown";
 
 const Signup = () => {
   const [termsAgreed, setTermsAgreed] = useState(false);

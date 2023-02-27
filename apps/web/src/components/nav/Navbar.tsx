@@ -2,11 +2,13 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
-import { Fragment } from "react";
-import NotificationNav from "./NotificationNav";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Fragment } from "react";
+
 import { SessionUser } from "types";
+
+import NotificationNav from "./NotificationNav";
 
 const NavbarRoutes = [
   {

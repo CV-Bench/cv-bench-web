@@ -1,13 +1,19 @@
 import { OrbitControls, TransformControls } from "@react-three/drei";
-import { Canvas, PerspectiveCameraProps, useLoader, useThree } from "@react-three/fiber";
+import {
+  Canvas,
+  PerspectiveCameraProps,
+  useLoader,
+  useThree
+} from "@react-three/fiber";
 import React, { useRef, useState } from "react";
-import ModelObject from "../ModelObject/ModelObject";
-import CameraSphere from "./CameraSphere";
-import RenderCamera from "./RenderCamera";
-import PositionedObject from "./PositionedObject";
-import ScenePropertiesEditor from "./ScenePropertiesEditor/ScenePropertiesEditor";
 import { Layers } from "three";
 
+import ModelObject from "../ModelObject/ModelObject";
+
+import CameraSphere from "./CameraSphere";
+import PositionedObject from "./PositionedObject";
+import RenderCamera from "./RenderCamera";
+import ScenePropertiesEditor from "./ScenePropertiesEditor/ScenePropertiesEditor";
 
 export interface SceneProperties {
   objX: MinMaxProperty;
@@ -22,9 +28,7 @@ export interface SceneProperties {
   camClip: MinMaxProperty;
 }
 
-export interface WorkspaceProps {
-
-}
+export interface WorkspaceProps {}
 
 export interface RangeProperty {
   minHint?: number;
@@ -41,23 +45,22 @@ export interface MinMaxProperty extends RangeProperty {
 }
 
 const Workspace: React.FC<WorkspaceProps> = () => {
-
   const [properties, setProperties] = useState<SceneProperties>({
     objX: {
-      min: -.2,
-      max: .2
+      min: -0.2,
+      max: 0.2
     },
     objY: {
-      min: -.2,
-      max: .2
+      min: -0.2,
+      max: 0.2
     },
     objZ: {
-      min: -.2,
-      max: .2
+      min: -0.2,
+      max: 0.2
     },
 
     camRadius: {
-      min: .3,
+      min: 0.3,
       max: 1.1
     },
     camAzi: {
@@ -76,12 +79,12 @@ const Workspace: React.FC<WorkspaceProps> = () => {
     camFov: {
       minHint: 0,
       maxHint: 180,
-      value: 50,
+      value: 50
     },
     camClip: {
       minHint: 0.01,
-      min: .01,
-      max: 50,
+      min: 0.01,
+      max: 50
     }
   });
 
@@ -90,15 +93,21 @@ const Workspace: React.FC<WorkspaceProps> = () => {
     showCameraFrustum: true,
     showObjectBox: false,
     showObjectOrigin: false
-  })
+  });
 
   const allLayers = new Layers();
   allLayers.enableAll();
   return (
     <div className="relative h-full flex">
-      <ScenePropertiesEditor properties={properties} setProperties={setProperties} />
-      <Canvas className="flex-1" camera={{ layers: allLayers, up: [0, 0, 1], position: [0, 0, 3] }}>
-        <ambientLight intensity={.1} layers={allLayers} />
+      <ScenePropertiesEditor
+        properties={properties}
+        setProperties={setProperties}
+      />
+      <Canvas
+        className="flex-1"
+        camera={{ layers: allLayers, up: [0, 0, 1], position: [0, 0, 3] }}
+      >
+        <ambientLight intensity={0.1} layers={allLayers} />
         <pointLight position={[0, 0, 3]} />
         <directionalLight layers={allLayers} />
         <PositionedObject {...properties}>
@@ -107,11 +116,9 @@ const Workspace: React.FC<WorkspaceProps> = () => {
         <CameraSphere {...properties} />
         <RenderCamera {...properties} />
 
-
         <OrbitControls target={[0, 0, 0]} makeDefault />
       </Canvas>
     </div>
-
   );
 };
 

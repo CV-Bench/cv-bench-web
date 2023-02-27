@@ -1,4 +1,5 @@
 import { DoubleSide } from "three";
+
 import { SceneProperties } from "./Workspace";
 
 const CameraSphere: React.FC<SceneProperties> = ({

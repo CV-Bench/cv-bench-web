@@ -1,16 +1,17 @@
 import * as z from "zod";
+
 import { ObjId } from "./utils";
 
 export enum TaskStatus {
   PENDING = "PENDING",
   RUNNING = "RUNNING",
   ABORTED = "ABORTED",
-  FINISHED = "FINISHED",
+  FINISHED = "FINISHED"
 }
 
 export enum TaskType {
   CREATE_NETWORK = "CREATE_NETWORK",
-  CREATE_DATASET = "CREATE_DATASET",
+  CREATE_DATASET = "CREATE_DATASET"
 }
 
 export const TaskBody = z.object({
@@ -24,24 +25,24 @@ export const TaskBody = z.object({
     .object({
       modelId: ObjId,
       backgrounds: z.array(ObjId),
-      datasetConfigurationId: ObjId,
+      datasetConfigurationId: ObjId
     })
     .or(
       z.object({
         datasetId: ObjId,
-        networkArchitectureId: ObjId,
+        networkArchitectureId: ObjId
       })
-    ),
+    )
 });
 
 export type TaskDb = z.infer<typeof TaskBody>;
 
 export const GetTaskBody = TaskBody.omit({
   createdAt: true,
-  updatedAt: true,
+  updatedAt: true
 }).extend({
   createdAt: z.string().transform((d) => new Date(d)),
-  updatedAt: z.string().transform((d) => new Date(d)),
+  updatedAt: z.string().transform((d) => new Date(d))
 });
 
 export type GetTask = z.infer<typeof GetTaskBody>;

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
+
 import { DataUrlFile, GetModel, ModelDb } from "types";
+
 import Database from "../../connectors/mongo";
 import { Model } from "../../connectors/s3/model";
 
@@ -15,12 +17,12 @@ const getS3Models = (id: string) =>
 
             return {
               filename,
-              dataUrl: await s3Req.Body.transformToString(),
+              dataUrl: await s3Req.Body.transformToString()
             };
           }) ?? [];
 
         resolve(await Promise.all(files));
-      },
+      }
     });
   });
 
@@ -49,7 +51,7 @@ const getModel = async (req: Request, res: Response) => {
   const returnModel: GetModel = {
     ...dbModel,
     modelObject,
-    modelAssets,
+    modelAssets
   };
 
   res.json(returnModel).end();

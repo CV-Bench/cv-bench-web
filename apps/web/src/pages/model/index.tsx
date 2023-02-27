@@ -1,8 +1,9 @@
+import Link from "next/link";
+
 import Button from "@/components/Button";
 import Card from "@/components/Card";
 import Table, { TableHeader, TableItem } from "@/components/Table";
 import { useModelList } from "@/hooks/model";
-import Link from "next/link";
 
 const ModelList = () => {
   const { data: models } = useModelList();

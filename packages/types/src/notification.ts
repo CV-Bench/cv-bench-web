@@ -1,4 +1,5 @@
 import * as z from "zod";
+
 import { ObjId } from "./utils";
 
 export enum NotificationType {}
@@ -11,7 +12,7 @@ export const NotificationBody = z.object({
   isRead: z.boolean(),
   description: z.string(),
   title: z.string(),
-  type: z.nativeEnum(NotificationType),
+  type: z.nativeEnum(NotificationType)
 });
 
 export type NotificationDb = z.infer<typeof NotificationBody>;

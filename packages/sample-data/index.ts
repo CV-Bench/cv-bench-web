@@ -1,4 +1,10 @@
+import { S3 as _S3 } from "@aws-sdk/client-s3";
+import dotenv from "dotenv";
+import fs from "fs";
+import { LoremIpsum } from "lorem-ipsum";
 import { ObjectId } from "mongodb";
+import { Db, MongoClient } from "mongodb";
+
 import {
   AccessType,
   ModelType,
@@ -6,15 +12,11 @@ import {
   CollectionName,
   BackgroundDb,
   Bucket,
-  createBucketKey,
+  createBucketKey
 } from "types";
-import fs from "fs";
-import { Db, MongoClient } from "mongodb";
-import { S3 as _S3 } from "@aws-sdk/client-s3";
-import { LoremIpsum } from "lorem-ipsum";
-import { modelPreview } from "./data/modelPreview";
-import dotenv from "dotenv";
+
 import { backgroundPreview } from "./data/backgroundPreview";
+import { modelPreview } from "./data/modelPreview";
 
 dotenv.config({ path: "../../.env" });
 
@@ -25,8 +27,8 @@ export const s3Client = new _S3({
   region: process.env.S3_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-  },
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ""
+  }
 });
 
 const mongoClient = new MongoClient(process.env.MONGO_CONNECTION_URL || "");
@@ -34,12 +36,12 @@ const mongoClient = new MongoClient(process.env.MONGO_CONNECTION_URL || "");
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
     max: 8,
-    min: 4,
+    min: 4
   },
   wordsPerSentence: {
     max: 16,
-    min: 4,
-  },
+    min: 4
+  }
 });
 
 const createModelsAmount = 5;
@@ -48,13 +50,13 @@ const createBackgroundsAmount = 5;
 const objectFiles: [Buffer, string][] = [
   [fs.readFileSync("./data/models/airplane.ply"), "airplane.ply"],
   [fs.readFileSync("./data/models/big_dolphin.ply"), "big_dolphin.ply"],
-  [fs.readFileSync("./data/models/teapot.obj"), "teapot.obj"],
+  [fs.readFileSync("./data/models/teapot.obj"), "teapot.obj"]
 ];
 
 const backgroundFiles: [Buffer, string][] = [
   [fs.readFileSync("./data/background/1.png"), "1.png"],
   [fs.readFileSync("./data/background/2.png"), "2.png"],
-  [fs.readFileSync("./data/background/3.png"), "3.png"],
+  [fs.readFileSync("./data/background/3.png"), "3.png"]
 ];
 
 // Create Sample Models
@@ -77,7 +79,7 @@ const createModels = async (db: Db) => {
       createdAt: new Date(),
       updatedAt: new Date(),
       modelType: ModelType["3D"],
-      previewImage: modelPreview,
+      previewImage: modelPreview
     };
 
     const obj = objectFiles[Math.floor(Math.random() * objectFiles.length)];
@@ -90,7 +92,7 @@ const createModels = async (db: Db) => {
         Key: createBucketKey(
           Bucket.MODELS,
           id + "." + filename[filename.length - 1]
-        ),
+        )
       })
     );
     newModels.push(newModel);
@@ -98,7 +100,7 @@ const createModels = async (db: Db) => {
 
   await Promise.all([
     db.collection(CollectionName.MODEL).insertMany(newModels),
-    ...newModelsS3,
+    ...newModelsS3
   ]);
 };
 
@@ -121,7 +123,7 @@ const createBackgrounds = async (db: Db) => {
       createdAt: new Date(),
       updatedAt: new Date(),
       previewImage:
-        backgroundPreview[Math.floor(Math.random() * backgroundPreview.length)],
+        backgroundPreview[Math.floor(Math.random() * backgroundPreview.length)]
     };
 
     const obj =
@@ -135,7 +137,7 @@ const createBackgrounds = async (db: Db) => {
         Key: createBucketKey(
           Bucket.BACKGROUNDS,
           id + "." + filename[filename.length - 1]
-        ),
+        )
       })
     );
     newBackgrounds.push(newBackground);
@@ -143,7 +145,7 @@ const createBackgrounds = async (db: Db) => {
 
   await Promise.all([
     db.collection(CollectionName.BACKGROUND).insertMany(newBackgrounds),
-    ...newBackgroundsS3,
+    ...newBackgroundsS3
   ]);
 };
 

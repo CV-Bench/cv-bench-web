@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
+
 import Database from "../../connectors/mongo";
 import S3 from "../../connectors/s3";
 
@@ -20,7 +21,7 @@ const deleteS3Models = (id: string) =>
         );
         resolve(true);
       },
-      onError: () => reject(),
+      onError: () => reject()
     });
   });
 

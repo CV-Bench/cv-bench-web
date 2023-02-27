@@ -1,5 +1,7 @@
 import { Response } from "express";
+
 import { PatchBackground, TypedRequest } from "types";
+
 import Database from "../../connectors/mongo";
 
 const updateBackground = (

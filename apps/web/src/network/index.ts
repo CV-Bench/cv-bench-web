@@ -13,6 +13,8 @@ import {
   GetModelList,
   GetModelListBody,
   GetNetwork,
+  GetNetworkArchitectureList,
+  GetNetworkArchitectureListBody,
   GetNetworkBody,
   GetNetworkList,
   GetNetworkListBody,
@@ -35,6 +37,7 @@ import {
   RouteNames,
   getRoute
 } from "types";
+
 import { network } from "./utils";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_API_URL || "";
@@ -191,5 +194,16 @@ export const api = {
 
     return GetTaskListBody.parse(backgrounds) as GetTaskList;
   },
-  stopTask: (id: string) => postRequest(getRoute(RouteNames.STOP_TASK)(id))
+  stopTask: (id: string) => postRequest(getRoute(RouteNames.STOP_TASK)(id)),
+
+  // NETWORK ARCHITECTURE
+  getNetworkArchitectureList: async () => {
+    const networkArchitectures = await getRequest(
+      getRoute(RouteNames.GET_NETWORK_ARCHITECTURE_LIST)()
+    );
+
+    return GetNetworkArchitectureListBody.parse(
+      networkArchitectures
+    ) as GetNetworkArchitectureList;
+  }
 };

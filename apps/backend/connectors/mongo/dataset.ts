@@ -1,17 +1,15 @@
-<<<<<<< HEAD
 import {
-  Collection,
   DeleteResult,
   FindCursor,
   InsertOneResult,
   ObjectId,
-  UpdateResult,
+  UpdateResult
 } from "mongodb";
-=======
-import { Collection, DeleteResult, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
->>>>>>> 45ea6c3bd381d935dd598278edb1a6d8c6dd093d
+
 import { AccessType, CollectionName, DatasetDb, loggerTitle } from "types";
+
 import logger from "../../util/logger";
+
 import { collectionRequest, prepareCollection } from "./";
 import { isUsersOrPublic } from "./utils";
 
@@ -26,7 +24,7 @@ const findOne = (id: string | ObjectId, userId: string) =>
   collectionRequest<DatasetDb>(CollectionName.DATASET, async (collection) => {
     return collection.findOne({
       _id: new ObjectId(id),
-      ...isUsersOrPublic(userId),
+      ...isUsersOrPublic(userId)
     });
   });
 
@@ -34,7 +32,11 @@ const insert = (model: Omit<DatasetDb, "_id" | "updatedAt" | "createdAt">) =>
   collectionRequest<InsertOneResult>(
     CollectionName.DATASET,
     async (collection) => {
-      return collection.insertOne({...model, updatedAt: new Date(), createdAt: new Date()});
+      return collection.insertOne({
+        ...model,
+        updatedAt: new Date(),
+        createdAt: new Date()
+      });
     }
   );
 
@@ -49,9 +51,9 @@ const updateOne = (
       return collection.updateOne(
         {
           _id: new ObjectId(id),
-          userId: new ObjectId(userId),
+          userId: new ObjectId(userId)
         },
-        { $set: {...update, updatedAt: new Date()} }
+        { $set: { ...update, updatedAt: new Date() } }
       );
     }
   );
@@ -62,7 +64,7 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
     async (collection) => {
       return collection.deleteOne({
         _id: new ObjectId(id),
-        userId: new ObjectId(userId),
+        userId: new ObjectId(userId)
       });
     }
   );
@@ -74,8 +76,8 @@ const find = (userId: string | ObjectId) =>
       return collection.findOne({
         $or: [
           { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC },
-        ],
+          { accessType: AccessType.PUBLIC }
+        ]
       });
     }
   );
@@ -85,7 +87,7 @@ const Dataset = {
   insert,
   updateOne,
   deleteOne,
-  find,
+  find
 };
 
 export default Dataset;
