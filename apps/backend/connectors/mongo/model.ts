@@ -1,4 +1,11 @@
-import { Collection, DeleteResult, FindCursor, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
+import {
+  Collection,
+  DeleteResult,
+  FindCursor,
+  InsertOneResult,
+  ObjectId,
+  UpdateResult,
+} from "mongodb";
 import { AccessType, CollectionName, loggerTitle, ModelDb } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
@@ -54,12 +61,7 @@ const find = (userId: string | ObjectId) =>
   collectionRequest<FindCursor<ModelDb>>(
     CollectionName.MODEL,
     async (collection) => {
-      return collection.find({
-        $or: [
-          { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC },
-        ],
-      });
+      return collection.find(isUsersOrPublic(userId));
     }
   );
 

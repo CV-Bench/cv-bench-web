@@ -3,11 +3,9 @@ import { ObjectId } from "mongodb";
 import Database from "../../connectors/mongo";
 
 const updateModel = async (req: Request, res: Response) => {
-  const userId = new ObjectId(req.session.user?._id);
-
   const updateResult = await Database.Model.updateOne(
     req.params.id,
-    userId,
+    req.session.user?._id,
     req.body
   );
 

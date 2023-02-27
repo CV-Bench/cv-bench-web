@@ -25,10 +25,11 @@ const deleteS3Models = (id: string) =>
   });
 
 const deleteModel = async (req: Request, res: Response) => {
-  const userId = new ObjectId(req.session.user?._id);
-
   // Delete Model from DB
-  const delResult = await Database.Model.deleteOne(req.params.id, userId);
+  const delResult = await Database.Model.deleteOne(
+    req.params.id,
+    req.session.user?._id
+  );
 
   if (delResult.deletedCount != 1) {
     res.status(404).end();
