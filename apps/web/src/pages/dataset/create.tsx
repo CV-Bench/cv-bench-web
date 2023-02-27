@@ -26,8 +26,8 @@ const CreateDataset = () => {
           ]}
         />
         <Dropdown options={[{ title: "Option 1" }, { title: "Option 2" }]} />
-        <InputField placeholder="Name"/>
-        <TagInput placeholder="Add Tags"/>
+        <InputField placeholder="Name" />
+        <TagInput placeholder="Add Tags" />
       </div>
     </>
   );

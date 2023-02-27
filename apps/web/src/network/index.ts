@@ -37,26 +37,26 @@ const fetchCors = (url: RequestInfo | URL, init?: RequestInit | undefined) =>
 
 const createMethod =
   (method: string) =>
-    async <T, B = any>(
-      url: RequestInfo | URL,
-      init?:
-        | (Omit<RequestInit, "body"> & { body: T } & {
+  async <T, B = any>(
+    url: RequestInfo | URL,
+    init?:
+      | (Omit<RequestInit, "body"> & { body: T } & {
           throwError?: boolean;
         })
-        | undefined
-    ) => {
-      const response = await fetchCors(baseUrl + url, {
-        ...init,
-        ...(init && init.body
-          ? { body: JSON.stringify(init.body) }
-          : { body: null }),
-        method
-      });
+      | undefined
+  ) => {
+    const response = await fetchCors(baseUrl + url, {
+      ...init,
+      ...(init && init.body
+        ? { body: JSON.stringify(init.body) }
+        : { body: null }),
+      method
+    });
 
-      network.checkResponse(response, init?.throwError || true);
+    network.checkResponse(response, init?.throwError || true);
 
-      return response.json() as Promise<B>;
-    };
+    return response.json() as Promise<B>;
+  };
 
 const postRequest = createMethod("POST");
 const deleteRequest = createMethod("DELETE");
@@ -81,11 +81,6 @@ export const api = {
   getModelList: async (): Promise<GetModelList> => {
     const models = await getRequest(getRoute(RouteNames.GET_MODEL_LIST)());
 
-    try {
-      GetModelListBody.parse(models);
-    }
-    catch (e) { console.error(e) }
-
     return GetModelListBody.parse(models);
   },
   postModel: async (body: PostModel): Promise<PostModelResponse> => {
@@ -99,7 +94,7 @@ export const api = {
     deleteRequest(getRoute(RouteNames.DELETE_MODEL)(id)),
   patchModel: async (id: string, body: PatchModel) =>
     patchRequest(getRoute(RouteNames.PATCH_MODEL)(id), { body }),
-  downloadModel: () => { },
+  downloadModel: () => {},
 
   // BACKGROUND
   getBackground: async (id: string): Promise<GetBackground> => {
@@ -125,5 +120,5 @@ export const api = {
     deleteRequest(getRoute(RouteNames.DELETE_BACKGROUND)(id)),
   patchBackground: async (id: string, body: PatchBackground) =>
     patchRequest(getRoute(RouteNames.PATCH_BACKGROUND)(id), { body }),
-  downloadBackground: () => { }
+  downloadBackground: () => {}
 };
