@@ -7,7 +7,7 @@ import googleAuthRouter from "./routes/auth/google";
 import logger from "./util/logger";
 import loggerMiddleware from "./middleware/logger";
 import validatorMiddleware from "./middleware/validator";
-import { RouteNames, route, loggerTitle, SessionUser } from "types";
+import { RouteNames, route, loggerTitle, SessionUser, AuthProvider } from "types";
 
 import {
   deleteModel,
@@ -35,8 +35,7 @@ import logout from "./routes/auth/logout";
 declare module "express-session" {
   interface SessionData {
     nonce: {
-      "/google"?: string;
-      "/microsoft"?: string;
+      [key in AuthProvider]?: string;
     }
     user?: SessionUser;
   }

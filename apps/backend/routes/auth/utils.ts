@@ -3,18 +3,18 @@ import { generators } from "openid-client";
 import { BaseClient, Issuer } from "openid-client";
 import { Router } from "express";
 import logger from "../../util/logger";
-import { loggerTitle } from "types";
+import { AuthProvider, loggerTitle } from "types";
 import Database from "../../connectors/mongo";
 import { ObjectId } from "mongodb";
 
 const redirectUriBase =
-  (process.env.HOST_DOMAIN || "http://localhos") + "/auth";
+  (process.env.HOST_DOMAIN || "http://localhost") + "/auth/";
 
 export const createAuthClient = (
   issuerDomain: string,
   clientId: string,
   clientSecret: string,
-  routeName: string
+  authProvider: AuthProvider
 ) => {
   return new Promise<BaseClient>((resolve, reject) => {
     Issuer.discover(issuerDomain)
@@ -28,7 +28,7 @@ export const createAuthClient = (
           new issuer.Client({
             client_id: clientId,
             client_secret: clientSecret,
-            redirect_uris: [redirectUriBase + routeName + "/callback"],
+            redirect_uris: [redirectUriBase + authProvider + "/callback"],
             response_types: ["id_token"],
           })
         );
@@ -49,37 +49,34 @@ export const createAuthClient = (
 export const createAuthProviderRoute = (
   authProviderRouter: Router,
   authProviderClient: BaseClient,
-  routeName: string
+  authProvider: AuthProvider
 ) => {
   authProviderRouter.get(
     "/link",
-    createAuthLinkHandler(authProviderClient, routeName)
+    createAuthLinkHandler(authProviderClient, authProvider)
   );
   authProviderRouter.post(
     "/callback",
-    createAuthCallbackHandler(authProviderClient, routeName)
+    createAuthCallbackHandler(authProviderClient, authProvider)
   );
   return;
 };
 
 export const createAuthLinkHandler = (
   authProviderClient: BaseClient,
-  routeName: string
+  authProvider: AuthProvider
 ): RequestHandler => {
   return async (req: Request, res: Response) => {
-    if(!req.session.nonce)
-        req.session.nonce = {};
+    if (!req.session.nonce) req.session.nonce = {};
     const nonce = generators.nonce();
-    //TODO fix with proper type
-    //@ts-ignore
-    req.session.nonce[routeName] = nonce;
+    req.session.nonce[authProvider] = nonce;
 
     try {
       res.status(200).send(
         authProviderClient.authorizationUrl({
           scope: "openid email profile",
           response_mode: "form_post",
-          redirect_uri: redirectUriBase + routeName + "/callback",
+          redirect_uri: redirectUriBase + authProvider + "/callback",
           nonce: nonce,
         })
       );
@@ -95,20 +92,17 @@ export const createAuthLinkHandler = (
 
 export const createAuthCallbackHandler = (
   authProviderClient: BaseClient,
-  routeName: string
+  authProvider: AuthProvider
 ): RequestHandler => {
   return async (req: Request, res: Response) => {
     try {
-      if(!req.session.nonce)
-        req.session.nonce = {};
+      if (!req.session.nonce) req.session.nonce = {};
       const params = authProviderClient.callbackParams(req);
       const tokenSet = await authProviderClient.callback(
-        redirectUriBase + routeName + "/callback",
+        redirectUriBase + authProvider + "/callback",
         params,
         {
-          //TODO fix ts ignore with type
-          //@ts-ignore
-          nonce: req.session.nonce[routeName],
+          nonce: req.session.nonce[authProvider],
         }
       );
       const tokenClaims = tokenSet.claims();
@@ -119,30 +113,30 @@ export const createAuthCallbackHandler = (
         picture: tokenClaims.picture!,
         locale: tokenClaims.locale!,
         loggedInAt: new Date(),
-        provider: tokenClaims.iss,
+        provider: authProvider,
       };
       res.setHeader("content-type", "text/html");
       res.setHeader("content-security-policy", "script-src 'unsafe-inline'");
       //check if user exists
-
-      //TODO fix database request!
-      Database.User.findOne(req.session.user.id).then((result) => {
-        if (result) {
-          req.session.user!._id = new ObjectId(result._id);
-          res
-            .status(200)
-            .send(
-              "<html><body><script>location.href = 'http://localhost:3000/'</script></body></html>"
-            );
-        } else
-          res
-            .status(200)
-            .send(
-              "<html><body><script>location.href = 'http://localhost:3000/signup'</script></body></html>"
-            );
-      }).catch(e => {
-        res.status(500).end();
-      });
+      Database.User.findOne(req.session.user.id)
+        .then((result) => {
+          if (result) {
+            req.session.user!._id = new ObjectId(result._id);
+            res
+              .status(200)
+              .send(
+                "<html><body><script>location.href = 'http://localhost:3000/'</script></body></html>"
+              );
+          } else
+            res
+              .status(200)
+              .send(
+                "<html><body><script>location.href = 'http://localhost:3000/signup'</script></body></html>"
+              );
+        })
+        .catch((e) => {
+          res.status(500).end();
+        });
     } catch (e: any) {
       logger.error(loggerTitle.AUTH_CLIENT, e);
       res.status(422).end();

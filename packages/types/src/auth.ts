@@ -1,6 +1,11 @@
 import * as z from "zod";
 import { ObjId } from "./utils";
 
+export enum AuthProvider {
+  GOOGLE = "google",
+  MICROSOFT = "microsoft"
+}
+
 export const SessionUser = z.object({
   _id: ObjId.optional(),
   id: z.string(),
@@ -8,7 +13,7 @@ export const SessionUser = z.object({
   loggedInAt: z.date(),
   email: z.string().email(),
   picture: z.string().url().optional(),
-  provider: z.string().url(),
+  provider: z.nativeEnum(AuthProvider),
   locale: z.string().optional(),
 });
 
