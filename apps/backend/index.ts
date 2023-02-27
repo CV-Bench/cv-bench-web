@@ -23,9 +23,23 @@ import {
   updateBackground,
   uploadBackground,
 } from "./routes/background";
-import appTokenMiddleware from "./middleware/appTokenMiddleware";
 import authMiddleware from "./middleware/auth";
 import getUser from "./routes/auth/getUser";
+import {
+  getDatasetList,
+  getDataset,
+  deleteDataset,
+  createDataset,
+  updateNetwork,
+} from "./routes/dataset";
+import updateDataset from "./routes/dataset/updateDataset";
+import {
+  getNetworkList,
+  getNetwork,
+  deleteNetwork,
+  createNetwork,
+} from "./routes/network";
+import { finishTask, getTask, getTaskList } from "./routes/task";
 
 declare module "express-session" {
   interface SessionData {
@@ -64,7 +78,6 @@ app.use(
     extended: true,
   })
 );
-//app.use(appTokenMiddleware);
 app.use(sessionMiddleware);
 app.use(authMiddleware);
 app.use(validatorMiddleware);
@@ -90,13 +103,29 @@ app.delete(route(RouteNames.DELETE_BACKGROUND), deleteBackground);
 app.patch(route(RouteNames.PATCH_BACKGROUND), updateBackground);
 app.post(route(RouteNames.POST_BACKGROUND), uploadBackground);
 
+// DATASET ROUTES
+app.get(route(RouteNames.GET_DATASET_LIST), getDatasetList);
+app.get(route(RouteNames.GET_DATASET), getDataset);
+app.delete(route(RouteNames.DELETE_DATASET), deleteDataset);
+app.patch(route(RouteNames.PATCH_DATASET), updateDataset);
+app.post(route(RouteNames.POST_DATASET), createDataset);
+
+// NETWORK ROUTES
+app.get(route(RouteNames.GET_NETWORK_LIST), getNetworkList);
+app.get(route(RouteNames.GET_NETWORK), getNetwork);
+app.delete(route(RouteNames.DELETE_NETWORK), deleteNetwork);
+app.patch(route(RouteNames.PATCH_NETWORK), updateNetwork);
+app.post(route(RouteNames.POST_NETWORK), createNetwork);
+
+// TASK ROUTES
+app.get(route(RouteNames.GET_TASK_LIST), getTaskList);
+app.get(route(RouteNames.GET_TASK), getTask);
+app.post(route(RouteNames.FINISH_TASK), finishTask);
+app.post(route(RouteNames.STOP_TASK), finishTask);
+
 app.listen(port, () => {
   logger.info(
     loggerTitle.EXPRESS_SERVER,
     `⚡️ Server is running at http://localhost:${port}`
   );
-});
-
-app.get("/", (req, res) => {
-  res.status(200).send("HI");
 });

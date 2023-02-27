@@ -18,8 +18,6 @@ const uploadModel = async (req: Request, res: Response) => {
 
   const result = await Database.Model.insert({
     ...dbModel,
-    createdAt: new Date(),
-    updatedAt: new Date(),
     userId,
   });
 

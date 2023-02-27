@@ -6,6 +6,7 @@ export enum CollectionName {
   USER = "users",
   DATASET = "datasets",
   NETWORK = "networks",
+  TASK = "tasks",
 }
 
 export type CollectionCollection = { [name in CollectionName]?: Collection };

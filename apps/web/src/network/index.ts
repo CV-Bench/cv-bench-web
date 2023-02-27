@@ -4,18 +4,34 @@ import {
   GetBackgroundBody,
   GetBackgroundList,
   GetBackgroundListBody,
+  GetDataset,
+  GetDatasetBody,
+  GetDatasetList,
+  GetDatasetListBody,
   GetModel,
   GetModelBody,
   GetModelList,
   GetModelListBody,
+  GetNetwork,
+  GetNetworkBody,
+  GetNetworkList,
+  GetNetworkListBody,
+  GetTask,
+  GetTaskBody,
+  GetTaskList,
+  GetTaskListBody,
   PatchBackground,
+  PatchDataset,
   PatchModel,
+  PatchNetwork,
   PostBackground,
   PostBackgroundResponse,
   PostBackgroundResponseBody,
+  PostDataset,
   PostModel,
   PostModelResponse,
   PostModelResponseBody,
+  PostNetwork,
   RouteNames,
   getRoute
 } from "types";
@@ -29,9 +45,7 @@ const fetchCors = (url: RequestInfo | URL, init?: RequestInit | undefined) =>
     credentials: "include",
     mode: "cors",
     headers: new Headers({
-      "Content-Type": "application/json",
-      [process.env.NEXT_PUBLIC_APP_TOKEN_KEY as string]: process.env
-        .NEXT_PUBLIC_APP_TOKEN as string
+      "Content-Type": "application/json"
     })
   });
 
@@ -94,7 +108,6 @@ export const api = {
     deleteRequest(getRoute(RouteNames.DELETE_MODEL)(id)),
   patchModel: async (id: string, body: PatchModel) =>
     patchRequest(getRoute(RouteNames.PATCH_MODEL)(id), { body }),
-  downloadModel: () => {},
 
   // BACKGROUND
   getBackground: async (id: string): Promise<GetBackground> => {
@@ -108,12 +121,6 @@ export const api = {
     const backgrounds = await getRequest(
       getRoute(RouteNames.GET_BACKGROUND_LIST)()
     );
-
-    try {
-      GetBackgroundListBody.parse(backgrounds);
-    } catch (e) {
-      console.error(e);
-    }
 
     return GetBackgroundListBody.parse(backgrounds) as GetBackgroundList;
   },
@@ -130,5 +137,59 @@ export const api = {
     deleteRequest(getRoute(RouteNames.DELETE_BACKGROUND)(id)),
   patchBackground: async (id: string, body: PatchBackground) =>
     patchRequest(getRoute(RouteNames.PATCH_BACKGROUND)(id), { body }),
-  downloadBackground: () => {}
+
+  // DATASET
+  getDataset: async (id: string): Promise<GetDataset> => {
+    const background = await getRequest(getRoute(RouteNames.GET_DATASET)(id));
+
+    return GetDatasetBody.parse(background);
+  },
+  getDatasetList: async (): Promise<GetDatasetList> => {
+    const backgrounds = await getRequest(
+      getRoute(RouteNames.GET_DATASET_LIST)()
+    );
+
+    return GetDatasetListBody.parse(backgrounds) as GetDatasetList;
+  },
+  postDatasets: async (body: PostDataset): Promise<{}> =>
+    postRequest(getRoute(RouteNames.POST_DATASET)(), { body }),
+  deleteDataset: (id: string) =>
+    deleteRequest(getRoute(RouteNames.DELETE_DATASET)(id)),
+  patchDataset: async (id: string, body: PatchDataset) =>
+    patchRequest(getRoute(RouteNames.PATCH_DATASET)(id), { body }),
+
+  // NETWORK
+  getNetwork: async (id: string): Promise<GetNetwork> => {
+    const background = await getRequest(getRoute(RouteNames.GET_NETWORK)(id));
+
+    return GetNetworkBody.parse(background);
+  },
+  getNetworkList: async (): Promise<GetNetworkList> => {
+    const backgrounds = await getRequest(
+      getRoute(RouteNames.GET_NETWORK_LIST)()
+    );
+
+    return GetNetworkListBody.parse(backgrounds) as GetNetworkList;
+  },
+  postNetworks: async (body: PostNetwork): Promise<{}> =>
+    postRequest(getRoute(RouteNames.POST_NETWORK)(), { body }),
+  deleteNetwork: (id: string) =>
+    deleteRequest(getRoute(RouteNames.DELETE_NETWORK)(id)),
+  patchNetwork: async (id: string, body: PatchNetwork) =>
+    patchRequest(getRoute(RouteNames.PATCH_NETWORK)(id), { body }),
+
+  // TASK
+  getTask: async (id: string): Promise<GetTask> => {
+    const background = await getRequest(getRoute(RouteNames.GET_NETWORK)(id));
+
+    return GetTaskBody.parse(background);
+  },
+  getTaskList: async (): Promise<GetTaskList> => {
+    const backgrounds = await getRequest(
+      getRoute(RouteNames.GET_NETWORK_LIST)()
+    );
+
+    return GetTaskListBody.parse(backgrounds) as GetTaskList;
+  },
+  stopTask: (id: string) => postRequest(getRoute(RouteNames.STOP_TASK)(id))
 };

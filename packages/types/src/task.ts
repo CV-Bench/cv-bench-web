@@ -20,18 +20,41 @@ export const TaskBody = z.object({
   updatedAt: z.date(),
   status: z.nativeEnum(TaskStatus),
   type: z.nativeEnum(TaskType),
-  info: z.object({
-    modelId: ObjId.optional(),
-    datasetId: ObjId.optional(),
-    networkArchitectureId: ObjId.optional(),
-  }),
+  info: z
+    .object({
+      modelId: ObjId,
+      backgrounds: z.array(ObjId),
+    })
+    .or(
+      z.object({
+        datasetId: ObjId,
+        networkArchitectureId: ObjId,
+      })
+    ),
 });
 
 export type TaskDb = z.infer<typeof TaskBody>;
 
-export const PostTaskBody = TaskBody.pick({
-  type: true,
-  info: true,
+export const GetTaskBody = TaskBody.omit({
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  createdAt: z.string().transform((d) => new Date(d)),
+  updatedAt: z.string().transform((d) => new Date(d)),
 });
 
-export type PostTask = z.infer<typeof PostTaskBody>;
+export type GetTask = z.infer<typeof GetTaskBody>;
+
+export const GetTaskListBody = z.array(GetTaskBody.omit({ info: true }));
+
+export type GetTaskList = z.infer<typeof GetTaskListBody>;
+
+// FINISH TASK
+export const FinishTaskBody = z.object({ taskId: z.string() });
+
+export type FinishTask = z.infer<typeof FinishTaskBody>;
+
+// STOP TASK
+export const StopTaskBody = z.object({ taskId: z.string() });
+
+export type StopTask = z.infer<typeof StopTaskBody>;

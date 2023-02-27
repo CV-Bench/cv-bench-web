@@ -1,4 +1,11 @@
-import { Collection, DeleteResult, FindCursor, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
+import {
+  Collection,
+  DeleteResult,
+  FindCursor,
+  InsertOneResult,
+  ObjectId,
+  UpdateResult,
+} from "mongodb";
 import { AccessType, CollectionName, loggerTitle, ModelDb } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
@@ -19,11 +26,15 @@ const findOne = (id: string | ObjectId, userId: string) =>
     });
   });
 
-const insert = (model: Omit<ModelDb, "_id">) =>
+const insert = (model: Omit<ModelDb, "_id" | "updatedAt" | "createdAt">) =>
   collectionRequest<InsertOneResult>(
     CollectionName.MODEL,
     async (collection) => {
-      return collection.insertOne(model);
+      return collection.insertOne({
+        ...model,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
     }
   );
 
@@ -38,7 +49,12 @@ const updateOne = (
         _id: new ObjectId(id),
         userId: new ObjectId(userId),
       },
-      { $set: update }
+      {
+        $set: {
+          ...update,
+          updatedAt: new Date(),
+        },
+      }
     );
   });
 
