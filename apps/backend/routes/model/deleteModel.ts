@@ -22,8 +22,7 @@ const deleteS3Models = (id: string) => new Promise((resolve, reject) => {
 })
 
 const deleteModel = async (req: Request, res: Response) => {
-  // ToDo: set user id from session when available
-  const userId = new ObjectId("5d71522dc452f78e335d2d8b") as any;
+  const userId = new ObjectId(req.session.user?._id);
 
   // Delete Model from DB
   const delResult = await Database.Model.deleteOne(req.params.id, userId);
