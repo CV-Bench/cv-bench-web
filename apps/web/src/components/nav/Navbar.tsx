@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
@@ -48,7 +49,7 @@ const ProfileDropdownRoutes = [
   }
 ];
 
-const Navbar = ({user}:{user: SessionUser}) => {
+const Navbar = ({ user }: { user: SessionUser }) => {
   const route = useRouter();
 
   const activeNavbarRoute = NavbarRoutes.findIndex(({ matcher }) =>

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Dropdown from "@/components/inputs/Dropdown";
 import { useState } from "react";
 
@@ -14,13 +15,17 @@ const Signup = () => {
             alt="Your Company"
           />
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
-            Hey, you're new here
+            Hey, youre new here
           </h2>
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" action={"http://localhost:3001/auth/signup"} method="POST">
+            <form
+              className="space-y-6"
+              action={"http://localhost:3001/auth/signup"}
+              method="POST"
+            >
               <div className="relative flex items-start">
                 <div className="flex h-5 items-center">
                   <input
@@ -29,7 +34,9 @@ const Signup = () => {
                     name="terms"
                     type="checkbox"
                     checked={termsAgreed}
-                    onChange={() => {setTermsAgreed(!termsAgreed)}}
+                    onChange={() => {
+                      setTermsAgreed(!termsAgreed);
+                    }}
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                     required
                   />
@@ -47,7 +54,7 @@ const Signup = () => {
                   className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:saturate-0 disabled:cursor-no-drop"
                   disabled={!termsAgreed}
                 >
-                  Let's start
+                  Lets start
                 </button>
               </div>
             </form>
