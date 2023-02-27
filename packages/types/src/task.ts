@@ -24,6 +24,7 @@ export const TaskBody = z.object({
     .object({
       modelId: ObjId,
       backgrounds: z.array(ObjId),
+      datasetConfigurationId: ObjId,
     })
     .or(
       z.object({
