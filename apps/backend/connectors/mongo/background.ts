@@ -1,4 +1,4 @@
-import { InsertOneResult, ObjectId } from "mongodb";
+import { DeleteResult, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
 import { CollectionName, BackgroundDb, loggerTitle, AccessType } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
@@ -22,11 +22,15 @@ const findOne = (id: string | ObjectId, userId: string) =>
     }
   );
 
-const insert = (model: Omit<BackgroundDb, "_id">) =>
+const insertOne = (background: Omit<BackgroundDb, "createdAt" | "updatedAt">) =>
   collectionRequest<InsertOneResult>(
     CollectionName.BACKGROUND,
     async (collection) => {
-      return collection.insertOne(model);
+      return collection.insertOne({
+        ...background,
+        updatedAt: new Date(),
+        createdAt: new Date(),
+      });
     }
   );
 
@@ -35,7 +39,7 @@ const updateOne = (
   userId: string | ObjectId,
   update: Partial<BackgroundDb>
 ) =>
-  collectionRequest<BackgroundDb>(
+  collectionRequest<UpdateResult>(
     CollectionName.BACKGROUND,
     async (collection) => {
       return collection.updateOne(
@@ -43,13 +47,18 @@ const updateOne = (
           _id: new ObjectId(id),
           userId: new ObjectId(userId),
         },
-        { $set: update }
+        {
+          $set: {
+            ...update,
+            updatedAt: new Date(),
+          },
+        }
       );
     }
   );
 
 const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
-  collectionRequest<BackgroundDb>(
+  collectionRequest<DeleteResult>(
     CollectionName.BACKGROUND,
     async (collection) => {
       return collection.deleteOne({
@@ -74,7 +83,7 @@ const find = (userId: string | ObjectId) =>
 
 const Background = {
   findOne,
-  insert,
+  insertOne,
   updateOne,
   deleteOne,
   find,

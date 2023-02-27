@@ -2,6 +2,7 @@ import * as z from "zod";
 import { PatchModelBody, PostModelBody } from "./model";
 import { PostDatasetBody } from "./dataset";
 import { PostNetworkBody } from "./network";
+import { PostBackgroundBody } from "./background";
 
 export enum RouteNames {
   GET_MODEL_LIST = "GET_MODEL_LIST",
@@ -121,10 +122,10 @@ export const Routes: {
     (id?: string) => "/background/" + id
   ),
   [RouteNames.POST_BACKGROUND]: createRoute(
-    "/background/:id",
-    /^\/background\/.*\/?post$/,
-    PostModelBody,
-    (id?: string) => "/background/" + id
+    "/background",
+    /^\/background\/?post$/,
+    PostBackgroundBody,
+    () => "/background/"
   ),
   [RouteNames.DOWNLOAD_BACKGROUND]: createRoute(
     "/background/download/:id",

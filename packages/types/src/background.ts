@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { DataBody, PostDataBody } from "./utils";
+import { AccessType, DataBody, PostDataBody } from "./utils";
 
 export const BackgroundBody = DataBody.omit({ description: true }).extend({
   previewImage: z.string(),
@@ -16,6 +16,7 @@ export const PostBackgroundBody = z.object({
     })
   ),
   domainTags: z.array(z.string()),
+  accessType: z.nativeEnum(AccessType),
 });
 
 export type PostBackground = z.infer<typeof PostBackgroundBody>;
