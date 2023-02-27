@@ -4,9 +4,7 @@ import Database from "../../connectors/mongo";
 import S3 from "../../connectors/s3";
 
 const getBackground = (req: Request, res: Response) => {
-  const userId = new ObjectId("5d71522dc452f78e335d2d8b") as any;
-
-  Database.Background.findOne(req.params.id, userId)
+  Database.Background.findOne(req.params.id, req.session.user?._id)
     .then((result) => {
       const fileExt = result.name.split(".").pop();
 
