@@ -81,12 +81,6 @@ export const api = {
   getModelList: async (): Promise<GetModelList> => {
     const models = await getRequest(getRoute(RouteNames.GET_MODEL_LIST)());
 
-    try {
-      GetModelListBody.parse(models);
-    } catch (e) {
-      console.error(e);
-    }
-
     return GetModelListBody.parse(models);
   },
   postModel: async (body: PostModel): Promise<PostModelResponse> => {

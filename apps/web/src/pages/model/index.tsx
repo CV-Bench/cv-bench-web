@@ -6,22 +6,28 @@ import Link from "next/link";
 
 const ModelList = () => {
   const { data: models } = useModelList();
-  const data: TableItem[] = models?.map(model => { return { ...model, domainTags: model.domainTags.join(', '), href: `/model/${model._id}` } }) ?? [];
+  const data: TableItem[] =
+    models?.map((model) => {
+      return {
+        ...model,
+        domainTags: model.domainTags.join(", "),
+        href: `/model/${model._id}`
+      };
+    }) ?? [];
   const header: TableHeader[] = [
     {
-      key: '_id',
-      title: 'ID'
+      key: "_id",
+      title: "ID"
     },
     {
-      key: 'name',
-      title: 'Name'
+      key: "name",
+      title: "Name"
     },
     {
-      key: 'domainTags',
-      title: 'Tags'
+      key: "domainTags",
+      title: "Tags"
     }
   ];
-
 
   return (
     <div className="h-full flex flex-col text-white container mx-auto">
@@ -33,12 +39,11 @@ const ModelList = () => {
         <Link href="/model/upload">
           <Button>Upload</Button>
         </Link>
-
       </Card>
 
       <Table data={data} header={header} />
     </div>
-  )
-}
+  );
+};
 
 export default ModelList;

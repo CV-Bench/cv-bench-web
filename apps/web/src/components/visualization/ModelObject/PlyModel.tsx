@@ -1,5 +1,5 @@
 import { useLoader } from "@react-three/fiber";
-import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader'
+import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader";
 import React from "react";
 import { DataUrlFile } from "types";
 
@@ -14,11 +14,17 @@ const PlyModel: React.FC<PlyModelProps> = ({ model, onUpdate }) => {
   plyGeom.computeVertexNormals();
 
   return (
-    <mesh onUpdate={onUpdate} layers={1} geometry={plyGeom} receiveShadow castShadow
-      scale={0.0005}>
+    <mesh
+      onUpdate={onUpdate}
+      layers={1}
+      geometry={plyGeom}
+      receiveShadow
+      castShadow
+      scale={0.0005}
+    >
       <meshPhongMaterial />
     </mesh>
-  )
+  );
 };
 
 export default PlyModel;
