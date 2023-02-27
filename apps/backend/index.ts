@@ -7,7 +7,7 @@ import googleAuthRouter from "./routes/auth/google";
 import logger from "./util/logger";
 import loggerMiddleware from "./middleware/logger";
 import validatorMiddleware from "./middleware/validator";
-import { RouteNames, route, loggerTitle, SessionUser } from "types";
+import { RouteNames, route, loggerTitle, SessionUser, AuthProvider } from "types";
 
 import {
   deleteModel,
@@ -26,10 +26,15 @@ import {
 import appTokenMiddleware from "./middleware/appTokenMiddleware";
 import authMiddleware from "./middleware/auth";
 import getUser from "./routes/auth/getUser";
+import microsoftAuthRouter from "./routes/auth/microsoft";
+import signup from "./routes/auth/signup";
+import logout from "./routes/auth/logout";
 
 declare module "express-session" {
   interface SessionData {
-    nonce?: string;
+    nonce: {
+      [key in AuthProvider]?: string;
+    }
     user?: SessionUser;
   }
 }
@@ -74,7 +79,10 @@ app.use(loggerMiddleware);
 // AUTH ROUTES
 // TODO make routes complient with other routes
 app.use("/auth/google/", googleAuthRouter);
+app.use("/auth/microsoft", microsoftAuthRouter);
 app.get("/auth/user", getUser);
+app.post("/auth/signup", signup);
+app.get("/auth/logout", logout);
 
 // MODEL ROUTES
 app.get(route(RouteNames.GET_MODEL_LIST), getModelList);

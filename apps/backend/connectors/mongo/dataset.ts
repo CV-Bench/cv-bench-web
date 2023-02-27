@@ -1,4 +1,4 @@
-import { Collection, InsertOneResult, ObjectId } from "mongodb";
+import { Collection, DeleteResult, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
 import { AccessType, CollectionName, DatasetDb, loggerTitle } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
@@ -32,7 +32,7 @@ const updateOne = (
   userId: string | ObjectId,
   update: Partial<DatasetDb>
 ) =>
-  collectionRequest<DatasetDb>(CollectionName.DATASET, async (collection) => {
+  collectionRequest<UpdateResult>(CollectionName.DATASET, async (collection) => {
     return collection.updateOne(
       {
         _id: new ObjectId(id),
@@ -43,7 +43,7 @@ const updateOne = (
   });
 
 const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
-  collectionRequest<DatasetDb>(CollectionName.DATASET, async (collection) => {
+  collectionRequest<DeleteResult>(CollectionName.DATASET, async (collection) => {
     return collection.deleteOne({
       _id: new ObjectId(id),
       userId: new ObjectId(userId),
