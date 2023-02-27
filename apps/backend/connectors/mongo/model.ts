@@ -18,7 +18,7 @@ prepareCollection(CollectionName.MODEL).then((collection) => {
   );
 });
 
-const findOne = (id: string | ObjectId, userId: string) =>
+const findOne = (id: string | ObjectId, userId: string | ObjectId) =>
   collectionRequest<ModelDb>(CollectionName.MODEL, async (collection) => {
     return collection.findOne({
       _id: new ObjectId(id),
@@ -70,12 +70,7 @@ const find = (userId: string | ObjectId) =>
   collectionRequest<FindCursor<ModelDb>>(
     CollectionName.MODEL,
     async (collection) => {
-      return collection.find({
-        $or: [
-          { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC },
-        ],
-      });
+      return collection.find(isUsersOrPublic(userId));
     }
   );
 
