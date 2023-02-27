@@ -40,10 +40,15 @@ export const PatchModelBody = PostDataBody;
 export type PatchModel = z.infer<typeof PatchModelBody>;
 
 // GET SINGLE MODEL
-export const GetModelBody = ModelBody.extend({
+export const GetModelBody = ModelBody.omit({
+  createdAt: true,
+  updatedAt: true,
+}).extend({
   modelType: z.nativeEnum(ModelType),
   modelObject: DataUrlFileBody,
   modelAssets: z.array(DataUrlFileBody).optional(),
+  createdAt: z.string().transform((e) => new Date(e)),
+  updatedAt: z.string().transform((e) => new Date(e)),
 });
 export type GetModel = z.infer<typeof GetModelBody>;
 

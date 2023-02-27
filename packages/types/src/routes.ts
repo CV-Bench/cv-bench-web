@@ -2,6 +2,7 @@ import * as z from "zod";
 import { PatchModelBody, PostModelBody } from "./model";
 import { PostDatasetBody } from "./dataset";
 import { PostNetworkBody } from "./network";
+import { PatchBackgroundBody, PostBackgroundBody } from "./background";
 
 export enum RouteNames {
   GET_MODEL_LIST = "GET_MODEL_LIST",
@@ -9,14 +10,12 @@ export enum RouteNames {
   DELETE_MODEL = "DELETE_MODEL",
   PATCH_MODEL = "PATCH_MODEL",
   POST_MODEL = "POST_MODEL",
-  DOWNLOAD_MODEL = "DOWNLOAD_MODEL",
 
   GET_BACKGROUND_LIST = "GET_BACKGROUND_LIST",
   GET_BACKGROUND = "GET_BACKGROUND",
   DELETE_BACKGROUND = "DELETE_BACKGROUND",
   POST_BACKGROUND = "POST_BACKGROUND",
   PATCH_BACKGROUND = "PATCH_BACKGROUND",
-  DOWNLOAD_BACKGROUND = "DOWNLOAD_BACKGROUND",
 
   GET_DATASETS = "GET_DATASETS",
   GET_DATASET = "GET_DATASET",
@@ -83,12 +82,6 @@ export const Routes: {
     PatchModelBody,
     (id?: string) => "/model/" + id
   ),
-  [RouteNames.DOWNLOAD_MODEL]: createRoute(
-    "/model/download/:id",
-    /^\/model\/download\/.*\/?get$/,
-    z.object({}),
-    (id?: string) => "/model/download/" + id
-  ),
 
   [RouteNames.GET_BACKGROUND_LIST]: createRoute(
     "/background",
@@ -102,12 +95,6 @@ export const Routes: {
     z.object({}),
     (id?: string) => "/background/" + id
   ),
-  [RouteNames.GET_BACKGROUND]: createRoute(
-    "/backgroundObject/:id",
-    /^\/backgroundObject\/.*\/?get$/,
-    z.object({}),
-    (id?: string) => "/backgroundObject/" + id
-  ),
   [RouteNames.DELETE_BACKGROUND]: createRoute(
     "/background/:id",
     /^\/background\/.*\/?delete?$/,
@@ -117,20 +104,14 @@ export const Routes: {
   [RouteNames.PATCH_BACKGROUND]: createRoute(
     "/background/:id",
     /^\/background\/.*\/?patch?$/,
-    z.object({}),
+    PatchBackgroundBody,
     (id?: string) => "/background/" + id
   ),
   [RouteNames.POST_BACKGROUND]: createRoute(
-    "/background/:id",
-    /^\/background\/.*\/?post$/,
-    PostModelBody,
-    (id?: string) => "/background/" + id
-  ),
-  [RouteNames.DOWNLOAD_BACKGROUND]: createRoute(
-    "/background/download/:id",
-    /^\/background\/download\/.*\/?get$/,
-    z.object({}),
-    (id?: string) => "/background/download/" + id
+    "/background",
+    /^\/background\/?post$/,
+    PostBackgroundBody,
+    () => "/background/"
   ),
 
   [RouteNames.GET_DATASETS]: createRoute(
