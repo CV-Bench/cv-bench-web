@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   Collection,
   DeleteResult,
@@ -6,6 +7,9 @@ import {
   ObjectId,
   UpdateResult,
 } from "mongodb";
+=======
+import { Collection, DeleteResult, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
+>>>>>>> 45ea6c3bd381d935dd598278edb1a6d8c6dd093d
 import { AccessType, CollectionName, DatasetDb, loggerTitle } from "types";
 import logger from "../../util/logger";
 import { collectionRequest, prepareCollection } from "./";
@@ -26,11 +30,11 @@ const findOne = (id: string | ObjectId, userId: string) =>
     });
   });
 
-const insert = (model: Omit<DatasetDb, "_id">) =>
+const insert = (model: Omit<DatasetDb, "_id" | "updatedAt" | "createdAt">) =>
   collectionRequest<InsertOneResult>(
     CollectionName.DATASET,
     async (collection) => {
-      return collection.insertOne(model);
+      return collection.insertOne({...model, updatedAt: new Date(), createdAt: new Date()});
     }
   );
 
@@ -47,7 +51,7 @@ const updateOne = (
           _id: new ObjectId(id),
           userId: new ObjectId(userId),
         },
-        { $set: update }
+        { $set: {...update, updatedAt: new Date()} }
       );
     }
   );
