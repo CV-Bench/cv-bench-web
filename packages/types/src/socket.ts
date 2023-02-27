@@ -1,3 +1,5 @@
+import { DataType } from "./utils";
+
 export enum SocketType {
   FRONTEND = "FRONTEND",
   SERVER = "SERVER",
@@ -32,4 +34,9 @@ export interface ServerSocketData {
 
 export interface TaskNamespaceData extends ServerSocketData {
   taskId: string;
+}
+
+export interface DataNamespaceData {
+  dataId: string;
+  dataType: DataType;
 }
