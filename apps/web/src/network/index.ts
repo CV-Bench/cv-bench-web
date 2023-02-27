@@ -98,14 +98,24 @@ export const api = {
 
   // BACKGROUND
   getBackground: async (id: string): Promise<GetBackground> => {
-    const model = await getRequest(getRoute(RouteNames.GET_BACKGROUND)(id));
+    const background = await getRequest(
+      getRoute(RouteNames.GET_BACKGROUND)(id)
+    );
 
-    return GetBackgroundBody.parse(model);
+    return GetBackgroundBody.parse(background);
   },
   getBackgroundList: async (): Promise<GetBackgroundList> => {
-    const models = await getRequest(getRoute(RouteNames.GET_BACKGROUND_LIST)());
+    const backgrounds = await getRequest(
+      getRoute(RouteNames.GET_BACKGROUND_LIST)()
+    );
 
-    return GetBackgroundListBody.parse(models);
+    try {
+      GetBackgroundListBody.parse(backgrounds);
+    } catch (e) {
+      console.error(e);
+    }
+
+    return GetBackgroundListBody.parse(backgrounds) as GetBackgroundList;
   },
   postBackgrounds: async (
     body: PostBackground

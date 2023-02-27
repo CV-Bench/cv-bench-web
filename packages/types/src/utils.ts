@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { Request } from "express";
 
 export enum AccessType {
   PUBLIC = "PUBLIC",
@@ -34,3 +35,5 @@ export const PostDataBody = DataBody.pick({
 export type OmitFirst<T extends any[]> = T extends [any, ...infer R]
   ? R
   : never;
+
+export type TypedRequest<T> = Omit<Request, "body"> & { body: T };

@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { ObjId } from "./utils";
+import { AccessType, ObjId } from "./utils";
 
 export enum DatasetFormat {
   COCO = "COCO",
@@ -36,4 +36,5 @@ export * from "./task";
 export * from "./routes";
 export * from "./mongo";
 export * from "./s3";
+export {AccessType} from './utils';
 export * from "./auth";

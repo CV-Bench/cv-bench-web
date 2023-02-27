@@ -16,8 +16,7 @@ const validatorMiddleware = (
 
     next();
   } catch (e) {
-    console.log(e);
-
+    console.error(e);
     logger.error(
       loggerTitle.EXPRESS_SERVER,
       `Request on Route: ${(req.path + req.method).toLowerCase()}`,
