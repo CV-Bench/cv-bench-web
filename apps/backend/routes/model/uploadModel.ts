@@ -5,7 +5,8 @@ import Database from "../../connectors/mongo";
 import { Model } from "../../connectors/s3/model";
 import logger from "../../util/logger";
 
-const putFile = async (path: string, file: DataUrlFile) => Model.put(Buffer.from(file.dataUrl), `${path}/${file.filename}`);
+const putFile = async (path: string, file: DataUrlFile) =>
+  Model.put(Buffer.from(file.dataUrl), `${path}/${file.filename}`);
 
 const uploadModel = async (req: Request, res: Response) => {
   const userId = new ObjectId(req.session.user?._id);
@@ -14,16 +15,23 @@ const uploadModel = async (req: Request, res: Response) => {
 
   let { modelObject, modelAssets, ...dbModel } = model;
 
-  const result = await Database.Model.insert({ ...dbModel, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), userId });
+  const result = await Database.Model.insert({
+    ...dbModel,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    userId,
+  });
 
   const basePath = `${result.insertedId}`;
-  const fileExt = modelObject.filename.split('.').pop();
+  const fileExt = modelObject.filename.split(".").pop();
   modelObject.filename = `model.${fileExt}`;
 
-  logger.debug(loggerTitle.EXPRESS_REQUEST, 'Uploading models to', basePath);
+  logger.debug(loggerTitle.EXPRESS_REQUEST, "Uploading models to", basePath);
 
   await putFile(basePath, modelObject);
-  await Promise.all(modelAssets?.map(asset => putFile(basePath, asset)) ?? []);
+  await Promise.all(
+    modelAssets?.map((asset) => putFile(basePath, asset)) ?? []
+  );
 
   res.json({}).end();
 };

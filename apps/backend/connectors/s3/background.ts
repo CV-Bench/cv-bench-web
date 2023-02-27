@@ -15,6 +15,6 @@ const getBackground = (...args: OmitFirst<Parameters<typeof getObject>>) =>
 
 export const Background = {
   put: putBackground,
-  deleteBackground: deleteBackground,
-  getBackground: getBackground,
+  delete: deleteBackground,
+  get: getBackground,
 };

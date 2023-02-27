@@ -7,11 +7,10 @@ import googleAuthRouter from "./routes/auth/google";
 import logger from "./util/logger";
 import loggerMiddleware from "./middleware/logger";
 import validatorMiddleware from "./middleware/validator";
-import { RouteNames, route, loggerTitle, SessionUser } from "types";
+import { RouteNames, route, loggerTitle, SessionUser, AuthProvider } from "types";
 
 import {
   deleteModel,
-  downloadModel,
   getModel,
   getModelList,
   updateModel,
@@ -19,7 +18,6 @@ import {
 } from "./routes/model";
 import {
   deleteBackground,
-  downloadBackground,
   getBackground,
   getBackgroundList,
   updateBackground,
@@ -28,10 +26,15 @@ import {
 import appTokenMiddleware from "./middleware/appTokenMiddleware";
 import authMiddleware from "./middleware/auth";
 import getUser from "./routes/auth/getUser";
+import microsoftAuthRouter from "./routes/auth/microsoft";
+import signup from "./routes/auth/signup";
+import logout from "./routes/auth/logout";
 
 declare module "express-session" {
   interface SessionData {
-    nonce?: string;
+    nonce: {
+      [key in AuthProvider]?: string;
+    }
     user?: SessionUser;
   }
 }
@@ -46,7 +49,10 @@ const port = process.env.EXPRESS_PORT || 3001;
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, PATCH, OPTIONS");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "PUT, GET, POST, DELETE, PATCH, OPTIONS"
+  );
   res.header(
     "Access-Control-Allow-Headers",
     `Origin, X-Requested-With, Content-Type, Accept, Authorization, ${process.env.NEXT_PUBLIC_APP_TOKEN_KEY}`
@@ -55,7 +61,7 @@ app.use((req, res, next) => {
 });
 
 //apply middleware
-app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(helmet());
 app.use(
@@ -73,7 +79,10 @@ app.use(loggerMiddleware);
 // AUTH ROUTES
 // TODO make routes complient with other routes
 app.use("/auth/google/", googleAuthRouter);
+app.use("/auth/microsoft", microsoftAuthRouter);
 app.get("/auth/user", getUser);
+app.post("/auth/signup", signup);
+app.get("/auth/logout", logout);
 
 // MODEL ROUTES
 app.get(route(RouteNames.GET_MODEL_LIST), getModelList);
@@ -81,7 +90,6 @@ app.get(route(RouteNames.GET_MODEL), getModel);
 app.delete(route(RouteNames.DELETE_MODEL), deleteModel);
 app.patch(route(RouteNames.PATCH_MODEL), updateModel);
 app.post(route(RouteNames.POST_MODEL), uploadModel);
-app.get(route(RouteNames.DOWNLOAD_MODEL), downloadModel);
 
 // BACKGROUND ROUTES
 app.get(route(RouteNames.GET_BACKGROUND_LIST), getBackgroundList);
@@ -89,7 +97,6 @@ app.get(route(RouteNames.GET_BACKGROUND), getBackground);
 app.delete(route(RouteNames.DELETE_BACKGROUND), deleteBackground);
 app.patch(route(RouteNames.PATCH_BACKGROUND), updateBackground);
 app.post(route(RouteNames.POST_BACKGROUND), uploadBackground);
-app.get(route(RouteNames.DOWNLOAD_BACKGROUND), downloadBackground);
 
 app.listen(port, () => {
   logger.info(
@@ -98,4 +105,6 @@ app.listen(port, () => {
   );
 });
 
-app.get("/", (req, res) => {res.status(200).send("HI")});
+app.get("/", (req, res) => {
+  res.status(200).send("HI");
+});

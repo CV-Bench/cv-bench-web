@@ -7,11 +7,11 @@ import {
   GetObjectCommandInput,
   GetObjectCommandOutput,
   ListObjectsV2CommandInput,
-  ListObjectsV2CommandOutput
+  ListObjectsV2CommandOutput,
 } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
 import { Bucket, createBucketKey } from "types";
-import { Background } from "./backgorund";
+import { Background } from "./background";
 import { Model } from "./model";
 
 export const s3Client = new _S3({
@@ -96,8 +96,6 @@ export const listObjects = (
     })
     .then(options.onSuccess)
     .catch(options.onError);
-
-    
 
 const S3 = {
   Model,

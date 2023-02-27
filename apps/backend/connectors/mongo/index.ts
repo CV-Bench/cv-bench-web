@@ -5,9 +5,11 @@ export {
   collectionRequest,
 } from "./client";
 
-import { default as Model } from "./model";
-import { default as Dataset } from "./dataset";
+import Model from "./model";
+import Dataset from "./dataset";
+import User from "./user";
+import Background from "./background";
 
-const Database = { Model, Dataset };
+const Database = { Model, Dataset, User, Background };
 
 export default Database;

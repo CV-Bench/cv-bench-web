@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { DataBody, PostDataBody } from "./utils";
+import { AccessType, DataBody, PostDataBody } from "./utils";
 
 export const BackgroundBody = DataBody.omit({ description: true }).extend({
   previewImage: z.string(),
@@ -16,6 +16,7 @@ export const PostBackgroundBody = z.object({
     })
   ),
   domainTags: z.array(z.string()),
+  accessType: z.nativeEnum(AccessType),
 });
 
 export type PostBackground = z.infer<typeof PostBackgroundBody>;
@@ -32,7 +33,13 @@ export const PatchBackgroundBody = PostDataBody.pick({
 export type PatchBackground = z.infer<typeof PatchBackgroundBody>;
 
 // GET SINGLE BACKGROUND
-export const GetBackgroundBody = BackgroundBody;
+export const GetBackgroundBody = BackgroundBody.omit({
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  createdAt: z.string().transform((d) => new Date(d)),
+  updatedAt: z.string().transform((d) => new Date(d)),
+});
 export type GetBackground = z.infer<typeof GetBackgroundBody>;
 
 // GET BACKGROUNDS
