@@ -43,7 +43,7 @@ const ProfileDropdownRoutes = [
   },
   {
     title: "Sign out",
-    href: "/signout",
+    href: process.env.HOST_DOMAIN + "/auth/logout",
     matcher: /^\/signout(\/.*)?$/
   }
 ];
