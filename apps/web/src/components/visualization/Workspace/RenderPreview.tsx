@@ -2,26 +2,29 @@ import { OrthographicCamera, Plane, useFBO } from "@react-three/drei";
 import { createPortal, useFrame, useThree } from "@react-three/fiber";
 import React from "react";
 import { Camera, Color, PerspectiveCamera, Scene } from "three";
+import { BlenderConfiguration } from "types";
 
 export interface RenderPreviewProps {
   renderCameraRef: React.MutableRefObject<PerspectiveCamera>;
+  config: BlenderConfiguration
 }
 
-const RenderPreview: React.FC<RenderPreviewProps> = ({ renderCameraRef }) => {
+const RenderPreview: React.FC<RenderPreviewProps> = ({ renderCameraRef, config }) => {
   const { gl } = useThree()
   const canvasHeight = gl.domElement.clientHeight;
   const canvasWidth = gl.domElement.clientWidth;
-  const previewSize = canvasWidth / 4;
+  const previewWidth = config.render.resolution_x;
+  const previewHeight = config.render.resolution_y;
 
-  const previewX = previewSize / 2 - canvasWidth / 2;
-  const previewY = previewSize / 2 - canvasHeight / 2;
+  const previewX = previewWidth / 2 - canvasWidth / 2;
+  const previewY = previewHeight / 2 - canvasHeight / 2;
 
 
 
   const guiScene = new Scene()
   const guiCamera = React.useRef<Camera>(null!)
 
-  const fbo = useFBO(previewSize, previewSize)
+  const fbo = useFBO(previewWidth, previewHeight)
 
   useFrame(({ gl, scene, camera }) => {
     renderCameraRef.current.updateProjectionMatrix();
@@ -44,7 +47,7 @@ const RenderPreview: React.FC<RenderPreviewProps> = ({ renderCameraRef }) => {
     <>
       <OrthographicCamera ref={guiCamera} near={0.0001} far={1} />
       <group position={[previewX, previewY, -.1]}>
-        <Plane args={[previewSize, previewSize, 1]}>
+        <Plane args={[previewWidth, previewHeight, 1]}>
           <meshBasicMaterial map={fbo.texture} />
         </Plane>
       </group>

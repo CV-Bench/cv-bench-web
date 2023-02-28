@@ -19,7 +19,8 @@ export interface ShowMoreButton {
   href: string;
 }
 
-interface TableProps {
+export interface TableProps {
+  className?: string;
   data: TableItem[];
   emptyTableMessage?: string;
   header: TableHeader[];
@@ -51,6 +52,7 @@ const TableItemButton: React.FC<{
 );
 
 const Table: React.FC<TableProps> = ({
+  className,
   header,
   data,
   showMoreButton,
@@ -79,7 +81,7 @@ const Table: React.FC<TableProps> = ({
     "grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4 grid-cols-5 grid-cols-6";
 
   return (
-    <div className="w-full">
+    <div className={(className ? ` ${className}` : '')}>
       <div
         className={`grid grid-cols-${tableCols} bg-gray-900  divide-x divide-gray-600`}
       >

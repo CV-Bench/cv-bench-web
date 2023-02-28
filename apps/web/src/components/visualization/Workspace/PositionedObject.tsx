@@ -1,39 +1,36 @@
 import { Box, TransformControls } from "@react-three/drei";
-import React, { PropsWithChildren } from "react";
-import { DoubleSide } from "three";
-import { SceneProperties } from "./Workspace";
+import { useFrame } from "@react-three/fiber";
+import React, { PropsWithChildren, useRef } from "react";
+import { DoubleSide, Vector3 } from "three";
+import { BlenderConfiguration } from "types";
 
 export interface PositionedObjectProps
-  extends PropsWithChildren,
-    SceneProperties {}
+  extends PropsWithChildren, BlenderConfiguration {
+    showBox: boolean
 
-const PositionedObject: React.FC<PositionedObjectProps> = ({
-  objX,
-  objY,
-  objZ,
-  children = undefined
-}) => {
-  const width = objX.max - objX.min;
-  const height = objY.max - objY.min;
-  const depth = objZ.max - objZ.min;
+    childScale: number;
+  }
 
-  const centerX = objX.min + width / 2;
-  const centerY = objY.min + height / 2;
-  const centerZ = objZ.min + depth / 2;
+const PositionedObject: React.FC<PositionedObjectProps> = (props) => {
+  const min = new Vector3(props.random.min_x_pos, props.random.min_y_pos, props.random.min_z_pos);
+  const max = new Vector3(props.random.max_x_pos, props.random.max_y_pos, props.random.max_z_pos);
+
+  const width = max.x - min.x;
+  const height = max.y - min.y;
+  const depth = max.z - min.z;
+
+  const centerX = min.x + width / 2;
+  const centerY = min.y + height / 2;
+  const centerZ = min.z + depth / 2;
+
   return (
     <>
-      <TransformControls
-        position={[centerX, centerY, centerZ]}
-        mode="translate"
-      >
-        <Box args={[width, height, depth]}>
+      {props.showBox && <Box position={[centerX, centerY, centerZ]} args={[width, height, depth]}>
           <meshStandardMaterial wireframe side={DoubleSide} color="red" />
-        </Box>
-      </TransformControls>
+      </Box>}
 
-      <group position={[centerX, centerY, centerZ]}>
-        <axesHelper args={[0.5]} />
-        {children}
+      <group scale={props.childScale} position={[centerX, centerY, centerZ]}>
+          {props.children}
       </group>
     </>
   );
