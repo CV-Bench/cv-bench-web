@@ -1,8 +1,9 @@
-import { TaskNamespaceData } from "types";
+import { Namespace } from "socket.io";
+import { TaskNamespaceClientToServerEvents, TaskNamespaceData, TaskNamespaceServerToClientEvents } from "types";
 import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
 
-const taskNamespace = io.of("/task");
+const taskNamespace:Namespace<TaskNamespaceClientToServerEvents, TaskNamespaceServerToClientEvents> = io.of("/task");
 
 taskNamespace.use(serverAuthMiddleware);
 taskNamespace.use(serverRegistryMiddleware);
@@ -18,10 +19,10 @@ taskNamespace.on("connection", (socket) => {
 });
 
 const startTask = (taskId: string) => {
-  taskNamespace.emit("start", { taskId });
+  taskNamespace.emit("start", taskId);
 };
 
-const stopTask = (taskId: string) => taskNamespace.emit("stop", { taskId });
+const stopTask = (taskId: string) => taskNamespace.emit("stop", taskId);
 
 const Task = {
   start: startTask,
