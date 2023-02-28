@@ -30,6 +30,7 @@ import authMiddleware from "./middleware/auth";
 import getUser from "./routes/auth/getUser";
 
 import socket from "./connectors/socket";
+import socketToken from "./routes/auth/socketToken";
 
 declare module "express-session" {
   interface SessionData {
@@ -76,6 +77,7 @@ app.use(
 // TODO make routes complient with other routes
 app.use("/auth/google/", googleAuthRouter);
 app.get("/auth/user", getUser);
+app.get("/auth/token", socketToken);
 
 // MODEL ROUTES
 app.get(route(RouteNames.GET_MODEL_LIST), getModelList);
