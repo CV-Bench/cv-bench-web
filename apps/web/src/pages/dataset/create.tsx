@@ -1,20 +1,10 @@
-<<<<<<< HEAD
 import FormStepsPanel, { FormStep } from "@/components/multiform/FormStepsPanel";
 import { AccessType, BlenderConfiguration, CamLensUnit, ComputeBbox, DatasetType, GetModelList, GetModelListBody, PostDataset } from "types";
 import { useState } from "react";
-import ModelSelectStep from "@/components/dataset/create/ModelSelectStep";
 import * as z from "zod";
 import BackgroundSelectStep from "@/components/dataset/create/BackgroundSelectStep";
 import DatasetConfigurationStep from "@/components/dataset/create/DatasetConfigurationStep";
-=======
-import AlarmIcon from "@mui/icons-material/Alarm";
-import ContrastIcon from "@mui/icons-material/Contrast";
->>>>>>> main
-
-import Dropdown from "@/components/inputs/Dropdown";
-import DropdownDetailed from "@/components/inputs/DropdownDetailed";
-import InputField from "@/components/inputs/InputField";
-import TagInput from "@/components/inputs/TagInput";
+import ModelSelectStep from "@/components/dataset/create/ModelSelectStep";
 
 const CreateDataset = () => {
   const [dataset, setDataset] = useState<PostDataset>({
@@ -39,21 +29,21 @@ const CreateDataset = () => {
         camera: {
           lens_unit: CamLensUnit.FOV,
           lens: 50,
-          sensor_height: 1, // ToDo
-          sensor_width: 1, // ToDo
+          sensor_height: 1,
+          sensor_width: 1,
           clip_start: .1,
           clip_end: 20
         },
-        resolution_x: 480, // px
-        resolution_y: 480, // px
+        resolution_x: 480, // px // ToDo
+        resolution_y: 480, // px // ToDo
     
         model_scale: 1, //fragwürdig
-        exposure: 40,
-        compute_bbox: ComputeBbox.FAST,
-        use_fps_keypoints: false, //muss nicht unbedgingt user-einstellbar sein
+        exposure: 40, // ToDo
+        compute_bbox: ComputeBbox.FAST, // ToDo
+        use_fps_keypoints: false, //muss nicht unbedgingt user-einstellbar sein 
     
         use_cycles: true, // sollte immer true sein
-        samples: 40, // sinnvolle obere Grenze ca. 60, unter 10 sinnlos
+        samples: 40, // sinnvolle obere Grenze ca. 60, unter 10 sinnlos // ToDo
         use_cycles_donoising: false, // sollte erstmal immer false sein
         use_adaptive_sampling:false, // sollte erstmal immer false sein
         use_GPU: true, // sollte immer true sein
@@ -128,36 +118,12 @@ const CreateDataset = () => {
 
   return (
     <>
-<<<<<<< HEAD
       <FormStepsPanel
         submitButtonText="Start Upload"
         formData={dataset}
         steps={steps}
         handleSubmit={handleUpload}
       />
-=======
-      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <DropdownDetailed
-          options={[
-            {
-              title: "Fast Bounding Boxes",
-              description:
-                "Faster to create, but results in looser bounding Boxes",
-              icon: AlarmIcon
-            },
-            {
-              title: "Tight Bounding Boxes",
-              description:
-                "Slower to create, but results in tighter bounding Boxes",
-              icon: ContrastIcon
-            }
-          ]}
-        />
-        <Dropdown options={[{ title: "Option 1" }, { title: "Option 2" }]} />
-        <InputField placeholder="Name" />
-        <TagInput placeholder="Add Tags" setTags={() => {}} />
-      </div>
->>>>>>> main
     </>
   );
 };

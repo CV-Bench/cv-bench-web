@@ -45,13 +45,8 @@ const RenderPreview: React.FC<RenderPreviewProps> = ({ renderCameraRef, config }
   return createPortal(
     <>
       <OrthographicCamera ref={guiCamera} near={0.0001} far={1} />
-<<<<<<< HEAD
       <group position={[previewX, previewY, -.1]}>
         <Plane args={[previewWidth, previewHeight, 1]}>
-=======
-      <group position={[previewX, previewY, -0.1]}>
-        <Plane args={[previewSize, previewSize, 1]}>
->>>>>>> main
           <meshBasicMaterial map={fbo.texture} />
         </Plane>
       </group>
