@@ -21,6 +21,12 @@
   "prettier": {
     "semi": true,
     "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": false,
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always",
     "trailingComma": "none",
     "importOrder": [
       "@/.*",
