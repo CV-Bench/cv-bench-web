@@ -1,7 +1,7 @@
 import session from "express-session";
 import * as redis from "redis";
 
-import { loggerTitle } from "types";
+import { loggerTitle } from "shared-types";
 
 import logger from "../util/logger";
 

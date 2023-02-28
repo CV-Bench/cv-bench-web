@@ -1,19 +1,21 @@
 import { NextFunction } from "express";
+import * as jwt from "jsonwebtoken";
 import { Socket } from "socket.io";
 import { ExtendedError } from "socket.io/dist/namespace";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import logger from "../../util/logger";
+
+import { SocketMiddleware } from "./types";
 import {
   ServerNamespace,
   ServerNamespaceMap,
   SocketType,
-  loggerTitle,
-} from "types";
-import { SocketMiddleware } from "./types";
+  loggerTitle
+} from "shared-types";
+
+import logger from "../../util/logger";
+import Database from "../mongo";
 import { RedisStore } from "../redis";
 import { redisClient } from "../redis";
-import Database from "../mongo";
-import * as jwt from "jsonwebtoken";
 
 export const serverAuthMiddleware: SocketMiddleware = (socket, next) => {
   const token = socket.handshake.auth[process.env.SOCKET_AUTH_TOKEN_KEY || ""];
@@ -77,7 +79,7 @@ export const serverRegistryMiddleware: SocketMiddleware = (socket, next) => {
     socketId: socket.id,
     type: SocketType.SERVER,
     serverNamespace: ServerNamespaceMap[socket.nsp.name] as ServerNamespace,
-    serverId: socket.handshake.headers.serverid as string,
+    serverId: socket.handshake.headers.serverid as string
   });
 
   socket.on("disconnect", (reason) => {

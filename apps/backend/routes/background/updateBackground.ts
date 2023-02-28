@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-import { PatchBackground, TypedRequest } from "types";
+import { PatchBackground, TypedRequest } from "shared-types";
 
 import Database from "../../connectors/mongo";
 

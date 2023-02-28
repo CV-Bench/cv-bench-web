@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { AuthProvider } from "types";
+import { AuthProvider } from "shared-types";
 
 import {
   createAuthCallbackHandler,

@@ -1,9 +1,19 @@
 import { Namespace } from "socket.io";
-import { DataNamespaceClientToServerEvents, DataNamespaceData, DataNamespaceServerToClientEvents, DataType } from "types";
+
+import {
+  DataNamespaceClientToServerEvents,
+  DataNamespaceData,
+  DataNamespaceServerToClientEvents,
+  DataType
+} from "shared-types";
+
 import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
 
-const dataNamespace:Namespace<DataNamespaceClientToServerEvents, DataNamespaceServerToClientEvents> = io.of("/data");
+const dataNamespace: Namespace<
+  DataNamespaceClientToServerEvents,
+  DataNamespaceServerToClientEvents
+> = io.of("/data");
 
 dataNamespace.use(serverAuthMiddleware);
 dataNamespace.use(serverRegistryMiddleware);
@@ -28,7 +38,7 @@ const deleteData = (dataId: string, dataType: DataType) =>
 
 const Data = {
   upload: uploadData,
-  deleteData: deleteData,
+  deleteData: deleteData
 };
 
 export default Data;

@@ -6,19 +6,17 @@ import {
   UpdateResult
 } from "mongodb";
 
-import { AccessType, CollectionName, DatasetDb, loggerTitle } from "types";
+import {
+  AccessType,
+  CollectionName,
+  DatasetDb,
+  loggerTitle
+} from "shared-types";
 
 import logger from "../../util/logger";
 
-import { collectionRequest, prepareCollection } from "./";
+import { collectionRequest } from "./";
 import { isUsersOrPublic } from "./utils";
-
-prepareCollection(CollectionName.DATASET).then((collection) => {
-  logger.debug(
-    loggerTitle.MONGO_CLIENT,
-    `Collection Ready: ${collection.namespace}`
-  );
-});
 
 const findOne = (id: string | ObjectId, userId: string) =>
   collectionRequest<DatasetDb>(CollectionName.DATASET, async (collection) => {

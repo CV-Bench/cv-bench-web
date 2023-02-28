@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { generators } from "openid-client";
 import { BaseClient, Issuer } from "openid-client";
 
-import { AuthProvider, loggerTitle } from "types";
+import { AuthProvider, loggerTitle } from "shared-types";
 
 import Database from "../../connectors/mongo";
 import logger from "../../util/logger";

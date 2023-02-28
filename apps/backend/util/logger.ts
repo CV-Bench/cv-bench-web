@@ -1,6 +1,6 @@
 import Logger, { LoggerOptions } from "@ptkdev/logger";
 
-import { loggerTitle } from "types";
+import { loggerTitle } from "shared-types";
 
 import loggerConfig from "./loggerConfig";
 
