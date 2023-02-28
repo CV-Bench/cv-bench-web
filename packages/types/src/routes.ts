@@ -1,8 +1,10 @@
 import * as z from "zod";
-import { PatchModelBody, PostModelBody } from "./model";
-import { PostDatasetBody } from "./dataset";
-import { PostNetworkBody } from "./network";
+
 import { PatchBackgroundBody, PostBackgroundBody } from "./background";
+import { PatchDatasetBody, PostDatasetBody } from "./dataset";
+import { PatchModelBody, PostModelBody } from "./model";
+import { PatchNetworkBody, PostNetworkBody } from "./network";
+import { FinishTaskBody, StopTaskBody } from "./task";
 
 export enum RouteNames {
   GET_MODEL_LIST = "GET_MODEL_LIST",
@@ -17,17 +19,24 @@ export enum RouteNames {
   POST_BACKGROUND = "POST_BACKGROUND",
   PATCH_BACKGROUND = "PATCH_BACKGROUND",
 
-  GET_DATASETS = "GET_DATASETS",
+  GET_DATASET_LIST = "GET_DATASET_LIST",
   GET_DATASET = "GET_DATASET",
   DELETE_DATASET = "DELETE_DATASET",
   PATCH_DATASET = "PATCH_DATASET",
   POST_DATASET = "POST_DATASET",
 
-  GET_NETWORKS = "GET_NETWORKS",
+  GET_NETWORK_LIST = "GET_NETWORK_LIST",
   GET_NETWORK = "GET_NETWORK",
   DELETE_NETWORK = "DELETE_NETWORK",
   PATCH_NETWORK = "PATCH_NETWORK",
   POST_NETWORK = "POST_NETWORK",
+
+  FINISH_TASK = "FINISH_TASK",
+  STOP_TASK = "STOP_TASK",
+  GET_TASK = "GET_TASK",
+  GET_TASK_LIST = "GET_TASK_LIST",
+
+  GET_NETWORK_ARCHITECTURE_LIST = "GET_NETWORK_ARCHITECTURE_LIST"
 }
 
 interface RouteType {
@@ -46,7 +55,7 @@ const createRoute = (
   route,
   routeRegex,
   validator,
-  createRoutePath,
+  createRoutePath
 });
 
 export const Routes: {
@@ -114,7 +123,7 @@ export const Routes: {
     () => "/background/"
   ),
 
-  [RouteNames.GET_DATASETS]: createRoute(
+  [RouteNames.GET_DATASET_LIST]: createRoute(
     "/dataset",
     /^\/dataset\/?get$/,
     z.object({}),
@@ -135,7 +144,7 @@ export const Routes: {
   [RouteNames.PATCH_DATASET]: createRoute(
     "/dataset/:id",
     /^\/dataset\/.*\/?patch?$/,
-    z.object({}),
+    PatchDatasetBody,
     (id?: string) => "/dataset/" + id
   ),
   [RouteNames.POST_DATASET]: createRoute(
@@ -145,7 +154,7 @@ export const Routes: {
     (id?: string) => "/dataset/" + id
   ),
 
-  [RouteNames.GET_NETWORKS]: createRoute(
+  [RouteNames.GET_NETWORK_LIST]: createRoute(
     "/network",
     /^\/network\/?get$/,
     z.object({}),
@@ -166,7 +175,7 @@ export const Routes: {
   [RouteNames.PATCH_NETWORK]: createRoute(
     "/network/:id",
     /^\/network\/.*\/?patch?$/,
-    z.object({}),
+    PatchNetworkBody,
     (id?: string) => "/network/" + id
   ),
   [RouteNames.POST_NETWORK]: createRoute(
@@ -175,6 +184,38 @@ export const Routes: {
     PostNetworkBody,
     (id?: string) => "/network/" + id
   ),
+
+  [RouteNames.GET_TASK]: createRoute(
+    "/task/:id",
+    /^\/task\/.*\/?get$/,
+    z.object({}),
+    (id?: string) => "/task/" + id
+  ),
+  [RouteNames.GET_TASK_LIST]: createRoute(
+    "/task",
+    /^\/task\/?get$/,
+    z.object({}),
+    () => "/task"
+  ),
+  [RouteNames.FINISH_TASK]: createRoute(
+    "/task/finish/:id",
+    /^\/task\/finish\/.*\/?post$/,
+    FinishTaskBody,
+    (id?: string) => "/task" + id
+  ),
+  [RouteNames.STOP_TASK]: createRoute(
+    "/task/stop/:id",
+    /^\/task\/stop\/.*\/?post$/,
+    StopTaskBody,
+    (id?: string) => "/task/" + id
+  ),
+
+  [RouteNames.GET_NETWORK_ARCHITECTURE_LIST]: createRoute(
+    "/networkArchitecture",
+    /^\/networkArchitecture\/?get$/,
+    z.object({}),
+    () => "/networkArchitecture"
+  )
 };
 
 export const findRouteValidator = (currentRoute: string) =>

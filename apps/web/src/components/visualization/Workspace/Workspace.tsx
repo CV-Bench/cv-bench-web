@@ -1,5 +1,10 @@
 import { OrbitControls, TransformControls } from "@react-three/drei";
-import { Canvas, PerspectiveCameraProps, useLoader, useThree } from "@react-three/fiber";
+import {
+  Canvas,
+  PerspectiveCameraProps,
+  useLoader,
+  useThree
+} from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import ModelObject from "../ModelObject/ModelObject";
 import { Layers } from "three";
@@ -8,7 +13,6 @@ import { useModel } from "@/hooks/model";
 import CameraSphere from "./CameraSphere";
 import RenderCamera from "./RenderCamera";
 import PositionedObject from "./PositionedObject";
-
 
 export interface WorkspaceProps {
   className?: string;

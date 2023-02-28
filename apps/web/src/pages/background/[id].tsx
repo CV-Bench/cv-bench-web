@@ -1,14 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import { useBackground } from "@/hooks/background";
-import TagInput from "@/components/inputs/TagInput";
-import InputLabel from "@/components/inputs/InputLabel";
-import Card from "@/components/Card";
-import Button from "@/components/Button";
-import { useState } from "react";
 import { useRouter } from "next/router";
-import { AccessType, PatchBackground } from "types";
+import { useState } from "react";
+
+import Button from "@/components/Button";
+import Card from "@/components/Card";
 import AccessTypeInput from "@/components/inputs/AccessTypeInput";
+import InputLabel from "@/components/inputs/InputLabel";
+import TagInput from "@/components/inputs/TagInput";
+import { useBackground } from "@/hooks/background";
 import { api } from "@/network";
+
+import { AccessType, PatchBackground } from "types";
 
 const BackgroundId: React.FC = () => {
   const { query, push } = useRouter();

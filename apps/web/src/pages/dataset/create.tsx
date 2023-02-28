@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import FormStepsPanel, { FormStep } from "@/components/multiform/FormStepsPanel";
 import { AccessType, BlenderConfiguration, CamLensUnit, ComputeBbox, DatasetType, GetModelList, GetModelListBody, PostDataset } from "types";
 import { useState } from "react";
@@ -5,6 +6,15 @@ import ModelSelectStep from "@/components/dataset/create/ModelSelectStep";
 import * as z from "zod";
 import BackgroundSelectStep from "@/components/dataset/create/BackgroundSelectStep";
 import DatasetConfigurationStep from "@/components/dataset/create/DatasetConfigurationStep";
+=======
+import AlarmIcon from "@mui/icons-material/Alarm";
+import ContrastIcon from "@mui/icons-material/Contrast";
+>>>>>>> main
+
+import Dropdown from "@/components/inputs/Dropdown";
+import DropdownDetailed from "@/components/inputs/DropdownDetailed";
+import InputField from "@/components/inputs/InputField";
+import TagInput from "@/components/inputs/TagInput";
 
 const CreateDataset = () => {
   const [dataset, setDataset] = useState<PostDataset>({
@@ -118,12 +128,36 @@ const CreateDataset = () => {
 
   return (
     <>
+<<<<<<< HEAD
       <FormStepsPanel
         submitButtonText="Start Upload"
         formData={dataset}
         steps={steps}
         handleSubmit={handleUpload}
       />
+=======
+      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <DropdownDetailed
+          options={[
+            {
+              title: "Fast Bounding Boxes",
+              description:
+                "Faster to create, but results in looser bounding Boxes",
+              icon: AlarmIcon
+            },
+            {
+              title: "Tight Bounding Boxes",
+              description:
+                "Slower to create, but results in tighter bounding Boxes",
+              icon: ContrastIcon
+            }
+          ]}
+        />
+        <Dropdown options={[{ title: "Option 1" }, { title: "Option 2" }]} />
+        <InputField placeholder="Name" />
+        <TagInput placeholder="Add Tags" setTags={() => {}} />
+      </div>
+>>>>>>> main
     </>
   );
 };

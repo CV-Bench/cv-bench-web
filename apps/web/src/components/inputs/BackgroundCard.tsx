@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { formatToDateString } from "@/utils/date";
 import Link from "next/link";
+
+import { formatToDateString } from "@/utils/date";
+
 import { BackgroundDb } from "types";
 
 const BackgroundCard: React.FC<BackgroundDb> = ({

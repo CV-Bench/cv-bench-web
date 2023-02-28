@@ -1,3 +1,6 @@
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
 import Button from "@/components/Button";
 import Card from "@/components/Card";
 import AccessTypeInput from "@/components/inputs/AccessTypeInput";
@@ -7,8 +10,7 @@ import TagInput from "@/components/inputs/TagInput";
 import ModelPreview from "@/components/visualization/ModelPreview";
 import { useModel } from "@/hooks/model";
 import { api } from "@/network";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+
 import { AccessType, DataUrlFile, GetModel } from "types";
 
 const ModelId = () => {

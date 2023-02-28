@@ -1,5 +1,6 @@
-import TagInputProps from "@/types/components/props/TagInputProps";
 import { TagsInput } from "react-tag-input-component";
+
+import TagInputProps from "@/types/components/props/TagInputProps";
 
 const TagInput: React.FC<TagInputProps> = ({
   placeholder,

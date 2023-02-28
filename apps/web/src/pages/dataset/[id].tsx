@@ -1,5 +1,5 @@
 const DatasetId = () => {
-    return(<></>);
-}
+  return <></>;
+};
 
 export default DatasetId;

@@ -1,12 +1,13 @@
-import { redisClient } from "../connectors/redis";
-import { RateLimiterRedis } from "rate-limiter-flexible";
 import { Request, Response, NextFunction } from "express";
+import { RateLimiterRedis } from "rate-limiter-flexible";
+
+import { redisClient } from "../connectors/redis";
 
 const rateLimiter = new RateLimiterRedis({
   storeClient: redisClient,
   keyPrefix: "rateLimiterMiddleware",
   points: 10, // 10 requests
-  duration: 1, //per 1 second
+  duration: 1 //per 1 second
 });
 
 const rateLimiterMiddleware = (

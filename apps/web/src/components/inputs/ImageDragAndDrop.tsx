@@ -1,6 +1,7 @@
-import ImageThumbnail from "./ImageThumbnail";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { useRef } from "react";
+
+import ImageThumbnail from "./ImageThumbnail";
 
 interface ImageDragAndDropProps {
   files: any[];

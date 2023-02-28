@@ -1,21 +1,22 @@
 import * as z from "zod";
+
 import { DataBody, ObjId, PostDataBody } from "./utils";
 
 export enum ModelType {
   "3D",
-  "2D",
+  "2D"
 }
 
 export const ModelBody = DataBody.extend({
   modelType: z.nativeEnum(ModelType),
-  previewImage: z.string(),
+  previewImage: z.string()
 });
 
 export type ModelDb = z.infer<typeof ModelBody>;
 
 export const DataUrlFileBody = z.object({
   filename: z.string(),
-  dataUrl: z.string(),
+  dataUrl: z.string()
 });
 
 export type DataUrlFile = z.infer<typeof DataUrlFileBody>;
@@ -25,12 +26,12 @@ export const PostModelBody = PostDataBody.extend({
   previewImage: z.string(),
   modelType: z.nativeEnum(ModelType),
   modelObject: DataUrlFileBody,
-  modelAssets: z.array(DataUrlFileBody).optional(),
+  modelAssets: z.array(DataUrlFileBody).optional()
 });
 export type PostModel = z.infer<typeof PostModelBody>;
 
 export const PostModelResponseBody = z.object({
-  _id: ObjId,
+  _id: ObjId
 });
 export type PostModelResponse = z.infer<typeof PostModelResponseBody>;
 
@@ -42,7 +43,7 @@ export type PatchModel = z.infer<typeof PatchModelBody>;
 // GET SINGLE MODEL
 export const GetModelBody = ModelBody.omit({
   createdAt: true,
-  updatedAt: true,
+  updatedAt: true
 }).extend({
   modelType: z.nativeEnum(ModelType),
   modelObject: DataUrlFileBody,

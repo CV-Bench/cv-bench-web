@@ -1,10 +1,11 @@
-import { ObjectId } from "mongodb";
 import { Request, Response } from "express";
+import { ObjectId } from "mongodb";
+
 import Database from "../../connectors/mongo";
 import S3 from "../../connectors/s3";
 
 const deleteBackground = (req: Request, res: Response) => {
-  const userId = new ObjectId("5d71522dc452f78e335d2d8b") as any;
+  const userId = req.session.user?._id;
 
   Database.Background.findOne(req.params.id, userId)
     .then(({ name }) => {

@@ -19,10 +19,9 @@ const RenderPreview: React.FC<RenderPreviewProps> = ({ renderCameraRef, config }
   const previewX = previewWidth / 2 - canvasWidth / 2;
   const previewY = previewHeight / 2 - canvasHeight / 2;
 
+  const guiScene = new Scene();
+  const guiCamera = React.useRef<Camera>(null!);
 
-
-  const guiScene = new Scene()
-  const guiCamera = React.useRef<Camera>(null!)
 
   const fbo = useFBO(previewWidth, previewHeight)
 
@@ -31,14 +30,14 @@ const RenderPreview: React.FC<RenderPreviewProps> = ({ renderCameraRef, config }
     gl.autoClear = false;
 
     gl.setRenderTarget(fbo);
-    scene.background = new Color('#333');
+    scene.background = new Color("#333");
     gl.render(scene, renderCameraRef.current);
     scene.background = null;
     gl.setRenderTarget(null);
 
     gl.render(scene, camera);
 
-    gl.render(guiScene, guiCamera.current)
+    gl.render(guiScene, guiCamera.current);
 
     gl.autoClear = true;
   }, 2);
@@ -46,13 +45,19 @@ const RenderPreview: React.FC<RenderPreviewProps> = ({ renderCameraRef, config }
   return createPortal(
     <>
       <OrthographicCamera ref={guiCamera} near={0.0001} far={1} />
+<<<<<<< HEAD
       <group position={[previewX, previewY, -.1]}>
         <Plane args={[previewWidth, previewHeight, 1]}>
+=======
+      <group position={[previewX, previewY, -0.1]}>
+        <Plane args={[previewSize, previewSize, 1]}>
+>>>>>>> main
           <meshBasicMaterial map={fbo.texture} />
         </Plane>
       </group>
-    </>, guiScene
-  )
+    </>,
+    guiScene
+  );
 };
 
 export default RenderPreview;

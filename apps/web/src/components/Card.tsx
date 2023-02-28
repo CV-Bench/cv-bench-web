@@ -1,5 +1,6 @@
-import { classNames } from "@/utils/strings";
 import { ReactNode } from "react";
+
+import { classNames } from "@/utils/strings";
 
 export interface CardProps extends React.HTMLProps<HTMLDivElement> {
   children: ReactNode;

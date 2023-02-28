@@ -7,14 +7,15 @@ export interface RenderCameraControlsProps {
   renderCameraRef: React.MutableRefObject<PerspectiveCamera>;
 }
 
-const RenderCameraControls: React.FC<RenderCameraControlsProps> = ({ renderCameraRef }) => {
-  const gl = useThree((state) => state.gl)
+const RenderCameraControls: React.FC<RenderCameraControlsProps> = ({
+  renderCameraRef
+}) => {
+  const gl = useThree((state) => state.gl);
 
   return useFrame((state, delta) => {
     const camera = renderCameraRef.current;
 
-
     camera.updateProjectionMatrix();
   }, 1);
-}
+};
 export default RenderCameraControls;

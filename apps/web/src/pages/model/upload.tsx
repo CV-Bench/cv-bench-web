@@ -1,10 +1,14 @@
+import { useRouter } from "next/router";
+import { useState } from "react";
+import * as z from "zod";
+
 import PreviewStep from "@/components/model/upload/PreviewStep";
 import UploadStep from "@/components/model/upload/UploadStep";
 import FormStepsPanel, {
   FormStep
 } from "@/components/multiform/FormStepsPanel";
-import { useState } from "react";
 import { api } from "@/network";
+
 import {
   AccessType,
   DataUrlFile,
@@ -13,8 +17,6 @@ import {
   PostModel,
   PostModelBody
 } from "types";
-import * as z from "zod";
-import { useRouter } from "next/router";
 
 const UploadModel = () => {
   const router = useRouter();

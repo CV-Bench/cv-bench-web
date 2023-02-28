@@ -2,7 +2,9 @@ import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React from "react";
 import { Layers } from "three";
+
 import { DataUrlFile } from "types";
+
 import AutoFitModelObject from "./ModelObject/AutoFitModelObject";
 
 export interface ModelPreviewProps {
@@ -23,9 +25,13 @@ const ModelPreview: React.FC<ModelPreviewProps> = ({ model: modelPath, modelAsse
       <ambientLight intensity={.1} />
       <pointLight position={[0, 0, 3]} />
       <directionalLight />
-      {modelPath &&
-        <AutoFitModelObject onThumbnailUpdate={onThumbnailUpdate} model={modelPath} modelAssets={modelAssets} />
-      }
+      {modelPath && (
+        <AutoFitModelObject
+          onThumbnailUpdate={onThumbnailUpdate}
+          model={modelPath}
+          modelAssets={modelAssets}
+        />
+      )}
 
       <OrbitControls makeDefault />
     </Canvas>

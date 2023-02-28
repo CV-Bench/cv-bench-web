@@ -1,5 +1,7 @@
 import { Collection, Db, MongoClient } from "mongodb";
+
 import { CollectionCollection, CollectionName, loggerTitle } from "types";
+
 import logger from "../../util/logger";
 
 /**

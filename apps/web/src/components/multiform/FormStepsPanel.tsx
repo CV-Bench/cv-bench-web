@@ -29,7 +29,7 @@ export type FormStep = {
   description: string;
   validation: z.ZodObject<{}>;
   component: React.ReactNode;
-}
+};
 
 interface FormStepsPanelProps {
   formData: {};

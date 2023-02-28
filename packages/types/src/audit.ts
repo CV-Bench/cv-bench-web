@@ -1,4 +1,5 @@
 import * as z from "zod";
+
 import { ObjId } from "./utils";
 
 export enum AuditEventType {
@@ -28,14 +29,14 @@ export enum AuditEventType {
   DOWNLOAD_NETWORK = "DOWNLOAD_NETWORK",
   REQUEST_NETWORK_DOWNLOAD = "REQUEST_NETWORK_DOWNLOAD",
 
-  STOP_TASK = "STOP_TASK",
+  STOP_TASK = "STOP_TASK"
 }
 
 export const AuditEventBody = z.object({
   _id: ObjId,
   userId: ObjId.optional(),
   type: z.nativeEnum(AuditEventType),
-  createdAt: z.date(),
+  createdAt: z.date()
 });
 
 export type AuditEventDb = z.infer<typeof AuditEventBody>;

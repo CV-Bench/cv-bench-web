@@ -1,6 +1,16 @@
-import { Collection, DeleteResult, FindCursor, InsertOneResult, ObjectId, UpdateResult } from "mongodb";
+import {
+  Collection,
+  DeleteResult,
+  FindCursor,
+  InsertOneResult,
+  ObjectId,
+  UpdateResult
+} from "mongodb";
+
 import { AccessType, CollectionName, loggerTitle, ModelDb } from "types";
+
 import logger from "../../util/logger";
+
 import { collectionRequest, prepareCollection } from "./";
 import { isUsersOrPublic } from "./utils";
 
@@ -11,19 +21,23 @@ prepareCollection(CollectionName.MODEL).then((collection) => {
   );
 });
 
-const findOne = (id: string | ObjectId, userId: string) =>
+const findOne = (id: string | ObjectId, userId: string | ObjectId) =>
   collectionRequest<ModelDb>(CollectionName.MODEL, async (collection) => {
     return collection.findOne({
       _id: new ObjectId(id),
-      ...isUsersOrPublic(userId),
+      ...isUsersOrPublic(userId)
     });
   });
 
-const insert = (model: Omit<ModelDb, "_id">) =>
+const insert = (model: Omit<ModelDb, "_id" | "updatedAt" | "createdAt">) =>
   collectionRequest<InsertOneResult>(
     CollectionName.MODEL,
     async (collection) => {
-      return collection.insertOne(model);
+      return collection.insertOne({
+        ...model,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
     }
   );
 
@@ -36,9 +50,14 @@ const updateOne = (
     return collection.updateOne(
       {
         _id: new ObjectId(id),
-        userId: new ObjectId(userId),
+        userId: new ObjectId(userId)
       },
-      { $set: update }
+      {
+        $set: {
+          ...update,
+          updatedAt: new Date()
+        }
+      }
     );
   });
 
@@ -46,7 +65,7 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
   collectionRequest<DeleteResult>(CollectionName.MODEL, async (collection) => {
     return collection.deleteOne({
       _id: new ObjectId(id),
-      userId: new ObjectId(userId),
+      userId: new ObjectId(userId)
     });
   });
 
@@ -54,12 +73,7 @@ const find = (userId: string | ObjectId) =>
   collectionRequest<FindCursor<ModelDb>>(
     CollectionName.MODEL,
     async (collection) => {
-      return collection.find({
-        $or: [
-          { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC },
-        ],
-      });
+      return collection.find(isUsersOrPublic(userId));
     }
   );
 
@@ -68,7 +82,7 @@ const Model = {
   insert,
   updateOne,
   deleteOne,
-  find,
+  find
 };
 
 export default Model;

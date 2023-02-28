@@ -1,6 +1,7 @@
 import { useLoader } from "@react-three/fiber";
-import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader";
 import React from "react";
+import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader";
+
 import { DataUrlFile } from "types";
 
 export interface PlyModelProps {

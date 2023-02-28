@@ -1,40 +1,62 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
-import { sessionMiddleware } from "./middleware/session";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import express, { Express, Request, Response } from "express";
 import helmet from "helmet";
-import googleAuthRouter from "./routes/auth/google";
-import logger from "./util/logger";
-import loggerMiddleware from "./middleware/logger";
-import validatorMiddleware from "./middleware/validator";
-import { RouteNames, route, loggerTitle, SessionUser, AuthProvider } from "types";
 
 import {
-  deleteModel,
-  getModel,
-  getModelList,
-  updateModel,
-  uploadModel,
-} from "./routes/model";
+  RouteNames,
+  route,
+  loggerTitle,
+  SessionUser,
+  AuthProvider
+} from "types";
+
+import authMiddleware from "./middleware/auth";
+import loggerMiddleware from "./middleware/logger";
+import { sessionMiddleware } from "./middleware/session";
+import validatorMiddleware from "./middleware/validator";
+import getUser from "./routes/auth/getUser";
+import googleAuthRouter from "./routes/auth/google";
+import logout from "./routes/auth/logout";
+import microsoftAuthRouter from "./routes/auth/microsoft";
+import signup from "./routes/auth/signup";
 import {
   deleteBackground,
   getBackground,
   getBackgroundList,
   updateBackground,
-  uploadBackground,
+  uploadBackground
 } from "./routes/background";
-import appTokenMiddleware from "./middleware/appTokenMiddleware";
-import authMiddleware from "./middleware/auth";
-import getUser from "./routes/auth/getUser";
-import microsoftAuthRouter from "./routes/auth/microsoft";
-import signup from "./routes/auth/signup";
-import logout from "./routes/auth/logout";
+import {
+  getDatasetList,
+  getDataset,
+  deleteDataset,
+  createDataset,
+  updateNetwork
+} from "./routes/dataset";
+import updateDataset from "./routes/dataset/updateDataset";
+import {
+  deleteModel,
+  getModel,
+  getModelList,
+  updateModel,
+  uploadModel
+} from "./routes/model";
+import {
+  getNetworkList,
+  getNetwork,
+  deleteNetwork,
+  createNetwork
+} from "./routes/network";
+import { getNetworkArchitectureList } from "./routes/networkArchitecture";
+import { finishTask, getTask, getTaskList } from "./routes/task";
+import logger from "./util/logger";
 
 declare module "express-session" {
   interface SessionData {
     nonce: {
       [key in AuthProvider]?: string;
-    }
+    };
     user?: SessionUser;
   }
 }
@@ -66,10 +88,9 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(helmet());
 app.use(
   bodyParser.urlencoded({
-    extended: true,
+    extended: true
   })
 );
-//app.use(appTokenMiddleware);
 app.use(sessionMiddleware);
 app.use(authMiddleware);
 app.use(validatorMiddleware);
@@ -98,13 +119,35 @@ app.delete(route(RouteNames.DELETE_BACKGROUND), deleteBackground);
 app.patch(route(RouteNames.PATCH_BACKGROUND), updateBackground);
 app.post(route(RouteNames.POST_BACKGROUND), uploadBackground);
 
+// DATASET ROUTES
+app.get(route(RouteNames.GET_DATASET_LIST), getDatasetList);
+app.get(route(RouteNames.GET_DATASET), getDataset);
+app.delete(route(RouteNames.DELETE_DATASET), deleteDataset);
+app.patch(route(RouteNames.PATCH_DATASET), updateDataset);
+app.post(route(RouteNames.POST_DATASET), createDataset);
+
+// NETWORK ROUTES
+app.get(route(RouteNames.GET_NETWORK_LIST), getNetworkList);
+app.get(route(RouteNames.GET_NETWORK), getNetwork);
+app.delete(route(RouteNames.DELETE_NETWORK), deleteNetwork);
+app.patch(route(RouteNames.PATCH_NETWORK), updateNetwork);
+app.post(route(RouteNames.POST_NETWORK), createNetwork);
+
+// TASK ROUTES
+app.get(route(RouteNames.GET_TASK_LIST), getTaskList);
+app.get(route(RouteNames.GET_TASK), getTask);
+app.post(route(RouteNames.FINISH_TASK), finishTask);
+app.post(route(RouteNames.STOP_TASK), finishTask);
+
+// NETWORK ARCHITECTURE
+app.get(
+  route(RouteNames.GET_NETWORK_ARCHITECTURE_LIST),
+  getNetworkArchitectureList
+);
+
 app.listen(port, () => {
   logger.info(
     loggerTitle.EXPRESS_SERVER,
     `⚡️ Server is running at http://localhost:${port}`
   );
-});
-
-app.get("/", (req, res) => {
-  res.status(200).send("HI");
 });
