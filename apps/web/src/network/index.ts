@@ -40,7 +40,7 @@ import {
 
 import { network } from "./utils";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_API_URL || "";
+const baseUrl = process.env.HOST_DOMAIN || "http://localhost:3001";
 
 const fetchCors = (url: RequestInfo | URL, init?: RequestInit | undefined) =>
   fetch(url, {

@@ -45,7 +45,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         setUser(undefined);
       }
     }
-  }, [isLoading]);
+  }, [isLoading, data, router]);
 
   if (isLoading)
     return (
