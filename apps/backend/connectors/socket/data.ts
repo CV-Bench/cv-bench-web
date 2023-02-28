@@ -1,8 +1,9 @@
-import { DataType } from "types";
+import { Namespace } from "socket.io";
+import { DataNamespaceClientToServerEvents, DataNamespaceData, DataNamespaceServerToClientEvents, DataType } from "types";
 import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
 
-const dataNamespace = io.of("/data");
+const dataNamespace:Namespace<DataNamespaceClientToServerEvents, DataNamespaceServerToClientEvents> = io.of("/data");
 
 dataNamespace.use(serverAuthMiddleware);
 dataNamespace.use(serverRegistryMiddleware);
@@ -14,16 +15,16 @@ dataNamespace.on("connection", (socket) => {
     } catch (rejRes: any) {
       // no available points to consume
       // emit error or warning message
-      socket.emit("blocked", { "retry-ms": rejRes.msBeforeNext });
+      socket.emit("blocked", rejRes.msBeforeNext);
     }
   });
 });
 
 const uploadData = (dataId: string, dataType: DataType) =>
-  dataNamespace.emit("upload", { dataId, dataType });
+  dataNamespace.emit("upload", dataId, dataType);
 
 const deleteData = (dataId: string, dataType: DataType) =>
-  dataNamespace.emit("delete", { dataId, dataType });
+  dataNamespace.emit("delete", dataId, dataType);
 
 const Data = {
   upload: uploadData,

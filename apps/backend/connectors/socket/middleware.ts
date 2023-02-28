@@ -13,6 +13,7 @@ import { SocketMiddleware } from "./types";
 import { RedisStore } from "../redis";
 import { redisClient } from "../redis";
 import Database from "../mongo";
+import * as jwt from "jsonwebtoken";
 
 export const serverAuthMiddleware: SocketMiddleware = (socket, next) => {
   const token = socket.handshake.auth[process.env.SOCKET_AUTH_TOKEN_KEY || ""];
