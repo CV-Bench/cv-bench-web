@@ -52,6 +52,9 @@ import { getNetworkArchitectureList } from "./routes/networkArchitecture";
 import { finishTask, getTask, getTaskList } from "./routes/task";
 import logger from "./util/logger";
 
+import socket from "./connectors/socket";
+import socketToken from "./routes/auth/socketToken";
+
 declare module "express-session" {
   interface SessionData {
     nonce: {
@@ -104,6 +107,7 @@ app.use("/auth/microsoft", microsoftAuthRouter);
 app.get("/auth/user", getUser);
 app.post("/auth/signup", signup);
 app.get("/auth/logout", logout);
+app.get("/auth/token", socketToken);
 
 // MODEL ROUTES
 app.get(route(RouteNames.GET_MODEL_LIST), getModelList);
@@ -145,9 +149,15 @@ app.get(
   getNetworkArchitectureList
 );
 
+socket;
+
 app.listen(port, () => {
   logger.info(
     loggerTitle.EXPRESS_SERVER,
     `⚡️ Server is running at http://localhost:${port}`
   );
+});
+
+app.get("/", (req, res) => {
+  res.status(200).send("HI");
 });
