@@ -1,9 +1,11 @@
-import { Server } from "socket.io";
-import { redisClient } from "../redis";
-import { RateLimiterRedis } from "rate-limiter-flexible";
-import { sessionMiddleware } from "../../middleware/session";
 import { NextFunction, Request, Response } from "express";
-import { ClientToServerEvents, ServerToClientEvents } from "types";
+import { RateLimiterRedis } from "rate-limiter-flexible";
+import { Server } from "socket.io";
+
+import { ClientToServerEvents, ServerToClientEvents } from "shared-types";
+
+import { sessionMiddleware } from "../../middleware/session";
+import { redisClient } from "../redis";
 
 const rateLimiter = new RateLimiterRedis({
   storeClient: redisClient,
@@ -12,7 +14,10 @@ const rateLimiter = new RateLimiterRedis({
   duration: 1 //per 1 second
 });
 
-const io = new Server<ClientToServerEvents, ServerToClientEvents>(parseInt(process.env.SOCKET_PORT || "3002"), {});
+const io = new Server<ClientToServerEvents, ServerToClientEvents>(
+  parseInt(process.env.SOCKET_PORT || "3002"),
+  {}
+);
 
 // SERVER SOCKET
 

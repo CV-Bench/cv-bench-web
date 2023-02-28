@@ -4,18 +4,11 @@ import {
   CollectionName,
   loggerTitle,
   NetworkArchitecture as NetworkArchitectureType
-} from "types";
+} from "shared-types";
 
 import logger from "../../util/logger";
 
-import { prepareCollection, collectionRequest } from "./client";
-
-prepareCollection(CollectionName.NETWORK_ARCHITECTURE).then((collection) => {
-  logger.debug(
-    loggerTitle.MONGO_CLIENT,
-    `Collection Ready: ${collection.namespace}`
-  );
-});
+import { collectionRequest } from "./client";
 
 const find = () =>
   collectionRequest<FindCursor<NetworkArchitectureType>>(

@@ -11,7 +11,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
 
-import { Bucket, createBucketKey } from "types";
+import { Bucket, createBucketKey } from "shared-types";
 
 import { Background } from "./background";
 import { Model } from "./model";

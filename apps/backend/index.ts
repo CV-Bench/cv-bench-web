@@ -9,8 +9,9 @@ import {
   loggerTitle,
   SessionUser,
   AuthProvider
-} from "types";
+} from "shared-types";
 
+import socket from "./connectors/socket";
 import authMiddleware from "./middleware/auth";
 import loggerMiddleware from "./middleware/logger";
 import { sessionMiddleware } from "./middleware/session";
@@ -20,6 +21,7 @@ import googleAuthRouter from "./routes/auth/google";
 import logout from "./routes/auth/logout";
 import microsoftAuthRouter from "./routes/auth/microsoft";
 import signup from "./routes/auth/signup";
+import socketToken from "./routes/auth/socketToken";
 import {
   deleteBackground,
   getBackground,
@@ -51,9 +53,6 @@ import {
 import { getNetworkArchitectureList } from "./routes/networkArchitecture";
 import { finishTask, getTask, getTaskList } from "./routes/task";
 import logger from "./util/logger";
-
-import socket from "./connectors/socket";
-import socketToken from "./routes/auth/socketToken";
 
 declare module "express-session" {
   interface SessionData {

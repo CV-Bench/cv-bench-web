@@ -6,7 +6,7 @@ import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 
-import { AccessType } from "types";
+import { AccessType } from "shared-types";
 
 export interface UploadStepProps {
   name?: string;

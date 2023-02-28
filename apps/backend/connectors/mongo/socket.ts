@@ -1,22 +1,18 @@
 import { Collection, FindCursor, InsertOneResult, ObjectId } from "mongodb";
+
 import {
   AccessType,
   CollectionName,
   loggerTitle,
   ModelDb,
   ServerNamespace,
-  SocketDb,
-} from "types";
-import logger from "../../util/logger";
-import { collectionRequest, prepareCollection } from "./";
-import { isUsersOrPublic } from "./utils";
+  SocketDb
+} from "shared-types";
 
-prepareCollection(CollectionName.SOCKET).then((collection) => {
-  logger.debug(
-    loggerTitle.MONGO_CLIENT,
-    `Collection Ready: ${collection.namespace}`
-  );
-});
+import logger from "../../util/logger";
+
+import { collectionRequest } from "./";
+import { isUsersOrPublic } from "./utils";
 
 const insertOne = (model: Omit<SocketDb, "_id">) =>
   collectionRequest<InsertOneResult>(
@@ -29,7 +25,7 @@ const insertOne = (model: Omit<SocketDb, "_id">) =>
 const deleteOne = (socketId: string) =>
   collectionRequest<ModelDb>(CollectionName.SOCKET, async (collection) => {
     return collection.deleteOne({
-      socketId,
+      socketId
     });
   });
 
@@ -40,8 +36,8 @@ const find = (userId: string | ObjectId) =>
       return collection.find({
         $or: [
           { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC },
-        ],
+          { accessType: AccessType.PUBLIC }
+        ]
       });
     }
   );
@@ -50,7 +46,7 @@ const findOne = (serverId: string, namespace: ServerNamespace) =>
   collectionRequest<SocketDb>(CollectionName.SOCKET, async (collection) => {
     return collection.findOne({
       serverId,
-      serverNamespace: namespace,
+      serverNamespace: namespace
     });
   });
 
@@ -58,7 +54,7 @@ const Socket = {
   insertOne,
   deleteOne,
   find,
-  findOne,
+  findOne
 };
 
 export default Socket;

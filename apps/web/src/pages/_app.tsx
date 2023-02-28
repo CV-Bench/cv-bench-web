@@ -8,7 +8,7 @@ import useSWR from "swr";
 
 import ModalProvider from "@/components/modal/ModalProvider";
 
-import { SessionUser } from "types";
+import { SessionUser } from "shared-types";
 
 import NavLayout from "../components/nav/NavLayout";
 import "../styles/globals.css";

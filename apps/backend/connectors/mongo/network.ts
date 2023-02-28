@@ -7,19 +7,17 @@ import {
   UpdateResult
 } from "mongodb";
 
-import { AccessType, CollectionName, NetworkDb, loggerTitle } from "types";
+import {
+  AccessType,
+  CollectionName,
+  NetworkDb,
+  loggerTitle
+} from "shared-types";
 
 import logger from "../../util/logger";
 
-import { collectionRequest, prepareCollection } from "./";
+import { collectionRequest } from "./";
 import { isUsersOrPublic } from "./utils";
-
-prepareCollection(CollectionName.NETWORK).then((collection) => {
-  logger.debug(
-    loggerTitle.MONGO_CLIENT,
-    `Collection Ready: ${collection.namespace}`
-  );
-});
 
 const findOne = (id: string | ObjectId, userId: string) =>
   collectionRequest<NetworkDb>(CollectionName.NETWORK, async (collection) => {

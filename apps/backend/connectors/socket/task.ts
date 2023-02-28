@@ -1,9 +1,18 @@
 import { Namespace } from "socket.io";
-import { TaskNamespaceClientToServerEvents, TaskNamespaceData, TaskNamespaceServerToClientEvents } from "types";
+
+import {
+  TaskNamespaceClientToServerEvents,
+  TaskNamespaceData,
+  TaskNamespaceServerToClientEvents
+} from "shared-types";
+
 import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
 
-const taskNamespace:Namespace<TaskNamespaceClientToServerEvents, TaskNamespaceServerToClientEvents> = io.of("/task");
+const taskNamespace: Namespace<
+  TaskNamespaceClientToServerEvents,
+  TaskNamespaceServerToClientEvents
+> = io.of("/task");
 
 taskNamespace.use(serverAuthMiddleware);
 taskNamespace.use(serverRegistryMiddleware);
@@ -26,7 +35,7 @@ const stopTask = (taskId: string) => taskNamespace.emit("stop", taskId);
 
 const Task = {
   start: startTask,
-  stop: stopTask,
+  stop: stopTask
 };
 
 export default Task;

@@ -9,7 +9,7 @@ import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
 import { api } from "@/network";
 
-import { AccessType, PostBackground } from "types";
+import { AccessType, PostBackground } from "shared-types";
 
 export interface UploadBackgroundData {
   tags?: string[];

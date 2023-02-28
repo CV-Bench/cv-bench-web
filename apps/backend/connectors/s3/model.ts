@@ -1,7 +1,7 @@
 import { putObject, getObject, deleteObject, listObjects } from ".";
 
-import { Bucket } from "types";
-import { OmitFirst } from "types/src/utils";
+import { Bucket } from "shared-types";
+import { OmitFirst } from "shared-types/src/utils";
 
 const putModel = (...args: OmitFirst<Parameters<typeof putObject>>) =>
   putObject(Bucket.MODELS, ...args);

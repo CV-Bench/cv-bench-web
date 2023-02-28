@@ -1,4 +1,4 @@
-import { loggerTitle } from "types";
+import { loggerTitle } from "shared-types";
 
 const loggerConfig: {
   debugFilter: {

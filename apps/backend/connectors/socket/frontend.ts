@@ -1,15 +1,24 @@
 import { Namespace } from "socket.io";
-import { DataNamespaceClientToServerEvents, DataNamespaceData, DataNamespaceServerToClientEvents, DataType } from "types";
-import io from "./client";
-import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
 import * as socketJwt from "socketio-jwt";
 
-const frontendNamespace:Namespace = io.of("/frontend");
+import {
+  DataNamespaceClientToServerEvents,
+  DataNamespaceData,
+  DataNamespaceServerToClientEvents,
+  DataType
+} from "shared-types";
 
-frontendNamespace.use(socketJwt.authorize({
+import io from "./client";
+import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
+
+const frontendNamespace: Namespace = io.of("/frontend");
+
+frontendNamespace.use(
+  socketJwt.authorize({
     secret: process.env.SOCKET_SESSION_SECRET!,
     handshake: true
-}));
+  })
+);
 
 frontendNamespace.on("connection", (socket) => {
   socket.onAny(async (event, ...args) => {

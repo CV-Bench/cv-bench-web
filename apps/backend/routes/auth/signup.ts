@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { loggerTitle } from "types";
+import { loggerTitle } from "shared-types";
 
 import Database from "../../connectors/mongo";
 import logger from "../../util/logger";

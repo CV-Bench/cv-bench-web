@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import React from "react";
 import { Layers } from "three";
 
-import { DataUrlFile } from "types";
+import { DataUrlFile } from "shared-types";
 
 import AutoFitModelObject from "./ModelObject/AutoFitModelObject";
 

@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-import { FinishTask, TypedRequest } from "types";
+import { FinishTask, TypedRequest } from "shared-types";
 
 const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {};
 

@@ -2,7 +2,7 @@ import { useLoader } from "@react-three/fiber";
 import React from "react";
 import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader";
 
-import { DataUrlFile } from "types";
+import { DataUrlFile } from "shared-types";
 
 export interface PlyModelProps {
   model: DataUrlFile;
