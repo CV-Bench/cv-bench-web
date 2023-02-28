@@ -2,7 +2,7 @@ import useSWR, { SWRResponse } from "swr";
 
 import { api } from "@/network";
 
-import { GetModel, GetModelList, RouteNames, getRoute } from "types";
+import { GetModel, GetModelList, RouteNames, getRoute } from "shared-types";
 
 export const useModel = (id: string): SWRResponse<GetModel> =>
   useSWR(getRoute(RouteNames.GET_MODEL)(id), () => api.getModel(id));

@@ -36,7 +36,7 @@ import {
   PostNetwork,
   RouteNames,
   getRoute
-} from "types";
+} from "shared-types";
 
 import { network } from "./utils";
 

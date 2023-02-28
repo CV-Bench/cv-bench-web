@@ -8,7 +8,7 @@ import {
   GetNetworkList,
   RouteNames,
   getRoute
-} from "types";
+} from "shared-types";
 
 export const useNetwork = (id: string): SWRResponse<GetNetwork> =>
   useSWR(getRoute(RouteNames.GET_NETWORK)(id), () => api.getNetwork(id));

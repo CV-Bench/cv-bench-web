@@ -3,7 +3,7 @@ import { LoadingManager } from "three";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 
-import { DataUrlFile } from "types";
+import { DataUrlFile } from "shared-types";
 
 export interface ObjModelProps {
   model: DataUrlFile;

@@ -3,7 +3,7 @@ import React from "react";
 
 import FileInput from "@/components/inputs/FileInput";
 
-import { DataUrlFile } from "types";
+import { DataUrlFile } from "shared-types";
 
 import Card from "../../Card";
 import InputLabel from "../../inputs/InputLabel";

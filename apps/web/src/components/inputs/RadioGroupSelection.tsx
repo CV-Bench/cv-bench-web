@@ -1,6 +1,6 @@
 import { RadioGroup } from "@headlessui/react";
 
-import { AccessType } from "types";
+import { AccessType } from "shared-types";
 
 import { classNames } from "../../utils/strings";
 

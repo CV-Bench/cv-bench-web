@@ -16,7 +16,7 @@ import {
   ModelType,
   PostModel,
   PostModelBody
-} from "types";
+} from "shared-types";
 
 const UploadModel = () => {
   const router = useRouter();
