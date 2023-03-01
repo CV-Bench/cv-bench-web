@@ -1,7 +1,7 @@
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import React, { useState } from "react";
-import { DataUrlFile } from "types";
+import { DataUrlFile } from "shared-types";
 import { Layers, LoadingManager } from "three";
 
 export interface ObjModelProps {

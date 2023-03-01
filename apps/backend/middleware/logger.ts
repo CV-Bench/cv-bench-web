@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-import { loggerTitle } from "types";
+import { loggerTitle } from "shared-types";
 
 import logger from "../util/logger";
 

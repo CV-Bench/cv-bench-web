@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-import { SessionUser } from "types";
+import { SessionUser } from "shared-types";
 
 import Navbar from "./Navbar";
 

@@ -6,19 +6,10 @@ import {
   UpdateResult
 } from "mongodb";
 
-import { CollectionName, BackgroundDb, loggerTitle, AccessType } from "types";
+import { CollectionName, BackgroundDb, AccessType } from "shared-types";
 
-import logger from "../../util/logger";
-
-import { collectionRequest, prepareCollection } from "./";
+import { collectionRequest } from "./";
 import { isUsersOrPublic } from "./utils";
-
-prepareCollection(CollectionName.BACKGROUND).then((collection) => {
-  logger.debug(
-    loggerTitle.MONGO_CLIENT,
-    `Collection Ready: ${collection.namespace}`
-  );
-});
 
 const findOne = (id: string | ObjectId, userId: string) =>
   collectionRequest<BackgroundDb>(

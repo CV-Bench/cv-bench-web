@@ -9,8 +9,9 @@ import {
   loggerTitle,
   SessionUser,
   AuthProvider
-} from "types";
+} from "shared-types";
 
+import socket from "./connectors/socket";
 import authMiddleware from "./middleware/auth";
 import loggerMiddleware from "./middleware/logger";
 import { sessionMiddleware } from "./middleware/session";
@@ -20,6 +21,7 @@ import googleAuthRouter from "./routes/auth/google";
 import logout from "./routes/auth/logout";
 import microsoftAuthRouter from "./routes/auth/microsoft";
 import signup from "./routes/auth/signup";
+import socketToken from "./routes/auth/socketToken";
 import {
   deleteBackground,
   getBackground,
@@ -104,6 +106,7 @@ app.use("/auth/microsoft", microsoftAuthRouter);
 app.get("/auth/user", getUser);
 app.post("/auth/signup", signup);
 app.get("/auth/logout", logout);
+app.get("/auth/token", socketToken);
 
 // MODEL ROUTES
 app.get(route(RouteNames.GET_MODEL_LIST), getModelList);
@@ -145,9 +148,15 @@ app.get(
   getNetworkArchitectureList
 );
 
+socket;
+
 app.listen(port, () => {
   logger.info(
     loggerTitle.EXPRESS_SERVER,
     `⚡️ Server is running at http://localhost:${port}`
   );
+});
+
+app.get("/", (req, res) => {
+  res.status(200).send("HI");
 });

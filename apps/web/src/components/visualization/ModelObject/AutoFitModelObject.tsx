@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Vector3, Box3 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-import { DataUrlFile } from "types";
+import { DataUrlFile } from "shared-types";
 
 import ModelObject from "./ModelObject";
 

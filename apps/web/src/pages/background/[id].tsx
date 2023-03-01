@@ -10,7 +10,7 @@ import TagInput from "@/components/inputs/TagInput";
 import { useBackground } from "@/hooks/background";
 import { api } from "@/network";
 
-import { AccessType, PatchBackground } from "types";
+import { AccessType, PatchBackground } from "shared-types";
 
 const BackgroundId: React.FC = () => {
   const { query, push } = useRouter();

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DataUrlFile } from "types";
+import { DataUrlFile } from "shared-types";
 
 import ObjModel from "./ObjModel";
 import PlyModel from "./PlyModel";

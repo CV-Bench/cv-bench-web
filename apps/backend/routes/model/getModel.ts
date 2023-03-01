@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 
-import { DataUrlFile, GetModel, ModelDb } from "types";
+import { DataUrlFile, GetModel, ModelDb } from "shared-types";
 
 import Database from "../../connectors/mongo";
 import { Model } from "../../connectors/s3/model";

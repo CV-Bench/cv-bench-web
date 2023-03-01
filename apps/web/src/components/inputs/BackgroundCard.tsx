@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { formatToDateString } from "@/utils/date";
 
-import { BackgroundDb } from "types";
+import { BackgroundDb } from "shared-types";
 
 const BackgroundCard: React.FC<BackgroundDb> = ({
   _id,

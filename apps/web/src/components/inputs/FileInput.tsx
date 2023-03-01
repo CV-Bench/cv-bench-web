@@ -1,7 +1,7 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChangeEventHandler, DragEventHandler, useRef } from "react";
 
-import { DataUrlFile } from "types";
+import { DataUrlFile } from "shared-types";
 
 export interface FileInputProps {
   className?: string;

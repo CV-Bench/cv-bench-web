@@ -3,7 +3,7 @@ import React from "react";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 
-import { AccessType } from "types";
+import { AccessType } from "shared-types";
 
 import RadioGroupSelection from "./RadioGroupSelection";
 

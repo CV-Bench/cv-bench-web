@@ -11,7 +11,7 @@ import ModelPreview from "@/components/visualization/ModelPreview";
 import { useModel } from "@/hooks/model";
 import { api } from "@/network";
 
-import { AccessType, DataUrlFile, GetModel } from "types";
+import { AccessType, DataUrlFile, GetModel } from "shared-types";
 
 const ModelId = () => {
   const router = useRouter();
