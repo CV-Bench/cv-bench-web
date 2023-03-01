@@ -11,7 +11,8 @@ const loggerConfig: {
     "EXPRESS REQUEST": true,
     "MONGO CLIENT": true,
     "REDIS CLIENT": true,
-    "AUTH CLIENT": true
+    "AUTH CLIENT": true,
+    "SOCKET": true
   }
 };
 
