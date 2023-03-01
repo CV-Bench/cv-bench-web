@@ -2,7 +2,7 @@ import { OrthographicCamera, Plane, useFBO } from "@react-three/drei";
 import { createPortal, useFrame, useThree } from "@react-three/fiber";
 import React from "react";
 import { Camera, Color, PerspectiveCamera, Scene } from "three";
-import { BlenderConfiguration } from "types";
+import { BlenderConfiguration } from "shared-types";
 
 export interface RenderPreviewProps {
   renderCameraRef: React.MutableRefObject<PerspectiveCamera>;

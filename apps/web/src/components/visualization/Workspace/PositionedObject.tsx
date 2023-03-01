@@ -2,7 +2,7 @@ import { Box, TransformControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { PropsWithChildren, useRef } from "react";
 import { DoubleSide, Vector3 } from "three";
-import { BlenderConfiguration } from "types";
+import { BlenderConfiguration } from "shared-types";
 
 export interface PositionedObjectProps
   extends PropsWithChildren, BlenderConfiguration {

@@ -120,9 +120,10 @@ export const api = {
 
     return GetBackgroundBody.parse(background);
   },
-  getBackgroundList: async (): Promise<GetBackgroundList> => {
+  getBackgroundList: async (domainTags?: string[]): Promise<GetBackgroundList> => {
+    const tagParam = (domainTags && domainTags.length > 0) ? `?domainTags=${domainTags.join(',')}` : '';
     const backgrounds = await getRequest(
-      getRoute(RouteNames.GET_BACKGROUND_LIST)()
+      getRoute(RouteNames.GET_BACKGROUND_LIST)() + tagParam
     );
 
     return GetBackgroundListBody.parse(backgrounds) as GetBackgroundList;

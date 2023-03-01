@@ -6,7 +6,7 @@ import MinMaxInput from "@/components/inputs/MinMaxInput"
 import MinMaxSlider from "@/components/inputs/MinMaxSlider"
 import Workspace from "@/components/visualization/Workspace/Workspace"
 import React, { useState } from "react"
-import { BlenderConfiguration, CamLensUnit, ComputeBbox, ConfigurationType, GetModelList, PostDatasetConfiguration } from "types"
+import { BlenderConfiguration, GetModelList } from "shared-types"
 
 
 export interface DatasetConfigurationStepProps {
@@ -19,13 +19,13 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({ sel
   const [visuals, setVisuals] = useState({
     showModelBox: false,
     showCameraSphere: false,
-    showCameraFrustum: false,
+    lockCameraToSphere: false,
   })
 
   const updateVisuals = () => setVisuals({...visuals});
   const setShowCameraSphere = (val: boolean) => { visuals.showCameraSphere = val; updateVisuals(); }
   const setShowModelBox = (val: boolean) => { visuals.showModelBox = val; updateVisuals(); }
-  const setShowCameraFrustum = (val: boolean) => { visuals.showCameraFrustum = val; updateVisuals(); }
+  const setLockCameraToSphere = (val: boolean) => { visuals.lockCameraToSphere = val; updateVisuals(); }
 
   const randomConfig = config.random;
   const renderConfig = config.render;
@@ -72,8 +72,8 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({ sel
               <InputField type="checkbox" checked={visuals.showModelBox} onChange={(e) => setShowModelBox(!!(e.target as HTMLInputElement).checked)} />
             </div>
             <div>
-              <InputLabel>Show Camera Frustum</InputLabel>
-              <InputField type="checkbox" checked={visuals.showCameraFrustum} onChange={(e) => setShowCameraFrustum(!!(e.target as HTMLInputElement).checked)} />
+              <InputLabel>Lock Camera To Sphere</InputLabel>
+              <InputField type="checkbox" checked={visuals.lockCameraToSphere} onChange={(e) => setLockCameraToSphere(!!(e.target as HTMLInputElement).checked)} />
             </div>
           </Collapsible>
           <Collapsible title="Camera">
@@ -98,7 +98,7 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({ sel
                 </Collapsible>
             </Collapsible>
             <Collapsible title="Clipping" collapsed={true}>
-              <MinMaxSlider minLimit={0} maxLimit={20} min={cameraConfig.clip_start} max={cameraConfig.clip_end} onMinChange={setClipStart} onMaxChange={setClipEnd} />
+              <MinMaxSlider minLimit={0.01} maxLimit={10} min={cameraConfig.clip_start} max={cameraConfig.clip_end} onMinChange={setClipStart} onMaxChange={setClipEnd} />
             </Collapsible>
           </Collapsible>
           <Collapsible title="Model">

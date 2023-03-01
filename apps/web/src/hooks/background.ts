@@ -12,5 +12,5 @@ import {
 export const useBackground = (id: string): SWRResponse<GetBackground> =>
   useSWR(getRoute(RouteNames.GET_MODEL)(id), () => api.getBackground(id));
 
-export const useBackgroundList = (): SWRResponse<GetBackgroundList> =>
-  useSWR(getRoute(RouteNames.GET_MODEL_LIST)(), api.getBackgroundList);
+export const useBackgroundList = (domainTags?: string[]): SWRResponse<GetBackgroundList> =>
+  useSWR([getRoute(RouteNames.GET_MODEL_LIST)(), domainTags], () => api.getBackgroundList(domainTags));

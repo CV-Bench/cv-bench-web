@@ -1,25 +1,16 @@
-import { TransformControls, useHelper } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { OrbitControls, PerspectiveCamera, TransformControls, useHelper } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
-import { CameraHelper, Layers, PerspectiveCamera, Vector3 } from "three";
-import { BlenderConfiguration, PostDatasetConfiguration } from "types";
+import { CameraHelper, Layers, Vector3 } from "three";
+import { BlenderConfiguration } from "shared-types";
 import RenderCameraControls from "./RenderCameraControls";
 import RenderPreview from "./RenderPreview";
 
 export interface RenderCameraProps extends BlenderConfiguration {
-  showCameraFrustum: boolean;
+  lockCameraToSphere: boolean;
 }
 
 const RenderCamera: React.FC<RenderCameraProps> = (config) => {
-  const cameraRef = useRef<PerspectiveCamera>(null!);
-  const camHelper = useHelper(cameraRef, CameraHelper);
-  
-  useEffect(() => {
-    if (camHelper.current) {
-      camHelper.current.visible = config.showCameraFrustum
-    }
-  })
-
   const controlRef = useRef<any>(null!);
 
   const getSphereXyz = (radius: number, azi: number, inc: number) => {
@@ -31,7 +22,11 @@ const RenderCamera: React.FC<RenderCameraProps> = (config) => {
   };
 
   useFrame(() => {
-    // Limit camera transform to camera spheres
+    if (!config.lockCameraToSphere) {
+      return;
+    }
+
+    // Limit camera transform to camera sphere
     const posVec = controlRef.current.object.position as Vector3;
     const radius = posVec.length();
     const azimuth =
@@ -44,12 +39,8 @@ const RenderCamera: React.FC<RenderCameraProps> = (config) => {
       Math.PI / 2
     );
 
-    if (radius == 0) {
-      return;
-    }
-
     if (radius != 1) {
-      posVec.multiplyScalar(1 / radius);
+      posVec.multiplyScalar(1 / (radius ?? 1));
     }
 
     const newAzi =
@@ -66,26 +57,18 @@ const RenderCamera: React.FC<RenderCameraProps> = (config) => {
         : elevation;
     const newPos = getSphereXyz(posVec.length(), newAzi, newInc);
     posVec.set(newPos[0], newPos[1], newPos[2]);
-
-    // Look at 0,0,0
-    cameraRef.current.lookAt(new Vector3(0, 0, 0));
   });
 
   return (
     <>
-      <TransformControls position={[0, 0, 1]} ref={controlRef} layers={1}>
-        <perspectiveCamera
-          aspect={config.render.camera.sensor_width / config.render.camera.sensor_height}
-          up={[0, 0, 1]}
-          ref={cameraRef}
-          fov={config.render.camera.lens}
-          near={config.render.camera.clip_start}
-          far={config.render.camera.clip_end}
-        />
-      </TransformControls>
-
-      <RenderCameraControls renderCameraRef={cameraRef} />
-      <RenderPreview renderCameraRef={cameraRef} config={config} />
+      <PerspectiveCamera makeDefault
+      position={[1,0,0]}
+      aspect={config.render.camera.sensor_width / config.render.camera.sensor_height} 
+      up={[0,0,1]}
+      fov={config.render.camera.lens}
+      near={config.render.camera.clip_start}
+      far={config.render.camera.clip_end} />
+      <OrbitControls enableZoom={!config.lockCameraToSphere} enablePan={false}  ref={controlRef} target={[0, 0, 0]}  />
     </>
   );
 };

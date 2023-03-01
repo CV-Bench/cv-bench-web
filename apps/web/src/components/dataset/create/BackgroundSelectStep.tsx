@@ -6,7 +6,7 @@ import ModelPreview from "@/components/visualization/ModelPreview";
 import { useBackgroundList } from "@/hooks/background";
 import { useModel, useModelList } from "@/hooks/model";
 import React, { useState } from "react"
-import { DataUrlFile, GetBackgroundList, GetModelList } from "types"
+import { DataUrlFile, GetBackgroundList, GetModelList } from "shared-types"
 
 
 export interface BackgroundSelectStepProps {
@@ -16,7 +16,7 @@ export interface BackgroundSelectStepProps {
 
 const BackgroundSelectStep: React.FC<BackgroundSelectStepProps> = ({ selectedBackgroundTags, onSelectBackgroundTags  }) => {
 
-  const { data: backgrounds } = useBackgroundList();
+  const { data: backgrounds } = useBackgroundList(selectedBackgroundTags);
 
   return (
     <>

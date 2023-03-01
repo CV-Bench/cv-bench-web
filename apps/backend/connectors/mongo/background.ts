@@ -75,7 +75,29 @@ const find = (userId: string | ObjectId) =>
       return collection.find({
         $or: [
           { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC }
+          { accessType: AccessType.PUBLIC },
+        ]
+      });
+    }
+  );
+
+const findByTags = (userId: string | ObjectId, domainTags: string[]) =>
+  collectionRequest<FindCursor<BackgroundDb>>(
+    CollectionName.BACKGROUND,
+    async (collection) => {
+      return collection.find({
+        $and: [
+          {
+            $or: [
+              { userId: new ObjectId(userId) },
+              { accessType: AccessType.PUBLIC },
+            ]
+          },
+          {
+            domainTags: {
+              $in : domainTags
+            }
+          }
         ]
       });
     }
@@ -86,7 +108,8 @@ const Background = {
   insertOne,
   updateOne,
   deleteOne,
-  find
+  find,
+  findByTags
 };
 
 export default Background;

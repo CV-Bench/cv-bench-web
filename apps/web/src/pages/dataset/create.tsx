@@ -1,5 +1,5 @@
 import FormStepsPanel, { FormStep } from "@/components/multiform/FormStepsPanel";
-import { AccessType, BlenderConfiguration, CamLensUnit, ComputeBbox, DatasetType, GetModelList, GetModelListBody, PostDataset } from "types";
+import { AccessType, BlenderConfiguration, CamLensUnit, ComputeBbox, DatasetType, GetModelList, GetModelListBody, PostDataset } from "shared-types";
 import { useState } from "react";
 import * as z from "zod";
 import BackgroundSelectStep from "@/components/dataset/create/BackgroundSelectStep";
