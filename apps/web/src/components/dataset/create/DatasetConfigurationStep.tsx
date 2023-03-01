@@ -31,32 +31,33 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({ sel
   const renderConfig = config.render;
   const cameraConfig = renderConfig.camera;
 
-  const update = () => setConfig({ ...config });
-  const setMinAzi = (val: number) => { randomConfig.min_azi = val; update(); }
-  const setMaxAzi = (val: number) => { randomConfig.max_azi = val; update(); }
+  const updateConfig = () => setConfig({ ...config });
+  const setMinAzi = (val: number) => { randomConfig.min_azi = val; updateConfig(); }
+  const setMaxAzi = (val: number) => { randomConfig.max_azi = val; updateConfig(); }
 
-  const setMinInc = (val: number) => { randomConfig.min_inc = val; update(); }
-  const setMaxInc = (val: number) => { randomConfig.max_inc = val; update(); }
+  const setMinInc = (val: number) => { randomConfig.min_inc = val; updateConfig(); }
+  const setMaxInc = (val: number) => { randomConfig.max_inc = val; updateConfig(); }
 
-  const setModelScale = (val: number) => { renderConfig.model_scale = val; update(); }
+  const setModelScale = (val: number) => { renderConfig.model_scale = val; updateConfig(); }
 
-  const setMinMetallic = (val: number) => { randomConfig.min_metallic = val; update(); }
-  const setMaxMetallic = (val: number) => { randomConfig.max_metallic = val; update(); }
-  const setMinRoughness = (val: number) => { randomConfig.min_roughness = val; update(); }
-  const setMaxRoughness = (val: number) => { randomConfig.max_roughness = val; update(); }
+  const setMinMetallic = (val: number) => { randomConfig.min_metallic = val; updateConfig(); }
+  const setMaxMetallic = (val: number) => { randomConfig.max_metallic = val; updateConfig(); }
+  const setMinRoughness = (val: number) => { randomConfig.min_roughness = val; updateConfig(); }
+  const setMaxRoughness = (val: number) => { randomConfig.max_roughness = val; updateConfig(); }
 
-  const setModelMinX = (val: number) => { randomConfig.min_x_pos = val; update(); }
-  const setModelMaxX = (val: number) => { randomConfig.max_x_pos = val; update(); }
-  const setModelMinY = (val: number) => { randomConfig.min_y_pos = val; update(); }
-  const setModelMaxY = (val: number) => { randomConfig.max_y_pos = val; update(); }
-  const setModelMinZ = (val: number) => { randomConfig.min_z_pos = val; update(); }
-  const setModelMaxZ = (val: number) => { randomConfig.max_z_pos = val; update(); }
+  const setModelMinX = (val: number) => { randomConfig.min_x_pos = val; updateConfig(); }
+  const setModelMaxX = (val: number) => { randomConfig.max_x_pos = val; updateConfig(); }
+  const setModelMinY = (val: number) => { randomConfig.min_y_pos = val; updateConfig(); }
+  const setModelMaxY = (val: number) => { randomConfig.max_y_pos = val; updateConfig(); }
+  const setModelMinZ = (val: number) => { randomConfig.min_z_pos = val; updateConfig(); }
+  const setModelMaxZ = (val: number) => { randomConfig.max_z_pos = val; updateConfig(); }
 
-  const setFov = (val: number) => { cameraConfig.lens = val; update(); }
-  const setWidth = (val: number) => { cameraConfig.sensor_width = val; update(); }
-  const setHeight = (val: number) => { cameraConfig.sensor_height = val; update(); }
-  const setClipStart = (val: number) => { cameraConfig.clip_start = val; update(); }
-  const setClipEnd = (val: number) => { cameraConfig.clip_end = val; update(); }
+  const setFov = (val: number) => { cameraConfig.lens = val; updateConfig(); }
+  const setWidth = (val: number) => { cameraConfig.sensor_width = val; updateConfig(); }
+  const setHeight = (val: number) => { cameraConfig.sensor_height = val; updateConfig(); }
+  const setClipStart = (val: number) => { cameraConfig.clip_start = val; updateConfig(); }
+  const setClipEnd = (val: number) => { cameraConfig.clip_end = val; updateConfig(); }
+
   return (
     <div className="flex-1 flex items-stretch">
       <div className="relative w-1/4">
