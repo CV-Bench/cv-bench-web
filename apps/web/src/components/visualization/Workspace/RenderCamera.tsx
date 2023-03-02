@@ -3,7 +3,6 @@ import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
 import { CameraHelper, Layers, Vector3 } from "three";
 import { BlenderConfiguration } from "shared-types";
-import RenderCameraControls from "./RenderCameraControls";
 import RenderPreview from "./RenderPreview";
 
 export interface RenderCameraProps extends BlenderConfiguration {
