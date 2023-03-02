@@ -1,10 +1,13 @@
 import { Namespace } from "socket.io";
+import {Socket} from "./";
 
 import {
   TaskNamespaceClientToServerEvents,
   TaskNamespaceData,
   TaskNamespaceServerToClientEvents
 } from "shared-types";
+
+import { redisClient } from "../redis";
 
 import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
@@ -25,7 +28,13 @@ taskNamespace.on("connection", (socket) => {
   socket.on("stop_failed", (data: TaskNamespaceData) => {});
 
   socket.on("task_stopped", (data: TaskNamespaceData) => {});
+
+  socket.on("task_log", receiveTaskLogData);
 });
+
+const receiveTaskLogData = (data: TaskNamespaceData) => {
+  redisClient.set(`taskLog:${data.taskId}`, JSON.stringify(data));
+};
 
 const startTask = (taskId: string) => {
   taskNamespace.emit("start", taskId);
@@ -33,9 +42,12 @@ const startTask = (taskId: string) => {
 
 const stopTask = (taskId: string) => taskNamespace.emit("stop", taskId);
 
+const getTask = async (taskId: string) => {};
+
 const Task = {
   start: startTask,
-  stop: stopTask
+  stop: stopTask,
+  get: getTask
 };
 
 export default Task;
