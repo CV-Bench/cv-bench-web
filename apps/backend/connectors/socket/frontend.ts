@@ -16,19 +16,21 @@ import logger from "../../util/logger";
 
 const frontendNamespace: Namespace = io.of("/frontend");
 
-// frontendNamespace.use(
-//   socketJwt.authorize({
-//     secret: process.env.SOCKET_SESSION_SECRET!,
-//     handshake: true,
-//     callback: false
-//   })
-// );
+frontendNamespace.use(
+  socketJwt.authorize({
+    secret: process.env.SOCKET_SESSION_SECRET!,
+    handshake: true,
+    callback: false,
+    decodedPropertyName: "user"
+  })
+);
 
 io.engine.on("connection_error", (e) => {
   logger.error(loggerTitle.SOCKET, "Frontend Namespace", util.inspect(e.req), e.code, e.message, util.inspect(e.context));
 });
 
 frontendNamespace.on("connection", (socket) => {
+  logger.debug(loggerTitle.SOCKET, "/frontend | Socket connected:", socket.id);
   socket.onAny(async (event, ...args) => {
     try {
       socket.emit(event, args);
@@ -39,3 +41,9 @@ frontendNamespace.on("connection", (socket) => {
     }
   });
 });
+
+const Frontend = {
+  Sockets: frontendNamespace.sockets
+};
+
+export default Frontend;
