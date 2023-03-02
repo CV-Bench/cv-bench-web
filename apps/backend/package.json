@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.282.0",
     "@ptkdev/logger": "^1.8.0",
     "@types/sharp": "^0.31.1",
     "body-parser": "^1.20.1",
@@ -28,11 +29,11 @@
     "query-string": "^8.1.0",
     "rate-limiter-flexible": "^2.4.1",
     "redis": "^4.6.4",
+    "shared-types": "*",
     "sharp": "^0.31.3",
     "socket.io": "^4.6.0",
     "socketio-jwt": "^4.6.2",
-    "tsup": "^6.6.3",
-    "shared-types": "*"
+    "tsup": "^6.6.3"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3",
