@@ -1,10 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import { RateLimiterRedis } from "rate-limiter-flexible";
 import { Server } from "socket.io";
-
-import { ClientToServerEvents, ServerToClientEvents } from "shared-types";
+import * as util from 'util';
+import {
+  ClientToServerEvents,
+  loggerTitle,
+  ServerToClientEvents
+} from "shared-types";
 
 import { sessionMiddleware } from "../../middleware/session";
+import logger from "../../util/logger";
 import { redisClient } from "../redis";
 
 const rateLimiter = new RateLimiterRedis({
@@ -14,15 +19,34 @@ const rateLimiter = new RateLimiterRedis({
   duration: 1 //per 1 second
 });
 
+//TODO fix cors for prod
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(
   parseInt(process.env.SOCKET_PORT || "3002"),
-  {}
+  {
+    cors: {
+      origin: ["http://localhost:3000", process.env.HOST_DOMAIN!, "https://admin.socket.io"],
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+    transports: ["websocket", "polling"]
+  }
 );
+
+io.engine.on("connection_error", (e) => {
+  logger.error(loggerTitle.SOCKET, "Root Namespace", util.inspect(e.req), e.code, e.message, util.inspect(e.context));
+});
 
 // SERVER SOCKET
 
 io.on("connection", (socket) => {
+  logger.debug(loggerTitle.SOCKET, "Socket connected:", socket.id);
   socket.onAny(async (event, ...args) => {
+    logger.debug(
+      loggerTitle.SOCKET,
+      "Socket Message incoming:",
+      event,
+      JSON.stringify(args)
+    );
     try {
       // await rateLimiter.consume(socket.handshake.address); // consume 1 point per event from IP
       socket.emit(event, args);

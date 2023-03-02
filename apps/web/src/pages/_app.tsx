@@ -7,6 +7,7 @@ import { MutatingDots } from "react-loader-spinner";
 import useSWR from "swr";
 
 import ModalProvider from "@/components/modal/ModalProvider";
+import { openSocket } from "@/network/socket";
 
 import { SessionUser } from "shared-types";
 
@@ -40,6 +41,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         if (router.pathname.startsWith("/signin")) {
           router.push("/");
         }
+        openSocket().then((io) => io.onAny(console.log));
       } catch (e) {
         router.push("/signin");
         setUser(undefined);

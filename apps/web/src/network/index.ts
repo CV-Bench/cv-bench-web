@@ -205,5 +205,11 @@ export const api = {
     return GetNetworkArchitectureListBody.parse(
       networkArchitectures
     ) as GetNetworkArchitectureList;
+  },
+
+  // SOCKET
+  //TODO fix url to match others
+  getSocketAuthToken: async () => {
+    return getRequest("/auth/token");
   }
 };
