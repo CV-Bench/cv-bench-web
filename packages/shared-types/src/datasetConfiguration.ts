@@ -34,8 +34,6 @@ export const BlenderConfigurationObject = z.object({
     camera: z.object({
       lens_unit: z.nativeEnum(CamLensUnit),
       lens: z.number().gt(0), // °|mm
-      sensor_height: z.number().gt(0), // mm
-      sensor_width: z.number().gt(0), // mm
       clip_start: z.number().gte(0).default(0.1), // reine Performance, muss man nicht unbedingt einstellen können
       clip_end: z.number().gte(0).default(50) // nur für sehr entfernte Objekte (= gar nicht) sinnvoll
     }),

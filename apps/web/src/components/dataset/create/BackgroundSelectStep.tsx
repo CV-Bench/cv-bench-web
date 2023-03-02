@@ -5,18 +5,26 @@ import Table, { TableHeader, TableItem } from "@/components/Table";
 import ModelPreview from "@/components/visualization/ModelPreview";
 import { useBackgroundList } from "@/hooks/background";
 import { useModel, useModelList } from "@/hooks/model";
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { DataUrlFile, GetBackgroundList, GetModelList } from "shared-types"
 
 
 export interface BackgroundSelectStepProps {
-  selectedBackgroundTags?: string[];
+  selectedBackgroundTags: string[];
   onSelectBackgroundTags: (val: string[]) => void;
+
+  selectedBackgrounds: GetBackgroundList;
+  onSelectBackgrounds: (val: GetBackgroundList) => void;
 }
 
-const BackgroundSelectStep: React.FC<BackgroundSelectStepProps> = ({ selectedBackgroundTags, onSelectBackgroundTags  }) => {
+const BackgroundSelectStep: React.FC<BackgroundSelectStepProps> = ({ selectedBackgrounds, onSelectBackgrounds, selectedBackgroundTags, onSelectBackgroundTags  }) => {
+  const {data: backgrounds} = useBackgroundList(selectedBackgroundTags);
 
-  const { data: backgrounds } = useBackgroundList(selectedBackgroundTags);
+  useEffect(() => {
+    if (backgrounds) {
+      onSelectBackgrounds(backgrounds);
+    }
+  }, [backgrounds])
 
   return (
     <>

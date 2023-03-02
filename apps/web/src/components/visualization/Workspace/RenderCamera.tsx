@@ -3,7 +3,6 @@ import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
 import { CameraHelper, Layers, Vector3 } from "three";
 import { BlenderConfiguration } from "shared-types";
-import RenderPreview from "./RenderPreview";
 
 export interface RenderCameraProps extends BlenderConfiguration {
   lockCameraToSphere: boolean;
@@ -62,7 +61,6 @@ const RenderCamera: React.FC<RenderCameraProps> = (config) => {
     <>
       <PerspectiveCamera makeDefault
       position={[1,0,0]}
-      aspect={config.render.camera.sensor_width / config.render.camera.sensor_height} 
       up={[0,0,1]}
       fov={config.render.camera.lens}
       near={config.render.camera.clip_start}

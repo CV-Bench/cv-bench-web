@@ -3,17 +3,17 @@ import Table, { TableHeader, TableItem } from "@/components/Table";
 import ModelPreview from "@/components/visualization/ModelPreview";
 import { useModel, useModelList } from "@/hooks/model";
 import React from "react"
-import { DataUrlFile, GetModelList } from "types"
+import { DataUrlFile, GetModelList } from "shared-types"
 
 
 export interface ModelSelectStepProps {
-  selectedModels?: GetModelList;
+  selectedModels: GetModelList;
   onSelectModels: (val: GetModelList) => void;
 }
 
 const ModelSelectStep: React.FC<ModelSelectStepProps> = ({ selectedModels, onSelectModels  }) => {
   const { data: models } = useModelList();
-  const previewId = (selectedModels && selectedModels.length > 0) ? selectedModels[selectedModels.length - 1]._id : ''
+  const previewId = (selectedModels.length > 0) ? selectedModels[selectedModels.length - 1]._id : ''
   const { data: selectedModel } = useModel(previewId);
 
   const data: TableItem[] = models ?? [];

@@ -12,14 +12,14 @@ export const DatasetBody = DataBody.extend({
   configurationId: ObjId,
   configuration: BlenderConfigurationObject,
   size: z.number(),
-  images: z.number()
+  images: z.array(ObjId)
 });
 
 export type DatasetDb = z.infer<typeof DatasetBody>;
 
 // POST
 export const PostDatasetBody = PostDataBody.merge(
-  DatasetBody.pick({ models: true, datasetType: true, configurationId: true, configuration: true })
+  DatasetBody.pick({ models: true, images: true, datasetType: true, configurationId: true, configuration: true })
 );
 export type PostDataset = z.infer<typeof PostDatasetBody>;
 
