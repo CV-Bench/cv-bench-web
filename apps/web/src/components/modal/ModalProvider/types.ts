@@ -3,7 +3,9 @@ import { Dispatch, SetStateAction } from "react";
 export type OpenModalType = ActiveModals | null;
 
 // Define unique non-confirm modal types
-export enum ActiveModals {}
+export enum ActiveModals {
+  DatasetConfiguration
+}
 
 // Define unique confirmation modal types
 export type ConfirmModalTypes = "test_confirmation";

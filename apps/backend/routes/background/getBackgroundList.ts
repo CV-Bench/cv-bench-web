@@ -1,9 +1,32 @@
 import { Request, Response } from "express";
+import { ObjectId } from "mongodb";
 
 import Database from "../../connectors/mongo";
 
 const getBackgrounds = (req: Request, res: Response) => {
-  Database.Background.find(req.session.user?._id)
+  const tags =
+    req.query.domainTags == ""
+      ? []
+      : req.query.domainTags?.toString().split(",");
+
+  const ids =
+    req.query.ids == ""
+      ? []
+      : req.query.ids
+          ?.toString()
+          .split(",")
+          .map((x) => new ObjectId(x));
+
+  let dbCall;
+  if (tags) {
+    dbCall = Database.Background.findByTags(req.session.user?._id, tags);
+  } else if (ids) {
+    dbCall = Database.Background.findByIds(req.session.user?._id, ids);
+  } else {
+    dbCall = Database.Background.find(req.session.user?._id);
+  }
+
+  dbCall
     .then((result) =>
       result.toArray().then((backgrounds) => res.status(200).json(backgrounds))
     )

@@ -1,5 +1,5 @@
 import * as z from "zod";
-
+import { BlenderConfigurationObject } from "./datasetConfiguration";
 import { DataBody, ObjId, PostDataBody } from "./utils";
 
 export enum DatasetType {
@@ -8,17 +8,18 @@ export enum DatasetType {
 
 export const DatasetBody = DataBody.extend({
   models: z.array(ObjId),
+  distractors: z.array(ObjId),
   datasetType: z.nativeEnum(DatasetType),
   configurationId: ObjId,
   size: z.number(),
-  images: z.number()
+  images: z.array(ObjId)
 });
 
 export type DatasetDb = z.infer<typeof DatasetBody>;
 
 // POST
 export const PostDatasetBody = PostDataBody.merge(
-  DatasetBody.pick({ models: true, datasetType: true, configurationId: true })
+  DatasetBody.pick({ models: true, distractors: true, images: true, datasetType: true, configurationId: true })
 );
 export type PostDataset = z.infer<typeof PostDatasetBody>;
 
@@ -40,6 +41,6 @@ export type GetDataset = z.infer<typeof GetDatasetBody>;
 
 // GET LIST
 export const GetDatasetListBody = z.array(
-  GetDatasetBody.omit({ configurationId: true, models: true })
+  GetDatasetBody.omit({ configurationId: true, models: true, distractors: true })
 );
 export type GetDatasetList = z.infer<typeof GetDatasetListBody>;

@@ -5,12 +5,13 @@ import logger from "../../util/logger";
 import Background from "./background";
 import { prepareCollection } from "./client";
 import Dataset from "./dataset";
+import DatasetConfiguration from "./datasetConfiguration";
 import Model from "./model";
+import Network from "./network";
 import NetworkArchitecture from "./networkArchitecture";
 import Socket from "./socket";
+import Task from "./task";
 import User from "./user";
-import Task from "./task"
-import Network from "./network"
 
 export { cvBenchDb, clientNotReady, collectionRequest } from "./client";
 
@@ -26,6 +27,7 @@ Object.values(CollectionName).map((name) =>
 const Database = {
   Model,
   Dataset,
+  DatasetConfiguration,
   User,
   Background,
   NetworkArchitecture,

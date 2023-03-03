@@ -35,8 +35,6 @@ export const BlenderConfigurationObject = z.object({
     camera: z.object({
       lens_unit: z.nativeEnum(CamLensUnit),
       lens: z.number().gt(0), // °|mm
-      sensor_height: z.number().gt(0), // mm
-      sensor_width: z.number().gt(0), // mm
       clip_start: z.number().gte(0).default(0.1), // reine Performance, muss man nicht unbedingt einstellen können
       clip_end: z.number().gte(0).default(50) // nur für sehr entfernte Objekte (= gar nicht) sinnvoll
     }),
@@ -88,6 +86,7 @@ export const DatasetConfigurationBody = z.object({
   userId: ObjId,
   name: z.string(),
   createdAt: z.string(),
+  updatedAt: z.string(),
   configurationType: z.nativeEnum(ConfigurationType),
   configuration: BlenderConfigurationObject
 });
@@ -143,3 +142,22 @@ export function configurationToJSON(conf: BlenderConfiguration): string {
     }
   });
 }
+
+export const GetDatasetConfigurationBody = DatasetConfigurationBody.omit({
+  createdAt: true,
+  updatedAt: true
+}).extend({
+  createdAt: z.string().transform((d) => new Date(d)),
+  updatedAt: z.string().transform((d) => new Date(d))
+});
+
+export type GetDatasetConfiguration = z.infer<typeof GetDatasetConfigurationBody>;
+
+// GET LIST
+export const GetDatasetConfigurationListBody = z.array(GetDatasetConfigurationBody);
+export type GetDatasetConfigurationList = z.infer<typeof GetDatasetConfigurationListBody>;
+
+// PATCH
+export const PatchDatasetConfigurationBody = PostDatasetConfigurationBody;
+
+export type PatchDatasetConfiguration = z.infer<typeof PatchDatasetConfigurationBody>;

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import BackgroundCard from "@/components/inputs/BackgroundCard";
+import ImageCard from "@/components/ImageCard";
 import { useBackgroundList } from "@/hooks/background";
 
 const BackgroundList: React.FC = () => {
@@ -18,7 +18,11 @@ const BackgroundList: React.FC = () => {
 
       <div className=" grid lg:grid-cols-5 sm:grid-cols-1">
         {backgrounds.map((background) => (
-          <BackgroundCard {...background} />
+          <ImageCard
+            {...background}
+            href={`/background/${background._id}`}
+            name={undefined}
+          />
         ))}
       </div>
     </>
