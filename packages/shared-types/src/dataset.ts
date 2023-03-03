@@ -11,7 +11,8 @@ export const DatasetBody = DataBody.extend({
   datasetType: z.nativeEnum(DatasetType),
   configurationId: ObjId,
   size: z.number(),
-  images: z.number()
+  images: z.number(),
+  s3Key: z.string().optional()
 });
 
 export type DatasetDb = z.infer<typeof DatasetBody>;
