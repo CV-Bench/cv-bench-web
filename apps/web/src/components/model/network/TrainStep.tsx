@@ -2,14 +2,19 @@ import Card from "@/components/Card"
 import InputLabel from "@/components/inputs/InputLabel"
 import TagInput from "@/components/inputs/TagInput"
 import AccessTypeInput from "@/components/inputs/AccessTypeInput"
-import InputField from "@/components/inputs/InputField"
+import { AccessType } from "types"
 
+export interface TrainStepProps {
+    name?: string;
+    tags?: string[];
+    accessType?: AccessType;
+    onSetName: (name: string) => void;
+    onSelectAccessType: (accessType: AccessType) => void;
+    onSelectTags: (tags: string[]) => void;
+}
 
-const TrainStep = (props) => {
-    console.log(props)
-
+const TrainStep: React.FC<TrainStepProps> = (props) => {
     return (<>
-        TrainStep
         <div className="m-2">
             <Card className="flex flex-col h-full">
                 <InputLabel>Tags</InputLabel>
@@ -25,8 +30,14 @@ const TrainStep = (props) => {
             <Card className="flex p-0  ">
                 <div className="flex-1 p-4">
                     <InputLabel>Name</InputLabel>
-                    <input type="text" className="w-full block rounded-md bg-gray-700 border-none text-white placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-0 " />
-
+                    <input
+                        type="text"
+                        className="w-full block rounded-md bg-gray-700 border-none text-white placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-0 "
+                        placeholder={'Enter a name for the task'}
+                        value={props.name}
+                        onChange={(e) => props.onSetName(e.target.value)}
+                        required={true}
+                    />
                 </div>
                 <div className="border-l border-indigo-50"></div>
                 <div className="flex-1 p-4">
