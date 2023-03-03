@@ -1,7 +1,12 @@
-import * as io from "socket.io-client";
+//import * as io from "socket.io-client";
+const io = require("socket.io-client");
 
-export const openSocket = (token: String) => {
-  return io.connect(process.env.SOCKET_DOMAIN! + "/frontend", {
-    query: { token: token }
+import { api } from ".";
+
+export const openSocket = async () => {
+  const tokenObj = await api.getSocketAuthToken();
+  return io((process.env.SOCKET_DOMAIN! || "http://localhost:3002") + "/frontend", {
+    query: tokenObj,
+    transports: ["websocket"]
   });
 };

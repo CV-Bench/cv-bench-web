@@ -41,7 +41,23 @@ export const TaskBody = z.object({
   serverId: z.string().optional(),
   status: z.nativeEnum(TaskStatus),
   type: z.nativeEnum(TaskType),
+<<<<<<< HEAD
+  info: z
+    .object({
+      modelId: ObjId,
+      backgrounds: z.array(ObjId),
+      datasetConfigurationId: ObjId
+    })
+    .or(
+      z.object({
+        datasetId: ObjId,
+        networkArchitectureId: ObjId
+      })
+    ),
+    serverId: z.string().optional()
+=======
   info: TaskDatasetInfoBody.or(TaskNetworkInfoBody)
+>>>>>>> main
 });
 
 export type TaskDb = z.infer<typeof TaskBody>;

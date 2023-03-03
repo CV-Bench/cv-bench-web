@@ -3,11 +3,11 @@ import * as jwt from "jsonwebtoken";
 
 const socketToken = (req: Request, res: Response) => {
   if (!req.session.user) {
-    res.status(422).end();
+    res.status(403).end();
     return;
   }
 
-  res.send(jwt.sign(req.session.user, process.env.SOCKET_SESSION_SECRET!));
+  res.json({token: jwt.sign(req.session.user, process.env.SOCKET_SESSION_SECRET!)});
 };
 
 export default socketToken;

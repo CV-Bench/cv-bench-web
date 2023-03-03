@@ -37,7 +37,14 @@ import {
   updateNetwork
 } from "./routes/dataset";
 import updateDataset from "./routes/dataset/updateDataset";
-import { createDatasetConfiguration, deleteDatasetConfiguration, getDatasetConfiguration, getDatasetConfigurationList, updateDatasetConfiguration } from "./routes/datasetConfiguration";
+import {
+  createDatasetConfiguration,
+  deleteDatasetConfiguration,
+  getDatasetConfiguration,
+  getDatasetConfigurationList,
+  updateDatasetConfiguration
+} from "./routes/datasetConfiguration";
+import download from "./routes/download";
 import {
   deleteModel,
   getModel,
@@ -109,6 +116,9 @@ app.post("/auth/signup", signup);
 app.get("/auth/logout", logout);
 app.get("/auth/token", socketToken);
 
+// DOWNLOAD ROUTE
+app.get("/download/:type/:id", download);
+
 // MODEL ROUTES
 app.get(route(RouteNames.GET_MODEL_LIST), getModelList);
 app.get(route(RouteNames.GET_MODEL), getModel);
@@ -131,11 +141,23 @@ app.patch(route(RouteNames.PATCH_DATASET), updateDataset);
 app.post(route(RouteNames.POST_DATASET), createDataset);
 
 // DATASET CONFIGURATION ROUTES
-app.get(route(RouteNames.GET_DATASET_CONFIGURATION_LIST), getDatasetConfigurationList);
+app.get(
+  route(RouteNames.GET_DATASET_CONFIGURATION_LIST),
+  getDatasetConfigurationList
+);
 app.get(route(RouteNames.GET_DATASET_CONFIGURATION), getDatasetConfiguration);
-app.delete(route(RouteNames.DELETE_DATASET_CONFIGURATION), deleteDatasetConfiguration);
-app.patch(route(RouteNames.PATCH_DATASET_CONFIGURATION), updateDatasetConfiguration);
-app.post(route(RouteNames.POST_DATASET_CONFIGURATION), createDatasetConfiguration);
+app.delete(
+  route(RouteNames.DELETE_DATASET_CONFIGURATION),
+  deleteDatasetConfiguration
+);
+app.patch(
+  route(RouteNames.PATCH_DATASET_CONFIGURATION),
+  updateDatasetConfiguration
+);
+app.post(
+  route(RouteNames.POST_DATASET_CONFIGURATION),
+  createDatasetConfiguration
+);
 
 // NETWORK ROUTES
 app.get(route(RouteNames.GET_NETWORK_LIST), getNetworkList);

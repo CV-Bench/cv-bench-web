@@ -1,11 +1,15 @@
-import { Namespace } from "socket.io";
+import { Namespace, Socket as SocketIO } from "socket.io";
 
 import {
+  TaskDb,
   TaskNamespaceClientToServerEvents,
   TaskNamespaceData,
   TaskNamespaceServerToClientEvents
 } from "shared-types";
 
+import { redisClient } from "../redis";
+
+import { Socket } from "./";
 import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
 
@@ -29,10 +33,27 @@ taskNamespace.on("connection", (socket) => {
 
   socket.on("task_stopped", (data: TaskNamespaceData) => {});
 
+  socket.on("task_log", (data) => {
+    receiveTaskLogData(data, socket);
+  });
+
   socket.on("cleanup_failed", (data: TaskNamespaceData) => {});
 
   socket.on("task_cleaned", (data: TaskNamespaceData) => {});
 });
+
+const receiveTaskLogData = (data: TaskDb, socket: SocketIO) => {
+  redisClient.set(`taskLog:${data._id}`, JSON.stringify(data));
+  Socket.Frontend.Sockets.forEach((frontendSocket) => {
+    //@ts-ignore
+    if (frontendSocket.user._id == data.userId) {
+      frontendSocket.emit("task_log", data);
+      //@ts-ignore
+      socket.emit("task_viewer", frontendSocket.user);
+      return;
+    }
+  });
+};
 
 const startTask = (taskId: string) => {
   taskNamespace.emit("start", taskId);
@@ -40,11 +61,13 @@ const startTask = (taskId: string) => {
 
 const stopTask = (taskId: string) => taskNamespace.emit("stop", taskId);
 
+const getTask = async (taskId: string) => {};
 const cleanupTask = (taskId: string) => taskNamespace.emit("cleanup", taskId);
 
 const Task = {
   start: startTask,
   stop: stopTask,
+  get: getTask,
   cleanup: cleanupTask
 };
 

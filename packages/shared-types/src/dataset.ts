@@ -1,6 +1,5 @@
 import * as z from "zod";
 
-import { BlenderConfigurationObject } from "./datasetConfiguration";
 import { DataBody, ObjId, PostDataBody } from "./utils";
 
 export enum DatasetType {
@@ -13,7 +12,8 @@ export const DatasetBody = DataBody.extend({
   datasetType: z.nativeEnum(DatasetType),
   configurationId: ObjId,
   size: z.number(),
-  backgroundIds: z.array(ObjId)
+  backgroundIds: z.array(ObjId),
+  s3Key: z.string().optional()
 });
 
 export type DatasetDb = z.infer<typeof DatasetBody>;

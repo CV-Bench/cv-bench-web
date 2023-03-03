@@ -9,7 +9,8 @@ export enum ModelType {
 
 export const ModelBody = DataBody.extend({
   modelType: z.nativeEnum(ModelType),
-  previewImage: z.string()
+  previewImage: z.string(),
+  s3Key: z.string().optional()
 });
 
 export type ModelDb = z.infer<typeof ModelBody>;
