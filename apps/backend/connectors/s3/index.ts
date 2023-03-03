@@ -10,8 +10,8 @@ import {
   ListObjectsV2CommandOutput,
   GetObjectCommand
 } from "@aws-sdk/client-s3";
-import { Readable } from "stream";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { Readable } from "stream";
 
 import { Bucket, createBucketKey } from "shared-types";
 
@@ -101,10 +101,10 @@ export const listObjects = (
     .then(options.onSuccess)
     .catch(options.onError);
 
-export const getPresignedUrl = async (bucket: Bucket, key: string) => {
+export const getPresignedUrl = async (key: string) => {
   return getSignedUrl(
     s3Client,
-    new GetObjectCommand({ Bucket: process.env.BUCKET_NAME, Key: createBucketKey(bucket, key) }),
+    new GetObjectCommand({ Bucket: process.env.BUCKET_NAME, Key: key }),
     {
       expiresIn: 3600
     }
