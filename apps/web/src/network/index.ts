@@ -195,7 +195,6 @@ export const api = {
     return GetTaskListBody.parse(backgrounds) as GetTaskList;
   },
   stopTask: (id: string) => postRequest(getRoute(RouteNames.STOP_TASK)(id)),
-  finishTask: (id: string)  => postRequest(getRoute(RouteNames.FINISH_TASK)(id)),
 
   // NETWORK ARCHITECTURE
   getNetworkArchitectureList: async () => {

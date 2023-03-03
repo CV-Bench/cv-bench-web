@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import Database from "../../connectors/mongo";
 
 const getTaskList = (req: Request, res: Response) => {
-    Database.Background.find(req.session.user?._id)
+    Database.Task.find(req.session.user?._id)
       .then((result) =>
         result.toArray().then((tasks) => res.status(200).json(tasks))
       )
