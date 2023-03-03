@@ -210,18 +210,19 @@ export const api = {
 
   // TASK
   getTask: async (id: string): Promise<GetTask> => {
-    const background = await getRequest(getRoute(RouteNames.GET_NETWORK)(id));
+    const background = await getRequest(getRoute(RouteNames.GET_TASK)(id));
 
     return GetTaskBody.parse(background);
   },
   getTaskList: async (): Promise<GetTaskList> => {
     const backgrounds = await getRequest(
-      getRoute(RouteNames.GET_NETWORK_LIST)()
+      getRoute(RouteNames.GET_TASK_LIST)()
     );
 
     return GetTaskListBody.parse(backgrounds) as GetTaskList;
   },
   stopTask: (id: string) => postRequest(getRoute(RouteNames.STOP_TASK)(id)),
+  finishTask: (id: string)  => postRequest(getRoute(RouteNames.FINISH_TASK)(id)),
 
   // NETWORK ARCHITECTURE
   getNetworkArchitectureList: async () => {

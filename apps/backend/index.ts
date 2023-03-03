@@ -52,7 +52,7 @@ import {
   createNetwork
 } from "./routes/network";
 import { getNetworkArchitectureList } from "./routes/networkArchitecture";
-import { finishTask, getTask, getTaskList } from "./routes/task";
+import { finishTask, stopTask, getTask, getTaskList } from "./routes/task";
 import logger from "./util/logger";
 
 declare module "express-session" {
@@ -148,7 +148,7 @@ app.post(route(RouteNames.POST_NETWORK), createNetwork);
 app.get(route(RouteNames.GET_TASK_LIST), getTaskList);
 app.get(route(RouteNames.GET_TASK), getTask);
 app.post(route(RouteNames.FINISH_TASK), finishTask);
-app.post(route(RouteNames.STOP_TASK), finishTask);
+app.post(route(RouteNames.STOP_TASK), stopTask);
 
 // NETWORK ARCHITECTURE
 app.get(
