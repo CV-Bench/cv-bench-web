@@ -18,6 +18,7 @@ const CreateDataset = () => {
     description: '',
     domainTags: [],
     models: [],
+    distractors: [],
     images: [],
     accessType: AccessType.PRIVATE,
     datasetType: DatasetType.BLENDER_3D
@@ -28,8 +29,10 @@ const CreateDataset = () => {
 
   const [backgrounds, setBackgrounds] = useState<GetBackgroundList>([]);
   const [models, setModels] = useState<GetModelList>([]);
+  const [distractors, setDistractors] = useState<GetModelList>([]);
 
   useEffect(() => setDataset({...dataset, models: models.map(x => x._id)}), [models]);
+  useEffect(() => setDataset({...dataset, distractors: distractors.map(x => x._id)}), [distractors]);
   useEffect(() => setDataset({...dataset, images: backgrounds.map(x => x._id)}), [backgrounds]);
 
   const setName = (name: string) => setDataset({...dataset, name});
@@ -39,7 +42,7 @@ const CreateDataset = () => {
   const steps: FormStep[] = [
     {
       name: "Model",
-      description: "Select Models",
+      description: "Select Models (>= 1)",
       component: (
         <ModelSelectStep
           selectedModels={models}
@@ -47,6 +50,17 @@ const CreateDataset = () => {
         />
       ),
       validation: z.object({ models: z.array(ObjId).nonempty() })
+    },
+    {
+      name: "Distractors",
+      description: "Select Distractors (>= 0)",
+      component: (
+        <ModelSelectStep
+          selectedModels={distractors}
+          onSelectModels={setDistractors}
+        />
+      ),
+      validation: z.object({ distractors: z.array(ObjId) })
     },
     {
       name: "Background",

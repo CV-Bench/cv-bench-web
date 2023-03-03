@@ -14,6 +14,25 @@ export enum TaskType {
   CREATE_DATASET = "CREATE_DATASET"
 }
 
+export const TaskDatasetInfoBody = z.object({
+  name: z.string(),
+  accessType: z.nativeEnum(AccessType),
+  domainTags: z.array(z.string()),
+
+  modelIds: z.array(ObjId),
+  distractorIds: z.array(ObjId),
+  backgrounds: z.array(ObjId),
+  datasetConfigurationId: ObjId
+});
+
+export const TaskNetworkInfoBody = z.object({
+  datasetId: ObjId,
+  networkArchitectureId: ObjId
+})
+
+export type TaskDatasetInfo = z.infer<typeof TaskDatasetInfoBody>;
+export type TaskNetworkInfo = z.infer<typeof TaskNetworkInfoBody>;
+
 export const TaskBody = z.object({
   _id: ObjId,
   userId: ObjId,
@@ -21,23 +40,8 @@ export const TaskBody = z.object({
   updatedAt: z.date(),
   status: z.nativeEnum(TaskStatus),
   type: z.nativeEnum(TaskType),
-  info: z
-    .object({
-      name: z.string(),
-      accessType: z.nativeEnum(AccessType),
-      domainTags: z.array(z.string()),
-
-      modelIds: z.array(ObjId),
-      distractorIds: z.array(ObjId),
-      backgrounds: z.array(ObjId),
-      datasetConfigurationId: ObjId
-    })
-    .or(
-      z.object({
-        datasetId: ObjId,
-        networkArchitectureId: ObjId
-      })
-    )
+  info: TaskDatasetInfoBody
+    .or(TaskNetworkInfoBody)
 });
 
 export type TaskDb = z.infer<typeof TaskBody>;

@@ -1,10 +1,11 @@
-import { parseISO, format } from 'date-fns';
+import InputField from "./inputs/InputField";
 
 export interface DateProps {
-    dateString: string;
+    date: Date;
 }
 
-const Date: React.FC<DateProps> = ({ dateString }) => {
-    const date = parseISO(dateString);
-    return <time dateTime={dateString}>{format(date, 'LLLL d, yyyy')}</time>;
+const Date: React.FC<DateProps> = ({ date }) => {
+
+    return <InputField type="datetime-local" readOnly value={date.toISOString().slice(0, -5)} />;
 }
+export default Date;

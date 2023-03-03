@@ -22,7 +22,7 @@ const MultiselectTable: React.FC<MultiselectTableProps> = ({ selectedItems = [],
     onSelectItems?.call(this, [...selectedItems]);
   }
 
-  const highlightedClassName = ' bg-gray-400';
+  const highlightedClassName = ' font-bolder';
 
   props.data.forEach(x => {
     x.callback = () => selectItem(x);
