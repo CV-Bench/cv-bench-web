@@ -3,17 +3,17 @@ import Card from "@/components/Card";
 import Description from "@/components/DescriptionComponent";
 
 interface ArchitectureStepProps {
-    networkArchitectureId: number,
+    item: number,
     columns: { key: string, title: string }[],
     data: { [key: string]: any }[],
-    onSelectNetworkArchitecture: (networkArchitectureId?: number) => void, 
-  }
+    onSelectNetworkArchitecture: (networkArchitectureId?: number) => void,
+}
 
 const ArchitectureStep = (props: ArchitectureStepProps) => {
     return (<>
 
         <div className="flex w-full h-full">
-            <Card className="lg:w-1/2 h-full m-2">
+            <Card className="lg:w-full h-full m-2">
                 <Description
                     title="Architecture selection"
                     description="please select one architecture to train the data"
@@ -22,13 +22,11 @@ const ArchitectureStep = (props: ArchitectureStepProps) => {
                 <NetworkTableSingel
                     data={props.data}
                     columns={props.columns}
-                    networkArchitectureId={props.networkArchitectureId}
+                    item={props.item}
                     onSelect={props.onSelectNetworkArchitecture}
-                     />
+                />
             </Card>
-            <Card className="lg:w-1/2 h-full m-2">
-                DESC
-            </Card>
+
         </div>
     </>)
 }
