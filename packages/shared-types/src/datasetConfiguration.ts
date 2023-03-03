@@ -25,7 +25,8 @@ export const BlenderConfigurationObject = z.object({
   }),
 
   output: z.object({
-    images: z.number().int().gt(0), // Anzahl ausgegebener Bilder
+    size_train: z.number().int().gte(0).default(0), // Anzahl ausgegebener Training-Bilder
+    size_val: z.number().int().gte(0).default(0), // Anzahl ausgegebener Validation-Bilder
     just_merge: z.number().gte(0).lte(1), // Proportion von Bildern die nur durch Merging erzeugt werden
     "skew_angle:material": z.number().gte(0) // Verhältnis von Winkel-Samples zu Material-Samples
   }),
