@@ -37,6 +37,7 @@ import {
   updateNetwork
 } from "./routes/dataset";
 import updateDataset from "./routes/dataset/updateDataset";
+import download from "./routes/download";
 import {
   deleteModel,
   getModel,
@@ -107,6 +108,9 @@ app.get("/auth/user", getUser);
 app.post("/auth/signup", signup);
 app.get("/auth/logout", logout);
 app.get("/auth/token", socketToken);
+
+// DOWNLOAD ROUTE
+app.get("/download/:type/:id", download);
 
 // MODEL ROUTES
 app.get(route(RouteNames.GET_MODEL_LIST), getModelList);
