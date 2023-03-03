@@ -9,6 +9,7 @@ export interface ImageCardProps {
   createdAt: Date;
   href: string;
   name?: string;
+  className?: string;
 }
 
 const ImageCard: React.FC<ImageCardProps> = ({
@@ -16,11 +17,14 @@ const ImageCard: React.FC<ImageCardProps> = ({
   domainTags,
   name,
   createdAt,
-  href
+  href,
+  className
 }) => (
   <Link
     href={href}
-    className="relative max-w-[160px]  m-5 border-2 border-white rounded-lg bg-gray-800"
+    className={`relative ${
+      className ? className : "max-w-[160px]"
+    } m-5 border-2 border-white rounded-lg bg-gray-800`}
   >
     <div className="w-full p-4 border-b-2 ">
       <img className="object-contain " src={previewImage} alt="" />

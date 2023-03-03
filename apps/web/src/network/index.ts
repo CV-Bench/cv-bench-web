@@ -41,7 +41,9 @@ import {
   GetDatasetConfigurationListBody,
   GetDatasetConfigurationBody,
   PostDatasetConfiguration,
-  PatchDatasetConfiguration
+  PatchDatasetConfiguration,
+  PostDatasetResponse,
+  PostDatasetResponseBody
 } from "shared-types";
 
 import { network } from "./utils";
@@ -102,8 +104,10 @@ export const api = {
     return GetModelBody.parse(model);
   },
   getModelList: async (ids?: string[]): Promise<GetModelList> => {
-    const idsParam = (ids) ? `?ids=${ids.join(',')}` : '';
-    const models = await getRequest(getRoute(RouteNames.GET_MODEL_LIST)()  + idsParam);
+    const idsParam = ids ? `?ids=${ids.join(",")}` : "";
+    const models = await getRequest(
+      getRoute(RouteNames.GET_MODEL_LIST)() + idsParam
+    );
 
     return GetModelListBody.parse(models);
   },
@@ -127,9 +131,13 @@ export const api = {
 
     return GetBackgroundBody.parse(background);
   },
-  getBackgroundList: async (domainTags?: string[], ids?: string[]): Promise<GetBackgroundList> => {
-    const idsParam = ids ? `?ids=${ids.join(',')}` : '';
-    const tagParam = (!idsParam && domainTags) ? `?domainTags=${domainTags.join(',')}` : '';
+  getBackgroundList: async (
+    domainTags?: string[],
+    ids?: string[]
+  ): Promise<GetBackgroundList> => {
+    const idsParam = ids ? `?ids=${ids.join(",")}` : "";
+    const tagParam =
+      !idsParam && domainTags ? `?domainTags=${domainTags.join(",")}` : "";
     const backgrounds = await getRequest(
       getRoute(RouteNames.GET_BACKGROUND_LIST)() + tagParam + idsParam
     );
@@ -163,32 +171,51 @@ export const api = {
 
     return GetDatasetListBody.parse(backgrounds) as GetDatasetList;
   },
-  postDatasets: async (body: PostDataset): Promise<{}> =>
-    postRequest(getRoute(RouteNames.POST_DATASET)(), { body }),
+  postDatasets: async (body: PostDataset): Promise<PostDatasetResponse> => {
+    const response = await postRequest(getRoute(RouteNames.POST_DATASET)(), {
+      body
+    });
+
+    return PostDatasetResponseBody.parse(response);
+  },
   deleteDataset: (id: string) =>
     deleteRequest(getRoute(RouteNames.DELETE_DATASET)(id)),
   patchDataset: async (id: string, body: PatchDataset) =>
     patchRequest(getRoute(RouteNames.PATCH_DATASET)(id), { body }),
 
   // DATASET CONFIGURATION
-  getDatasetConfiguration: async (id: string): Promise<GetDatasetConfiguration> => {
-    const datasetConfiguration = await getRequest(getRoute(RouteNames.GET_DATASET_CONFIGURATION)(id));
+  getDatasetConfiguration: async (
+    id: string
+  ): Promise<GetDatasetConfiguration> => {
+    const datasetConfiguration = await getRequest(
+      getRoute(RouteNames.GET_DATASET_CONFIGURATION)(id)
+    );
 
     return GetDatasetConfigurationBody.parse(datasetConfiguration);
   },
-  getDatasetConfigurationList: async (): Promise<GetDatasetConfigurationList> => {
-    const datasetConfigurations = await getRequest(
-      getRoute(RouteNames.GET_DATASET_CONFIGURATION_LIST)()
-    );
+  getDatasetConfigurationList:
+    async (): Promise<GetDatasetConfigurationList> => {
+      const datasetConfigurations = await getRequest(
+        getRoute(RouteNames.GET_DATASET_CONFIGURATION_LIST)()
+      );
 
-    return GetDatasetConfigurationListBody.parse(datasetConfigurations) as GetDatasetConfigurationList;
-  },
-  postDatasetConfiguration: async (body: PostDatasetConfiguration): Promise<string> =>
+      return GetDatasetConfigurationListBody.parse(
+        datasetConfigurations
+      ) as GetDatasetConfigurationList;
+    },
+  postDatasetConfiguration: async (
+    body: PostDatasetConfiguration
+  ): Promise<string> =>
     postRequest(getRoute(RouteNames.POST_DATASET_CONFIGURATION)(), { body }),
   deleteDatasetConfiguration: (id: string) =>
     deleteRequest(getRoute(RouteNames.DELETE_DATASET_CONFIGURATION)(id)),
-  patchDatasetConfiguration: async (id: string, body: PatchDatasetConfiguration) =>
-    patchRequest(getRoute(RouteNames.PATCH_DATASET_CONFIGURATION)(id), { body }),
+  patchDatasetConfiguration: async (
+    id: string,
+    body: PatchDatasetConfiguration
+  ) =>
+    patchRequest(getRoute(RouteNames.PATCH_DATASET_CONFIGURATION)(id), {
+      body
+    }),
 
   // NETWORK
   getNetwork: async (id: string): Promise<GetNetwork> => {
@@ -217,9 +244,7 @@ export const api = {
     return GetTaskBody.parse(background);
   },
   getTaskList: async (): Promise<GetTaskList> => {
-    const backgrounds = await getRequest(
-      getRoute(RouteNames.GET_TASK_LIST)()
-    );
+    const backgrounds = await getRequest(getRoute(RouteNames.GET_TASK_LIST)());
 
     return GetTaskListBody.parse(backgrounds) as GetTaskList;
   },

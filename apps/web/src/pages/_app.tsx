@@ -28,8 +28,6 @@ const App = ({ Component, pageProps }: AppProps) => {
     fetcher
   );
 
-  console.log(data);
-
   useEffect(() => {
     if (!isLoading) {
       try {
@@ -41,12 +39,11 @@ const App = ({ Component, pageProps }: AppProps) => {
           router.push("/");
         }
       } catch (e) {
-        console.log("Here", e)
         router.push("/signin");
         setUser(undefined);
       }
     }
-  }, [isLoading, data, router]);
+  }, [isLoading]);
 
   if (isLoading)
     return (

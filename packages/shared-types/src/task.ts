@@ -28,7 +28,7 @@ export const TaskDatasetInfoBody = z.object({
 export const TaskNetworkInfoBody = z.object({
   datasetId: ObjId,
   networkArchitectureId: ObjId
-})
+});
 
 export type TaskDatasetInfo = z.infer<typeof TaskDatasetInfoBody>;
 export type TaskNetworkInfo = z.infer<typeof TaskNetworkInfoBody>;
@@ -38,10 +38,10 @@ export const TaskBody = z.object({
   userId: ObjId,
   createdAt: z.date(),
   updatedAt: z.date(),
+  serverId: z.string().optional(),
   status: z.nativeEnum(TaskStatus),
   type: z.nativeEnum(TaskType),
-  info: TaskDatasetInfoBody
-    .or(TaskNetworkInfoBody)
+  info: TaskDatasetInfoBody.or(TaskNetworkInfoBody)
 });
 
 export type TaskDb = z.infer<typeof TaskBody>;

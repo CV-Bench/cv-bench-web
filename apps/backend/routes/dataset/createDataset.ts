@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 import { PostDataset, TaskStatus, TaskType, TypedRequest } from "shared-types";
 
 import Database from "../../connectors/mongo";
+import { Socket } from "../../connectors/socket";
 
 const createDataset = (req: TypedRequest<PostDataset>, res: Response) => {
   Database.Task.insert({
@@ -17,10 +18,18 @@ const createDataset = (req: TypedRequest<PostDataset>, res: Response) => {
 
       modelIds: req.body.models,
       distractorIds: [],
-      backgrounds: req.body.images,
+      backgrounds: req.body.backgroundIds,
       datasetConfigurationId: req.body.configurationId
     }
-  });
+  })
+    .then((result) => {
+      const insertedId = result.insertedId.toString();
+
+      Socket.Task.start(insertedId);
+
+      res.status(200).json({ _id: insertedId });
+    })
+    .catch(() => res.status(500).end());
 };
 
 export default createDataset;

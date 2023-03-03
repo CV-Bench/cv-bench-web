@@ -31,7 +31,7 @@ const CreateDataset = () => {
     domainTags: [],
     models: [],
     distractors: [],
-    images: [],
+    backgroundIds: [],
     accessType: AccessType.PRIVATE,
     datasetType: DatasetType.BLENDER_3D
   });
@@ -53,7 +53,8 @@ const CreateDataset = () => {
     [distractors]
   );
   useEffect(
-    () => setDataset({ ...dataset, images: backgrounds.map((x) => x._id) }),
+    () =>
+      setDataset({ ...dataset, backgroundIds: backgrounds.map((x) => x._id) }),
     [backgrounds]
   );
 
@@ -62,6 +63,8 @@ const CreateDataset = () => {
     setDataset({ ...dataset, accessType });
   const setTags = (domainTags: string[]) =>
     setDataset({ ...dataset, domainTags });
+
+  console.log(dataset);
 
   const steps: FormStep[] = [
     {
@@ -72,17 +75,17 @@ const CreateDataset = () => {
       ),
       validation: z.object({ models: z.array(ObjId).nonempty() })
     },
-    {
-      name: "Distractors",
-      description: "Select Distractors (>= 0)",
-      component: (
-        <ModelSelectStep
-          selectedModels={distractors}
-          onSelectModels={setDistractors}
-        />
-      ),
-      validation: z.object({ distractors: z.array(ObjId) })
-    },
+    // {
+    //   name: "Distractors",
+    //   description: "Select Distractors (>= 0)",
+    //   component: (
+    //     <ModelSelectStep
+    //       selectedModels={distractors}
+    //       onSelectModels={setDistractors}
+    //     />
+    //   ),
+    //   validation: z.object({ distractors: z.array(ObjId) })
+    // },
     {
       name: "Background",
       description: "tbd",
@@ -94,7 +97,7 @@ const CreateDataset = () => {
           onSelectBackgrounds={setBackgrounds}
         />
       ),
-      validation: z.object({ images: z.array(ObjId).nonempty() })
+      validation: z.object({ backgroundIds: z.array(ObjId).nonempty() })
     },
     {
       name: "Configuration",
@@ -127,8 +130,12 @@ const CreateDataset = () => {
   ];
 
   const handleUpload = async () => {
-    await api.postDatasets(dataset);
-    router.push("/task");
+    api
+      .postDatasets(dataset)
+      .then((result) => {
+        router.push("/task/" + result._id);
+      })
+      .catch((e) => console.error(e));
   };
 
   return (
