@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
-import { ObjectId } from "mongodb";
+import { FindCursor, ObjectId } from "mongodb";
+
+import { BackgroundDb } from "shared-types";
 
 import Database from "../../connectors/mongo";
 
@@ -17,7 +19,8 @@ const getBackgrounds = (req: Request, res: Response) => {
           .split(",")
           .map((x) => new ObjectId(x));
 
-  let dbCall;
+  let dbCall: Promise<FindCursor<BackgroundDb>>;
+
   if (tags) {
     dbCall = Database.Background.findByTags(req.session.user?._id, tags);
   } else if (ids) {

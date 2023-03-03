@@ -29,8 +29,8 @@ const CreateDataset = () => {
     name: "",
     description: "",
     domainTags: [],
-    models: [],
-    distractors: [],
+    modelIds: [],
+    distractorIds: [],
     backgroundIds: [],
     accessType: AccessType.PRIVATE,
     datasetType: DatasetType.BLENDER_3D
@@ -44,12 +44,15 @@ const CreateDataset = () => {
   const [distractors, setDistractors] = useState<GetModelList>([]);
 
   useEffect(
-    () => setDataset({ ...dataset, models: models.map((x) => x._id) }),
+    () => setDataset({ ...dataset, modelIds: models.map((x) => x._id) }),
     [models]
   );
   useEffect(
     () =>
-      setDataset({ ...dataset, distractors: distractors.map((x) => x._id) }),
+      setDataset({
+        ...dataset,
+        distractorIds: distractors.map((x) => x._id)
+      }),
     [distractors]
   );
   useEffect(
@@ -80,11 +83,11 @@ const CreateDataset = () => {
     //   description: "Select Distractors (>= 0)",
     //   component: (
     //     <ModelSelectStep
-    //       selectedModels={distractors}
+    //       selectedModels={distractorIds}
     //       onSelectModels={setDistractors}
     //     />
     //   ),
-    //   validation: z.object({ distractors: z.array(ObjId) })
+    //   validation: z.object({ distractorIds: z.array(ObjId) })
     // },
     {
       name: "Background",

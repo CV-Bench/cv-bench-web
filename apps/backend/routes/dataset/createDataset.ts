@@ -16,10 +16,10 @@ const createDataset = (req: TypedRequest<PostDataset>, res: Response) => {
       domainTags: req.body.domainTags,
       accessType: req.body.accessType,
 
-      modelIds: req.body.models,
+      modelIds: req.body.modelIds,
       distractorIds: [],
-      backgrounds: req.body.backgroundIds,
-      datasetConfigurationId: req.body.configurationId
+      backgroundIds: req.body.backgroundIds,
+      configurationId: req.body.configurationId
     }
   })
     .then((result) => {

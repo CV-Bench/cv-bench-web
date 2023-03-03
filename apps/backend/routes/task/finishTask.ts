@@ -1,12 +1,20 @@
 import { Response } from "express";
 import { ObjectId } from "mongodb";
 
-import { FinishTask, TypedRequest, TaskType, TaskStatus } from "shared-types";
+import {
+  FinishTask,
+  TypedRequest,
+  TaskType,
+  TaskStatus,
+  TaskDatasetInfo,
+  DatasetType
+} from "shared-types";
 
 import Database from "../../connectors/mongo";
+import { Socket } from "../../connectors/socket";
 
 const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {
-  const userId = new ObjectId(req.session.user?._id);
+  const userId = req.session.user?._id;
   const { taskId } = req.body;
 
   Database.Task.findOne(taskId, userId)
@@ -14,17 +22,18 @@ const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {
       (task) => {
         switch (task.type) {
           case TaskType.CREATE_DATASET:
-                Database.Dataset.insert({
-                    ...task.info,
-                    size: 0,
-                    images: 0 //provisorisch
-                })
+            Database.Dataset.insert({
+              ...(task.info as TaskDatasetInfo),
+              size: 0,
+              images: 0,
+              datasetType: DatasetType.BLENDER_3D,
+              userId: new ObjectId(task.userId)
+            });
             break;
-
           case TaskType.CREATE_NETWORK:
-                Database.Network.insert({
-                    ...task.info
-                })
+            Database.Network.insert({
+              ...task.info
+            });
             break;
         }
 
@@ -32,9 +41,7 @@ const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {
           status: TaskStatus.FINISHED
         });
 
-        // /data/dataset/taskId
-
-        //TODO Dataset/Network aus Daten erstellen
+        Socket.Task.cleanup(taskId);
       },
       () => {
         res.status(404).end();

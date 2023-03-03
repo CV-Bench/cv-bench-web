@@ -17,7 +17,7 @@ const TaskId = () => {
   const { data: task } = useTask(id?.toString() ?? "");
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full container mx-auto">
       {task && (
         <div className="h-2/3">
           <Card className="h-full text-white flex">

@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { ObjectId } from "mongodb";
 
 import Database from "../../connectors/mongo";
 import S3 from "../../connectors/s3";
@@ -9,8 +8,6 @@ const deleteBackground = (req: Request, res: Response) => {
 
   Database.Background.findOne(req.params.id, userId)
     .then(({ name }) => {
-      const fileExt = name.split(".").pop();
-
       const promises: Promise<void>[] = [];
 
       promises.push(
@@ -27,9 +24,7 @@ const deleteBackground = (req: Request, res: Response) => {
         )
       );
 
-      const key = `${req.params.id}.${fileExt}`;
-
-      promises.push(S3.Background.delete(key));
+      promises.push(S3.Background.delete(name));
 
       Promise.all(promises)
         .then(() => res.status(200).json({}))

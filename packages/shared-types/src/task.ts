@@ -14,18 +14,21 @@ export enum TaskType {
   CREATE_DATASET = "CREATE_DATASET"
 }
 
-export const TaskDatasetInfoBody = z.object({
+export const TaskInfoBase = z.object({
   name: z.string(),
+  description: z.string().optional(),
   accessType: z.nativeEnum(AccessType),
-  domainTags: z.array(z.string()),
-
-  modelIds: z.array(ObjId),
-  distractorIds: z.array(ObjId),
-  backgrounds: z.array(ObjId),
-  datasetConfigurationId: ObjId
+  domainTags: z.array(z.string())
 });
 
-export const TaskNetworkInfoBody = z.object({
+export const TaskDatasetInfoBody = TaskInfoBase.extend({
+  modelIds: z.array(ObjId),
+  distractorIds: z.array(ObjId),
+  backgroundIds: z.array(ObjId),
+  configurationId: ObjId
+});
+
+export const TaskNetworkInfoBody = TaskInfoBase.extend({
   datasetId: ObjId,
   networkArchitectureId: ObjId
 });
@@ -41,23 +44,7 @@ export const TaskBody = z.object({
   serverId: z.string().optional(),
   status: z.nativeEnum(TaskStatus),
   type: z.nativeEnum(TaskType),
-<<<<<<< HEAD
-  info: z
-    .object({
-      modelId: ObjId,
-      backgrounds: z.array(ObjId),
-      datasetConfigurationId: ObjId
-    })
-    .or(
-      z.object({
-        datasetId: ObjId,
-        networkArchitectureId: ObjId
-      })
-    ),
-    serverId: z.string().optional()
-=======
   info: TaskDatasetInfoBody.or(TaskNetworkInfoBody)
->>>>>>> main
 });
 
 export type TaskDb = z.infer<typeof TaskBody>;
