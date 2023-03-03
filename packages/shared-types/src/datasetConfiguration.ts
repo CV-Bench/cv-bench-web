@@ -140,3 +140,20 @@ export function configurationToJSON(conf: BlenderConfiguration): string {
     }
   });
 }
+
+export const GetDatasetConfigurationBody = DatasetConfigurationBody.omit({
+  createdAt: true
+}).extend({
+  createdAt: z.string().transform((d) => new Date(d))
+});
+
+export type GetDatasetConfiguration = z.infer<typeof GetDatasetConfigurationBody>;
+
+// GET LIST
+export const GetDatasetConfigurationListBody = z.array(GetDatasetConfigurationBody);
+export type GetDatasetConfigurationList = z.infer<typeof GetDatasetConfigurationListBody>;
+
+// PATCH
+export const PatchDatasetConfigurationBody = PostDatasetConfigurationBody;
+
+export type PatchDatasetConfiguration = z.infer<typeof PatchDatasetConfigurationBody>;
