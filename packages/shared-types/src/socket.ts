@@ -1,5 +1,7 @@
 import { Socket } from "socket.io";
+import { SessionUser } from "./auth";
 
+import { TaskDb } from "./task";
 import { DataType } from "./utils";
 
 export enum SocketType {
@@ -68,11 +70,25 @@ export interface TaskNamespaceClientToServerEvents
   task_started: (data: TaskNamespaceData) => void;
   stop_failed: (data: TaskNamespaceData) => void;
   task_stopped: (data: TaskNamespaceData) => void;
-  task_log: (data: TaskNamespaceData) => void;
+  task_log: (data: TaskDb) => void;
 }
 
 export interface TaskNamespaceServerToClientEvents
   extends ServerToClientEvents {
   start: (taskId: string) => void;
   stop: (taskId: string) => void;
+  task_viewer: (viewer: SessionUser) => void;
+}
+
+// Frontend Namespace Events
+export interface FrontendNamespaceClientToServerEvents
+  extends ClientToServerEvents {}
+
+export interface FrontendNamespaceServerToClientEvents
+  extends ServerToClientEvents {
+  start_failed: (data: TaskNamespaceData) => void;
+  task_started: (data: TaskNamespaceData) => void;
+  stop_failed: (data: TaskNamespaceData) => void;
+  task_stopped: (data: TaskNamespaceData) => void;
+  task_log: (data: TaskDb) => void;
 }

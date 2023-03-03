@@ -7,6 +7,8 @@ import {
   DataNamespaceData,
   DataNamespaceServerToClientEvents,
   DataType,
+  FrontendNamespaceClientToServerEvents,
+  FrontendNamespaceServerToClientEvents,
   loggerTitle
 } from "shared-types";
 
@@ -14,7 +16,7 @@ import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
 import logger from "../../util/logger";
 
-const frontendNamespace: Namespace = io.of("/frontend");
+const frontendNamespace: Namespace<FrontendNamespaceClientToServerEvents, FrontendNamespaceServerToClientEvents> = io.of("/frontend");
 
 frontendNamespace.use(
   socketJwt.authorize({

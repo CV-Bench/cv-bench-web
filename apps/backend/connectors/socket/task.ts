@@ -1,7 +1,7 @@
-import { Namespace } from "socket.io";
-import {Socket} from "./";
+import { Namespace, Socket as SocketIO } from "socket.io";
 
 import {
+  TaskDb,
   TaskNamespaceClientToServerEvents,
   TaskNamespaceData,
   TaskNamespaceServerToClientEvents
@@ -9,6 +9,7 @@ import {
 
 import { redisClient } from "../redis";
 
+import { Socket } from "./";
 import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
 
@@ -29,11 +30,22 @@ taskNamespace.on("connection", (socket) => {
 
   socket.on("task_stopped", (data: TaskNamespaceData) => {});
 
-  socket.on("task_log", receiveTaskLogData);
+  socket.on("task_log", (data) => {
+    receiveTaskLogData(data, socket);
+  });
 });
 
-const receiveTaskLogData = (data: TaskNamespaceData) => {
-  redisClient.set(`taskLog:${data.taskId}`, JSON.stringify(data));
+const receiveTaskLogData = (data: TaskDb, socket: SocketIO) => {
+  redisClient.set(`taskLog:${data._id}`, JSON.stringify(data));
+  Socket.Frontend.Sockets.forEach((frontendSocket) => {
+    //@ts-ignore
+    if (frontendSocket.user._id == data.userId) {
+      frontendSocket.emit("task_log", data);
+      //@ts-ignore
+      socket.emit("task_viewer", frontendSocket.user);
+      return;
+    }
+  });
 };
 
 const startTask = (taskId: string) => {
