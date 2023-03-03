@@ -32,7 +32,8 @@ export const TaskBody = z.object({
         datasetId: ObjId,
         networkArchitectureId: ObjId
       })
-    )
+    ),
+    serverId: z.string().optional()
 });
 
 export type TaskDb = z.infer<typeof TaskBody>;
