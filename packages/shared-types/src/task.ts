@@ -23,7 +23,7 @@ export const TaskBody = z.object({
   type: z.nativeEnum(TaskType),
   info: z
     .object({
-      modelId: ObjId,
+      modelId: z.array(ObjId),
       backgrounds: z.array(ObjId),
       datasetConfigurationId: ObjId
     })

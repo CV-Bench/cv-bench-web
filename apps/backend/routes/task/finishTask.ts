@@ -14,15 +14,25 @@ const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {
       (task) => {
         switch (task.type) {
           case TaskType.CREATE_DATASET:
+                Database.Dataset.insert({
+                    ...task.info,
+                    size: 0,
+                    images: 0 //provisorisch
+                })
             break;
 
           case TaskType.CREATE_NETWORK:
+                Database.Network.insert({
+                    ...task.info
+                })
             break;
         }
 
         Database.Task.updateOne(taskId, userId, {
           status: TaskStatus.FINISHED
         });
+
+        // /data/dataset/taskId
 
         //TODO Dataset/Network aus Daten erstellen
       },
