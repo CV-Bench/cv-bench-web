@@ -76,6 +76,15 @@ const DatasetConfigurationInputs: React.FC<DatasetConfigurationInputsProps> = ({
     updateConfiguration();
   };
 
+  const setMinDistractors = (val: number) => {
+    randomConfig.min_distractors = val;
+    updateConfiguration();
+  };
+  const setMaxDistractors = (val: number) => {
+    randomConfig.max_distractors = val;
+    updateConfiguration();
+  };
+
   const setMinMetallic = (val: number) => {
     randomConfig.min_metallic = val;
     updateConfiguration();
@@ -245,6 +254,17 @@ const DatasetConfigurationInputs: React.FC<DatasetConfigurationInputsProps> = ({
             onChange={(e) =>
               setJustMerge(+(e.target as HTMLInputElement).value * 0.01)
             }
+          />
+        </div>
+        <div>
+            <InputLabel>Distractors</InputLabel>
+        <MinMaxInput
+            className="flex"
+            min={randomConfig.min_distractors}
+            max={randomConfig.max_distractors}
+            onMinChange={setMinDistractors}
+            onMaxChange={setMaxDistractors}
+            step={1}
           />
         </div>
         <div>

@@ -91,8 +91,8 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({
       random: {
         min_azi: 0,
         max_azi: Math.PI * 2,
-        min_distractors: 0, // ToDo
-        max_distractors: 1, // ToDo
+        min_distractors: 0,
+        max_distractors: 1,
         min_inc: 0,
         max_inc: Math.PI / 2,
         min_metallic: 0.2,
