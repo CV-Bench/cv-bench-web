@@ -1,12 +1,11 @@
-import FormStepsPanel, {
-    FormStep
-} from "@/components/multiform/FormStepsPanel";
+import FormStepsPanel, {FormStep} from "@/components/multiform/FormStepsPanel";
 import * as z from "zod";
 import TrainStep from "@/components/model/network/TrainStep";
 import DataStep from "@/components/model/network/DataStep";
 import ArchitectureStep from "@/components/model/network/ArchitectureStep";
 import { useState } from 'react';
-import { AccessType, PostNetwork } from "types";
+import { AccessType, PostNetwork, DatasetBody } from "types";
+import { title } from "process";
 
 
 const CreateNetwork = () => {
@@ -16,7 +15,8 @@ const CreateNetwork = () => {
         accessType: AccessType.PUBLIC,
         domainTags: [],
         name: "",
-        datasetId: []
+        datasetId: null, 
+        networkArchitectureId: null
     });
 
 
@@ -29,7 +29,7 @@ const CreateNetwork = () => {
     const onSelectAccessType = (val: AccessType) =>
         setFormData({ ...formData, accessType: val });
 
-    const onSelectDataset = (id: number[] | undefined) => {
+    const onSelectDataset = (id: number | undefined) => {
         setFormData({ ...formData, datasetId: id });
     };
 
@@ -42,42 +42,44 @@ const CreateNetwork = () => {
     }
 
     const data_data = [
-        { id: 1, name: 'A', age: 25, jj: 12 },
-        { id: 2, name: 'B', age: 30, k: 14 },
-        { id: 3, name: 'C', age: 35, ee: 12 },
+        {_id: 1, name: "TEst1", createdAt: "Test22", domainTags: ["11", "22", "33"], models: ["22", "22", 5]}, 
+        {_id: 2, name: "TEst2", createdAt: "Test2", domainTags: ["aa", "bb", "cc"], models: ["a", "b", 2]}, 
+
     ];
 
-    const columns_data = [
-        { key: 'id', title: 'ID' },
+    const arch_data = [
+        {_id: 1, name: "TEst1", createdAt: "Test22", requiredDatasetFormat: "COCO"}, 
+        {_id: 2, name: "TEst2", createdAt: "Test2", requiredDatasetFormat: "COCO"}, 
+    ];
+
+    const data_columns = [
         { key: 'name', title: 'Name' },
-        { key: 'age', title: 'Age' }
+        { key: 'createdAt', title: 'Creation Date' },
+        { key: 'domainTags', title: 'Tags' },
+        { key: 'models', title: "Models"}
     ];
 
-    const data_arch = [
-        { id: 1, name: 'A', age: 25, jj: 12 },
-        { id: 2, name: 'B', age: 30, k: 14 },
-        { id: 3, name: 'C', age: 35, ee: 12 },
-    ];
-
-    const columns_arch = [
-        { key: 'id', title: 'ID' },
+    const arch_columns = [
         { key: 'name', title: 'Name' },
-        { key: 'age', title: 'Age' }
+        { key: 'createdAt', title: 'Creation Date' },
+        { key: 'requiredDatasetFormat', title: 'Data Format' },
     ];
+
+  
     const steps: FormStep[] = [
         {
             name: "Dataset",
             description: "tbd",
             component: (
                 <DataStep
-                    datasetId={formData.datasetId}
+                    item={formData.datasetId}
                     onSelectDataset={onSelectDataset}
-                    columns={columns_data}
+                    columns={data_columns}
                     data={data_data}
                 />
             ),
             validation: z.object({
-                datasetId: z.array(z.number()).min(1),
+                datasetId: z.number(),
             })
         },
         {
@@ -85,10 +87,10 @@ const CreateNetwork = () => {
             description: "tbd",
             component: (
                 <ArchitectureStep
-                    networkArchitectureId={formData.networkArchitectureId}
+                    item={formData.networkArchitectureId}
                     onSelectNetworkArchitecture={onSelectNetworkArchitecture}
-                    columns={columns_arch}
-                    data={data_arch}
+                    columns={arch_columns}
+                    data={arch_data}
                 />
             ),
             validation: z.object({
