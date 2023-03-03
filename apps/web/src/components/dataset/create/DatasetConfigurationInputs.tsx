@@ -6,10 +6,7 @@ import MinMaxInput from "@/components/inputs/MinMaxInput";
 import MinMaxSlider from "@/components/inputs/MinMaxSlider";
 import SelectInput from "@/components/inputs/SelectInput";
 
-import {
-  BlenderConfiguration,
-  ComputeBbox,
-} from "shared-types";
+import { BlenderConfiguration, ComputeBbox } from "shared-types";
 
 export interface DatasetConfigurationInputsProps {
   config: BlenderConfiguration;
@@ -257,8 +254,8 @@ const DatasetConfigurationInputs: React.FC<DatasetConfigurationInputsProps> = ({
           />
         </div>
         <div>
-            <InputLabel>Distractors</InputLabel>
-        <MinMaxInput
+          <InputLabel>Distractors</InputLabel>
+          <MinMaxInput
             className="flex"
             min={randomConfig.min_distractors}
             max={randomConfig.max_distractors}
