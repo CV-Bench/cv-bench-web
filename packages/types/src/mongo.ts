@@ -7,7 +7,8 @@ export enum CollectionName {
   DATASET = "datasets",
   NETWORK = "networks",
   TASK = "tasks",
-  NETWORK_ARCHITECTURE = "networkArchitecture"
+  NETWORK_ARCHITECTURE = "networkArchitecture",
+  NOTIFICATION = "notification"
 }
 
 export type CollectionCollection = { [name in CollectionName]?: Collection };

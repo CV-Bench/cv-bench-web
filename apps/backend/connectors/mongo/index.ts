@@ -3,6 +3,7 @@ import Dataset from "./dataset";
 import Model from "./model";
 import NetworkArchitecture from "./networkArchitecture";
 import User from "./user";
+import Notification from "./notification"
 
 export {
   cvBenchDb,
@@ -11,6 +12,6 @@ export {
   collectionRequest
 } from "./client";
 
-const Database = { Model, Dataset, User, Background, NetworkArchitecture };
+const Database = { Model, Dataset, User, Background, NetworkArchitecture, Notification };
 
 export default Database;
