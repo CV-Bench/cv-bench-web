@@ -14,13 +14,6 @@ import {
   import { collectionRequest, prepareCollection } from "./";
   import { isUsersOrPublic } from "./utils";
   
-  prepareCollection(CollectionName.NOTIFICATION).then((collection) => {
-    logger.debug(
-      loggerTitle.MONGO_CLIENT,
-      `Collection Ready: ${collection.namespace}`
-    );
-  });
-  
   const findOne = (id: string | ObjectId, userId: string | ObjectId) =>
     collectionRequest<NotificationDb>(CollectionName.NOTIFICATION, async (collection) => {
       return collection.findOne({

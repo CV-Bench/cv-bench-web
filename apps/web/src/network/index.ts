@@ -230,5 +230,5 @@ export const api = {
   deleteNotification: (id: string) =>
     deleteRequest(getRoute(RouteNames.DELETE_NOTIFICATION)(id)),
   readNotification: (id: string) =>
-    deleteRequest(getRoute(RouteNames.READ_NOTIFICATION)(id))
+    patchRequest(getRoute(RouteNames.READ_NOTIFICATION)(id))
 };

@@ -158,7 +158,7 @@ app.get(
 app.get(route(RouteNames.GET_NOTIFICATION_LIST), getNotificationList);
 app.get(route(RouteNames.GET_NOTIFICATION), getNotification);
 app.post(route(RouteNames.DELETE_NOTIFICATION), deleteNotification);
-app.post(route(RouteNames.READ_NOTIFICATION), readNotification);
+app.patch(route(RouteNames.READ_NOTIFICATION), readNotification);
 
 socket;
 
