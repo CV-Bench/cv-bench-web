@@ -45,9 +45,10 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({ dat
         bg: []
       },
       output: {
-        images: 5, // ToDo
-        just_merge: .5, // ToDo
-        "skew_angle:material": .5 // ToDo
+        size_train: 5,
+        size_val: 5,
+        just_merge: .5,
+        "skew_angle:material": .5
       },
       render: {
         camera: {
@@ -56,19 +57,19 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({ dat
           clip_start: .1,
           clip_end: 20
         },
-        resolution_x: 480, // px // ToDo
-        resolution_y: 480, // px // ToDo
+        resolution_x: 480,
+        resolution_y: 480,
     
-        model_scale: 1, //fragwürdig
-        exposure: 40, // ToDo
-        compute_bbox: ComputeBbox.FAST, // ToDo
-        use_fps_keypoints: false, //muss nicht unbedgingt user-einstellbar sein 
+        model_scale: 1,
+        exposure: 40,
+        compute_bbox: ComputeBbox.FAST,
+        use_fps_keypoints: false,
     
-        use_cycles: true, // sollte immer true sein
-        samples: 40, // sinnvolle obere Grenze ca. 60, unter 10 sinnlos // ToDo
-        use_cycles_donoising: false, // sollte erstmal immer false sein
-        use_adaptive_sampling:false, // sollte erstmal immer false sein
-        use_GPU: true, // sollte immer true sein
+        use_cycles: true,
+        samples: 40,
+        use_cycles_donoising: false,
+        use_adaptive_sampling:false,
+        use_GPU: true,
       },
       random: {
         min_azi: 0,

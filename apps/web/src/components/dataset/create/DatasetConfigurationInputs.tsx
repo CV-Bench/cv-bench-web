@@ -55,7 +55,8 @@ const DatasetConfigurationInputs: React.FC<DatasetConfigurationInputsProps> = ({
     const setClipEnd = (val: number) => { cameraConfig.clip_end = val; updateConfiguration(); }
   
     // Output Section
-    const setImages = (val: number) => { outputConfig.images = val; updateConfiguration(); }
+    const setSizeTrain = (val: number) => { outputConfig.size_train = val; updateConfiguration(); }
+    const setSizeVal = (val: number) => { outputConfig.size_val = val; updateConfiguration(); }
     const setJustMerge = (val: number) => { outputConfig.just_merge = val; updateConfiguration(); }
     const setSkewAngleMaterial = (val: number) => { outputConfig["skew_angle:material"] = val; updateConfiguration(); }
   
@@ -90,8 +91,12 @@ const DatasetConfigurationInputs: React.FC<DatasetConfigurationInputsProps> = ({
                 <InputField type="range" min={10} max={60} value={renderConfig.samples} onChange={(e) => setSamples(+(e.target as HTMLInputElement).value)} />
             </div>
             <div>
-                <InputLabel>Images</InputLabel>
-                <InputField type="number" min="1" value={outputConfig.images} onChange={(e) => setImages(+(e.target as HTMLInputElement).value)} />
+                <InputLabel># of Training images</InputLabel>
+                <InputField type="number" min="1" value={outputConfig.size_train} onChange={(e) => setSizeTrain(+(e.target as HTMLInputElement).value)} />
+            </div>
+            <div>
+                <InputLabel># of Validation images</InputLabel>
+                <InputField type="number" min="1" value={outputConfig.size_val} onChange={(e) => setSizeVal(+(e.target as HTMLInputElement).value)} />
             </div>
             <div>
                 <InputLabel>Merge ({(outputConfig.just_merge * 100).toFixed(2)} % )</InputLabel>
