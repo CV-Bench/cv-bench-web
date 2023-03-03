@@ -2,7 +2,7 @@
 interface NetworkTableSingelProps {
   columns: { key: string, title: string }[],
   data: { [key: string]: any }[],
-  networkArchitectureId: number,
+  item: number,
   onSelect: (networkArchitectureId?: number) => void, 
 }
 const NetworkTableSingel = (props: NetworkTableSingelProps) => {
@@ -23,12 +23,13 @@ const NetworkTableSingel = (props: NetworkTableSingelProps) => {
       <tbody>
         {props.data.map((row) => (
           <tr
-            key={row.id}
-            onClick={() => handleRowClick(row.id)}
-            className={props.networkArchitectureId === row.id ? 'bg-slate-700' : ''}
+            key={row._id}
+            onClick={() => handleRowClick(row._id)}
+            className={props.item === row._id ? 'bg-slate-700' : ''}
           >
             {props.columns.map((column) => (
-              <td className='border border-black' key={column.key}>{row[column.key]}</td>
+              <td className='border border-black' key={column.key}>{Array.isArray(row[column.key]) ? row[column.key].join(', ') : row[column.key]}
+              </td>
             ))}
           </tr>
         ))}
