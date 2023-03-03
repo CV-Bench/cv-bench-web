@@ -8,6 +8,7 @@ export enum CollectionName {
   NETWORK = "networks",
   TASK = "tasks",
   NETWORK_ARCHITECTURE = "networkArchitecture",
+  NOTIFICATION = "notification"
   SOCKET = "sockets"
 }
 

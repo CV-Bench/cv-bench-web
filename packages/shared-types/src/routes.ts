@@ -36,7 +36,12 @@ export enum RouteNames {
   GET_TASK = "GET_TASK",
   GET_TASK_LIST = "GET_TASK_LIST",
 
-  GET_NETWORK_ARCHITECTURE_LIST = "GET_NETWORK_ARCHITECTURE_LIST"
+  GET_NETWORK_ARCHITECTURE_LIST = "GET_NETWORK_ARCHITECTURE_LIST",
+
+  GET_NOTIFICATION_LIST = "GET_NOTIFICATION_LIST",
+  GET_NOTIFICATION = "GET_NOTIFICATION",
+  DELETE_NOTIFICATION = "DELETE_NOTIFICATION",
+  READ_NOTIFICATION = "READ_NOTIFICATION"
 }
 
 interface RouteType {
@@ -215,6 +220,31 @@ export const Routes: {
     /^\/networkArchitecture\/?get$/,
     z.object({}),
     () => "/networkArchitecture"
+  ),
+
+  [RouteNames.GET_NOTIFICATION_LIST]: createRoute(
+    "/notification",
+    /^\/notification\/?get$/,
+    z.object({}),
+    () => "/notification"
+  ),
+  [RouteNames.GET_NOTIFICATION]: createRoute(
+    "/notification/:id",
+    /^\/notification\/.*\/?get?$/,
+    z.object({}),
+    (id?: string) => "/notification/" + id
+  ),
+  [RouteNames.DELETE_NOTIFICATION]: createRoute(
+    "/notification/:id",
+    /^\/notification\/.*\/?delete?$/,
+    z.object({}),
+    (id?: string) => "/notification/" + id
+  ),
+  [RouteNames.READ_NOTIFICATION]: createRoute(
+    "/notification/:id",
+    /^\/notification\/.*\/?patch?$/,
+    z.object({}),
+    (id?: string) => "/notification/" + id
   )
 };
 

@@ -35,7 +35,12 @@ import {
   PostModelResponseBody,
   PostNetwork,
   RouteNames,
-  getRoute
+  getRoute,
+  NotificationBody,
+  GetNotification,
+  GetNotificationBody,
+  GetNotificationList,
+  GetNotificationListBody
 } from "shared-types";
 
 import { network } from "./utils";
@@ -205,5 +210,25 @@ export const api = {
     return GetNetworkArchitectureListBody.parse(
       networkArchitectures
     ) as GetNetworkArchitectureList;
-  }
+  },
+
+  // NOTIFICATION
+  getNotification: async (id: string): Promise<GetNotification> => {
+    const notification = await getRequest(
+      getRoute(RouteNames.GET_NOTIFICATION)(id)
+    );
+
+    return GetNotificationBody.parse(notification);
+  },
+  getNotificationList: async (): Promise<GetNotificationList> => {
+    const notifications = await getRequest(
+      getRoute(RouteNames.GET_NOTIFICATION_LIST)()
+    );
+
+    return GetNotificationListBody.parse(notifications) as GetNotificationList;
+  },
+  deleteNotification: (id: string) =>
+    deleteRequest(getRoute(RouteNames.DELETE_NOTIFICATION)(id)),
+  readNotification: (id: string) =>
+    deleteRequest(getRoute(RouteNames.READ_NOTIFICATION)(id))
 };
