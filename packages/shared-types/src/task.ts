@@ -28,6 +28,7 @@ export const TaskBody = z.object({
       domainTags: z.array(z.string()),
 
       modelIds: z.array(ObjId),
+      distractorIds: z.array(ObjId),
       backgrounds: z.array(ObjId),
       datasetConfigurationId: ObjId
     })

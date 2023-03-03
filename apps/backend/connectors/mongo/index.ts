@@ -11,6 +11,7 @@ import Socket from "./socket";
 import User from "./user";
 import Task from "./task"
 import DatasetConfiguration from "./datasetConfiguration";
+import Network from "./network"
 
 export { cvBenchDb, clientNotReady, collectionRequest } from "./client";
 
@@ -31,7 +32,8 @@ const Database = {
   Background,
   NetworkArchitecture,
   Socket,
-  Task
+  Task,
+  Network
 };
 
 export default Database;
