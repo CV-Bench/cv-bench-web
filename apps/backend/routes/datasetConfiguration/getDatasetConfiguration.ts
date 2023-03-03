@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import { ObjectId } from "mongodb";
-
 import Database from "../../connectors/mongo";
-import S3 from "../../connectors/s3";
 
-const getDatasetConfiguration = (req: Request, res: Response) => {};
+const getDatasetConfiguration = async (req: Request, res: Response) => {
+  Database.DatasetConfiguration.findOne(req.params.id, req.session.user?._id).then(x => res.json(x));
+};
 
 export default getDatasetConfiguration;

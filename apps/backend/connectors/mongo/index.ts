@@ -10,6 +10,7 @@ import NetworkArchitecture from "./networkArchitecture";
 import Socket from "./socket";
 import User from "./user";
 import Task from "./task"
+import DatasetConfiguration from "./datasetConfiguration";
 
 export { cvBenchDb, clientNotReady, collectionRequest } from "./client";
 
@@ -25,6 +26,7 @@ Object.values(CollectionName).map((name) =>
 const Database = {
   Model,
   Dataset,
+  DatasetConfiguration,
   User,
   Background,
   NetworkArchitecture,

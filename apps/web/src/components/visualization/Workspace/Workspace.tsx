@@ -18,7 +18,7 @@ import { useBackground } from "@/hooks/background";
 import styled from "@emotion/styled";
 
 export interface WorkspaceProps {
-  dataset: PostDataset;
+  configuration: BlenderConfiguration;
 
   visuals: WorkspaceVisuals;
 }
@@ -32,12 +32,12 @@ export interface WorkspaceVisuals {
   selectedBackgroundId: string;
 }
 
-const Workspace: React.FC<WorkspaceProps> = ({ dataset, visuals }) => {
+const Workspace: React.FC<WorkspaceProps> = ({ configuration, visuals }) => {
 
   const { data: model } = useModel(visuals.selectedModelId);
   const { data: background } = useBackground(visuals.selectedBackgroundId);
-  const configuration = dataset.configuration;
 
+  // ToDo: Limit to max available space, otherwise canvas could overflow
   const dpr = visuals.showRenderResolution ? (1 as any) : [1, 2];
   const width = visuals.showRenderResolution ? configuration.render.resolution_x : '100%';
   const height = visuals.showRenderResolution ? configuration.render.resolution_y : '100%';

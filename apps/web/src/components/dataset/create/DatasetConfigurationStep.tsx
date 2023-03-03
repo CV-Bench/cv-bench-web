@@ -1,15 +1,18 @@
+import Button from "@/components/Button"
 import Card from "@/components/Card"
-import Collapsible from "@/components/Collapsible"
-import EnumOptions from "@/components/inputs/EnumOptions"
-import InputField from "@/components/inputs/InputField"
 import InputLabel from "@/components/inputs/InputLabel"
-import MinMaxInput from "@/components/inputs/MinMaxInput"
-import MinMaxSlider from "@/components/inputs/MinMaxSlider"
 import SelectInput from "@/components/inputs/SelectInput"
+import { useModal } from "@/components/modal/ModalProvider"
+import { ActiveModals } from "@/components/modal/ModalProvider/types"
 import Workspace, { WorkspaceVisuals } from "@/components/visualization/Workspace/Workspace"
-import React, { useState } from "react"
-import { BlenderConfiguration, ComputeBbox, GetBackgroundList, GetModelList, PostDataset, PostDatasetConfiguration } from "shared-types"
+import { useDatasetConfiguration, useDatasetConfigurationList } from "@/hooks/datasetConfiguration"
+
+import React, { useEffect, useState } from "react"
+import { BlenderConfiguration, CamLensUnit, ComputeBbox, ConfigurationType, GetBackgroundList, GetDatasetConfiguration, GetModelList, PostDataset, PostDatasetConfiguration } from "shared-types"
 import { string } from "zod"
+import DatasetConfigurationInputs from "./DatasetConfigurationInputs"
+import DatasetConfigurationModal from "./DatasetConfigurationModal"
+import DatasetConfigurationVisuals from "./DatasetConfigurationVisuals"
 
 
 export interface DatasetConfigurationStepProps {
@@ -21,6 +24,8 @@ export interface DatasetConfigurationStepProps {
 }
 
 const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({ dataset, setDataset, models, backgrounds }) => {
+  const { data: datasetConfigs, mutate: mutateDatasetConfigs } = useDatasetConfigurationList();
+
   const [visuals, setVisuals] = useState<WorkspaceVisuals>({
     showModelBox: false,
     showCameraSphere: false,
@@ -29,186 +34,125 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({ dat
     selectedModelId: models[0]?._id ?? '',
     selectedBackgroundId: backgrounds[0]?._id ?? '',
   });
-
-  const updateVisuals = () => setVisuals({...visuals});
-  const setShowCameraSphere = (val: boolean) => { visuals.showCameraSphere = val; updateVisuals(); }
-  const setShowModelBox = (val: boolean) => { visuals.showModelBox = val; updateVisuals(); }
-  const setLockCameraToSphere = (val: boolean) => { visuals.lockCameraToSphere = val; updateVisuals(); }
-  const setShowRenderResolution = (val: boolean) => { visuals.showRenderResolution = val; updateVisuals(); }
-  const setSelectedModelId = (val: string) => { visuals.selectedBackgroundId = val; updateVisuals(); }
-  const setSelectedBackgroundId = (val: string) => { visuals.selectedBackgroundId = val; updateVisuals(); }
   
-  const outputConfig = dataset.configuration.output;
-  const randomConfig = dataset.configuration.random;
-  const renderConfig = dataset.configuration.render;
-  const cameraConfig = renderConfig.camera;
+  const defaultConfig: PostDatasetConfiguration =  {
+    configurationType: ConfigurationType.BLENDER,
+    name: '',
+    configuration: {
+      input: {
+        object: [],
+        distractor: [],
+        bg: []
+      },
+      output: {
+        images: 5, // ToDo
+        just_merge: .5, // ToDo
+        "skew_angle:material": .5 // ToDo
+      },
+      render: {
+        camera: {
+          lens_unit: CamLensUnit.FOV,
+          lens: 50,
+          clip_start: .1,
+          clip_end: 20
+        },
+        resolution_x: 480, // px // ToDo
+        resolution_y: 480, // px // ToDo
+    
+        model_scale: 1, //fragwürdig
+        exposure: 40, // ToDo
+        compute_bbox: ComputeBbox.FAST, // ToDo
+        use_fps_keypoints: false, //muss nicht unbedgingt user-einstellbar sein 
+    
+        use_cycles: true, // sollte immer true sein
+        samples: 40, // sinnvolle obere Grenze ca. 60, unter 10 sinnlos // ToDo
+        use_cycles_donoising: false, // sollte erstmal immer false sein
+        use_adaptive_sampling:false, // sollte erstmal immer false sein
+        use_GPU: true, // sollte immer true sein
+      },
+      random: {
+        min_azi: 0,
+        max_azi: Math.PI * 2,
+        min_distractors: 0, // ToDo
+        max_distractors: 1, // ToDo
+        min_inc: 0,
+        max_inc: Math.PI / 2,
+        min_metallic: .2,
+        max_metallic: .75,
+        min_roughness: .2,
+        max_roughness: .75,
+        min_x_pos: -.5,
+        max_x_pos: .5,
+        min_y_pos: -.5,
+        max_y_pos: .5,
+        min_z_pos: -.5,
+        max_z_pos: .5
+      }
+    }
+  } 
 
-  const updateConfig = () => setDataset({ ...dataset });
+  const [config, setConfig] = useState<PostDatasetConfiguration>(defaultConfig)
 
-  // Render Section
-  const setModelScale = (val: number) => { renderConfig.model_scale = val; updateConfig(); }
-  const setExposure = (val: number) => { renderConfig.exposure = val; updateConfig(); }
-  const setResolutionX = (val: number) => { renderConfig.resolution_x = val; updateConfig(); }
-  const setResolutionY = (val: number) => { renderConfig.resolution_y = val; updateConfig(); }
-  const setComputeBBox = (val: ComputeBbox) => { renderConfig.compute_bbox = val; updateConfig(); }
-  const setUseFpsKeypoints = (val: boolean) => { renderConfig.use_fps_keypoints = val; updateConfig(); }
-  const setSamples = (val: number) => { renderConfig.samples = val; updateConfig(); }
+  const setSelectedConfigId = (configurationId?: string) => {
+    configurationId = configurationId == "null" ? undefined : configurationId;
+    setDataset({...dataset, configurationId: configurationId });
+  };
 
-  // Random Section
-  const setMinAzi = (val: number) => { randomConfig.min_azi = val; updateConfig(); }
-  const setMaxAzi = (val: number) => { randomConfig.max_azi = val; updateConfig(); }
+  useEffect(() => {
+    const selectedConfig = datasetConfigs?.find(x => x._id == dataset.configurationId);
+    if (selectedConfig) {
+      const { _id, ...patchModel } = selectedConfig!;
+      setConfig(structuredClone(patchModel));
+    }
+    else {
+      setConfig(defaultConfig);
+    }
+  }, [dataset.configurationId]);
 
-  const setMinInc = (val: number) => { randomConfig.min_inc = val; updateConfig(); }
-  const setMaxInc = (val: number) => { randomConfig.max_inc = val; updateConfig(); }
+  const selectedConfig = datasetConfigs?.find(x => x._id == dataset.configurationId);
+  const configHasChanged = !dataset.configurationId || JSON.stringify(config.configuration) != JSON.stringify(selectedConfig?.configuration);
 
-  const setMinMetallic = (val: number) => { randomConfig.min_metallic = val; updateConfig(); }
-  const setMaxMetallic = (val: number) => { randomConfig.max_metallic = val; updateConfig(); }
-  const setMinRoughness = (val: number) => { randomConfig.min_roughness = val; updateConfig(); }
-  const setMaxRoughness = (val: number) => { randomConfig.max_roughness = val; updateConfig(); }
+  const updateConfig = (configuration: BlenderConfiguration) => setConfig({ ...config, configuration });
 
-  const setModelMinX = (val: number) => { randomConfig.min_x_pos = val; updateConfig(); }
-  const setModelMaxX = (val: number) => { randomConfig.max_x_pos = val; updateConfig(); }
-  const setModelMinY = (val: number) => { randomConfig.min_y_pos = val; updateConfig(); }
-  const setModelMaxY = (val: number) => { randomConfig.max_y_pos = val; updateConfig(); }
-  const setModelMinZ = (val: number) => { randomConfig.min_z_pos = val; updateConfig(); }
-  const setModelMaxZ = (val: number) => { randomConfig.max_z_pos = val; updateConfig(); }
+  const [isConfigModalOpen, setIsConfigModalOpen] = useModal(ActiveModals.DatasetConfiguration);
 
-  // Camera Section
-  const setFov = (val: number) => { cameraConfig.lens = val; updateConfig(); }
-  const setClipStart = (val: number) => { cameraConfig.clip_start = val; updateConfig(); }
-  const setClipEnd = (val: number) => { cameraConfig.clip_end = val; updateConfig(); }
-
-  // Output Section
-  const setImages = (val: number) => { outputConfig.images = val; updateConfig(); }
-  const setJustMerge = (val: number) => { outputConfig.just_merge = val; updateConfig(); }
-  const setSkewAngleMaterial = (val: number) => { outputConfig["skew_angle:material"] = val; updateConfig(); }
-
-  const bboxEnum = ComputeBbox;
+  const onConfigModalClose = () => {
+    mutateDatasetConfigs();
+    setIsConfigModalOpen(false);
+  }
 
   return (
     <div className="flex-1 flex items-stretch">
-      <div className="relative w-1/4">
-        <Card className="absolute w-full h-full overflow-y-auto">
-          <Collapsible title="Visuals">
-            <div>
-              <InputLabel>Show Camera Sphere</InputLabel>
-              <InputField type="checkbox" checked={visuals.showCameraSphere} onChange={(e) => setShowCameraSphere(!!(e.target as HTMLInputElement).checked)} />
-            </div>
-            <div>
-              <InputLabel>Show Model Box</InputLabel>
-              <InputField type="checkbox" checked={visuals.showModelBox} onChange={(e) => setShowModelBox(!!(e.target as HTMLInputElement).checked)} />
-            </div>
-            <div>
-              <InputLabel>Lock Camera To Sphere</InputLabel>
-              <InputField type="checkbox" checked={visuals.lockCameraToSphere} onChange={(e) => setLockCameraToSphere(!!(e.target as HTMLInputElement).checked)} />
-            </div>
-            <div>
-              <InputLabel>Preview Render Resolution</InputLabel>
-              <InputField type="checkbox" checked={visuals.showRenderResolution} onChange={(e) => setShowRenderResolution(!!(e.target as HTMLInputElement).checked)} />
-            </div>
-            <div>
-              <InputLabel>Preview Background</InputLabel>
-              <SelectInput value={visuals.selectedBackgroundId} setValue={setSelectedBackgroundId}>
-                {backgrounds.map(bg => <option key={bg._id} value={bg._id}>{bg.name}</option>)}
-              </SelectInput>
-            </div>
-            <div>
-              <InputLabel>Preview Model</InputLabel>
-              <SelectInput value={visuals.selectedModelId} setValue={setSelectedModelId}>
-                {models.map(model => <option key={model._id} value={model._id}>{model.name}</option>)}
-              </SelectInput>
-            </div>
-          </Collapsible>
-          <Collapsible title="Output">
-            <Collapsible title="Resolution">
-              <div className="flex">
-                <div>
-                  <InputLabel>Width</InputLabel>
-                  <InputField type="number" min="1" value={renderConfig.resolution_x} onChange={(e) => setResolutionX(+(e.target as HTMLInputElement).value)} />
-                </div>
-                <div>
-                  <InputLabel>Height</InputLabel>
-                  <InputField type="number" min="1" value={renderConfig.resolution_y} onChange={(e) => setResolutionY(+(e.target as HTMLInputElement).value)} />
-                </div>
-              </div>
-            </Collapsible>
-            <div>
-              <InputLabel>Compute Bounding Box: ({ renderConfig.compute_bbox })</InputLabel>
-              <SelectInput value={renderConfig.compute_bbox} setValue={setComputeBBox}>
-                <EnumOptions enumType={bboxEnum} />
-              </SelectInput>
-            </div>
-            <div>
-              <InputLabel>Use FPS Keypoints</InputLabel>
-              <InputField type="checkbox" checked={renderConfig.use_fps_keypoints} onChange={(e) => setUseFpsKeypoints(!!(e.target as HTMLInputElement).checked)} />
-            </div>
-            <div>
-              <InputLabel>Samples ({ renderConfig.samples })</InputLabel>
-              <InputField type="range" min={10} max={60} value={renderConfig.samples} onChange={(e) => setSamples(+(e.target as HTMLInputElement).value)} />
-            </div>
-            <div>
-              <InputLabel>Images</InputLabel>
-              <InputField type="number" min="1" value={outputConfig.images} onChange={(e) => setImages(+(e.target as HTMLInputElement).value)} />
-            </div>
-            <div>
-              <InputLabel>Merge ({(outputConfig.just_merge * 100).toFixed(2)} % )</InputLabel>
-              <InputField type="range" step=".01" min="0" max="100" value={outputConfig.just_merge * 100} onChange={(e) => setJustMerge(+(e.target as HTMLInputElement).value * .01)} />
-            </div>
-            <div>
-              <InputLabel>Skew-Angle Material Relation ({(outputConfig["skew_angle:material"] * 100).toFixed(2)} % )</InputLabel>
-              <InputField type="range" step=".01" min="0" max="100" value={outputConfig["skew_angle:material"] * 100} onChange={(e) => setSkewAngleMaterial(+(e.target as HTMLInputElement).value * .01)} />
-            </div>
-          </Collapsible>
-          <Collapsible title="Lighting">
-            <div>
-              <InputLabel>Exposure</InputLabel>
-              <InputField type="number" min="0" value={renderConfig.exposure} onChange={(e) => setExposure(+(e.target as HTMLInputElement).value)} />
-            </div>
-          </Collapsible>
-          <Collapsible title="Camera">
-            <div>
-              <InputLabel>FOV: ({cameraConfig.lens} °)</InputLabel>
-              <InputField type="range" min="0" max="180" value={cameraConfig.lens} onChange={(e) => setFov(+(e.target as HTMLInputElement).value)} />
-            </div>
-            <Collapsible className="mt-3" title="Positioning" collapsed={true}>
-                <Collapsible title="Azimuth">
-                  <MinMaxSlider minLimit={0} maxLimit={2 * Math.PI} min={randomConfig.min_azi} max={randomConfig.max_azi} onMinChange={setMinAzi} onMaxChange={setMaxAzi} />
-                </Collapsible>
-                <Collapsible className="mt-2" title="Inclination">
-                  <MinMaxSlider minLimit={0} maxLimit={Math.PI} min={randomConfig.min_inc} max={randomConfig.max_inc} onMinChange={setMinInc} onMaxChange={setMaxInc} />
-                </Collapsible>
-            </Collapsible>
-            <Collapsible title="Clipping" collapsed={true}>
-              <MinMaxSlider minLimit={0.01} maxLimit={10} min={cameraConfig.clip_start} max={cameraConfig.clip_end} onMinChange={setClipStart} onMaxChange={setClipEnd} />
-            </Collapsible>
-          </Collapsible>
-          <Collapsible title="Model">
-            <div>
-              <InputLabel>Scale: ({renderConfig.model_scale})</InputLabel>
-              <InputField type="number" min="0" step=".01" value={renderConfig.model_scale} onChange={(e) => setModelScale(+(e.target as HTMLInputElement).value)} />
-            </div>
-            <Collapsible title="Positioning" collapsed={true}>
-              <InputLabel>X</InputLabel>
-              <MinMaxInput className="flex" min={randomConfig.min_x_pos} max={randomConfig.max_x_pos} onMinChange={setModelMinX} onMaxChange={setModelMaxX} />
+      <DatasetConfigurationModal 
+      dataset={dataset}
+      setDataset={setDataset}
+      configuration={config}
+      setConfiguration={setConfig}
+      isOpen={isConfigModalOpen} 
+      onClose={onConfigModalClose} />
 
-              <InputLabel>Y</InputLabel>
-              <MinMaxInput className="flex" min={randomConfig.min_y_pos} max={randomConfig.max_y_pos} onMinChange={setModelMinY} onMaxChange={setModelMaxY} />
+      <div className="w-1/4 flex flex-col">
+        <div className="px-3 pb-3 border-b border-white">
+          <InputLabel>Configuration</InputLabel>
+          <SelectInput value={dataset.configurationId} setValue={setSelectedConfigId}>
+            <option value="null">New</option>
+            { datasetConfigs?.map(config => <option key={config._id} value={config._id}>{config.name}</option> ) }
+          </SelectInput>
+        </div>
+        <div className="relative flex-1">
+          <Card className="absolute w-full h-full flex-1 overflow-y-auto">
+            <DatasetConfigurationVisuals models={models} backgrounds={backgrounds} visuals={visuals} setVisuals={setVisuals} />
+            <DatasetConfigurationInputs config={config.configuration} setConfig={updateConfig} />
+          </Card>
+        </div>
 
-              <InputLabel>Z</InputLabel>
-              <MinMaxInput className="flex" min={randomConfig.min_z_pos} max={randomConfig.max_z_pos} onMinChange={setModelMinZ} onMaxChange={setModelMaxZ} />
-            </Collapsible>
-            <Collapsible title="Metallic" collapsed={true}>
-              <MinMaxSlider minLimit={0} maxLimit={1} min={randomConfig.min_metallic} max={randomConfig.max_metallic} onMinChange={setMinMetallic} onMaxChange={setMaxMetallic} />
-            </Collapsible>
-            <Collapsible title="Roughness" collapsed={true}>
-              <MinMaxSlider minLimit={0} maxLimit={1} min={randomConfig.min_roughness} max={randomConfig.max_roughness} onMinChange={setMinRoughness} onMaxChange={setMaxRoughness} />
-            </Collapsible>
-          </Collapsible>
-        </Card>
+        <div className="p-3">
+          {configHasChanged && <Button className="w-full" color="red" onClick={() => setIsConfigModalOpen(true)}>Save Changes</Button>}
+        </div>
       </div>
       <div className="relative w-3/4">
         <div className="absolute h-full w-full flex justify-center items-center">
-          <Workspace visuals={visuals} dataset={dataset} />
+          <Workspace visuals={visuals} configuration={config.configuration} />
         </div>
       </div>
     </div>

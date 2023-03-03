@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-import { ObjId } from "./utils";
+import { AccessType, ObjId } from "./utils";
 
 export enum TaskStatus {
   PENDING = "PENDING",
@@ -23,7 +23,11 @@ export const TaskBody = z.object({
   type: z.nativeEnum(TaskType),
   info: z
     .object({
-      modelId: ObjId,
+      name: z.string(),
+      accessType: z.nativeEnum(AccessType),
+      domainTags: z.array(z.string()),
+
+      modelIds: z.array(ObjId),
       backgrounds: z.array(ObjId),
       datasetConfigurationId: ObjId
     })

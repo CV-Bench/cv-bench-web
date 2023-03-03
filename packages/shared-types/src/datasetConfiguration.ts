@@ -85,6 +85,7 @@ export const DatasetConfigurationBody = z.object({
   userId: ObjId,
   name: z.string(),
   createdAt: z.string(),
+  updatedAt: z.string(),
   configurationType: z.nativeEnum(ConfigurationType),
   configuration: BlenderConfigurationObject
 });
@@ -142,9 +143,11 @@ export function configurationToJSON(conf: BlenderConfiguration): string {
 }
 
 export const GetDatasetConfigurationBody = DatasetConfigurationBody.omit({
-  createdAt: true
+  createdAt: true,
+  updatedAt: true
 }).extend({
-  createdAt: z.string().transform((d) => new Date(d))
+  createdAt: z.string().transform((d) => new Date(d)),
+  updatedAt: z.string().transform((d) => new Date(d))
 });
 
 export type GetDatasetConfiguration = z.infer<typeof GetDatasetConfigurationBody>;

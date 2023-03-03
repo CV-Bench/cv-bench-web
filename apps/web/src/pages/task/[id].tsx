@@ -9,12 +9,19 @@ const TaskId = () => {
   const { data: task } = useTask(id?.toString() ?? "");
 
 
-
+  console.log(task)
 
   return (
     <>
-      <Card>
+      <Card className="h-1/2">
         <div>
+          {task?.type}
+        </div>
+        <div>
+          {task?.status}
+        </div>
+        <div>
+ 
         </div>
       </Card>
     </>

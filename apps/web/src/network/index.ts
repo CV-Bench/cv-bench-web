@@ -181,7 +181,7 @@ export const api = {
 
     return GetDatasetConfigurationListBody.parse(datasetConfigurations) as GetDatasetConfigurationList;
   },
-  postDatasetConfigurations: async (body: PostDatasetConfiguration): Promise<{}> =>
+  postDatasetConfiguration: async (body: PostDatasetConfiguration): Promise<string> =>
     postRequest(getRoute(RouteNames.POST_DATASET_CONFIGURATION)(), { body }),
   deleteDatasetConfiguration: (id: string) =>
     deleteRequest(getRoute(RouteNames.DELETE_DATASET_CONFIGURATION)(id)),

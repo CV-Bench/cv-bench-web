@@ -8,8 +8,11 @@ import ModelSelectStep from "@/components/dataset/create/ModelSelectStep";
 import { Co2Sharp } from "@mui/icons-material";
 import DatasetUploadStep from "@/components/dataset/create/DatasetUploadStep";
 import { api } from "@/network";
+import { useRouter } from "next/router";
 
 const CreateDataset = () => {
+  const router = useRouter();
+
   const [dataset, setDataset] = useState<PostDataset>({
     name: '',
     description: '',
@@ -17,58 +20,7 @@ const CreateDataset = () => {
     models: [],
     images: [],
     accessType: AccessType.PRIVATE,
-    datasetType: DatasetType.BLENDER_3D,
-    configuration: {
-      input: {
-        object: [],
-        distractor: [],
-        bg: []
-      },
-      output: {
-        images: 5, // ToDo
-        just_merge: .5, // ToDo
-        "skew_angle:material": .5 // ToDo
-      },
-      render: {
-        camera: {
-          lens_unit: CamLensUnit.FOV,
-          lens: 50,
-          clip_start: .1,
-          clip_end: 20
-        },
-        resolution_x: 480, // px // ToDo
-        resolution_y: 480, // px // ToDo
-    
-        model_scale: 1, //fragwürdig
-        exposure: 40, // ToDo
-        compute_bbox: ComputeBbox.FAST, // ToDo
-        use_fps_keypoints: false, //muss nicht unbedgingt user-einstellbar sein 
-    
-        use_cycles: true, // sollte immer true sein
-        samples: 40, // sinnvolle obere Grenze ca. 60, unter 10 sinnlos // ToDo
-        use_cycles_donoising: false, // sollte erstmal immer false sein
-        use_adaptive_sampling:false, // sollte erstmal immer false sein
-        use_GPU: true, // sollte immer true sein
-      },
-      random: {
-        min_azi: 0,
-        max_azi: Math.PI * 2,
-        min_distractors: 0, // ToDo
-        max_distractors: 1, // ToDo
-        min_inc: 0,
-        max_inc: Math.PI / 2,
-        min_metallic: .2,
-        max_metallic: .75,
-        min_roughness: .2,
-        max_roughness: .75,
-        min_x_pos: -.5,
-        max_x_pos: .5,
-        min_y_pos: -.5,
-        max_y_pos: .5,
-        min_z_pos: -.5,
-        max_z_pos: .5
-      }
-    }
+    datasetType: DatasetType.BLENDER_3D
   })
 
   // Stored here for persistency between form-steps
@@ -120,7 +72,7 @@ const CreateDataset = () => {
           backgrounds={backgrounds}
         />
       ),
-      validation: z.object({ configuration: BlenderConfigurationObject })
+      validation: z.object({ configurationId: z.string() })
     },
     {
       name: "Upload",
@@ -139,8 +91,9 @@ const CreateDataset = () => {
     }
   ];
 
-  const handleUpload = () => {
-    api.postDatasets(dataset);
+  const handleUpload = async() => {
+    await api.postDatasets(dataset);
+    router.push('/task');
   };
 
   return (

@@ -1,10 +1,24 @@
 import { Response } from "express";
 
-import { PostDataset, TypedRequest } from "shared-types";
+import { PostDataset, TaskStatus, TaskType, TypedRequest } from "shared-types";
+import Database from "../../connectors/mongo";
 
 const createDataset = (req: TypedRequest<PostDataset>, res: Response) => {
 
-    console.log(req.body)
+    Database.Task.insert({
+        userId: req.session.user?.id,
+        status: TaskStatus.PENDING,
+        type: TaskType.CREATE_DATASET,
+        info: {
+            name: req.body.name,
+            domainTags: req.body.domainTags,
+            accessType: req.body.accessType,
+
+            modelIds: req.body.models,
+            backgrounds: req.body.images,
+            datasetConfigurationId: req.body.configurationId
+        }
+    })
 
 };
 
