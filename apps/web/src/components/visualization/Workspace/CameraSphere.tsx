@@ -6,9 +6,14 @@ export type CameraSphereProps = {
 
   min_inc: number;
   max_inc: number;
-}
+};
 
-const CameraSphere: React.FC<CameraSphereProps> = ({ min_azi, max_azi, min_inc, max_inc }) => {
+const CameraSphere: React.FC<CameraSphereProps> = ({
+  min_azi,
+  max_azi,
+  min_inc,
+  max_inc
+}) => {
   const thetaStart = min_inc;
   const thetaLength = max_inc - min_inc;
   const phiStart = min_azi;
@@ -22,15 +27,7 @@ const CameraSphere: React.FC<CameraSphereProps> = ({ min_azi, max_azi, min_inc, 
         castShadow={false}
       >
         <sphereGeometry
-          args={[
-            1,
-            32,
-            32,
-            phiStart,
-            phiLength,
-            thetaStart,
-            thetaLength
-          ]}
+          args={[1, 32, 32, phiStart, phiLength, thetaStart, thetaLength]}
         />
         <meshStandardMaterial wireframe side={DoubleSide} color="orange" />
       </mesh>

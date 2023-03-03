@@ -16,13 +16,21 @@ export interface ModelPreviewProps {
   onThumbnailUpdate?: (dataUrl: string) => void;
 }
 
-const ModelPreview: React.FC<ModelPreviewProps> = ({ model: modelPath, modelAssets = [], className, onThumbnailUpdate }) => {
+const ModelPreview: React.FC<ModelPreviewProps> = ({
+  model: modelPath,
+  modelAssets = [],
+  className,
+  onThumbnailUpdate
+}) => {
   const allLayers = new Layers();
   allLayers.enableAll();
 
   return (
-    <Canvas className={(className ? ` ${className}` : '')} camera={{ layers: allLayers }}>
-      <ambientLight intensity={.1} />
+    <Canvas
+      className={className ? ` ${className}` : ""}
+      camera={{ layers: allLayers }}
+    >
+      <ambientLight intensity={0.1} />
       <pointLight position={[0, 0, 3]} />
       <directionalLight />
       {modelPath && (

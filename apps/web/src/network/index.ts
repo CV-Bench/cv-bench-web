@@ -101,8 +101,9 @@ export const api = {
 
     return GetModelBody.parse(model);
   },
-  getModelList: async (): Promise<GetModelList> => {
-    const models = await getRequest(getRoute(RouteNames.GET_MODEL_LIST)());
+  getModelList: async (ids?: string[]): Promise<GetModelList> => {
+    const idsParam = (ids) ? `?ids=${ids.join(',')}` : '';
+    const models = await getRequest(getRoute(RouteNames.GET_MODEL_LIST)()  + idsParam);
 
     return GetModelListBody.parse(models);
   },
@@ -126,10 +127,11 @@ export const api = {
 
     return GetBackgroundBody.parse(background);
   },
-  getBackgroundList: async (domainTags?: string[]): Promise<GetBackgroundList> => {
-    const tagParam = (domainTags && domainTags.length > 0) ? `?domainTags=${domainTags.join(',')}` : '';
+  getBackgroundList: async (domainTags?: string[], ids?: string[]): Promise<GetBackgroundList> => {
+    const idsParam = ids ? `?ids=${ids.join(',')}` : '';
+    const tagParam = (!idsParam && domainTags) ? `?domainTags=${domainTags.join(',')}` : '';
     const backgrounds = await getRequest(
-      getRoute(RouteNames.GET_BACKGROUND_LIST)() + tagParam
+      getRoute(RouteNames.GET_BACKGROUND_LIST)() + tagParam + idsParam
     );
 
     return GetBackgroundListBody.parse(backgrounds) as GetBackgroundList;

@@ -1,7 +1,13 @@
-import { OrbitControls, PerspectiveCamera, TransformControls, useHelper } from "@react-three/drei";
+import {
+  OrbitControls,
+  PerspectiveCamera,
+  TransformControls,
+  useHelper
+} from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
 import { CameraHelper, Layers, Vector3 } from "three";
+
 import { BlenderConfiguration } from "shared-types";
 
 export interface RenderCameraProps extends BlenderConfiguration {
@@ -59,13 +65,20 @@ const RenderCamera: React.FC<RenderCameraProps> = (config) => {
 
   return (
     <>
-      <PerspectiveCamera makeDefault
-      position={[1,0,0]}
-      up={[0,0,1]}
-      fov={config.render.camera.lens}
-      near={config.render.camera.clip_start}
-      far={config.render.camera.clip_end} />
-      <OrbitControls enableZoom={!config.lockCameraToSphere} enablePan={false}  ref={controlRef} target={[0, 0, 0]}  />
+      <PerspectiveCamera
+        makeDefault
+        position={[1, 0, 0]}
+        up={[0, 0, 1]}
+        fov={config.render.camera.lens}
+        near={config.render.camera.clip_start}
+        far={config.render.camera.clip_end}
+      />
+      <OrbitControls
+        enableZoom={!config.lockCameraToSphere}
+        enablePan={false}
+        ref={controlRef}
+        target={[0, 0, 0]}
+      />
     </>
   );
 };

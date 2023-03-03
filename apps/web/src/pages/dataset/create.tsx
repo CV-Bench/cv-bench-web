@@ -1,28 +1,40 @@
-import FormStepsPanel, { FormStep } from "@/components/multiform/FormStepsPanel";
-import { AccessType, BlenderConfiguration, BlenderConfigurationObject, CamLensUnit, ComputeBbox, DatasetConfigurationBody, DatasetType, GetBackgroundList, GetModelList, GetModelListBody, ObjId, PostDataset, PostDatasetBody } from "shared-types";
+import { Co2Sharp } from "@mui/icons-material";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import * as z from "zod";
+
 import BackgroundSelectStep from "@/components/dataset/create/BackgroundSelectStep";
 import DatasetConfigurationStep from "@/components/dataset/create/DatasetConfigurationStep";
-import ModelSelectStep from "@/components/dataset/create/ModelSelectStep";
-import { Co2Sharp } from "@mui/icons-material";
 import DatasetUploadStep from "@/components/dataset/create/DatasetUploadStep";
+import ModelSelectStep from "@/components/dataset/create/ModelSelectStep";
+import FormStepsPanel, {
+  FormStep
+} from "@/components/multiform/FormStepsPanel";
 import { api } from "@/network";
-import { useRouter } from "next/router";
+
+import {
+  AccessType,
+  DatasetType,
+  GetBackgroundList,
+  GetModelList,
+  ObjId,
+  PostDataset,
+  PostDatasetBody
+} from "shared-types";
 
 const CreateDataset = () => {
   const router = useRouter();
 
   const [dataset, setDataset] = useState<PostDataset>({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     domainTags: [],
     models: [],
     distractors: [],
     images: [],
     accessType: AccessType.PRIVATE,
     datasetType: DatasetType.BLENDER_3D
-  })
+  });
 
   // Stored here for persistency between form-steps
   const [backgroundTags, setBackgroundTags] = useState<string[]>([]);
@@ -31,23 +43,32 @@ const CreateDataset = () => {
   const [models, setModels] = useState<GetModelList>([]);
   const [distractors, setDistractors] = useState<GetModelList>([]);
 
-  useEffect(() => setDataset({...dataset, models: models.map(x => x._id)}), [models]);
-  useEffect(() => setDataset({...dataset, distractors: distractors.map(x => x._id)}), [distractors]);
-  useEffect(() => setDataset({...dataset, images: backgrounds.map(x => x._id)}), [backgrounds]);
+  useEffect(
+    () => setDataset({ ...dataset, models: models.map((x) => x._id) }),
+    [models]
+  );
+  useEffect(
+    () =>
+      setDataset({ ...dataset, distractors: distractors.map((x) => x._id) }),
+    [distractors]
+  );
+  useEffect(
+    () => setDataset({ ...dataset, images: backgrounds.map((x) => x._id) }),
+    [backgrounds]
+  );
 
-  const setName = (name: string) => setDataset({...dataset, name});
-  const setAccessType = (accessType: AccessType) => setDataset({...dataset, accessType});
-  const setTags = (domainTags: string[]) => setDataset({...dataset, domainTags});
+  const setName = (name: string) => setDataset({ ...dataset, name });
+  const setAccessType = (accessType: AccessType) =>
+    setDataset({ ...dataset, accessType });
+  const setTags = (domainTags: string[]) =>
+    setDataset({ ...dataset, domainTags });
 
   const steps: FormStep[] = [
     {
       name: "Model",
       description: "Select Models (>= 1)",
       component: (
-        <ModelSelectStep
-          selectedModels={models}
-          onSelectModels={setModels}
-        />
+        <ModelSelectStep selectedModels={models} onSelectModels={setModels} />
       ),
       validation: z.object({ models: z.array(ObjId).nonempty() })
     },
@@ -105,9 +126,9 @@ const CreateDataset = () => {
     }
   ];
 
-  const handleUpload = async() => {
+  const handleUpload = async () => {
     await api.postDatasets(dataset);
-    router.push('/task');
+    router.push("/task");
   };
 
   return (

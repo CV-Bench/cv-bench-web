@@ -5,8 +5,7 @@ export interface SceneBackgroundProps {
   background: string;
 }
 
-const SceneBackground: React.FC<SceneBackgroundProps> = ({ background  }) => {
-
+const SceneBackground: React.FC<SceneBackgroundProps> = ({ background }) => {
   const texture = useLoader(TextureLoader, background);
   const { scene, gl } = useThree();
 
@@ -21,8 +20,7 @@ const SceneBackground: React.FC<SceneBackgroundProps> = ({ background  }) => {
   scene.background.offset.y = factor > 1 ? 0 : (1 - factor) / 2;
   scene.background.repeat.y = factor > 1 ? 1 : factor;
 
-
- return (<></>)
+  return <></>;
 };
 
 export default SceneBackground;

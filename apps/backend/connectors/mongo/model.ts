@@ -70,12 +70,35 @@ const find = (userId: string | ObjectId) =>
     }
   );
 
+const findByIds = (userId: string | ObjectId, ids: ObjectId[]) =>
+  collectionRequest<FindCursor<ModelDb>>(
+    CollectionName.MODEL,
+    async (collection) => {
+      return collection.find({
+        $and: [
+          {
+            $or: [
+              { userId: new ObjectId(userId) },
+              { accessType: AccessType.PUBLIC }
+            ]
+          },
+          {
+            _id: {
+              $in: ids
+            }
+          }
+        ]
+      });
+    }
+  );
+
 const Model = {
   findOne,
   insert,
   updateOne,
   deleteOne,
-  find
+  find,
+  findByIds
 };
 
 export default Model;
