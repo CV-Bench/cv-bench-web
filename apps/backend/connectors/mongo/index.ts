@@ -9,6 +9,7 @@ import Model from "./model";
 import NetworkArchitecture from "./networkArchitecture";
 import Socket from "./socket";
 import User from "./user";
+import Task from "./task"
 
 export { cvBenchDb, clientNotReady, collectionRequest } from "./client";
 
@@ -27,7 +28,8 @@ const Database = {
   User,
   Background,
   NetworkArchitecture,
-  Socket
+  Socket,
+  Task
 };
 
 export default Database;
