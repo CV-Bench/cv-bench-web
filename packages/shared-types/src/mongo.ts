@@ -5,6 +5,7 @@ export enum CollectionName {
   BACKGROUND = "backgrounds",
   USER = "users",
   DATASET = "datasets",
+  DATASET_CONFIGURATION = "datasetConfigurations",
   NETWORK = "networks",
   TASK = "tasks",
   NETWORK_ARCHITECTURE = "networkArchitecture",

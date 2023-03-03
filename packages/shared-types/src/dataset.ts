@@ -8,10 +8,11 @@ export enum DatasetType {
 
 export const DatasetBody = DataBody.extend({
   models: z.array(ObjId),
+  distractors: z.array(ObjId),
   datasetType: z.nativeEnum(DatasetType),
   configurationId: ObjId,
   size: z.number(),
-  images: z.number(),
+  backgroundIds: z.array(ObjId),
   s3Key: z.string().optional()
 });
 
@@ -19,9 +20,20 @@ export type DatasetDb = z.infer<typeof DatasetBody>;
 
 // POST
 export const PostDatasetBody = PostDataBody.merge(
-  DatasetBody.pick({ models: true, datasetType: true, configurationId: true })
+  DatasetBody.pick({
+    models: true,
+    distractors: true,
+    backgroundIds: true,
+    datasetType: true,
+    configurationId: true
+  })
 );
 export type PostDataset = z.infer<typeof PostDatasetBody>;
+
+export const PostDatasetResponseBody = z.object({
+  _id: ObjId
+});
+export type PostDatasetResponse = z.infer<typeof PostDatasetResponseBody>;
 
 // PATCH
 export const PatchDatasetBody = PostDataBody;
@@ -41,6 +53,10 @@ export type GetDataset = z.infer<typeof GetDatasetBody>;
 
 // GET LIST
 export const GetDatasetListBody = z.array(
-  GetDatasetBody.omit({ configurationId: true, models: true })
+  GetDatasetBody.omit({
+    configurationId: true,
+    models: true,
+    distractors: true
+  })
 );
 export type GetDatasetList = z.infer<typeof GetDatasetListBody>;

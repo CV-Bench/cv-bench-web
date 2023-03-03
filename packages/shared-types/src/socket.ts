@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
-import { SessionUser } from "./auth";
 
+import { SessionUser } from "./auth";
 import { TaskDb } from "./task";
 import { DataType } from "./utils";
 
@@ -70,6 +70,8 @@ export interface TaskNamespaceClientToServerEvents
   task_started: (data: TaskNamespaceData) => void;
   stop_failed: (data: TaskNamespaceData) => void;
   task_stopped: (data: TaskNamespaceData) => void;
+  cleanup_failed: (data: TaskNamespaceData) => void;
+  task_cleaned: (data: TaskNamespaceData) => void;
   task_log: (data: TaskDb) => void;
 }
 
@@ -77,6 +79,7 @@ export interface TaskNamespaceServerToClientEvents
   extends ServerToClientEvents {
   start: (taskId: string) => void;
   stop: (taskId: string) => void;
+  cleanup: (taskId: string) => void;
   task_viewer: (viewer: SessionUser) => void;
 }
 

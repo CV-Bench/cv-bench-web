@@ -24,7 +24,10 @@ taskNamespace.use(serverRegistryMiddleware);
 taskNamespace.on("connection", (socket) => {
   socket.on("start_failed", (data: TaskNamespaceData) => {});
 
-  socket.on("task_started", (data: TaskNamespaceData) => {});
+  socket.on("task_started", (data: TaskNamespaceData) => {
+    // Set task to running
+    // Set server Id in Task DB
+  });
 
   socket.on("stop_failed", (data: TaskNamespaceData) => {});
 
@@ -33,6 +36,10 @@ taskNamespace.on("connection", (socket) => {
   socket.on("task_log", (data) => {
     receiveTaskLogData(data, socket);
   });
+
+  socket.on("cleanup_failed", (data: TaskNamespaceData) => {});
+
+  socket.on("task_cleaned", (data: TaskNamespaceData) => {});
 });
 
 const receiveTaskLogData = (data: TaskDb, socket: SocketIO) => {
@@ -55,11 +62,13 @@ const startTask = (taskId: string) => {
 const stopTask = (taskId: string) => taskNamespace.emit("stop", taskId);
 
 const getTask = async (taskId: string) => {};
+const cleanupTask = (taskId: string) => taskNamespace.emit("cleanup", taskId);
 
 const Task = {
   start: startTask,
   stop: stopTask,
-  get: getTask
+  get: getTask,
+  cleanup: cleanupTask
 };
 
 export default Task;

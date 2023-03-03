@@ -8,7 +8,7 @@ import { Model } from "../../connectors/s3/model";
 import logger from "../../util/logger";
 
 const putFile = async (path: string, file: DataUrlFile) =>
-  Model.put(Buffer.from(file.dataUrl), `${path}/${file.filename}`);
+  Model.put(Buffer.from(file.dataUrl.split(',')[1], 'base64'), `${path}/${file.filename}`);
 
 const uploadModel = async (req: Request, res: Response) => {
   const userId = new ObjectId(req.session.user?._id);

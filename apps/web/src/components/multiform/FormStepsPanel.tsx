@@ -55,6 +55,7 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
 
       return true;
     } catch (e) {
+      console.log(e)
       return false;
     }
   };

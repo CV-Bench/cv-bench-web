@@ -17,7 +17,6 @@ const PlyModel: React.FC<PlyModelProps> = ({ model, onUpdate }) => {
   return (
     <mesh
       onUpdate={onUpdate}
-      layers={1}
       geometry={plyGeom}
       receiveShadow
       castShadow
