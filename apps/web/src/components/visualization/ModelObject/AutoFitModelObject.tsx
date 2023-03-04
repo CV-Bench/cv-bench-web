@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { useThree } from "@react-three/fiber";
-import ModelObject from "./ModelObject";
-import { DataUrlFile } from "types";
+import React, { useEffect, useState } from "react";
 import { Vector3, Box3 } from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+
+import { DataUrlFile } from "shared-types";
+
+import ModelObject from "./ModelObject";
 
 export interface AutoFitModelObjectProps {
   model: DataUrlFile | string;

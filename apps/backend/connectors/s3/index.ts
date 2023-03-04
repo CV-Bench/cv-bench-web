@@ -8,9 +8,13 @@ import {
   GetObjectCommandOutput,
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
+  GetObjectCommand
 } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Readable } from "stream";
-import { Bucket, createBucketKey } from "types";
+
+import { Bucket, createBucketKey } from "shared-types";
+
 import { Background } from "./background";
 import { Model } from "./model";
 
@@ -19,8 +23,8 @@ export const s3Client = new _S3({
   region: process.env.S3_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-  },
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ""
+  }
 });
 
 export const putObject = (
@@ -38,7 +42,7 @@ export const putObject = (
       Bucket: process.env.BUCKET_NAME,
       Body: body,
       Key: createBucketKey(bucket, key),
-      ...(options.options || {}),
+      ...(options.options || {})
     })
     .then(options.onSuccess)
     .catch(options.onError);
@@ -56,7 +60,7 @@ export const deleteObject = (
     .deleteObject({
       Bucket: process.env.BUCKET_NAME,
       Key: createBucketKey(bucket, key),
-      ...(options.options || {}),
+      ...(options.options || {})
     })
     .then(options.onSuccess)
     .catch(options.onError);
@@ -74,7 +78,7 @@ export const getObject = (
     .getObject({
       Bucket: process.env.BUCKET_NAME,
       Key: createBucketKey(bucket, key),
-      ...(options.options || {}),
+      ...(options.options || {})
     })
     .then(options.onSuccess)
     .catch(options.onError);
@@ -92,14 +96,24 @@ export const listObjects = (
     .listObjectsV2({
       Bucket: process.env.BUCKET_NAME,
       Prefix: createBucketKey(bucket, prefix),
-      ...(options.options || {}),
+      ...(options.options || {})
     })
     .then(options.onSuccess)
     .catch(options.onError);
 
+export const getPresignedUrl = async (key: string) => {
+  return getSignedUrl(
+    s3Client,
+    new GetObjectCommand({ Bucket: process.env.BUCKET_NAME, Key: key }),
+    {
+      expiresIn: 3600
+    }
+  );
+};
+
 const S3 = {
   Model,
-  Background,
+  Background
 };
 
 export default S3;

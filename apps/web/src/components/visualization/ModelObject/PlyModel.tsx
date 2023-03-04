@@ -1,7 +1,8 @@
 import { useLoader } from "@react-three/fiber";
-import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader";
 import React from "react";
-import { DataUrlFile } from "types";
+import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader";
+
+import { DataUrlFile } from "shared-types";
 
 export interface PlyModelProps {
   model: DataUrlFile;
@@ -16,7 +17,6 @@ const PlyModel: React.FC<PlyModelProps> = ({ model, onUpdate }) => {
   return (
     <mesh
       onUpdate={onUpdate}
-      layers={1}
       geometry={plyGeom}
       receiveShadow
       castShadow

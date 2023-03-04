@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
 import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
 import useSWR from "swr";
 
 const fetcher = (url: string) =>

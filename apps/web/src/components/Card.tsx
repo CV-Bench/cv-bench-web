@@ -1,5 +1,6 @@
-import { classNames } from "@/utils/strings";
 import { ReactNode } from "react";
+
+import { classNames } from "@/utils/strings";
 
 export interface CardProps extends React.HTMLProps<HTMLDivElement> {
   children: ReactNode;
@@ -9,7 +10,7 @@ export interface CardProps extends React.HTMLProps<HTMLDivElement> {
 
 const Card: React.FC<CardProps> = (props) => {
   const combinedClassName = classNames(
-    "bg-gray-800 rounded-lg p-4 shadow",
+    "bg-gray-800 rounded-lg p-3 shadow",
     props.className
   );
 

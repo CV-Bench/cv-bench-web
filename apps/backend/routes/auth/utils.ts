@@ -1,11 +1,13 @@
 import { Request, RequestHandler, Response } from "express";
+import { Router } from "express";
+import { ObjectId } from "mongodb";
 import { generators } from "openid-client";
 import { BaseClient, Issuer } from "openid-client";
-import { Router } from "express";
-import logger from "../../util/logger";
-import { AuthProvider, loggerTitle } from "types";
+
+import { AuthProvider, loggerTitle } from "shared-types";
+
 import Database from "../../connectors/mongo";
-import { ObjectId } from "mongodb";
+import logger from "../../util/logger";
 
 const redirectUriBase =
   (process.env.HOST_DOMAIN || "http://localhost") + "/auth/";
@@ -29,7 +31,7 @@ export const createAuthClient = (
             client_id: clientId,
             client_secret: clientSecret,
             redirect_uris: [redirectUriBase + authProvider + "/callback"],
-            response_types: ["id_token"],
+            response_types: ["id_token"]
           })
         );
       })
@@ -77,7 +79,7 @@ export const createAuthLinkHandler = (
           scope: "openid email profile",
           response_mode: "form_post",
           redirect_uri: redirectUriBase + authProvider + "/callback",
-          nonce: nonce,
+          nonce: nonce
         })
       );
     } catch (e) {
@@ -102,7 +104,7 @@ export const createAuthCallbackHandler = (
         redirectUriBase + authProvider + "/callback",
         params,
         {
-          nonce: req.session.nonce[authProvider],
+          nonce: req.session.nonce[authProvider]
         }
       );
       const tokenClaims = tokenSet.claims();
@@ -113,7 +115,7 @@ export const createAuthCallbackHandler = (
         picture: tokenClaims.picture!,
         locale: tokenClaims.locale!,
         loggedInAt: new Date(),
-        provider: authProvider,
+        provider: authProvider
       };
       res.setHeader("content-type", "text/html");
       res.setHeader("content-security-policy", "script-src 'unsafe-inline'");

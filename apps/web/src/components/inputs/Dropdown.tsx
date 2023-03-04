@@ -1,7 +1,8 @@
-import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import classNames from "classnames";
+import { Fragment, useState } from "react";
+
 import DropdownProps from "@/types/components/props/DropdownProps";
 
 const Dropdown = ({ options }: DropdownProps) => {

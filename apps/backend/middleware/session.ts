@@ -1,7 +1,8 @@
-import { redisClient, RedisStore } from "../connectors/redis";
-import { v4 as uuid } from "uuid";
-import session from "express-session";
 import { Request } from "express";
+import session from "express-session";
+import { v4 as uuid } from "uuid";
+
+import { redisClient, RedisStore } from "../connectors/redis";
 
 const sessionOptions = {
   secret: process.env?.SESSION_SECRET || "secret",
@@ -12,11 +13,11 @@ const sessionOptions = {
   cookie: {
     httpOnly: true,
     secure: false,
-    maxAge: 1000 * 60 * 60 * 24,
+    maxAge: 1000 * 60 * 60 * 24
   },
   resave: true,
   saveUninitialized: true,
-  store: new RedisStore({client: redisClient, ttl: 360000})
+  store: new RedisStore({ client: redisClient, ttl: 360000 })
 };
 
 export const sessionMiddleware = session(sessionOptions);

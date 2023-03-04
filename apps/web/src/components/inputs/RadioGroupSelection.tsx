@@ -1,7 +1,8 @@
 import { RadioGroup } from "@headlessui/react";
 
+import { AccessType } from "shared-types";
+
 import { classNames } from "../../utils/strings";
-import { AccessType } from "types";
 
 interface RadioGroupSelectionProps {
   values: string[] | number[];

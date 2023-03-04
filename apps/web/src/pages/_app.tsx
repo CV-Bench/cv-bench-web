@@ -1,16 +1,19 @@
-import NavLayout from "../components/nav/NavLayout";
+import axios from "axios";
+import type { Session } from "next-auth";
+import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { MutatingDots } from "react-loader-spinner";
-import ModalProvider from "@/components/modal/ModalProvider";
+import useSWR from "swr";
 
+import ModalProvider from "@/components/modal/ModalProvider";
+import { openSocket } from "@/network/socket";
+
+import { SessionUser } from "shared-types";
+
+import NavLayout from "../components/nav/NavLayout";
 import "../styles/globals.css";
 
-import type { AppProps } from "next/app";
-import type { Session } from "next-auth";
-import { SessionUser } from "types";
-import { useEffect, useState } from "react";
-import useSWR from "swr";
-import axios from "axios";
 import Signin from "./signin";
 
 //TODO remove when network works
@@ -26,8 +29,6 @@ const App = ({ Component, pageProps }: AppProps) => {
     fetcher
   );
 
-  console.log(data);
-
   useEffect(() => {
     if (!isLoading) {
       try {
@@ -38,6 +39,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         if (router.pathname.startsWith("/signin")) {
           router.push("/");
         }
+        openSocket().then((io) => io.onAny(console.log));
       } catch (e) {
         router.push("/signin");
         setUser(undefined);

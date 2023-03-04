@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
-import { PostBackground } from "types";
 import { ObjectId } from "mongodb";
 import sharp from "sharp";
+
+import { PostBackground } from "shared-types";
+
 import Database from "../../connectors/mongo";
 import S3 from "../../connectors/s3";
 
@@ -15,7 +17,7 @@ const resizeImage = (
     sharp(image)
       .resize(newWidth, newHeight)
       .toBuffer()
-      .then((imgBuffer) =>
+      .then((imgBuffer: Buffer) =>
         resolve(`data:${mimType};base64,${imgBuffer.toString("base64")}`)
       );
   });
@@ -24,8 +26,6 @@ const uploadBackground = (
   req: Omit<Request, "body"> & { body: PostBackground },
   res: Response
 ) => {
-  const userId = new ObjectId("5d71522dc452f78e335d2d8b") as any;
-
   const { domainTags, accessType, backgrounds } = req.body;
 
   const promises: Promise<any>[] = [];
@@ -39,24 +39,25 @@ const uploadBackground = (
 
     const img = Buffer.from(imageData, "base64");
 
+    const key = `${newId}.${name.split(".").pop()}`;
+
     promises.push(
       new Promise<void>((resolve) => {
         resizeImage(128, 128, img, mimType).then((resizedImage) => {
           Database.Background.insertOne({
             _id: newId,
-            userId: userId,
-            name,
+            userId: req.session.user?._id,
+            // Name in DB is always key in S3 for easier access
+            name: key,
             domainTags,
             accessType,
-            previewImage: resizedImage,
+            previewImage: resizedImage
           });
 
           resolve();
         });
       })
     );
-
-    const key = `${newId}.${name.split(".").pop()}`;
 
     promises.push(S3.Background.put(img, key));
   });

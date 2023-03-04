@@ -1,13 +1,15 @@
 import Logger, { LoggerOptions } from "@ptkdev/logger";
-import { loggerTitle } from "types";
+
+import { loggerTitle } from "shared-types";
+
 import loggerConfig from "./loggerConfig";
 
 const loggerOptions: LoggerOptions = {
   write: true,
   path: {
     debug_log: "./util/logs/debug.log",
-    error_log: "./util/logs/errors.log",
-  },
+    error_log: "./util/logs/errors.log"
+  }
 };
 
 const baseLogger = new Logger(loggerOptions);
@@ -38,7 +40,7 @@ const logger = {
   stackoverflow: (title: loggerTitle, ...args: string[]) =>
     baseLogger.stackoverflow(formatLoggerOutput(title, args)),
   docs: (title: loggerTitle, ...args: string[]) =>
-    baseLogger.docs(formatLoggerOutput(title, args)),
+    baseLogger.docs(formatLoggerOutput(title, args))
 };
 
 if (isProd) {

@@ -9,5 +9,6 @@ module.exports = {
   },
   rules: {
     "@turbo/no-undeclared-env-vars": "off",
+    "@next/next/no-img-element": "off",
   },
 };

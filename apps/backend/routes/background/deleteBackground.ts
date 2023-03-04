@@ -1,15 +1,13 @@
-import { ObjectId } from "mongodb";
 import { Request, Response } from "express";
+
 import Database from "../../connectors/mongo";
 import S3 from "../../connectors/s3";
 
 const deleteBackground = (req: Request, res: Response) => {
-  const userId = new ObjectId("5d71522dc452f78e335d2d8b") as any;
+  const userId = req.session.user?._id;
 
   Database.Background.findOne(req.params.id, userId)
     .then(({ name }) => {
-      const fileExt = name.split(".").pop();
-
       const promises: Promise<void>[] = [];
 
       promises.push(
@@ -26,9 +24,7 @@ const deleteBackground = (req: Request, res: Response) => {
         )
       );
 
-      const key = `${req.params.id}.${fileExt}`;
-
-      promises.push(S3.Background.delete(key));
+      promises.push(S3.Background.delete(name));
 
       Promise.all(promises)
         .then(() => res.status(200).json({}))

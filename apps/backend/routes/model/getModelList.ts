@@ -1,15 +1,32 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
+
 import Database from "../../connectors/mongo";
-import { Model } from "../../connectors/s3/model";
 
 const getModels = async (req: Request, res: Response) => {
-  // ToDo: set user id from session when available
-  const userId = new ObjectId("5d71522dc452f78e335d2d8b") as any;
+  const ids =
+    req.query.ids == ""
+      ? []
+      : req.query.ids
+          ?.toString()
+          .split(",")
+          .map((x) => new ObjectId(x));
 
-  const dbResult = await (await Database.Model.find(userId)).toArray();
+  let dbCall;
+  if (ids) {
+    dbCall = Database.Model.findByIds(req.session.user?._id, ids);
+  } else {
+    dbCall = Database.Model.find(req.session.user?._id);
+  }
 
-  res.json(dbResult);
+  dbCall
+    .then((result) =>
+      result.toArray().then((models) => res.status(200).json(models))
+    )
+    .catch((e) => {
+      console.error(e);
+      res.status(500).end();
+    });
 };
 
 export default getModels;

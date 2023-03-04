@@ -1,7 +1,7 @@
-import { Bucket } from "types";
-
 import { putObject, getObject, deleteObject } from ".";
-import { OmitFirst } from "types/src/utils";
+
+import { Bucket } from "shared-types";
+import { OmitFirst } from "shared-types/src/utils";
 
 const putBackground = (...args: OmitFirst<Parameters<typeof putObject>>) =>
   putObject(Bucket.BACKGROUNDS, ...args);
@@ -16,5 +16,5 @@ const getBackground = (...args: OmitFirst<Parameters<typeof getObject>>) =>
 export const Background = {
   put: putBackground,
   delete: deleteBackground,
-  get: getBackground,
+  get: getBackground
 };

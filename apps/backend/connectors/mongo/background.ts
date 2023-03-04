@@ -3,19 +3,13 @@ import {
   FindCursor,
   InsertOneResult,
   ObjectId,
-  UpdateResult,
+  UpdateResult
 } from "mongodb";
-import { CollectionName, BackgroundDb, loggerTitle, AccessType } from "types";
-import logger from "../../util/logger";
-import { collectionRequest, prepareCollection } from "./";
-import { isUsersOrPublic } from "./utils";
 
-prepareCollection(CollectionName.BACKGROUND).then((collection) => {
-  logger.debug(
-    loggerTitle.MONGO_CLIENT,
-    `Collection Ready: ${collection.namespace}`
-  );
-});
+import { CollectionName, BackgroundDb, AccessType } from "shared-types";
+
+import { collectionRequest } from "./";
+import { isUsersOrPublic } from "./utils";
 
 const findOne = (id: string | ObjectId, userId: string) =>
   collectionRequest<BackgroundDb>(
@@ -23,7 +17,7 @@ const findOne = (id: string | ObjectId, userId: string) =>
     async (collection) => {
       return collection.findOne({
         _id: new ObjectId(id),
-        ...isUsersOrPublic(userId),
+        ...isUsersOrPublic(userId)
       });
     }
   );
@@ -35,7 +29,7 @@ const insertOne = (background: Omit<BackgroundDb, "createdAt" | "updatedAt">) =>
       return collection.insertOne({
         ...background,
         updatedAt: new Date(),
-        createdAt: new Date(),
+        createdAt: new Date()
       });
     }
   );
@@ -51,13 +45,13 @@ const updateOne = (
       return collection.updateOne(
         {
           _id: new ObjectId(id),
-          userId: new ObjectId(userId),
+          userId: new ObjectId(userId)
         },
         {
           $set: {
             ...update,
-            updatedAt: new Date(),
-          },
+            updatedAt: new Date()
+          }
         }
       );
     }
@@ -69,7 +63,7 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
     async (collection) => {
       return collection.deleteOne({
         _id: new ObjectId(id),
-        userId: new ObjectId(userId),
+        userId: new ObjectId(userId)
       });
     }
   );
@@ -81,8 +75,59 @@ const find = (userId: string | ObjectId) =>
       return collection.find({
         $or: [
           { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC },
-        ],
+          { accessType: AccessType.PUBLIC }
+        ]
+      });
+    }
+  );
+
+const findByTags = (userId: string | ObjectId, domainTags: string[]) =>
+  collectionRequest<FindCursor<BackgroundDb>>(
+    CollectionName.BACKGROUND,
+    async (collection) => {
+      return collection.find({
+        $and: [
+          {
+            $or: [
+              { userId: new ObjectId(userId) },
+              { accessType: AccessType.PUBLIC }
+            ]
+          },
+          {
+            $or: [
+              {
+                domainTags: {
+                  $in: domainTags
+                }
+              },
+              {
+                domainTags: domainTags
+              }
+            ]
+          }
+        ]
+      });
+    }
+  );
+
+const findByIds = (userId: string | ObjectId, ids: ObjectId[]) =>
+  collectionRequest<FindCursor<BackgroundDb>>(
+    CollectionName.BACKGROUND,
+    async (collection) => {
+      return collection.find({
+        $and: [
+          {
+            $or: [
+              { userId: new ObjectId(userId) },
+              { accessType: AccessType.PUBLIC }
+            ]
+          },
+          {
+            _id: {
+              $in: ids
+            }
+          }
+        ]
       });
     }
   );
@@ -93,6 +138,8 @@ const Background = {
   updateOne,
   deleteOne,
   find,
+  findByTags,
+  findByIds
 };
 
 export default Background;

@@ -29,7 +29,7 @@ export type FormStep = {
   description: string;
   validation: z.ZodObject<{}>;
   component: React.ReactNode;
-}
+};
 
 interface FormStepsPanelProps {
   formData: {};
@@ -55,6 +55,7 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
 
       return true;
     } catch (e) {
+      console.log(e)
       return false;
     }
   };

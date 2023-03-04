@@ -1,13 +1,15 @@
-import TagInput from "@/components/inputs/TagInput";
-import InputLabel from "@/components/inputs/InputLabel";
-import Card from "@/components/Card";
-import Button from "@/components/Button";
-import ImageDragAndDrop from "@/components/inputs/ImageDragAndDrop";
+import { useRouter } from "next/router";
 import { useState } from "react";
+
+import Button from "@/components/Button";
+import Card from "@/components/Card";
 import AccessTypeInput from "@/components/inputs/AccessTypeInput";
-import { AccessType, PostBackground } from "types";
+import ImageDragAndDrop from "@/components/inputs/ImageDragAndDrop";
+import InputLabel from "@/components/inputs/InputLabel";
+import TagInput from "@/components/inputs/TagInput";
 import { api } from "@/network";
-import { Router, useRouter } from "next/router";
+
+import { AccessType, PostBackground } from "shared-types";
 
 export interface UploadBackgroundData {
   tags?: string[];
