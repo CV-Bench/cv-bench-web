@@ -7,7 +7,6 @@ export enum AccessType {
 }
 
 export enum DataType {
-  MODEL = "MODEL",
   DATASET = "DATASET",
   NETWORK = "NETWORK"
 }

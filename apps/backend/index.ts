@@ -11,7 +11,7 @@ import {
   AuthProvider
 } from "shared-types";
 
-import socket from "./connectors/socket";
+import socket, { Socket } from "./connectors/socket";
 import authMiddleware from "./middleware/auth";
 import loggerMiddleware from "./middleware/logger";
 import { sessionMiddleware } from "./middleware/session";

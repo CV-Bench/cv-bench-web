@@ -40,7 +40,7 @@ const insert = (model: Omit<DatasetDb, "_id" | "updatedAt" | "createdAt">) =>
 
 const updateOne = (
   id: string | ObjectId,
-  userId: string | ObjectId,
+  userId: string | ObjectId | undefined,
   update: Partial<DatasetDb>
 ) =>
   collectionRequest<UpdateResult>(
@@ -49,7 +49,7 @@ const updateOne = (
       return collection.updateOne(
         {
           _id: new ObjectId(id),
-          userId: new ObjectId(userId)
+          ...(userId ? { userId: new ObjectId(userId) } : {})
         },
         { $set: { ...update, updatedAt: new Date() } }
       );

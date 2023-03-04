@@ -1,4 +1,9 @@
-import { CollectionName, loggerTitle } from "shared-types";
+import {
+  CollectionName,
+  DataType,
+  DatabaseCollectionEntries,
+  loggerTitle
+} from "shared-types";
 
 import logger from "../../util/logger";
 
@@ -35,5 +40,11 @@ const Database = {
   Task,
   Network
 };
+
+export const dataTypeCollectionMap = (dataType: DataType) =>
+  ({
+    [DataType.DATASET]: "Dataset",
+    [DataType.NETWORK]: "Network"
+  }[dataType] as "Dataset" | "Network");
 
 export default Database;

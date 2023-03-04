@@ -40,7 +40,7 @@ export interface TaskNamespaceData extends ServerSocketData {
   taskId: string;
 }
 
-export interface DataNamespaceData {
+export interface DataNamespaceData extends ServerSocketData {
   dataId: string;
   dataType: DataType;
 }
@@ -55,23 +55,36 @@ export interface ServerToClientEvents {
 
 // Data Namespace Events
 export interface DataNamespaceClientToServerEvents
-  extends ClientToServerEvents {}
+  extends ClientToServerEvents {
+  upload_failed: (data: DataNamespaceData) => void;
+  data_uploaded: (data: DataNamespaceData & { s3Key: string }) => void;
+  data_deleted: (data: DataNamespaceData) => void;
+}
+
+export type DataNamespaceServerToClientEventFunction = (data: {
+  dataId: string;
+  dataType: DataType;
+}) => void;
 
 export interface DataNamespaceServerToClientEvents
   extends ServerToClientEvents {
-  upload: (dataId: string, dataType: DataType) => void;
-  delete: (dataId: string, dataType: DataType) => void;
+  upload: DataNamespaceServerToClientEventFunction;
+  delete: DataNamespaceServerToClientEventFunction;
 }
+
+export type TaskNamespaceClientToServerEventFunction = (
+  data: TaskNamespaceData
+) => void;
 
 // Task Namespace Events
 export interface TaskNamespaceClientToServerEvents
   extends ClientToServerEvents {
-  start_failed: (data: TaskNamespaceData) => void;
-  task_started: (data: TaskNamespaceData) => void;
-  stop_failed: (data: TaskNamespaceData) => void;
-  task_stopped: (data: TaskNamespaceData) => void;
-  cleanup_failed: (data: TaskNamespaceData) => void;
-  task_cleaned: (data: TaskNamespaceData) => void;
+  start_failed: TaskNamespaceClientToServerEventFunction;
+  task_started: TaskNamespaceClientToServerEventFunction;
+  stop_failed: TaskNamespaceClientToServerEventFunction;
+  task_stopped: TaskNamespaceClientToServerEventFunction;
+  cleanup_failed: TaskNamespaceClientToServerEventFunction;
+  task_cleaned: TaskNamespaceClientToServerEventFunction;
   task_log: (data: TaskDb) => void;
 }
 

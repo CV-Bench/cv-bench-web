@@ -58,6 +58,7 @@ const download = (req: Request, res: Response) => {
         break;
       case DataType.NETWORK:
         Database.Network.findOne(dataId, user?._id)
+          // @ts-ignore
           .then(processDbResult)
           .catch(processDbError);
         break;
