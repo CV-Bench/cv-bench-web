@@ -2,6 +2,7 @@ import Card from "@/components/Card";
 import Description from "@/components/DescriptionComponent";
 import MultiselectTable from "@/components/MultiselectTable";
 import { TableItem } from "@/components/Table";
+import { useNetworkArchitectureList } from "@/hooks/network";
 
 interface ArchitectureStepProps {
   selectedNetworkArchitectureId: string;
@@ -9,10 +10,7 @@ interface ArchitectureStepProps {
 }
 
 const ArchitectureStep = (props: ArchitectureStepProps) => {
-  // ToDo: uncomment when backend is implemented
-  //const { data: arch_data } = useArchtitucreList();
-
-  const arch_data: any[] = [];
+  const { data: arch_data } = useNetworkArchitectureList();
 
   const arch_columns = [
     { key: "name", title: "Name" },
@@ -20,9 +18,9 @@ const ArchitectureStep = (props: ArchitectureStepProps) => {
     { key: "requiredDatasetFormat", title: "Data Format" }
   ];
 
-  const selectedDatasets = arch_data.filter(
+  const selectedDatasets = arch_data?.filter(
     (x) => x._id == props.selectedNetworkArchitectureId
-  );
+  ) ?? [];
   const onSelectDataset = (val: TableItem[]) =>
     props.onSelectNetworkArchitectureId(val[0]?._id);
 
@@ -39,7 +37,7 @@ const ArchitectureStep = (props: ArchitectureStepProps) => {
             selectCount={1}
             selectedItems={selectedDatasets}
             onSelectItems={onSelectDataset}
-            data={arch_data}
+            data={arch_data ?? []}
             header={arch_columns}
           />
         </Card>
