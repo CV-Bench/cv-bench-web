@@ -21,7 +21,7 @@ export const BlenderConfigurationObject = z.object({
   input: z.object({
     object: z.array(z.string()), // Object UIDs
     distractor: z.array(z.string()), // Distractor UIDs
-    bg: z.array(z.string()) // Background UIDs
+    bg: z.array(z.string()).optional() // Background UIDs
   }),
 
   output: z.object({
