@@ -76,7 +76,7 @@ const CreateDataset = () => {
       component: (
         <ModelSelectStep selectedModels={models} onSelectModels={setModels} />
       ),
-      validation: z.object({ models: z.array(ObjId).nonempty() })
+      validation: z.object({ modelIds: z.array(ObjId).nonempty() })
     },
     // {
     //   name: "Distractors",

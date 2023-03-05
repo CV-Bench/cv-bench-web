@@ -4,9 +4,11 @@ import {
   TaskDb,
   TaskNamespaceClientToServerEvents,
   TaskNamespaceData,
-  TaskNamespaceServerToClientEvents
+  TaskNamespaceServerToClientEvents,
+  TaskStatus
 } from "shared-types";
 
+import Database from "../mongo";
 import { redisClient } from "../redis";
 
 import { Socket } from "./";
@@ -22,11 +24,20 @@ taskNamespace.use(serverAuthMiddleware);
 taskNamespace.use(serverRegistryMiddleware);
 
 taskNamespace.on("connection", (socket) => {
-  socket.on("start_failed", (data: TaskNamespaceData) => {});
+  socket.on("start_failed", (data: TaskNamespaceData) => {
+    // TODO Try different Server
+  });
 
-  socket.on("task_started", (data: TaskNamespaceData) => {
+  socket.on("task_started", ({ taskId, serverId }: TaskNamespaceData) => {
     // Set task to running
     // Set server Id in Task DB
+
+    Database.Task.updateOne(taskId, undefined, {
+      serverId,
+      status: TaskStatus.RUNNING
+    });
+
+    // Send Notification
   });
 
   socket.on("stop_failed", (data: TaskNamespaceData) => {});
@@ -56,13 +67,14 @@ const receiveTaskLogData = (data: TaskDb, socket: SocketIO) => {
 };
 
 const startTask = (taskId: string) => {
-  taskNamespace.emit("start", taskId);
+  taskNamespace.emit("start", { taskId });
 };
 
-const stopTask = (taskId: string) => taskNamespace.emit("stop", taskId);
+const stopTask = (taskId: string) => taskNamespace.emit("stop", { taskId });
 
 const getTask = async (taskId: string) => {};
-const cleanupTask = (taskId: string) => taskNamespace.emit("cleanup", taskId);
+const cleanupTask = (taskId: string) =>
+  taskNamespace.emit("cleanup", { taskId });
 
 const Task = {
   start: startTask,
