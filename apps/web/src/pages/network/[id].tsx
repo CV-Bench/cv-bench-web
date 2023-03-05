@@ -40,7 +40,7 @@ const NetworkId = () => {
   };
 
   const deleteNetwork = async () => {
-    await api.deleteModel(network._id);
+    await api.deleteNetwork(network._id);
     router.push("/network");
   };
 
