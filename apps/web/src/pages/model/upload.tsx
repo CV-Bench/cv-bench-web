@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import * as z from "zod";
 
+import { addToast } from "@/components/Toast";
 import ToolGeneralSettings from "@/components/inputs/ToolGeneralSettings";
 import PreviewStep from "@/components/model/upload/PreviewStep";
 import FormStepsPanel, {
@@ -14,12 +15,14 @@ import {
   DataUrlFile,
   DataUrlFileBody,
   ModelType,
+  NotificationType,
   PostModel,
   PostModelBody
 } from "shared-types";
 
 const UploadModel = () => {
   const router = useRouter();
+  const [uploadDisabled, setUploadDisabled] = useState(false);
 
   const [postModel, setFormData] = useState<PostModel>({
     name: "",
@@ -42,13 +45,32 @@ const UploadModel = () => {
     setFormData({ ...postModel, modelAssets: val });
 
   const handleUpload = () => {
+    addToast(
+      "Upload Started!",
+      "This can take a while, please be patient.",
+      NotificationType.INFO
+    );
+
+    setUploadDisabled(true);
+
     api
       .postModel(postModel)
-      .then((x) => {
+
+      .then(() => {
+        addToast(
+          "Upload were Successful!",
+          "New Model uploaded successfully.",
+          NotificationType.SUCCESS
+        );
         router.push("/model");
       })
-      .catch((e) => {
-        console.error(e);
+      .catch(() => {
+        addToast(
+          "Upload Failed!",
+          "Something went wrong while uploading a new model.",
+          NotificationType.ERROR
+        );
+        setUploadDisabled(false);
       });
   };
 
@@ -84,6 +106,7 @@ const UploadModel = () => {
             setFormData({ ...postModel, [key]: value })
           }
           handleUpload={handleUpload}
+          uploadDisabled={uploadDisabled}
           uploadButtonText="Upload Data"
         />
       ),

@@ -19,7 +19,12 @@ const Dashboard: React.FC = () => (
       <div className="border-b border-slate-600 pb-4">
         <div className="grid grid-cols-4 gap-4">
           {DashboardButtons.map(({ title, description, href }) => (
-            <ButtonCard title={title} description={description} href={href} />
+            <ButtonCard
+              title={title}
+              description={description}
+              href={href}
+              key={href}
+            />
           ))}
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import Button from "@/components/Button";
 import Card from "@/components/Card";
+import { addToast } from "@/components/Toast";
 import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
@@ -11,7 +12,7 @@ import ToolGeneralSettings from "@/components/inputs/ToolGeneralSettings";
 import { useBackground } from "@/hooks/background";
 import { api } from "@/network";
 
-import { AccessType, PatchBackground } from "shared-types";
+import { AccessType, NotificationType, PatchBackground } from "shared-types";
 
 const BackgroundId: React.FC = () => {
   const { query, push } = useRouter();
@@ -43,8 +44,20 @@ const BackgroundId: React.FC = () => {
   const handleUpdate = () => {
     api
       .patchBackground(id, formData)
-      .then(() => {})
-      .catch((e) => console.error(e));
+      .then(() => {
+        addToast(
+          "Background Updated!",
+          "Background was updated successfully.",
+          NotificationType.SUCCESS
+        );
+      })
+      .catch((e) =>
+        addToast(
+          "Update Failed!",
+          "Background could not be updated.",
+          NotificationType.ERROR
+        )
+      );
   };
 
   const handleDownload = () => {
@@ -61,8 +74,21 @@ const BackgroundId: React.FC = () => {
   const handleDelete = () => {
     api
       .deleteBackground(id)
-      .then(() => push("/background"))
-      .catch((e) => console.error(e));
+      .then(() => {
+        addToast(
+          "Background Deleted!",
+          "Background was deleted successfully.",
+          NotificationType.INFO
+        );
+        push("/background");
+      })
+      .catch((e) =>
+        addToast(
+          "Deletion Failed!",
+          "Background could not be deleted.",
+          NotificationType.ERROR
+        )
+      );
   };
 
   return (

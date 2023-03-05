@@ -3,6 +3,7 @@ import type { Session } from "next-auth";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { MutatingDots } from "react-loader-spinner";
 import useSWR from "swr";
 
@@ -70,9 +71,12 @@ const App = ({ Component, pageProps }: AppProps) => {
     return (
       <>
         {user ? (
-          <NavLayout user={user as SessionUser}>
-            <Component {...pageProps} />
-          </NavLayout>
+          <>
+            <NavLayout user={user as SessionUser}>
+              <Component {...pageProps} />
+            </NavLayout>
+            <Toaster position="top-right" />
+          </>
         ) : (
           <Signin {...pageProps} />
         )}

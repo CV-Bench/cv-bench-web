@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import Button from "@/components/Button";
 import Card from "@/components/Card";
+import { addToast } from "@/components/Toast";
 import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import ImageDragAndDrop from "@/components/inputs/ImageDragAndDrop";
 import InputLabel from "@/components/inputs/InputLabel";
@@ -10,7 +11,7 @@ import TagInput from "@/components/inputs/TagInput";
 import ToolGeneralSettings from "@/components/inputs/ToolGeneralSettings";
 import { api } from "@/network";
 
-import { AccessType, PostBackground } from "shared-types";
+import { AccessType, NotificationType, PostBackground } from "shared-types";
 
 export interface UploadBackgroundData {
   tags?: string[];
@@ -28,6 +29,7 @@ const UploadBackground = () => {
     { file: File; content: string; name: string }[]
   >([]);
   const { push } = useRouter();
+  const [uploadDisabled, setUploadDisabled] = useState(false);
 
   const onSelectTags = (val: string[]) =>
     setFormData({ ...formData, domainTags: val });
@@ -61,10 +63,32 @@ const UploadBackground = () => {
       });
     }
 
+    addToast(
+      "Upload Started!",
+      "This can take a while, please be patient.",
+      NotificationType.INFO
+    );
+
+    setUploadDisabled(true);
+
     api
       .postBackgrounds(postObject)
-      .then(() => push("/background"))
-      .catch((e) => console.log(e));
+      .then(() => {
+        addToast(
+          "Upload were Successful!",
+          "One or more backgrounds were uploaded successfully.",
+          NotificationType.SUCCESS
+        );
+        push("/background");
+      })
+      .catch((e) => {
+        addToast(
+          "Upload Failed!",
+          "Something went wrong while uploading one or more backgrounds.",
+          NotificationType.ERROR
+        );
+        setUploadDisabled(false);
+      });
   };
 
   return (
@@ -91,7 +115,7 @@ const UploadBackground = () => {
         accessType={formData.accessType}
         showName={false}
         name=""
-        uploadDisabled={formData.domainTags.length <= 0}
+        uploadDisabled={formData.domainTags.length <= 0 || uploadDisabled}
         handleChange={handleChange}
         uploadButtonText="Update"
         uploadTitleText="Update"
