@@ -28,7 +28,10 @@ const deleteBackground = (req: Request, res: Response) => {
 
       Promise.all(promises)
         .then(() => res.status(200).json({}))
-        .catch(() => res.status(500).end());
+        .catch((e) => {
+          console.error(e);
+          res.status(500).end();
+        });
     })
     .catch(() => res.status(500).end());
 };

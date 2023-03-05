@@ -36,10 +36,11 @@ const BackgroundList: React.FC = () => {
       </Card>
 
       <div className="grid lg:grid-cols-5 sm:grid-cols-1 gap-4">
-        {backgrounds.map((background) => (
+        {backgrounds.map((background, i) => (
           <ImageCard
             {...background}
             className="w-full"
+            key={i}
             href={`/background/${background._id}`}
             name={undefined}
           />

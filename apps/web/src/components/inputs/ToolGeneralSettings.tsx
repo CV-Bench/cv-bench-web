@@ -11,6 +11,7 @@ interface ToolGeneralSettingsProps {
   handleChange: (key: "name" | "accessType", data: string | AccessType) => void;
   accessType: AccessType;
   name: string;
+  showName?: boolean;
   handleUpload: () => void;
   uploadDisabled?: boolean;
   uploadButtonText?: string;
@@ -25,6 +26,7 @@ const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
   handleChange,
   accessType,
   name,
+  showName = true,
   handleUpload,
   uploadDisabled = false,
   uploadButtonText = "Upload Data",
@@ -57,16 +59,18 @@ const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
           <p className="pb-4">General Settings</p>
 
           <div className="pt-4 space-y-2">
-            <DividedInput
-              title="Name"
-              value={name}
-              placeholder="Name"
-              id="name"
-              subtitle=">= 5"
-              type="text"
-              onChange={(value) => handleChange("name", value)}
-              isValid={(name) => name != null && String(name).length >= 5}
-            />
+            {showName && (
+              <DividedInput
+                title="Name"
+                value={name}
+                placeholder="Name"
+                id="name"
+                subtitle=">= 5"
+                type="text"
+                onChange={(value) => handleChange("name", value)}
+                isValid={(name) => name != null && String(name).length >= 5}
+              />
+            )}
 
             <AccessTypeInput
               className="mt-3"
