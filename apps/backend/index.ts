@@ -59,6 +59,12 @@ import {
   createNetwork
 } from "./routes/network";
 import { getNetworkArchitectureList } from "./routes/networkArchitecture";
+import {
+  getNotificationList,
+  getNotification,
+  deleteNotification,
+  updateNotification
+} from "./routes/notification";
 import { finishTask, stopTask, getTask, getTaskList } from "./routes/task";
 import logger from "./util/logger";
 
@@ -177,6 +183,12 @@ app.get(
   route(RouteNames.GET_NETWORK_ARCHITECTURE_LIST),
   getNetworkArchitectureList
 );
+
+// NOTIFICATION ROUTES
+app.get(route(RouteNames.GET_NOTIFICATION_LIST), getNotificationList);
+app.get(route(RouteNames.GET_NOTIFICATION), getNotification);
+app.post(route(RouteNames.DELETE_NOTIFICATION), deleteNotification);
+app.patch(route(RouteNames.READ_NOTIFICATION), updateNotification);
 
 socket;
 

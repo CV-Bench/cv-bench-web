@@ -16,3 +16,24 @@ export const NotificationBody = z.object({
 });
 
 export type NotificationDb = z.infer<typeof NotificationBody>;
+
+// PATCH NOTIFICATION
+export const PatchNotificationBody = z.object({
+  isRead: z.boolean()
+});
+
+export type PatchNotification = z.infer<typeof PatchNotificationBody>;
+
+// GET SINGLE NOTIFICATION
+export const GetNotificationBody = NotificationBody.omit({
+  createdAt: true,
+  updatedAt: true
+}).extend({
+  createdAt: z.string().transform((d) => new Date(d)),
+  updatedAt: z.string().transform((d) => new Date(d))
+});
+export type GetNotification = z.infer<typeof GetNotificationBody>;
+
+// GET NOTIFICATIONS
+export const GetNotificationListBody = z.array(GetNotificationBody);
+export type GetNotificationList = z.infer<typeof GetNotificationListBody>;

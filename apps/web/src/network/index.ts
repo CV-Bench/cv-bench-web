@@ -36,6 +36,11 @@ import {
   PostNetwork,
   RouteNames,
   getRoute,
+  NotificationBody,
+  GetNotification,
+  GetNotificationBody,
+  GetNotificationList,
+  GetNotificationListBody,
   GetDatasetConfiguration,
   GetDatasetConfigurationList,
   GetDatasetConfigurationListBody,
@@ -260,6 +265,26 @@ export const api = {
       networkArchitectures
     ) as GetNetworkArchitectureList;
   },
+
+  // NOTIFICATION
+  getNotification: async (id: string): Promise<GetNotification> => {
+    const notification = await getRequest(
+      getRoute(RouteNames.GET_NOTIFICATION)(id)
+    );
+
+    return GetNotificationBody.parse(notification);
+  },
+  getNotificationList: async (): Promise<GetNotificationList> => {
+    const notifications = await getRequest(
+      getRoute(RouteNames.GET_NOTIFICATION_LIST)()
+    );
+
+    return GetNotificationListBody.parse(notifications) as GetNotificationList;
+  },
+  deleteNotification: (id: string) =>
+    deleteRequest(getRoute(RouteNames.DELETE_NOTIFICATION)(id)),
+  readNotification: (id: string) =>
+    patchRequest(getRoute(RouteNames.READ_NOTIFICATION)(id)),
 
   // SOCKET
   //TODO fix url to match others

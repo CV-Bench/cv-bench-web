@@ -14,6 +14,7 @@ import DatasetConfiguration from "./datasetConfiguration";
 import Model from "./model";
 import Network from "./network";
 import NetworkArchitecture from "./networkArchitecture";
+import Notification from "./notification";
 import Socket from "./socket";
 import Task from "./task";
 import User from "./user";
@@ -36,6 +37,7 @@ const Database = {
   User,
   Background,
   NetworkArchitecture,
+  Notification,
   Socket,
   Task,
   Network
