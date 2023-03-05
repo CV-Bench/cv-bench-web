@@ -25,6 +25,12 @@ export enum RouteNames {
   PATCH_DATASET = "PATCH_DATASET",
   POST_DATASET = "POST_DATASET",
 
+  GET_DATASET_CONFIGURATION_LIST = "GET_DATASET_CONFIGURATION_LIST",
+  GET_DATASET_CONFIGURATION = "GET_DATASET_CONFIGURATION",
+  DELETE_DATASET_CONFIGURATION = "DELETE_DATASET_CONFIGURATION",
+  PATCH_DATASET_CONFIGURATION = "PATCH_DATASET_CONFIGURATION",
+  POST_DATASET_CONFIGURATION = "POST_DATASET_CONFIGURATION",
+
   GET_NETWORK_LIST = "GET_NETWORK_LIST",
   GET_NETWORK = "GET_NETWORK",
   DELETE_NETWORK = "DELETE_NETWORK",
@@ -36,7 +42,12 @@ export enum RouteNames {
   GET_TASK = "GET_TASK",
   GET_TASK_LIST = "GET_TASK_LIST",
 
-  GET_NETWORK_ARCHITECTURE_LIST = "GET_NETWORK_ARCHITECTURE_LIST"
+  GET_NETWORK_ARCHITECTURE_LIST = "GET_NETWORK_ARCHITECTURE_LIST",
+
+  GET_NOTIFICATION_LIST = "GET_NOTIFICATION_LIST",
+  GET_NOTIFICATION = "GET_NOTIFICATION",
+  DELETE_NOTIFICATION = "DELETE_NOTIFICATION",
+  READ_NOTIFICATION = "READ_NOTIFICATION"
 }
 
 interface RouteType {
@@ -154,6 +165,37 @@ export const Routes: {
     (id?: string) => "/dataset/" + id
   ),
 
+  [RouteNames.GET_DATASET_CONFIGURATION_LIST]: createRoute(
+    "/datasetConfiguration",
+    /^\/datasetConfiguration\/?get$/,
+    z.object({}),
+    () => "/datasetConfiguration"
+  ),
+  [RouteNames.GET_DATASET_CONFIGURATION]: createRoute(
+    "/datasetConfiguration/:id",
+    /^\/datasetConfiguration\/.*\/?get?$/,
+    z.object({}),
+    (id?: string) => "/datasetConfiguration/" + id
+  ),
+  [RouteNames.DELETE_DATASET_CONFIGURATION]: createRoute(
+    "/datasetConfiguration/:id",
+    /^\/datasetConfiguration\/.*\/?delete?$/,
+    z.object({}),
+    (id?: string) => "/datasetConfiguration/" + id
+  ),
+  [RouteNames.PATCH_DATASET_CONFIGURATION]: createRoute(
+    "/datasetConfiguration/:id",
+    /^\/datasetConfiguration\/.*\/?patch?$/,
+    z.object({}),
+    (id?: string) => "/datasetConfiguration/" + id
+  ),
+  [RouteNames.POST_DATASET_CONFIGURATION]: createRoute(
+    "/datasetConfiguration/:id",
+    /^\/datasetConfiguration\/.*\/?post$/,
+    z.object({}),
+    (id?: string) => "/datasetConfiguration/" + id
+  ),
+
   [RouteNames.GET_NETWORK_LIST]: createRoute(
     "/network",
     /^\/network\/?get$/,
@@ -215,6 +257,31 @@ export const Routes: {
     /^\/networkArchitecture\/?get$/,
     z.object({}),
     () => "/networkArchitecture"
+  ),
+
+  [RouteNames.GET_NOTIFICATION_LIST]: createRoute(
+    "/notification",
+    /^\/notification\/?get$/,
+    z.object({}),
+    () => "/notification"
+  ),
+  [RouteNames.GET_NOTIFICATION]: createRoute(
+    "/notification/:id",
+    /^\/notification\/.*\/?get?$/,
+    z.object({}),
+    (id?: string) => "/notification/" + id
+  ),
+  [RouteNames.DELETE_NOTIFICATION]: createRoute(
+    "/notification/:id",
+    /^\/notification\/.*\/?delete?$/,
+    z.object({}),
+    (id?: string) => "/notification/" + id
+  ),
+  [RouteNames.READ_NOTIFICATION]: createRoute(
+    "/notification/:id",
+    /^\/notification\/.*\/?patch?$/,
+    z.object({}),
+    (id?: string) => "/notification/" + id
   )
 };
 

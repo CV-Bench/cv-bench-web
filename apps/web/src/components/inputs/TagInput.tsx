@@ -5,13 +5,15 @@ import TagInputProps from "@/types/components/props/TagInputProps";
 const TagInput: React.FC<TagInputProps> = ({
   placeholder,
   className,
+  disabled,
   tags = [],
-  setTags
+  setTags = () => null
 }) => (
   <TagsInput
     value={tags}
     onChange={setTags}
     placeHolder={placeholder}
+    disabled={disabled}
     separators={["Enter", ","]}
     classNames={{
       input: `block w-full rounded-md bg-gray-700 border-none text-white placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm ${className}`,

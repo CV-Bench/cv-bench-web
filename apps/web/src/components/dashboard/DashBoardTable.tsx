@@ -1,27 +1,45 @@
+import { CpuChipIcon } from "@heroicons/react/20/solid";
+
 import { useTaskList } from "@/hooks/task";
+import { formatToDateString } from "@/utils/date";
 
-import Button from "../Button";
+import Badge from "../Badge";
 import Table from "../Table";
+import TableHeader from "../TableHeader";
 
-const DashboardTable = () => {
-  const data = [
-    { id: 1, name: "A", age: 25, jj: 12 },
-    { id: 2, name: "B", age: 30, k: 14 },
-    { id: 3, name: "C", age: 35, ee: 12 }
-  ];
-  const columns = [
-    { key: "id", title: "ID" },
-    { key: "name", title: "Name" },
-    { key: "age", title: "Age" }
-  ];
-
+const DashboardTable: React.FC = () => {
   const { data: tasks } = useTaskList();
 
-  console.log("TASKS", tasks);
+  if (!tasks) {
+    return null;
+  }
 
   return (
-    // <Table />
-    null
+    <div className="shadow rounded bg-gray-800 overflow-hidden">
+      <TableHeader title="Recent Tasks" description="" icon={<CpuChipIcon />} />
+      <Table
+        header={[
+          {
+            title: "Name",
+            key: "name"
+          },
+          { title: "Last updated", key: "updatedAt" },
+          { title: "Status", key: "status" },
+          { title: "type", key: "type" }
+        ]}
+        data={tasks.slice(0, 7).map(({ name, updatedAt, status, type }) => ({
+          name,
+          updatedAt: formatToDateString(updatedAt),
+          status: <Badge variant={status} />,
+          type: <Badge variant={type} />
+        }))}
+        minItems={7}
+        showMoreButton={{
+          text: "See complete task list",
+          href: "/task"
+        }}
+      />
+    </div>
   );
 };
 

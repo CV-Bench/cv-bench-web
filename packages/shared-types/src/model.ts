@@ -9,7 +9,8 @@ export enum ModelType {
 
 export const ModelBody = DataBody.extend({
   modelType: z.nativeEnum(ModelType),
-  previewImage: z.string()
+  previewImage: z.string(),
+  s3Key: z.string().optional()
 });
 
 export type ModelDb = z.infer<typeof ModelBody>;
@@ -48,8 +49,8 @@ export const GetModelBody = ModelBody.omit({
   modelType: z.nativeEnum(ModelType),
   modelObject: DataUrlFileBody,
   modelAssets: z.array(DataUrlFileBody).optional(),
-  createdAt: z.string().transform((e) => new Date(e)),
-  updatedAt: z.string().transform((e) => new Date(e))
+  createdAt: z.string().transform((e) => new Date(e)).or(z.date()),
+  updatedAt: z.string().transform((e) => new Date(e)).or(z.date()),
 });
 export type GetModel = z.infer<typeof GetModelBody>;
 

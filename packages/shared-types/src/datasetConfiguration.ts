@@ -21,11 +21,12 @@ export const BlenderConfigurationObject = z.object({
   input: z.object({
     object: z.array(z.string()), // Object UIDs
     distractor: z.array(z.string()), // Distractor UIDs
-    bg: z.array(z.string()) // Background UIDs
+    bg: z.array(z.string()).optional() // Background UIDs
   }),
 
   output: z.object({
-    images: z.number().int().gt(0), // Anzahl ausgegebener Bilder
+    size_train: z.number().int().gte(0).default(0), // Anzahl ausgegebener Training-Bilder
+    size_val: z.number().int().gte(0).default(0), // Anzahl ausgegebener Validation-Bilder
     just_merge: z.number().gte(0).lte(1), // Proportion von Bildern die nur durch Merging erzeugt werden
     "skew_angle:material": z.number().gte(0) // Verhältnis von Winkel-Samples zu Material-Samples
   }),
@@ -34,8 +35,6 @@ export const BlenderConfigurationObject = z.object({
     camera: z.object({
       lens_unit: z.nativeEnum(CamLensUnit),
       lens: z.number().gt(0), // °|mm
-      sensor_height: z.number().gt(0), // mm
-      sensor_width: z.number().gt(0), // mm
       clip_start: z.number().gte(0).default(0.1), // reine Performance, muss man nicht unbedingt einstellen können
       clip_end: z.number().gte(0).default(50) // nur für sehr entfernte Objekte (= gar nicht) sinnvoll
     }),
@@ -50,7 +49,7 @@ export const BlenderConfigurationObject = z.object({
 
     use_cycles: z.boolean().default(true), // sollte immer true sein
     samples: z.number().int().gte(10).lte(60).default(60), // sinnvolle obere Grenze ca. 60, unter 10 sinnlos
-    use_cycles_donoising: z.boolean().default(false), // sollte erstmal immer false sein
+    use_cycles_denoising: z.boolean().default(false), // sollte erstmal immer false sein
     use_adaptive_sampling: z.boolean().default(false), // sollte erstmal immer false sein
     use_GPU: z.boolean().default(true) // sollte immer true sein
   }),
@@ -87,6 +86,7 @@ export const DatasetConfigurationBody = z.object({
   userId: ObjId,
   name: z.string(),
   createdAt: z.string(),
+  updatedAt: z.string(),
   configurationType: z.nativeEnum(ConfigurationType),
   configuration: BlenderConfigurationObject
 });
@@ -142,3 +142,30 @@ export function configurationToJSON(conf: BlenderConfiguration): string {
     }
   });
 }
+
+export const GetDatasetConfigurationBody = DatasetConfigurationBody.omit({
+  createdAt: true,
+  updatedAt: true
+}).extend({
+  createdAt: z.string().transform((d) => new Date(d)),
+  updatedAt: z.string().transform((d) => new Date(d))
+});
+
+export type GetDatasetConfiguration = z.infer<
+  typeof GetDatasetConfigurationBody
+>;
+
+// GET LIST
+export const GetDatasetConfigurationListBody = z.array(
+  GetDatasetConfigurationBody
+);
+export type GetDatasetConfigurationList = z.infer<
+  typeof GetDatasetConfigurationListBody
+>;
+
+// PATCH
+export const PatchDatasetConfigurationBody = PostDatasetConfigurationBody;
+
+export type PatchDatasetConfiguration = z.infer<
+  typeof PatchDatasetConfigurationBody
+>;

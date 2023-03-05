@@ -1,6 +1,8 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
+import Button from "./Button";
+
 export interface TableItem {
   callback?: () => void;
   href?: string;
@@ -19,7 +21,8 @@ export interface ShowMoreButton {
   href: string;
 }
 
-interface TableProps {
+export interface TableProps {
+  className?: string;
   data: TableItem[];
   emptyTableMessage?: string;
   header: TableHeader[];
@@ -51,6 +54,7 @@ const TableItemButton: React.FC<{
 );
 
 const Table: React.FC<TableProps> = ({
+  className,
   header,
   data,
   showMoreButton,
@@ -79,12 +83,15 @@ const Table: React.FC<TableProps> = ({
     "grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4 grid-cols-5 grid-cols-6";
 
   return (
-    <div className="w-full">
+    <div className={className ? ` ${className}` : ""}>
       <div
         className={`grid grid-cols-${tableCols} bg-gray-900  divide-x divide-gray-600`}
       >
         {header.map(({ title }, index) => (
-          <p className="uppercase font-bold text-sm py-2 px-4" key={index}>
+          <p
+            className="uppercase font-bold text-sm py-2 px-4 text-gray-400"
+            key={index}
+          >
             {title}
           </p>
         ))}
@@ -92,13 +99,9 @@ const Table: React.FC<TableProps> = ({
       <div className="relative ">
         {showMoreButton && (
           <div className="absolute h-full flex justify-center items-end w-full bg-gradient-to-b from-transparent to-gray-800">
-            <div className="pb-8">
-              <Link legacyBehavior href={showMoreButton.href}>
-                <a className="text-indigo-400 text-base hover:text-indigo-500 transition-all duration-150">
-                  {showMoreButton.text}
-                </a>
-              </Link>
-            </div>
+            <Link href={showMoreButton.href} className="mb-8">
+              <Button>{showMoreButton.text}</Button>
+            </Link>
           </div>
         )}
         <div>
@@ -115,7 +118,7 @@ const Table: React.FC<TableProps> = ({
                 )}
               </div>
             ));
-            const className = `text-gray-200 grid grid-cols-${tableCols} divide-x divide-gray-600 text-left w-full hover:bg-gray-700 transition-all duration-150 bg-gray-800 ${
+            const className = `text-gray-200 grid grid-cols-${tableCols} divide-x divide-gray-600 text-left w-full hover:bg-gray-700 hover:bg-opacity-30 transition-all duration-150 bg-gray-800 ${
               items.className ? items.className : ""
             }`;
 

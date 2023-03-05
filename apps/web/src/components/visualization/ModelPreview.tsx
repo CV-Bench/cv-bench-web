@@ -8,6 +8,8 @@ import { DataUrlFile } from "shared-types";
 import AutoFitModelObject from "./ModelObject/AutoFitModelObject";
 
 export interface ModelPreviewProps {
+  className?: string;
+
   model?: DataUrlFile | string;
   modelAssets?: DataUrlFile[] | string[];
 
@@ -17,13 +19,17 @@ export interface ModelPreviewProps {
 const ModelPreview: React.FC<ModelPreviewProps> = ({
   model: modelPath,
   modelAssets = [],
+  className,
   onThumbnailUpdate
 }) => {
   const allLayers = new Layers();
   allLayers.enableAll();
 
   return (
-    <Canvas className="h-screen" camera={{ layers: allLayers }}>
+    <Canvas
+      className={className ? ` ${className}` : ""}
+      camera={{ layers: allLayers }}
+    >
       <ambientLight intensity={0.1} />
       <pointLight position={[0, 0, 3]} />
       <directionalLight />

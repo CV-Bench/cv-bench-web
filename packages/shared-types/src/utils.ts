@@ -7,7 +7,6 @@ export enum AccessType {
 }
 
 export enum DataType {
-  MODEL = "MODEL",
   DATASET = "DATASET",
   NETWORK = "NETWORK"
 }
@@ -18,7 +17,7 @@ export const DataBody = z.object({
   _id: ObjId,
   userId: ObjId.optional(),
   name: z.string(),
-  description: z.string(),
+  description: z.string().optional(),
   domainTags: z.array(z.string()),
   accessType: z.nativeEnum(AccessType),
   createdAt: z.date(),

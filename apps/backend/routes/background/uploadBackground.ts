@@ -39,13 +39,16 @@ const uploadBackground = (
 
     const img = Buffer.from(imageData, "base64");
 
+    const key = `${newId}.${name.split(".").pop()}`;
+
     promises.push(
       new Promise<void>((resolve) => {
         resizeImage(128, 128, img, mimType).then((resizedImage) => {
           Database.Background.insertOne({
             _id: newId,
             userId: req.session.user?._id,
-            name,
+            // Name in DB is always key in S3 for easier access
+            name: key,
             domainTags,
             accessType,
             previewImage: resizedImage
@@ -55,8 +58,6 @@ const uploadBackground = (
         });
       })
     );
-
-    const key = `${newId}.${name.split(".").pop()}`;
 
     promises.push(S3.Background.put(img, key));
   });

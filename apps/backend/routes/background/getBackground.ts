@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { ObjectId } from "mongodb";
 
 import Database from "../../connectors/mongo";
 import S3 from "../../connectors/s3";
@@ -7,13 +6,10 @@ import S3 from "../../connectors/s3";
 const getBackground = (req: Request, res: Response) => {
   Database.Background.findOne(req.params.id, req.session.user?._id)
     .then((result) => {
-      const fileExt = result.name.split(".").pop();
-
-      const key = req.params.id + "." + fileExt;
       const parts = result.previewImage.split(";");
       const mimType = parts[0].split(":")[1];
 
-      S3.Background.get(key, {
+      S3.Background.get(result.name, {
         onSuccess: (background) => {
           background.Body?.transformToString("base64")
             .then((background) => {

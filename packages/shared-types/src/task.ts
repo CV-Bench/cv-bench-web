@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-import { ObjId } from "./utils";
+import { AccessType, ObjId } from "./utils";
 
 export enum TaskStatus {
   PENDING = "PENDING",
@@ -14,25 +14,38 @@ export enum TaskType {
   CREATE_DATASET = "CREATE_DATASET"
 }
 
+export const TaskInfoBase = z.object({
+  name: z.string(),
+  description: z.string().optional(),
+  accessType: z.nativeEnum(AccessType),
+  domainTags: z.array(z.string())
+});
+
+export const TaskDatasetInfoBody = TaskInfoBase.extend({
+  modelIds: z.array(ObjId),
+  distractorIds: z.array(ObjId),
+  backgroundIds: z.array(ObjId),
+  configurationId: ObjId
+});
+
+export const TaskNetworkInfoBody = TaskInfoBase.extend({
+  datasetId: ObjId,
+  networkArchitectureId: ObjId
+});
+
+export type TaskDatasetInfo = z.infer<typeof TaskDatasetInfoBody>;
+export type TaskNetworkInfo = z.infer<typeof TaskNetworkInfoBody>;
+
 export const TaskBody = z.object({
   _id: ObjId,
   userId: ObjId,
   createdAt: z.date(),
   updatedAt: z.date(),
+  name: z.string(),
+  serverId: z.string().optional(),
   status: z.nativeEnum(TaskStatus),
   type: z.nativeEnum(TaskType),
-  info: z
-    .object({
-      modelId: ObjId,
-      backgrounds: z.array(ObjId),
-      datasetConfigurationId: ObjId
-    })
-    .or(
-      z.object({
-        datasetId: ObjId,
-        networkArchitectureId: ObjId
-      })
-    )
+  info: TaskDatasetInfoBody.or(TaskNetworkInfoBody)
 });
 
 export type TaskDb = z.infer<typeof TaskBody>;

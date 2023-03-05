@@ -2,15 +2,7 @@ import useSWR, { SWRResponse } from "swr";
 
 import { api } from "@/network";
 
-import {
-  GetNetwork,
-  GetNetworkArchitectureList,
-  GetNetworkList,
-  GetTask,
-  GetTaskList,
-  RouteNames,
-  getRoute
-} from "shared-types";
+import { GetTask, GetTaskList, RouteNames, getRoute } from "shared-types";
 
 export const useTask = (id: string): SWRResponse<GetTask> =>
   useSWR(getRoute(RouteNames.GET_TASK)(id), () => api.getTask(id));

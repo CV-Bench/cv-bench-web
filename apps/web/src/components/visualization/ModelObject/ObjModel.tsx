@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { LoadingManager } from "three";
-import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-
+import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
+import React, { useState } from "react";
 import { DataUrlFile } from "shared-types";
+import { Layers, LoadingManager } from "three";
 
 export interface ObjModelProps {
   model: DataUrlFile;
@@ -82,7 +81,7 @@ const ObjModel: React.FC<ObjModelProps> = ({
   return (
     <>
       {state.threeModel && (
-        <primitive onUpdate={onUpdate} layers={1} object={state.threeModel} />
+        <primitive onUpdate={onUpdate} object={state.threeModel} />
       )}
     </>
   );
