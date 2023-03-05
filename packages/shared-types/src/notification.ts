@@ -17,6 +17,12 @@ export const NotificationBody = z.object({
 
 export type NotificationDb = z.infer<typeof NotificationBody>;
 
+// PATCH NOTIFICATION
+export const PatchNotificationBody = z.object({
+  isRead: z.boolean()
+});
+
+export type PatchNotification = z.infer<typeof PatchNotificationBody>;
 
 // GET SINGLE NOTIFICATION
 export const GetNotificationBody = NotificationBody.omit({

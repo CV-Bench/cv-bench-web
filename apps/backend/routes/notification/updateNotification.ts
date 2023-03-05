@@ -1,14 +1,20 @@
-import { Request, Response } from "express";
-import { ObjectId } from "mongodb";
+import { Response } from "express";
+
+import { PatchNotification, TypedRequest } from "shared-types";
 
 import Database from "../../connectors/mongo";
 
-const readNotification = (req: Request, res: Response) => {
+const updateNotification = (
+  req: TypedRequest<PatchNotification>,
+  res: Response
+) => {
   const userId = req.session.user?._id;
 
   Database.Notification.findOne(req.params.id, req.session.user?._id).then(
     () => {
-      Database.Notification.updateOne(req.params.id, userId, {isRead: true})
+      Database.Notification.updateOne(req.params.id, userId, {
+        isRead: req.body.isRead
+      })
         .then(() => {
           res.status(200).end();
         })
@@ -23,4 +29,4 @@ const readNotification = (req: Request, res: Response) => {
   );
 };
 
-export default readNotification;
+export default updateNotification;

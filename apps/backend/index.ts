@@ -51,13 +51,13 @@ import {
   createNetwork
 } from "./routes/network";
 import { getNetworkArchitectureList } from "./routes/networkArchitecture";
-import { finishTask, getTask, getTaskList } from "./routes/task";
 import {
   getNotificationList,
   getNotification,
   deleteNotification,
-  readNotification
+  updateNotification
 } from "./routes/notification";
+import { finishTask, getTask, getTaskList } from "./routes/task";
 import logger from "./util/logger";
 
 declare module "express-session" {
@@ -158,7 +158,7 @@ app.get(
 app.get(route(RouteNames.GET_NOTIFICATION_LIST), getNotificationList);
 app.get(route(RouteNames.GET_NOTIFICATION), getNotification);
 app.post(route(RouteNames.DELETE_NOTIFICATION), deleteNotification);
-app.patch(route(RouteNames.READ_NOTIFICATION), readNotification);
+app.patch(route(RouteNames.READ_NOTIFICATION), updateNotification);
 
 socket;
 
