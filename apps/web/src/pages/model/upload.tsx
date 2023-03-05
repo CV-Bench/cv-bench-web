@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import * as z from "zod";
 
+import ToolGeneralSettings from "@/components/inputs/ToolGeneralSettings";
 import PreviewStep from "@/components/model/upload/PreviewStep";
-import UploadStep from "@/components/model/upload/UploadStep";
 import FormStepsPanel, {
   FormStep
 } from "@/components/multiform/FormStepsPanel";
@@ -41,9 +41,16 @@ const UploadModel = () => {
   const onSelectMaterials = (val: DataUrlFile[]) =>
     setFormData({ ...postModel, modelAssets: val });
 
-  const onSetName = (val: string) => setFormData({ ...postModel, name: val });
-  const onSetAccessType = (val: AccessType) =>
-    setFormData({ ...postModel, accessType: val });
+  const handleUpload = () => {
+    api
+      .postModel(postModel)
+      .then((x) => {
+        router.push("/model");
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
 
   const steps: FormStep[] = [
     {
@@ -70,29 +77,23 @@ const UploadModel = () => {
       name: "Upload",
       description: "tbd",
       component: (
-        <UploadStep
+        <ToolGeneralSettings
           name={postModel.name}
           accessType={postModel.accessType}
-          setName={onSetName}
-          setAccessType={onSetAccessType}
+          handleChange={(key, value) =>
+            setFormData({ ...postModel, [key]: value })
+          }
+          handleUpload={handleUpload}
+          uploadButtonText="Upload Data"
         />
       ),
       validation: PostModelBody
     }
   ];
 
-  const handleUpload = () => {
-    api.postModel(postModel).then((x) => router.push("/model"));
-  };
-
   return (
     <>
-      <FormStepsPanel
-        submitButtonText="Start Upload"
-        formData={postModel}
-        steps={steps}
-        handleSubmit={handleUpload}
-      />
+      <FormStepsPanel formData={postModel} steps={steps} />
     </>
   );
 };

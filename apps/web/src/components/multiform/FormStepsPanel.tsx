@@ -34,15 +34,17 @@ export type FormStep = {
 interface FormStepsPanelProps {
   formData: {};
   steps: FormStep[];
-  handleSubmit: () => void;
-  submitButtonText: string;
+  handleSubmit?: () => void;
+  submitButtonText?: string;
+  showSubmitButton?: boolean;
 }
 
 const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
   formData,
   steps,
   submitButtonText,
-  handleSubmit
+  handleSubmit,
+  showSubmitButton = false
 }) => {
   const [completedSteps, setCompletedSteps] = useState<boolean[]>(
     new Array(steps.length).fill(false)
@@ -55,7 +57,7 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
 
       return true;
     } catch (e) {
-      console.log(e)
+      console.log(e);
       return false;
     }
   };
@@ -83,7 +85,7 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
   };
 
   return (
-    <div className="container min-h-full flex flex-col mx-auto space-y-8">
+    <div className="container flex flex-col mx-auto space-y-4 py-8">
       <div className="mx-auto overflow-hidden w-full lg:flex divide-x divide-gray-700">
         {steps.map(({ name, description }, index) => (
           <button
@@ -140,32 +142,37 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
         <div>
           {activeStep >= 1 && (
             <Button
-              color="red"
+              className="items-center space-x-2"
               // disabled={currentStep == 0}
               onClick={() => handleSetActiveStep(activeStep - 1)}
             >
-              <ArrowBack /> Previous
+              <ArrowBack />
+              <p>Previous</p>
             </Button>
           )}
         </div>
         <div>
           {activeStep < steps.length - 1 ? (
             <Button
-              color="indigo"
+              className="items-center space-x-2"
               disabled={!isCompleted(steps[activeStep].validation)}
               onClick={() => handleSetActiveStep(activeStep + 1)}
             >
-              Next <ArrowForward />
+              <p>Next</p>
+              <ArrowForward />
             </Button>
           ) : (
-            <Button
-              color="indigo"
-              size="lg"
-              disabled={!isCompleted(steps[activeStep].validation)}
-              onClick={() => handleSubmit()}
-            >
-              {submitButtonText}
-            </Button>
+            showSubmitButton &&
+            handleSubmit && (
+              <Button
+                color="indigo"
+                size="lg"
+                disabled={!isCompleted(steps[activeStep].validation)}
+                onClick={handleSubmit}
+              >
+                {submitButtonText}
+              </Button>
+            )
           )}
         </div>
       </div>

@@ -74,15 +74,15 @@ const FileInput: React.FC<FileInputProps> = ({
 
   return (
     <div
-      className={`rounded-lg bg-indigo-800 text-white ${className} overflow-hidden`}
+      className={`rounded-lg bg-indigo-900 text-slate-200 ${className} overflow-hidden`}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
       <div
         onClick={handleClick}
         className={`text-center ${
-          selectedFiles.length == 0 ? "min-h-[6rem]" : "min-h-[3rem]"
-        } rounded-lg flex justify-center items-center cursor-pointer transition-all duration-500 bg-indigo-600 hover:bg-indigo-400`}
+          selectedFiles.length == 0 ? "py-8" : "py-2"
+        } rounded-lg text-sm flex justify-center items-center cursor-pointer transition-all duration-150 bg-indigo-600 hover:bg-indigo-400`}
       >
         Click or drag & drop your files ({accept.join(" / ")})
       </div>
@@ -92,11 +92,14 @@ const FileInput: React.FC<FileInputProps> = ({
           <div className="text-sm p-2">
             <ul className="flex flex-col items-center">
               {selectedFiles.map((file, idx) => (
-                <li className="flex" key={idx}>
-                  {file.filename}{" "}
+                <li
+                  className="flex space-x-2 items-center text-slate-200"
+                  key={idx}
+                >
+                  <p>{file.filename}</p>
                   <XMarkIcon
                     onClick={() => removeFile(file)}
-                    className="h-6 w-6"
+                    className="h-4 w-4 hover:text-red-400 transition-all duration-150"
                   />
                 </li>
               ))}

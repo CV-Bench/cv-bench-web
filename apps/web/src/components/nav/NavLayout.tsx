@@ -14,7 +14,7 @@ const NavLayout = ({
   <>
     <div className="h-full flex flex-col">
       <Navbar user={user} />
-      {children}
+      <div className="overflow-auto">{children}</div>
     </div>
   </>
 );
