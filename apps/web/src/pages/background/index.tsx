@@ -19,8 +19,8 @@ const BackgroundList: React.FC = () => {
       <Card>
         <div className="p-4 flex space-x-4">
           <div>
-            <div className="w-8 h-8 flex items-center justify-center text-slate-600">
-              <PhotoIcon />
+            <div className="w-12 h-12 flex items-center justify-center text-slate-600">
+              <PhotoIcon className="w-full h-full" />
             </div>
           </div>
           <div className="flex flex-col space-y-4">
