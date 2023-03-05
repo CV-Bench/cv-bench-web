@@ -16,10 +16,12 @@ const Dashboard: React.FC = () => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <main className="space-y-4">
-      <div className="grid grid-cols-4 gap-4">
-        {DashboardButtons.map(({ title, description, href }) => (
-          <ButtonCard title={title} description={description} href={href} />
-        ))}
+      <div className="border-b border-slate-600 pb-4">
+        <div className="grid grid-cols-4 gap-4">
+          {DashboardButtons.map(({ title, description, href }) => (
+            <ButtonCard title={title} description={description} href={href} />
+          ))}
+        </div>
       </div>
 
       <DashboardTable />

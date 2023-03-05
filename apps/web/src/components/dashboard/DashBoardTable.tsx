@@ -4,6 +4,7 @@ import { useTaskList } from "@/hooks/task";
 import { formatToDateString } from "@/utils/date";
 
 import Badge from "../Badge";
+import Card from "../Card";
 import Table from "../Table";
 import TableHeader from "../TableHeader";
 
@@ -15,7 +16,7 @@ const DashboardTable: React.FC = () => {
   }
 
   return (
-    <div className="shadow rounded bg-slate-800 overflow-hidden">
+    <Card>
       <TableHeader title="Recent Tasks" description="" icon={<CpuChipIcon />} />
       <Table
         header={[
@@ -39,7 +40,7 @@ const DashboardTable: React.FC = () => {
           href: "/task"
         }}
       />
-    </div>
+    </Card>
   );
 };
 
