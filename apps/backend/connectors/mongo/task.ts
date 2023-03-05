@@ -60,7 +60,7 @@ const find = (userId: string | ObjectId) =>
   collectionRequest<FindCursor<TaskDb>>(
     CollectionName.TASK,
     async (collection) => {
-      return collection.findOne({
+      return collection.find({
         $or: [
           { userId: new ObjectId(userId) },
           { accessType: AccessType.PUBLIC }
