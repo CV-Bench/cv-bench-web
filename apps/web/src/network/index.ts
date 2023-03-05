@@ -36,7 +36,6 @@ import {
   PostNetwork,
   RouteNames,
   getRoute,
-  NotificationBody,
   GetNotification,
   GetNotificationBody,
   GetNotificationList,
@@ -249,9 +248,17 @@ export const api = {
     return GetTaskBody.parse(background);
   },
   getTaskList: async (): Promise<GetTaskList> => {
-    const backgrounds = await getRequest(getRoute(RouteNames.GET_TASK_LIST)());
+    const tasks = await getRequest(getRoute(RouteNames.GET_TASK_LIST)());
 
-    return GetTaskListBody.parse(backgrounds) as GetTaskList;
+    console.log(tasks);
+
+    try {
+      GetTaskListBody.parse(tasks);
+    } catch (e) {
+      console.error(e);
+    }
+
+    return GetTaskListBody.parse(tasks) as GetTaskList;
   },
   stopTask: (id: string) => postRequest(getRoute(RouteNames.STOP_TASK)(id)),
 
