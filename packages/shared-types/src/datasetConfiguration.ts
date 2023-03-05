@@ -49,7 +49,7 @@ export const BlenderConfigurationObject = z.object({
 
     use_cycles: z.boolean().default(true), // sollte immer true sein
     samples: z.number().int().gte(10).lte(60).default(60), // sinnvolle obere Grenze ca. 60, unter 10 sinnlos
-    use_cycles_donoising: z.boolean().default(false), // sollte erstmal immer false sein
+    use_cycles_denoising: z.boolean().default(false), // sollte erstmal immer false sein
     use_adaptive_sampling: z.boolean().default(false), // sollte erstmal immer false sein
     use_GPU: z.boolean().default(true) // sollte immer true sein
   }),
@@ -151,13 +151,21 @@ export const GetDatasetConfigurationBody = DatasetConfigurationBody.omit({
   updatedAt: z.string().transform((d) => new Date(d))
 });
 
-export type GetDatasetConfiguration = z.infer<typeof GetDatasetConfigurationBody>;
+export type GetDatasetConfiguration = z.infer<
+  typeof GetDatasetConfigurationBody
+>;
 
 // GET LIST
-export const GetDatasetConfigurationListBody = z.array(GetDatasetConfigurationBody);
-export type GetDatasetConfigurationList = z.infer<typeof GetDatasetConfigurationListBody>;
+export const GetDatasetConfigurationListBody = z.array(
+  GetDatasetConfigurationBody
+);
+export type GetDatasetConfigurationList = z.infer<
+  typeof GetDatasetConfigurationListBody
+>;
 
 // PATCH
 export const PatchDatasetConfigurationBody = PostDatasetConfigurationBody;
 
-export type PatchDatasetConfiguration = z.infer<typeof PatchDatasetConfigurationBody>;
+export type PatchDatasetConfiguration = z.infer<
+  typeof PatchDatasetConfigurationBody
+>;

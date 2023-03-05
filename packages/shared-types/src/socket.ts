@@ -33,7 +33,7 @@ export interface SocketDb {
 }
 
 export interface ServerSocketData {
-  socketId: string;
+  serverId: string;
 }
 
 export interface TaskNamespaceData extends ServerSocketData {
@@ -90,9 +90,9 @@ export interface TaskNamespaceClientToServerEvents
 
 export interface TaskNamespaceServerToClientEvents
   extends ServerToClientEvents {
-  start: (taskId: string) => void;
-  stop: (taskId: string) => void;
-  cleanup: (taskId: string) => void;
+  start: (data: { taskId: string }) => void;
+  stop: (data: { taskId: string }) => void;
+  cleanup: (data: { taskId: string }) => void;
   task_viewer: (viewer: SessionUser) => void;
 }
 

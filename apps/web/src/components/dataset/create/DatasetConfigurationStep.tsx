@@ -84,7 +84,7 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({
 
         use_cycles: true,
         samples: 40,
-        use_cycles_donoising: false,
+        use_cycles_denoising: false,
         use_adaptive_sampling: false,
         use_GPU: true
       },
