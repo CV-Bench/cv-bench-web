@@ -82,7 +82,7 @@ const FileInput: React.FC<FileInputProps> = ({
         onClick={handleClick}
         className={`text-center ${
           selectedFiles.length == 0 ? "py-8" : "py-2"
-        } rounded-lg text-sm flex justify-center items-center cursor-pointer transition-all duration-150 bg-indigo-600 hover:bg-indigo-400`}
+        } rounded-lg text-sm flex justify-center items-center cursor-pointer transition-all duration-150 bg-indigo-600 hover:bg-indigo-700`}
       >
         Click or drag & drop your files ({accept.join(" / ")})
       </div>

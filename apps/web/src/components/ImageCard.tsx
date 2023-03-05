@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { formatToDateString } from "@/utils/date";
 
+import Badge from "./Badge";
+
 export interface ImageCardProps {
   previewImage: string;
   domainTags: string[];
@@ -22,25 +24,21 @@ const ImageCard: React.FC<ImageCardProps> = ({
 }) => (
   <Link
     href={href}
-    className={`relative ${
-      className ? className : "max-w-[160px]"
-    } m-5 border-2 border-white rounded-lg bg-gray-800`}
+    className="relative p-4 rounded-lg bg-gray-800 divide-y divide-slate-600 transition-all duration-150 border border-transparent hover:border-gray-600"
   >
-    <div className="w-full p-4 border-b-2 ">
-      <img className="object-contain " src={previewImage} alt="" />
+    <div className="w-full pb-2">
+      <img className="object-contain w-full" src={previewImage} alt="" />
     </div>
-    <div className="p-3 flex-wrap flex">
-      {domainTags.map((_d, idx) => (
-        <span
-          key={idx}
-          className="bg-gray-200 flex-shrink rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-        >
-          {_d}
-        </span>
+    <div className="flex-wrap flex py-2">
+      {domainTags.map((tag, idx) => (
+        <div className="pr-2" key={idx}>
+          <Badge>{tag}</Badge>
+        </div>
       ))}
     </div>
-    <div className="mx-2">{name}</div>
-    <div className="text-white m-2">{formatToDateString(createdAt)}</div>
+    <div className="text-slate-400 text-sm pt-2 text-right">
+      {formatToDateString(createdAt)}
+    </div>
   </Link>
 );
 

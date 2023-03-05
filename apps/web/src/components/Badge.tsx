@@ -1,13 +1,14 @@
 import { TaskStatus, TaskType } from "shared-types";
 
-type BadgeVariant = TaskStatus | TaskType;
+type BadgeVariant = TaskStatus | TaskType | "default";
 
 type BadgeSize = "sm" | "lg";
 
 interface BadgeProps {
-  variant: BadgeVariant;
+  variant?: BadgeVariant;
   size?: BadgeSize;
   className?: string;
+  children?: React.ReactNode;
 }
 
 const getBadgeVariantStyle = (variant: BadgeVariant) => {
@@ -30,7 +31,11 @@ const capitalizeFirst = (str: string) => {
   return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 };
 
-const Badge: React.FC<BadgeProps> = ({ variant, size = "sm" }) => {
+const Badge: React.FC<BadgeProps> = ({
+  variant = "default",
+  size = "sm",
+  children
+}) => {
   const variantClassname = getBadgeVariantStyle(variant);
   const sizeClassname = getBadgeSizeStyle(size);
 
@@ -38,7 +43,7 @@ const Badge: React.FC<BadgeProps> = ({ variant, size = "sm" }) => {
     <span
       className={`inline-flex items-center rounded-full font-medium ${variantClassname} ${sizeClassname}`}
     >
-      {capitalizeFirst(variant)}
+      {children || capitalizeFirst(variant)}
     </span>
   );
 };

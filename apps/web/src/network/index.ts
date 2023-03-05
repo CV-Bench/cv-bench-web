@@ -133,6 +133,8 @@ export const api = {
       getRoute(RouteNames.GET_BACKGROUND)(id)
     );
 
+    console.log(background);
+
     return GetBackgroundBody.parse(background);
   },
   getBackgroundList: async (
