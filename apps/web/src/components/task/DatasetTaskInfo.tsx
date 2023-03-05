@@ -16,7 +16,7 @@ export interface DatasetTaskInfoProps {
 const DatasetTaskInfo: React.FC<DatasetTaskInfoProps> = ({ task }) => {
   const info = task.info as TaskDatasetInfo;
 
-  const { data: backgrounds } = useBackgroundList(undefined, info.backgrounds);
+  const { data: backgrounds } = useBackgroundList(undefined, info.backgroundIds);
   const { data: models } = useModelList(info.modelIds);
   const { data: distractors } = useModelList(info.distractorIds);
 
@@ -53,7 +53,7 @@ const DatasetTaskInfo: React.FC<DatasetTaskInfoProps> = ({ task }) => {
           ))}
         </div>
       </Collapsible>
-      <Collapsible title={`Backgrounds (${info.backgrounds.length})`}>
+      <Collapsible title={`Backgrounds (${info.backgroundIds.length})`}>
         <div className="flex">
           {backgrounds?.map((bg) => (
             <ImageCard

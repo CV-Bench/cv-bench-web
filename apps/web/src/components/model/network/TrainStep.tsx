@@ -2,7 +2,7 @@ import Card from "@/components/Card"
 import InputLabel from "@/components/inputs/InputLabel"
 import TagInput from "@/components/inputs/TagInput"
 import AccessTypeInput from "@/components/inputs/AccessTypeInput"
-import { AccessType } from "types"
+import { AccessType } from "shared-types"
 
 export interface TrainStepProps {
     name?: string;
