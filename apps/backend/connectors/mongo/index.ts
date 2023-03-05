@@ -1,9 +1,4 @@
-import {
-  CollectionName,
-  DataType,
-  DatabaseCollectionEntries,
-  loggerTitle
-} from "shared-types";
+import { CollectionName, DataType, loggerTitle } from "shared-types";
 
 import logger from "../../util/logger";
 
