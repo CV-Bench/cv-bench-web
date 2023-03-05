@@ -1,15 +1,23 @@
-import { CollectionName, loggerTitle } from "shared-types";
+import {
+  CollectionName,
+  DataType,
+  DatabaseCollectionEntries,
+  loggerTitle
+} from "shared-types";
 
 import logger from "../../util/logger";
 
 import Background from "./background";
 import { prepareCollection } from "./client";
 import Dataset from "./dataset";
+import DatasetConfiguration from "./datasetConfiguration";
 import Model from "./model";
+import Network from "./network";
 import NetworkArchitecture from "./networkArchitecture";
+import Notification from "./notification";
 import Socket from "./socket";
+import Task from "./task";
 import User from "./user";
-import Notification from "./notification"
 
 export { cvBenchDb, clientNotReady, collectionRequest } from "./client";
 
@@ -25,11 +33,20 @@ Object.values(CollectionName).map((name) =>
 const Database = {
   Model,
   Dataset,
+  DatasetConfiguration,
   User,
   Background,
   NetworkArchitecture,
   Notification,
-  Socket
+  Socket,
+  Task,
+  Network
 };
+
+export const dataTypeCollectionMap = (dataType: DataType) =>
+  ({
+    [DataType.DATASET]: "Dataset",
+    [DataType.NETWORK]: "Network"
+  }[dataType] as "Dataset" | "Network");
 
 export default Database;

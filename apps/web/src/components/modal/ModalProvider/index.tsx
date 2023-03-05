@@ -32,7 +32,7 @@ const ModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
 export default ModalProvider;
 
-const useModal = (
+export const useModal = (
   modalType: OpenModalType
 ): [boolean, (isOpen: boolean) => void] => {
   const { openModal, setOpenModal } = useContext(ModalContext);

@@ -41,7 +41,7 @@ const insert = (model: Omit<NetworkDb, "_id" | "createdAt" | "updatedAt">) =>
 
 const updateOne = (
   id: string | ObjectId,
-  userId: string | ObjectId,
+  userId: string | ObjectId | undefined,
   update: Partial<NetworkDb>
 ) =>
   collectionRequest<UpdateResult>(
@@ -50,7 +50,7 @@ const updateOne = (
       return collection.updateOne(
         {
           _id: new ObjectId(id),
-          userId: new ObjectId(userId)
+          ...(userId ? { userId: new ObjectId(userId) } : {})
         },
         {
           $set: {

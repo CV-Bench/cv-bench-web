@@ -14,9 +14,17 @@ const signup = (req: Request, res: Response) => {
       })
       .catch((e) => {
         logger.error(loggerTitle.AUTH_CLIENT, "Error signing up User", e);
-        res.status(500).end();
+        res.status(500);
+        req.session.destroy(() => {
+          res.clearCookie("cv-bench-session").end();
+        });
       });
-  } else res.status(403).send("Terms need to be accepted");
+  } else {
+    req.session.destroy((e) => {
+      res.clearCookie("cv-bench-session");
+    });
+    res.status(403).send("Terms need to be accepted");
+  }
 };
 
 export default signup;

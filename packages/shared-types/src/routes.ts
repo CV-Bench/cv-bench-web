@@ -25,6 +25,12 @@ export enum RouteNames {
   PATCH_DATASET = "PATCH_DATASET",
   POST_DATASET = "POST_DATASET",
 
+  GET_DATASET_CONFIGURATION_LIST = "GET_DATASET_CONFIGURATION_LIST",
+  GET_DATASET_CONFIGURATION = "GET_DATASET_CONFIGURATION",
+  DELETE_DATASET_CONFIGURATION = "DELETE_DATASET_CONFIGURATION",
+  PATCH_DATASET_CONFIGURATION = "PATCH_DATASET_CONFIGURATION",
+  POST_DATASET_CONFIGURATION = "POST_DATASET_CONFIGURATION",
+
   GET_NETWORK_LIST = "GET_NETWORK_LIST",
   GET_NETWORK = "GET_NETWORK",
   DELETE_NETWORK = "DELETE_NETWORK",
@@ -157,6 +163,37 @@ export const Routes: {
     /^\/dataset\/.*\/?post$/,
     PostDatasetBody,
     (id?: string) => "/dataset/" + id
+  ),
+
+  [RouteNames.GET_DATASET_CONFIGURATION_LIST]: createRoute(
+    "/datasetConfiguration",
+    /^\/datasetConfiguration\/?get$/,
+    z.object({}),
+    () => "/datasetConfiguration"
+  ),
+  [RouteNames.GET_DATASET_CONFIGURATION]: createRoute(
+    "/datasetConfiguration/:id",
+    /^\/datasetConfiguration\/.*\/?get?$/,
+    z.object({}),
+    (id?: string) => "/datasetConfiguration/" + id
+  ),
+  [RouteNames.DELETE_DATASET_CONFIGURATION]: createRoute(
+    "/datasetConfiguration/:id",
+    /^\/datasetConfiguration\/.*\/?delete?$/,
+    z.object({}),
+    (id?: string) => "/datasetConfiguration/" + id
+  ),
+  [RouteNames.PATCH_DATASET_CONFIGURATION]: createRoute(
+    "/datasetConfiguration/:id",
+    /^\/datasetConfiguration\/.*\/?patch?$/,
+    z.object({}),
+    (id?: string) => "/datasetConfiguration/" + id
+  ),
+  [RouteNames.POST_DATASET_CONFIGURATION]: createRoute(
+    "/datasetConfiguration/:id",
+    /^\/datasetConfiguration\/.*\/?post$/,
+    z.object({}),
+    (id?: string) => "/datasetConfiguration/" + id
   ),
 
   [RouteNames.GET_NETWORK_LIST]: createRoute(

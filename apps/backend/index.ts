@@ -11,7 +11,7 @@ import {
   AuthProvider
 } from "shared-types";
 
-import socket from "./connectors/socket";
+import socket, { Socket } from "./connectors/socket";
 import authMiddleware from "./middleware/auth";
 import loggerMiddleware from "./middleware/logger";
 import { sessionMiddleware } from "./middleware/session";
@@ -38,6 +38,14 @@ import {
 } from "./routes/dataset";
 import updateDataset from "./routes/dataset/updateDataset";
 import {
+  createDatasetConfiguration,
+  deleteDatasetConfiguration,
+  getDatasetConfiguration,
+  getDatasetConfigurationList,
+  updateDatasetConfiguration
+} from "./routes/datasetConfiguration";
+import download from "./routes/download";
+import {
   deleteModel,
   getModel,
   getModelList,
@@ -57,7 +65,7 @@ import {
   deleteNotification,
   updateNotification
 } from "./routes/notification";
-import { finishTask, getTask, getTaskList } from "./routes/task";
+import { finishTask, stopTask, getTask, getTaskList } from "./routes/task";
 import logger from "./util/logger";
 
 declare module "express-session" {
@@ -114,6 +122,9 @@ app.post("/auth/signup", signup);
 app.get("/auth/logout", logout);
 app.get("/auth/token", socketToken);
 
+// DOWNLOAD ROUTE
+app.get("/download/:type/:id", download);
+
 // MODEL ROUTES
 app.get(route(RouteNames.GET_MODEL_LIST), getModelList);
 app.get(route(RouteNames.GET_MODEL), getModel);
@@ -135,6 +146,25 @@ app.delete(route(RouteNames.DELETE_DATASET), deleteDataset);
 app.patch(route(RouteNames.PATCH_DATASET), updateDataset);
 app.post(route(RouteNames.POST_DATASET), createDataset);
 
+// DATASET CONFIGURATION ROUTES
+app.get(
+  route(RouteNames.GET_DATASET_CONFIGURATION_LIST),
+  getDatasetConfigurationList
+);
+app.get(route(RouteNames.GET_DATASET_CONFIGURATION), getDatasetConfiguration);
+app.delete(
+  route(RouteNames.DELETE_DATASET_CONFIGURATION),
+  deleteDatasetConfiguration
+);
+app.patch(
+  route(RouteNames.PATCH_DATASET_CONFIGURATION),
+  updateDatasetConfiguration
+);
+app.post(
+  route(RouteNames.POST_DATASET_CONFIGURATION),
+  createDatasetConfiguration
+);
+
 // NETWORK ROUTES
 app.get(route(RouteNames.GET_NETWORK_LIST), getNetworkList);
 app.get(route(RouteNames.GET_NETWORK), getNetwork);
@@ -146,7 +176,7 @@ app.post(route(RouteNames.POST_NETWORK), createNetwork);
 app.get(route(RouteNames.GET_TASK_LIST), getTaskList);
 app.get(route(RouteNames.GET_TASK), getTask);
 app.post(route(RouteNames.FINISH_TASK), finishTask);
-app.post(route(RouteNames.STOP_TASK), finishTask);
+app.post(route(RouteNames.STOP_TASK), stopTask);
 
 // NETWORK ARCHITECTURE
 app.get(

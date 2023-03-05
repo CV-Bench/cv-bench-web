@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import BackgroundCard from "@/components/inputs/BackgroundCard";
+import ImageCard from "@/components/ImageCard";
 import { useBackgroundList } from "@/hooks/background";
 
 const BackgroundList: React.FC = () => {
@@ -11,17 +11,22 @@ const BackgroundList: React.FC = () => {
   }
 
   return (
-    <>
+    <div className="container mx-auto">
       <div className="bg-gray-800 p-4 flex rounded-lg text-white">
         <Link href="/background/upload">Upload Background</Link>
       </div>
 
-      <div className=" grid lg:grid-cols-5 sm:grid-cols-1">
+      <div className="grid lg:grid-cols-5 sm:grid-cols-1 gap-4">
         {backgrounds.map((background) => (
-          <BackgroundCard {...background} />
+          <ImageCard
+            {...background}
+            className="w-full"
+            href={`/background/${background._id}`}
+            name={undefined}
+          />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

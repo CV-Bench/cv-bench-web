@@ -13,11 +13,13 @@ const getS3Models = (id: string) =>
         const files =
           result.Contents?.map(async (x) => {
             const filename = x.Key?.replace(/^.*[\\\/]/, "") ?? "";
+            const fileExt = filename.split(".").pop();
             const s3Req = await Model.get(`${id}/${filename}`);
+            const res = await s3Req.Body.transformToString("base64");
 
             return {
               filename,
-              dataUrl: await s3Req.Body.transformToString()
+              dataUrl: `data:application/${fileExt};base64,${res}`
             };
           }) ?? [];
 

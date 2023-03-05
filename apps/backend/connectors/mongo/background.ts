@@ -81,12 +81,65 @@ const find = (userId: string | ObjectId) =>
     }
   );
 
+const findByTags = (userId: string | ObjectId, domainTags: string[]) =>
+  collectionRequest<FindCursor<BackgroundDb>>(
+    CollectionName.BACKGROUND,
+    async (collection) => {
+      return collection.find({
+        $and: [
+          {
+            $or: [
+              { userId: new ObjectId(userId) },
+              { accessType: AccessType.PUBLIC }
+            ]
+          },
+          {
+            $or: [
+              {
+                domainTags: {
+                  $in: domainTags
+                }
+              },
+              {
+                domainTags: domainTags
+              }
+            ]
+          }
+        ]
+      });
+    }
+  );
+
+const findByIds = (userId: string | ObjectId, ids: ObjectId[]) =>
+  collectionRequest<FindCursor<BackgroundDb>>(
+    CollectionName.BACKGROUND,
+    async (collection) => {
+      return collection.find({
+        $and: [
+          {
+            $or: [
+              { userId: new ObjectId(userId) },
+              { accessType: AccessType.PUBLIC }
+            ]
+          },
+          {
+            _id: {
+              $in: ids
+            }
+          }
+        ]
+      });
+    }
+  );
+
 const Background = {
   findOne,
   insertOne,
   updateOne,
   deleteOne,
-  find
+  find,
+  findByTags,
+  findByIds
 };
 
 export default Background;
