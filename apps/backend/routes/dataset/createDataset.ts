@@ -11,6 +11,7 @@ const createDataset = (req: TypedRequest<PostDataset>, res: Response) => {
     userId: new ObjectId(req.session.user?._id),
     status: TaskStatus.PENDING,
     type: TaskType.CREATE_DATASET,
+    name: req.body.name,
     info: {
       name: req.body.name,
       domainTags: req.body.domainTags,

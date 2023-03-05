@@ -22,14 +22,18 @@ const findOne = (id: string | ObjectId, userId: string | ObjectId) =>
     }
   );
 
-const insert = (
-  notification: Omit<NotificationDb, "_id" | "updatedAt" | "createdAt">
+const insertOne = (
+  notification: Omit<
+    NotificationDb,
+    "_id" | "isRead" | "updatedAt" | "createdAt"
+  >
 ) =>
   collectionRequest<InsertOneResult>(
     CollectionName.NOTIFICATION,
     async (collection) => {
       return collection.insertOne({
         ...notification,
+        isRead: false,
         createdAt: new Date(),
         updatedAt: new Date()
       });
@@ -80,7 +84,7 @@ const find = (userId: string | ObjectId) =>
 
 const Notification = {
   findOne,
-  insert,
+  insertOne,
   updateOne,
   deleteOne,
   find

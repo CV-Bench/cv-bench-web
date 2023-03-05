@@ -1,6 +1,7 @@
+import { ObjectId } from "mongodb";
 import { Namespace } from "socket.io";
 import * as socketJwt from "socketio-jwt";
-import * as util from 'util';
+import * as util from "util";
 
 import {
   DataNamespaceClientToServerEvents,
@@ -9,14 +10,19 @@ import {
   DataType,
   FrontendNamespaceClientToServerEvents,
   FrontendNamespaceServerToClientEvents,
+  NotificationDb,
   loggerTitle
 } from "shared-types";
 
-import io from "./client";
-import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
 import logger from "../../util/logger";
 
-const frontendNamespace: Namespace<FrontendNamespaceClientToServerEvents, FrontendNamespaceServerToClientEvents> = io.of("/frontend");
+import io from "./client";
+import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
+
+const frontendNamespace: Namespace<
+  FrontendNamespaceClientToServerEvents,
+  FrontendNamespaceServerToClientEvents
+> = io.of("/frontend");
 
 frontendNamespace.use(
   socketJwt.authorize({
@@ -28,7 +34,14 @@ frontendNamespace.use(
 );
 
 io.engine.on("connection_error", (e) => {
-  logger.error(loggerTitle.SOCKET, "Frontend Namespace", util.inspect(e.req), e.code, e.message, util.inspect(e.context));
+  logger.error(
+    loggerTitle.SOCKET,
+    "Frontend Namespace",
+    util.inspect(e.req),
+    e.code,
+    e.message,
+    util.inspect(e.context)
+  );
 });
 
 frontendNamespace.on("connection", (socket) => {
@@ -44,8 +57,16 @@ frontendNamespace.on("connection", (socket) => {
   });
 });
 
+const sendNotification = (
+  notification: NotificationDb,
+  userId: string | ObjectId
+) => {
+  // TODO
+};
+
 const Frontend = {
-  Sockets: frontendNamespace.sockets
+  Sockets: frontendNamespace.sockets,
+  sendNotification: sendNotification
 };
 
 export default Frontend;

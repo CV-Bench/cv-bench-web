@@ -18,11 +18,11 @@ import logger from "../../util/logger";
 import { collectionRequest } from "./";
 import { isUsersOrPublic } from "./utils";
 
-const findOne = (id: string | ObjectId, userId: string) =>
+const findOne = (id: string | ObjectId, userId: string | undefined) =>
   collectionRequest<DatasetDb>(CollectionName.DATASET, async (collection) => {
     return collection.findOne({
       _id: new ObjectId(id),
-      ...isUsersOrPublic(userId)
+      ...(userId ? isUsersOrPublic(userId) : {})
     });
   });
 

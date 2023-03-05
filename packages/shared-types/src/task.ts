@@ -41,6 +41,7 @@ export const TaskBody = z.object({
   userId: ObjId,
   createdAt: z.date(),
   updatedAt: z.date(),
+  name: z.string(),
   serverId: z.string().optional(),
   status: z.nativeEnum(TaskStatus),
   type: z.nativeEnum(TaskType),
