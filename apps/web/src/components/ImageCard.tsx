@@ -24,7 +24,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
 }) => (
   <Link
     href={href}
-    className="relative p-4 rounded-lg bg-gray-800 divide-y divide-slate-600 transition-all duration-150 border border-transparent hover:border-gray-600"
+    className="relative p-4 rounded-lg bg-slate-800 divide-y divide-slate-600 transition-all duration-150 border border-transparent hover:border-slate-600"
   >
     <div className="w-full pb-2">
       <img className="object-contain w-full" src={previewImage} alt="" />

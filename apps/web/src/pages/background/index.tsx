@@ -19,14 +19,14 @@ const BackgroundList: React.FC = () => {
       <Card>
         <div className="p-4 flex space-x-4">
           <div>
-            <div className="w-8 h-8 flex items-center justify-center text-gray-600">
+            <div className="w-8 h-8 flex items-center justify-center text-slate-600">
               <PhotoIcon />
             </div>
           </div>
           <div className="flex flex-col space-y-4">
             <div className="space-y-1">
-              <p className="font-medium text-lg text-gray-200">Backgrounds</p>
-              <p className="text-sm text-gray-400"></p>
+              <p className="font-medium text-lg text-slate-200">Backgrounds</p>
+              <p className="text-sm text-slate-400"></p>
             </div>
             <Link href="/background/upload">
               <Button>Upload Background</Button>

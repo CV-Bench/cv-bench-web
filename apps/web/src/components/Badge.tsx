@@ -12,7 +12,7 @@ interface BadgeProps {
 }
 
 const getBadgeVariantStyle = (variant: BadgeVariant) => {
-  return "border border-gray-200 text-gray-200";
+  return "border border-slate-200 text-slate-200";
 };
 
 const getBadgeSizeStyle = (size: BadgeSize) => {

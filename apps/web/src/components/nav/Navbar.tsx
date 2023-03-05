@@ -140,7 +140,7 @@ const Navbar = ({ user }: { user: SessionUser }) => {
               </div>
               <div className="-mr-2 flex items-center sm:hidden">
                 {/* Mobile menu button */}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -162,14 +162,14 @@ const Navbar = ({ user }: { user: SessionUser }) => {
                   className={`block border-l-4 ${
                     activeNavbarRoute === index
                       ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                      : "border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                      : "border-transparent text-slate-500 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-700"
                   }  py-2 pl-3 pr-4 text-base font-medium `}
                 >
                   {title}
                 </Disclosure.Button>
               ))}
             </div>
-            <div className="border-t border-gray-200 pt-4 pb-3">
+            <div className="border-t border-slate-200 pt-4 pb-3">
               <div className="flex items-center px-4 justify-between">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
@@ -180,10 +180,10 @@ const Navbar = ({ user }: { user: SessionUser }) => {
                     />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800">
+                    <div className="text-base font-medium text-slate-800">
                       {user.name}
                     </div>
-                    <div className="text-sm font-medium text-gray-500">
+                    <div className="text-sm font-medium text-slate-500">
                       {user.email}
                     </div>
                   </div>
@@ -196,7 +196,7 @@ const Navbar = ({ user }: { user: SessionUser }) => {
                     as={Link}
                     key={index}
                     href={href}
-                    className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                    className="block px-4 py-2 text-base font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                   >
                     {title}
                   </Disclosure.Button>

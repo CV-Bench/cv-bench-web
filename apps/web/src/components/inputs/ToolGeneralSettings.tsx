@@ -52,10 +52,10 @@ const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
 
   return (
     <Card
-      className={`grid divide-x divide-gray-600 p-4 text-slate-300 ${gridCols}`}
+      className={`grid divide-x divide-slate-600 p-4 text-slate-300 ${gridCols}`}
     >
       <div className={`pr-4 ${colSpan}`}>
-        <div className="divide-y divide-gray-600">
+        <div className="divide-y divide-slate-600">
           <p className="pb-4">General Settings</p>
 
           <div className="pt-4 space-y-2">
@@ -81,7 +81,9 @@ const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
         </div>
       </div>
       <div
-        className={`divide-y divide-gray-600 ${showDownload ? "px-4" : "pl-4"}`}
+        className={`divide-y divide-slate-600 ${
+          showDownload ? "px-4" : "pl-4"
+        }`}
       >
         <p className="pb-4">{uploadTitleText}</p>
 
@@ -93,7 +95,9 @@ const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
       </div>
       {showDownload && (
         <div
-          className={`${showDelete ? "px-4" : "pl-4"} divide-y divide-gray-600`}
+          className={`${
+            showDelete ? "px-4" : "pl-4"
+          } divide-y divide-slate-600`}
         >
           <p className="pb-4">Download</p>
 
@@ -103,7 +107,7 @@ const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
         </div>
       )}
       {showDelete && (
-        <div className="pl-4 divide-y divide-gray-600">
+        <div className="pl-4 divide-y divide-slate-600">
           <p className="pb-4">Delete</p>
 
           <div className="pt-4">

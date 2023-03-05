@@ -15,7 +15,7 @@ const DashboardTable: React.FC = () => {
   }
 
   return (
-    <div className="shadow rounded bg-gray-800 overflow-hidden">
+    <div className="shadow rounded bg-slate-800 overflow-hidden">
       <TableHeader title="Recent Tasks" description="" icon={<CpuChipIcon />} />
       <Table
         header={[

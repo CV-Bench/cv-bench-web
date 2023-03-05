@@ -32,7 +32,7 @@ const MultiselectTable: React.FC<MultiselectTableProps> = ({
     onSelectItems?.call(this, [...selectedItems]);
   };
 
-  const highlightedClassName = " !bg-gray-600";
+  const highlightedClassName = " !bg-slate-600";
 
   props.data.forEach((x) => {
     x.callback = () => selectItem(x);
@@ -49,8 +49,8 @@ const MultiselectTable: React.FC<MultiselectTableProps> = ({
         "flex flex-col text-white " + (className ? ` ${className}` : "")
       }
     >
-      <Table className="flex-1 bg-gray-700/50" {...props} />
-      <div className="bg-gray-900 text-center p-2">
+      <Table className="flex-1 bg-slate-700/50" {...props} />
+      <div className="bg-slate-900 text-center p-2">
         {selectedItems.length} items selected
       </div>
     </div>

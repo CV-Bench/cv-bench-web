@@ -11,7 +11,7 @@ const Dropdown = ({ options }: DropdownProps) => {
     <>
       <Menu as="div" className="relative inline-block text-left m-2">
         <div>
-          <Menu.Button className="inline-flex w-full justify-center rounded-md bg-gray-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none">
+          <Menu.Button className="inline-flex w-full justify-center rounded-md bg-slate-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-800 focus:outline-none">
             {selected.title}
             <ChevronDownIcon
               className="-mr-1 ml-2 h-5 w-5"
@@ -29,7 +29,7 @@ const Dropdown = ({ options }: DropdownProps) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 z-10 mt-2 w-fit origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="absolute left-0 z-10 mt-2 w-fit origin-top-right rounded-md bg-slate-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="py-1">
               {options.map((option) => (
                 <Menu.Item>
@@ -39,7 +39,7 @@ const Dropdown = ({ options }: DropdownProps) => {
                         setSelected(option);
                       }}
                       className={classNames(
-                        active ? "bg-gray-800" : "",
+                        active ? "bg-slate-800" : "",
                         "block px-4 py-2 text-sm w-full text-white"
                       )}
                     >

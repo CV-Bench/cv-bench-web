@@ -20,9 +20,9 @@ const AccessTypeInput: React.FC<AccessTypeInputProps> = ({
 }) => {
   return (
     <div className="grid grid-cols-2 group">
-      <div className="flex space-x-2 items-center uppercase text-sm text-gray-400 transition-all duration-150  group-hover:text-gray-200">
+      <div className="flex space-x-2 items-center uppercase text-sm text-slate-400 transition-all duration-150  group-hover:text-slate-200">
         <p>Access type</p>
-        <p className="text-xs text-gray-600">Who can use this data.</p>
+        <p className="text-xs text-slate-600">Who can use this data.</p>
       </div>
       <RadioGroupSelection
         values={["Private", "Public"]}

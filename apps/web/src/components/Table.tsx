@@ -85,11 +85,11 @@ const Table: React.FC<TableProps> = ({
   return (
     <div className={className ? ` ${className}` : ""}>
       <div
-        className={`grid grid-cols-${tableCols} bg-gray-900  divide-x divide-gray-600`}
+        className={`grid grid-cols-${tableCols} bg-slate-900/70  divide-x divide-slate-600`}
       >
         {header.map(({ title }, index) => (
           <p
-            className="uppercase font-bold text-sm py-2 px-4 text-gray-400"
+            className="uppercase font-bold text-sm py-2 px-4 text-slate-400"
             key={index}
           >
             {title}
@@ -98,7 +98,7 @@ const Table: React.FC<TableProps> = ({
       </div>
       <div className="relative ">
         {showMoreButton && (
-          <div className="absolute h-full flex justify-center items-end w-full bg-gradient-to-b from-transparent to-gray-800">
+          <div className="absolute h-full flex justify-center items-end w-full bg-gradient-to-b from-transparent to-slate-800">
             <Link href={showMoreButton.href} className="mb-8">
               <Button>{showMoreButton.text}</Button>
             </Link>
@@ -118,7 +118,7 @@ const Table: React.FC<TableProps> = ({
                 )}
               </div>
             ));
-            const className = `text-gray-200 grid grid-cols-${tableCols} divide-x divide-gray-600 text-left w-full hover:bg-gray-700 hover:bg-opacity-30 transition-all duration-150 bg-gray-800 ${
+            const className = `text-slate-200 grid grid-cols-${tableCols} divide-x divide-slate-600 text-left w-full hover:bg-slate-700 hover:bg-opacity-30 transition-all duration-150 bg-slate-800 ${
               items.className ? items.className : ""
             }`;
 

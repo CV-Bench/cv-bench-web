@@ -39,7 +39,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
             leaveTo="opacity-0"
             as={React.Fragment}
           >
-            <Dialog.Overlay className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
+            <Dialog.Overlay className="fixed inset-0 transition-opacity bg-slate-500 bg-opacity-75" />
           </Transition.Child>
           <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
           &#8203;
@@ -53,7 +53,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
             as={Fragment}
           >
             <div
-              className={`inline-block w-full text-left rounded-md align-bottom transition-all overflow-hidden transform bg-white dark:bg-gray-900 ${className} sm:my-8 sm:align-middle ${sizeBreakpoint} sm:w-full`}
+              className={`inline-block w-full text-left rounded-md align-bottom transition-all overflow-hidden transform bg-white dark:bg-slate-900 ${className} sm:my-8 sm:align-middle ${sizeBreakpoint} sm:w-full`}
             >
               {children}
             </div>

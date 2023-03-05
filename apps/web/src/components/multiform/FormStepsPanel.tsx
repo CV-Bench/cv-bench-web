@@ -86,7 +86,7 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
 
   return (
     <div className="container flex flex-col mx-auto space-y-4 py-8">
-      <div className="mx-auto overflow-hidden w-full lg:flex divide-x divide-gray-700">
+      <div className="mx-auto overflow-hidden w-full lg:flex divide-x divide-slate-700">
         {steps.map(({ name, description }, index) => (
           <button
             key={index}
@@ -100,12 +100,12 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
               className={`absolute top-0 left-0 w-full h-full ${
                 activeStep === index
                   ? "bg-gradient-to-br"
-                  : "group-hover:bg-gradient-to-br bg-gray-800"
+                  : "group-hover:bg-gradient-to-br bg-slate-800"
               } transition-all duration-150 from-indigo-800 to-purple-800`}
             />
             <div
               className={`relative p-4 w-full flex transition-all duration-150 ${
-                activeStep === index ? "bg-transparent" : "bg-gray-800"
+                activeStep === index ? "bg-transparent" : "bg-slate-800"
               } ${classNames(
                 index === 0 && "rounded-l-lg",
                 index === steps.length - 1 && "rounded-r-lg"
@@ -114,7 +114,7 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
               <span
                 className={`w-8 h-8 flex items-center justify-center rounded-full transition-all duration-150 ${classNames(
                   activeStep === index
-                    ? "border border-gray-200 text-gray-200"
+                    ? "border border-slate-200 text-slate-200"
                     : "border border-indigo-500 text-indigo-500",
                   activeStep != index &&
                     completedSteps[index] &&
@@ -122,16 +122,18 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
                 )}`}
               >
                 {completedSteps[index] ? (
-                  <Check className="text-gray-200" fontSize="small" />
+                  <Check className="text-slate-200" fontSize="small" />
                 ) : (
                   <span>{index + 1}</span>
                 )}
               </span>
               <div className="ml-4 flex flex-col space-y-1">
-                <p className="font-semibold text-gray-100 uppercase text-sm text-left">
+                <p className="font-semibold text-slate-100 uppercase text-sm text-left">
                   {name}
                 </p>
-                <p className="text-gray-200 text-sm text-left">{description}</p>
+                <p className="text-slate-200 text-sm text-left">
+                  {description}
+                </p>
               </div>
             </div>
           </button>
