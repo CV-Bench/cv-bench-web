@@ -37,12 +37,14 @@ taskNamespace.on("connection", (socket) => {
       status: TaskStatus.RUNNING
     });
 
-    // Send Notification
+    // TODO SEND NOTIFICATION
   });
 
   socket.on("stop_failed", (data: TaskNamespaceData) => {});
 
-  socket.on("task_stopped", (data: TaskNamespaceData) => {});
+  socket.on("task_stopped", (data: TaskNamespaceData) => {
+    // TODO SEND NOTIFICATION
+  });
 
   socket.on("task_log", (data) => {
     receiveTaskLogData(data, socket);

@@ -26,7 +26,7 @@ dataNamespace.on("connection", (socket) => {
 
     Database[collectionName].updateOne(dataId, undefined, { s3Key });
 
-    // Send Notification to client that upload is completed
+    // TODO SEND NOTIFICATION
   });
 
   socket.on("data_deleted", (data) => {

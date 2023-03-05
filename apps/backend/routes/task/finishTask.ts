@@ -42,6 +42,8 @@ const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {
         });
 
         Socket.Task.cleanup(taskId);
+
+        // TODO SEND NOTIFICATION
       },
       () => {
         res.status(404).end();
