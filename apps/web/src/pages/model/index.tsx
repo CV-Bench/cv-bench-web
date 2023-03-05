@@ -1,28 +1,24 @@
+import { CubeIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 
 import Button from "@/components/Button";
 import Card from "@/components/Card";
-import Table, { TableHeader, TableItem } from "@/components/Table";
+import Table from "@/components/Table";
+import TableHeader from "@/components/TableHeader";
 import { useModelList } from "@/hooks/model";
+import { formatToDateString } from "@/utils/date";
 
 const ModelList = () => {
   const { data: models } = useModelList();
-  const data: TableItem[] =
-    models?.map((model) => {
-      return {
-        ...model,
-        domainTags: model.domainTags.join(", "),
-        href: `/model/${model._id}`
-      };
-    }) ?? [];
-  const header: TableHeader[] = [
-    {
-      key: "_id",
-      title: "ID"
-    },
+
+  const header = [
     {
       key: "name",
       title: "Name"
+    },
+    {
+      key: "createdAt",
+      title: "Created At"
     },
     {
       key: "domainTags",
@@ -30,19 +26,33 @@ const ModelList = () => {
     }
   ];
 
-  return (
-    <div className="h-full flex flex-col text-white container mx-auto">
-      <Card className="flex justify-between items-center">
-        <div>
-          <h1 className=" text-3xl">Models</h1>
-          <span>Models description</span>
-        </div>
-        <Link href="/model/upload">
-          <Button>Upload</Button>
-        </Link>
-      </Card>
+  if (!models) {
+    return null;
+  }
 
-      <Table data={data} header={header} />
+  return (
+    <div className="h-full flex flex-col text-white container mx-auto py-8">
+      <Card>
+        <TableHeader
+          title="Models"
+          description="Models description"
+          icon={<CubeIcon />}
+        >
+          <Link href="/model/upload">
+            <Button>Upload new Model</Button>
+          </Link>
+        </TableHeader>
+
+        <Table
+          data={models.map(({ createdAt, name, _id, domainTags }) => ({
+            name,
+            createdAt: formatToDateString(createdAt),
+            domainTags: domainTags.join(", ").slice(0, 20),
+            href: `/model/${_id}`
+          }))}
+          header={header}
+        />
+      </Card>
     </div>
   );
 };
