@@ -4,7 +4,8 @@ import { DataBody, ObjId, PostDataBody } from "./utils";
 
 export const NetworkBody = DataBody.extend({
   datasetId: ObjId,
-  networkArchitectureId: ObjId
+  networkArchitectureId: ObjId,
+  s3Key: z.string().optional()
 });
 
 export type NetworkDb = z.infer<typeof NetworkBody>;
