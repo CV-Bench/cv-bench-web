@@ -74,13 +74,13 @@ const ModelId = () => {
     <div className="h-full flex flex-col container mx-auto pt-8 space-y-4">
       <div className="flex space-x-4">
         <Card className="w-1/4 flex flex-col p-4 divide-y divide-slate-700">
-          <div className="space-y-1 pb-2">
+          <div className="space-y-1 pb-4">
             <InputLabel>3D Model</InputLabel>
             <Card className="bg-indigo-800 p-1 text-slate-400 text-sm">
               <ul>{model.modelObject?.filename}</ul>
             </Card>
           </div>
-          <div className="space-y-1 py-2">
+          <div className="space-y-1 py-4">
             <InputLabel>Materials & Textures</InputLabel>
             {(model.modelAssets?.length ?? 0) == 0 && (
               <span>No materials present</span>
@@ -91,7 +91,7 @@ const ModelId = () => {
               </Card>
             ))}
           </div>
-          <div>
+          <div className="space-y-1 py-4">
             <InputLabel>Tags</InputLabel>
             <TagInput
               tags={model.domainTags}
