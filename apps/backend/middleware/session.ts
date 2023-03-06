@@ -13,7 +13,13 @@ const sessionOptions = {
   cookie: {
     httpOnly: true,
     secure: false,
-    maxAge: 1000 * 60 * 60 * 24
+    maxAge: 1000 * 60 * 60 * 24,
+    ...(process.env.NODE_ENV === "production"
+      ? {
+          domain: process.env.COOKIE_BASE,
+          secure: true
+        }
+      : {})
   },
   resave: true,
   saveUninitialized: true,

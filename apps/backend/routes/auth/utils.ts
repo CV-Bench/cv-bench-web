@@ -98,7 +98,9 @@ export const createAuthCallbackHandler = (
 ): RequestHandler => {
   return async (req: Request, res: Response) => {
     try {
-      if (!req.session.nonce) req.session.nonce = {};
+      if (!req.session.nonce) {
+        req.session.nonce = {};
+      }
       const params = authProviderClient.callbackParams(req);
       const tokenSet = await authProviderClient.callback(
         redirectUriBase + authProvider + "/callback",

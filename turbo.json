@@ -44,6 +44,7 @@
     "SOCKET_AUTH_TOKEN_KEY",
     "SOCKET_AUTH_TOKEN",
     "APP_DOMAIN",
-    "API_DOMAIN"
+    "API_DOMAIN",
+    "COOKIE_BASE"
   ]
 }
