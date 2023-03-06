@@ -8,7 +8,7 @@ import { MutatingDots } from "react-loader-spinner";
 import useSWR from "swr";
 
 import ModalProvider from "@/components/modal/ModalProvider";
-import { useSocket } from "@/network/socket";
+import { useSocket } from "@/hooks/useSocket";
 
 import { SessionUser } from "shared-types";
 

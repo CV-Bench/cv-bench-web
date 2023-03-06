@@ -1,5 +1,4 @@
-// const io = require("socket.io-client");
-import { api } from ".";
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import useSWR, { SWRResponse } from "swr";
@@ -7,6 +6,8 @@ import useSWR, { SWRResponse } from "swr";
 import { addToast } from "@/components/Toast";
 
 import { NotificationDb } from "shared-types";
+
+import { api } from "../network";
 
 export const useSocket = async () => {
   const [globSocket, setSocket] = useState<Socket>();
@@ -37,6 +38,8 @@ export const useSocket = async () => {
       "notification",
       ({ title, description, type, href }: NotificationDb) => {
         addToast(title, description, type, href);
+
+        // TODO Invalidate Notifications
       }
     );
 
