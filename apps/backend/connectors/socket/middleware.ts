@@ -1,10 +1,10 @@
 import { NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
+import { ObjectId } from "mongodb";
 import { Socket } from "socket.io";
 import { ExtendedError } from "socket.io/dist/namespace";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
-import { SocketMiddleware } from "./types";
 import {
   ServerNamespace,
   ServerNamespaceMap,
@@ -16,6 +16,8 @@ import logger from "../../util/logger";
 import Database from "../mongo";
 import { RedisStore } from "../redis";
 import { redisClient } from "../redis";
+
+import { SocketMiddleware } from "./types";
 
 export const serverAuthMiddleware: SocketMiddleware = (socket, next) => {
   const token = socket.handshake.auth[process.env.SOCKET_AUTH_TOKEN_KEY || ""];
@@ -80,6 +82,37 @@ export const serverRegistryMiddleware: SocketMiddleware = (socket, next) => {
     type: SocketType.SERVER,
     serverNamespace: ServerNamespaceMap[socket.nsp.name] as ServerNamespace,
     serverId: socket.handshake.headers.serverid as string
+  });
+
+  socket.on("disconnect", (reason) => {
+    Database.Socket.deleteOne(socket.id);
+  });
+
+  next();
+};
+
+export const userRegistryMiddleware = (
+  socket: Socket<DefaultEventsMap, any> & {
+    user: { _id: string; [key: string] };
+  },
+  next: (err?: ExtendedError | undefined) => void
+) => {
+  if (!socket.user || !socket.user._id) {
+    logger.error(
+      loggerTitle.SOCKET,
+      "Socket Connection failed.",
+      "Namespace not valid or id missing!"
+    );
+
+    socket.disconnect();
+    return;
+  }
+
+  Database.Socket.insertOne({
+    createdAt: new Date(),
+    socketId: socket.id,
+    type: SocketType.FRONTEND,
+    userId: new ObjectId(socket.user._id)
   });
 
   socket.on("disconnect", (reason) => {

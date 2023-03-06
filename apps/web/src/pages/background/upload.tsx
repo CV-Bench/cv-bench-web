@@ -1,10 +1,8 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import Button from "@/components/Button";
 import Card from "@/components/Card";
 import { addToast } from "@/components/Toast";
-import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import ImageDragAndDrop from "@/components/inputs/ImageDragAndDrop";
 import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
@@ -81,7 +79,7 @@ const UploadBackground = () => {
         );
         push("/background");
       })
-      .catch((e) => {
+      .catch(() => {
         addToast(
           "Upload Failed!",
           "Something went wrong while uploading one or more backgrounds.",

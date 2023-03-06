@@ -71,7 +71,7 @@ const Toast: React.FC<ToastProps> = ({
   return (
     <Link
       href={href || ""}
-      className={`relative mb-2 flex shadow-lg rounded-md ${className} rounded-lg overflow-hidden bg-slate-800 py-2 pl-2 pr-8 items-start space-x-2 ${
+      className={`relative mb-2 flex shadow-lg rounded-md max-w-xs ${className} rounded-lg overflow-hidden bg-slate-800 py-2 pl-2 pr-8 items-start space-x-2 ${
         visible ? "animate-enter" : "animate-leave"
       }`}
     >

@@ -250,14 +250,6 @@ export const api = {
   getTaskList: async (): Promise<GetTaskList> => {
     const tasks = await getRequest(getRoute(RouteNames.GET_TASK_LIST)());
 
-    console.log(tasks);
-
-    try {
-      GetTaskListBody.parse(tasks);
-    } catch (e) {
-      console.error(e);
-    }
-
     return GetTaskListBody.parse(tasks) as GetTaskList;
   },
   stopTask: (id: string) => postRequest(getRoute(RouteNames.STOP_TASK)(id)),

@@ -1,18 +1,13 @@
-import { Collection, FindCursor, InsertOneResult, ObjectId } from "mongodb";
+import { FindCursor, InsertOneResult, ObjectId } from "mongodb";
 
 import {
-  AccessType,
   CollectionName,
-  loggerTitle,
   ModelDb,
   ServerNamespace,
   SocketDb
 } from "shared-types";
 
-import logger from "../../util/logger";
-
 import { collectionRequest } from "./";
-import { isUsersOrPublic } from "./utils";
 
 const insertOne = (model: Omit<SocketDb, "_id">) =>
   collectionRequest<InsertOneResult>(
@@ -29,19 +24,6 @@ const deleteOne = (socketId: string) =>
     });
   });
 
-const find = (userId: string | ObjectId) =>
-  collectionRequest<FindCursor<ModelDb>>(
-    CollectionName.SOCKET,
-    async (collection) => {
-      return collection.find({
-        $or: [
-          { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC }
-        ]
-      });
-    }
-  );
-
 const findOne = (serverId: string, namespace: ServerNamespace) =>
   collectionRequest<SocketDb>(CollectionName.SOCKET, async (collection) => {
     return collection.findOne({
@@ -50,11 +32,18 @@ const findOne = (serverId: string, namespace: ServerNamespace) =>
     });
   });
 
+const findUserSockets = (userId: ObjectId | string) =>
+  collectionRequest<FindCursor<SocketDb>>(CollectionName.SOCKET, async (collection) => {
+    return collection.find({
+      userId: new ObjectId(userId)
+    });
+  });
+
 const Socket = {
   insertOne,
   deleteOne,
-  find,
-  findOne
+  findOne,
+  findUserSockets
 };
 
 export default Socket;

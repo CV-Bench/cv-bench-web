@@ -1,6 +1,7 @@
-import { Socket } from "socket.io";
+import { ObjectId } from "mongodb";
 
 import { SessionUser } from "./auth";
+import { NotificationDb } from "./notification";
 import { TaskDb } from "./task";
 import { DataType } from "./utils";
 
@@ -30,6 +31,7 @@ export interface SocketDb {
   type: SocketType;
   serverNamespace?: ServerNamespace;
   serverId?: string;
+  userId?: ObjectId;
 }
 
 export interface ServerSocketData {
@@ -102,9 +104,7 @@ export interface FrontendNamespaceClientToServerEvents
 
 export interface FrontendNamespaceServerToClientEvents
   extends ServerToClientEvents {
-  start_failed: (data: TaskNamespaceData) => void;
-  task_started: (data: TaskNamespaceData) => void;
-  stop_failed: (data: TaskNamespaceData) => void;
-  task_stopped: (data: TaskNamespaceData) => void;
   task_log: (data: TaskDb) => void;
+
+  notification: (data: NotificationDb) => void;
 }
