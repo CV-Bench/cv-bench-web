@@ -6,6 +6,7 @@ import Background from "./background";
 import { prepareCollection } from "./client";
 import Dataset from "./dataset";
 import DatasetConfiguration from "./datasetConfiguration";
+import DatasetPreview from "./datasetPreview";
 import Model from "./model";
 import Network from "./network";
 import NetworkArchitecture from "./networkArchitecture";
@@ -29,6 +30,7 @@ const Database = {
   Model,
   Dataset,
   DatasetConfiguration,
+  DatasetPreview,
   User,
   Background,
   NetworkArchitecture,

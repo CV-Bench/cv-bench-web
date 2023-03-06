@@ -44,6 +44,9 @@ import {
   getDatasetConfigurationList,
   updateDatasetConfiguration
 } from "./routes/datasetConfiguration";
+import {
+  createDatasetPreview
+} from "./routes/datasetPreview"
 import download from "./routes/download";
 import {
   deleteModel,
@@ -164,6 +167,12 @@ app.post(
   route(RouteNames.POST_DATASET_CONFIGURATION),
   createDatasetConfiguration
 );
+
+//DATASET PREVIEW ROUTES
+app.post(
+  route(RouteNames.POST_DATASET_PREVIEW),
+  createDatasetPreview
+)
 
 // NETWORK ROUTES
 app.get(route(RouteNames.GET_NETWORK_LIST), getNetworkList);
