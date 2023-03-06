@@ -26,7 +26,8 @@ const App = ({ Component, pageProps }: AppProps) => {
   const [user, setUser] = useState(undefined as SessionUser | undefined);
 
   const { data, isLoading, error } = useSWR(
-    (process.env.HOST_DOMAIN || "http://localhost:3001") + "/auth/user",
+    (process.env.NEXT_PUBLIC_HOST_DOMAIN || "http://localhost:3001") +
+      "/auth/user",
     fetcher
   );
 
