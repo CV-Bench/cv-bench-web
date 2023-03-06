@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import Card from "@/components/Card";
+import DownloadButton from "@/components/DownloadButton";
 import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
@@ -8,7 +9,7 @@ import { useDataset } from "@/hooks/dataset";
 import { api } from "@/network";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { GetNetwork, AccessType, GetDataset } from "shared-types";
+import { AccessType, DataType, GetDataset } from "shared-types";
 
 const DatasetId = () => {
   const router = useRouter();
@@ -31,11 +32,6 @@ const DatasetId = () => {
   const setName = (val: string) => setDataset({ ...dataset, name: val });
   const setAccessType = (val: AccessType) =>
     setDataset({ ...dataset, accessType: val });
-
-
-  const downloadDataset = () => {
-    
-  };
 
   const deleteDataset = async () => {
     await api.deleteDataset(dataset._id);
@@ -63,7 +59,7 @@ const DatasetId = () => {
             </div>
           </Card>
           <Card className="flex-1 ml-2 w-3/4">
-
+            
           </Card>
         </div>
         <Card className="mt-4 flex">
@@ -92,7 +88,7 @@ const DatasetId = () => {
           <div className="border-l border-white -my-4"></div>
           <div className="flex-1 px-4">
             <InputLabel>Download</InputLabel>
-            <Button onClick={downloadDataset}>Download</Button>
+            <DownloadButton dataType={DataType.DATASET} dataId={dataset._id} s3Key={dataset.s3Key} />
           </div>
           <div className="border-l border-white -my-4"></div>
           <div className="flex-1 px-4">

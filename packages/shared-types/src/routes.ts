@@ -199,6 +199,12 @@ export const Routes: {
     (id?: string) => "/datasetConfiguration/" + id
   ),
 
+  [RouteNames.GET_DATASET_PREVIEW]: createRoute(
+    "/datasetPreview/:id",
+    /^\/datasetPreview\/.*\/?get?$/,
+    z.object({}),
+    (id?: string) => "/datasetPreview/" + id
+  ),
   [RouteNames.POST_DATASET_PREVIEW]: createRoute(
     "/datasetPreview",
     /^\/datasetPreview\/?post$/,

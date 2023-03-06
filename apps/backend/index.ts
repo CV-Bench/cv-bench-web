@@ -45,9 +45,10 @@ import {
   updateDatasetConfiguration
 } from "./routes/datasetConfiguration";
 import {
-  createDatasetPreview
+  createDatasetPreview,
+  getDatasetPreview
 } from "./routes/datasetPreview"
-import getDatasetPreview from "./routes/datasetPreview/getDatasetPreview";
+
 import download from "./routes/download";
 import {
   deleteModel,

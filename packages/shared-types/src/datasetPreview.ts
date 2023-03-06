@@ -26,8 +26,8 @@ export type PostDatasetPreviewResponse = z.infer<typeof PostDatasetPreviewRespon
 
 
 // GET
-export const GetDatasetPreviewBody = DatasetPreviewBody.omit({createdAt: true}).extend({
+export const GetDatasetPreviewBody = z.array(DatasetPreviewBody.omit({createdAt: true}).extend({
   createdAt: z.string().transform((d) => new Date(d))
-});
+}));
 
 export type GetDatasetPreview = z.infer<typeof GetDatasetPreviewBody>;
