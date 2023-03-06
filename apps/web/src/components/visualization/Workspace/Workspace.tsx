@@ -6,9 +6,6 @@ import {
 } from "@react-three/drei";
 import {
   Canvas,
-  PerspectiveCameraProps,
-  useLoader,
-  useThree
 } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import { Layers, Vector3 } from "three";
@@ -17,12 +14,7 @@ import { useBackground } from "@/hooks/background";
 import { useModel } from "@/hooks/model";
 
 import {
-  BlenderConfiguration,
-  GetBackgroundList,
-  GetModelList,
-  PostDataset,
-  PostDatasetConfiguration,
-  PostDatasetConfigurationBody
+  BlenderConfiguration
 } from "shared-types";
 
 import ModelObject from "../ModelObject/ModelObject";

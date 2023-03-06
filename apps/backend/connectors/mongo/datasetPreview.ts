@@ -12,45 +12,26 @@ import {
     DatasetPreviewDb,
     loggerTitle
   } from "shared-types";
-  
-  import logger from "../../util/logger";
-  
+
   import { collectionRequest } from "./";
-  import { isUsersOrPublic } from "./utils";
   
   import Task from "./task";
   import Dataset from "./dataset";
 
+  const find = async (taskOrDatasetId: string | ObjectId, userId: string | undefined) => {
+    const hasViewRight = (await Task.findOne(taskOrDatasetId, userId)) ?? (await Dataset.findOne(taskOrDatasetId, userId));
+    
+    if (!hasViewRight) {
+      return null;
+    }
 
-  /*  TODO
-  function isTaskOrDatasetOwner(){
-  }
-
-  function isTaskOrDatasetViewer(){
-
-  }
-
-  const findOne = (id: string | ObjectId, userId: string | undefined) =>
-    collectionRequest<DatasetPreviewDb>(CollectionName.DATASET_PREVIEW, async (collection) => {
-      return collection.findOne({
-        _id: new ObjectId(id),
-        ...(userId ? isUsersOrPublic(userId) : {})
+    return collectionRequest<DatasetPreviewDb>(CollectionName.DATASET_PREVIEW, async (collection) => {
+      return collection.find({
+        taskId: new ObjectId(taskOrDatasetId)
       });
     });
-
-    const find = (userId: string | ObjectId) =>
-    collectionRequest<FindCursor<DatasetPreviewDb>>(
-      CollectionName.DATASET_PREVIEW,
-      async (collection) => {
-        return collection.findOne({
-          $or: [
-            { userId: new ObjectId(userId) },
-            { accessType: AccessType.PUBLIC }
-          ]
-        });
-      }
-    );
-  */
+  }
+  
   
   const insert = (preview: Omit<DatasetPreviewDb, "createdAt">) =>
     collectionRequest<InsertOneResult>(
@@ -79,7 +60,7 @@ import {
     //findOne,
     insert,
     deleteOne,
-    //find
+    find
   };
   
   export default DatasetPreview;
