@@ -59,10 +59,10 @@ const Navbar = ({ user }: { user: SessionUser }) => {
   );
 
   return (
-    <Disclosure as="nav" className="bg-white shadow">
+    <Disclosure as="nav" className="bg-slate-900 shadow">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto container px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between">
               <div className="flex">
                 <div className="flex flex-shrink-0 items-center">
@@ -84,9 +84,9 @@ const Navbar = ({ user }: { user: SessionUser }) => {
                       key={title}
                       className={`inline-flex items-center ${
                         activeNavbarRoute === index
-                          ? "border-b-2 border-indigo-500 text-gray-900"
-                          : "text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                      }  px-1 pt-1 text-sm font-medium `}
+                          ? "border-indigo-500 text-indigo-400"
+                          : "text-slate-500 hover:border-slate-400 border-transparent hover:text-slate-400"
+                      }  px-1 pt-1 text-sm font-medium border-b-2 transition-all duration-150`}
                     >
                       {title}
                     </Link>
@@ -99,7 +99,7 @@ const Navbar = ({ user }: { user: SessionUser }) => {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <Menu.Button className="flex rounded-full bg-white text-sm transition-all duration-150 focus:outline-none focus:ring-1 focus:ring-slate-600 hover:opacity-50">
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
@@ -118,15 +118,15 @@ const Navbar = ({ user }: { user: SessionUser }) => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right bg-slate-800 border border-slate-600 rounded-lg py-1 shadow-lg focus:outline-none">
                       {ProfileDropdownRoutes.map(({ href, title }) => (
                         <Menu.Item key={title}>
                           {({ active }) => (
                             <a
                               href={href}
                               className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                active ? "bg-slate-600" : "",
+                                "block px-4 py-2 text-sm text-slate-200"
                               )}
                             >
                               {title}
@@ -140,7 +140,7 @@ const Navbar = ({ user }: { user: SessionUser }) => {
               </div>
               <div className="-mr-2 flex items-center sm:hidden">
                 {/* Mobile menu button */}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -162,14 +162,14 @@ const Navbar = ({ user }: { user: SessionUser }) => {
                   className={`block border-l-4 ${
                     activeNavbarRoute === index
                       ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                      : "border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                      : "border-transparent text-slate-500 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-700"
                   }  py-2 pl-3 pr-4 text-base font-medium `}
                 >
                   {title}
                 </Disclosure.Button>
               ))}
             </div>
-            <div className="border-t border-gray-200 pt-4 pb-3">
+            <div className="border-t border-slate-200 pt-4 pb-3">
               <div className="flex items-center px-4 justify-between">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
@@ -180,10 +180,10 @@ const Navbar = ({ user }: { user: SessionUser }) => {
                     />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800">
+                    <div className="text-base font-medium text-slate-800">
                       {user.name}
                     </div>
-                    <div className="text-sm font-medium text-gray-500">
+                    <div className="text-sm font-medium text-slate-500">
                       {user.email}
                     </div>
                   </div>
@@ -196,7 +196,7 @@ const Navbar = ({ user }: { user: SessionUser }) => {
                     as={Link}
                     key={index}
                     href={href}
-                    className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                    className="block px-4 py-2 text-base font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                   >
                     {title}
                   </Disclosure.Button>

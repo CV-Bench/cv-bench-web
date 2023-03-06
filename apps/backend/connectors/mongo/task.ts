@@ -6,9 +6,7 @@ import {
   UpdateResult
 } from "mongodb";
 
-import { AccessType, CollectionName, TaskDb, loggerTitle } from "shared-types";
-
-import logger from "../../util/logger";
+import { CollectionName, TaskDb } from "shared-types";
 
 import { collectionRequest } from "./";
 import { isUsersOrPublic } from "./utils";
@@ -60,11 +58,8 @@ const find = (userId: string | ObjectId) =>
   collectionRequest<FindCursor<TaskDb>>(
     CollectionName.TASK,
     async (collection) => {
-      return collection.findOne({
-        $or: [
-          { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC }
-        ]
+      return collection.find({
+        userId: new ObjectId(userId)
       });
     }
   );

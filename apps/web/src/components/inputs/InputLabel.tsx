@@ -3,7 +3,7 @@ export interface InputLabelProps extends React.PropsWithChildren {
 }
 
 const InputLabel: React.FC<InputLabelProps> = ({ className, children }) => (
-  <label className={`inline-block mb-2 text-white ${className}`}>
+  <label className={`inline-block text-slate-300 ${className}`}>
     {children}
   </label>
 );

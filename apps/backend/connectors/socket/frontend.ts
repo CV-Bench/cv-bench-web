@@ -15,9 +15,10 @@ import {
 } from "shared-types";
 
 import logger from "../../util/logger";
+import Database from "../mongo";
 
 import io from "./client";
-import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
+import { userRegistryMiddleware } from "./middleware";
 
 const frontendNamespace: Namespace<
   FrontendNamespaceClientToServerEvents,
@@ -32,6 +33,8 @@ frontendNamespace.use(
     decodedPropertyName: "user"
   })
 );
+
+frontendNamespace.use(userRegistryMiddleware);
 
 io.engine.on("connection_error", (e) => {
   logger.error(
@@ -61,7 +64,20 @@ const sendNotification = (
   notification: NotificationDb,
   userId: string | ObjectId
 ) => {
-  // TODO
+  Database.Socket.findUserSockets(userId).then((result) =>
+    result.toArray().then((result) => {
+      for (const { socketId } of result) {
+        const socket = frontendNamespace.sockets.get(socketId);
+
+        if (!socket) {
+          Database.Socket.deleteOne(socketId);
+          continue;
+        }
+
+        socket.emit("notification", notification);
+      }
+    })
+  );
 };
 
 const Frontend = {

@@ -7,6 +7,7 @@ import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
+import ToolGeneralSettings from "@/components/inputs/ToolGeneralSettings";
 import ModelPreview from "@/components/visualization/ModelPreview";
 import { useModel } from "@/hooks/model";
 import { api } from "@/network";
@@ -30,10 +31,14 @@ const ModelId = () => {
     return <></>;
   }
 
-  const setTags = (val: string[]) => setModel({ ...model, domainTags: val });
   const setName = (val: string) => setModel({ ...model, name: val });
   const setAccessType = (val: AccessType) =>
     setModel({ ...model, accessType: val });
+
+  const handleChange = (
+    key: "accessType" | "name" | "domainTags",
+    val: string[] | string | AccessType
+  ) => setModel({ ...model, [key]: val });
 
   const downloadFile = (file: DataUrlFile) => {
     var a = document.createElement("a");
@@ -63,81 +68,59 @@ const ModelId = () => {
       domainTags: model.domainTags,
       accessType: model.accessType
     });
-    router.push("/model");
   };
 
   return (
-    <>
-      <div className="h-full flex flex-col text-white container mx-auto">
-        <div className="flex-1 flex">
-          <Card className="mr-2 w-1/4 flex flex-col justify-around">
-            <div>
-              <InputLabel>3D Model</InputLabel>
-              <Card className="bg-indigo-800">
-                <ul>{model.modelObject?.filename}</ul>
+    <div className="h-full flex flex-col container mx-auto pt-8 space-y-4">
+      <div className="flex space-x-4">
+        <Card className="w-1/4 flex flex-col p-4 divide-y divide-slate-700">
+          <div className="space-y-1 pb-4">
+            <InputLabel>3D Model</InputLabel>
+            <Card className="bg-indigo-800 p-1 text-slate-400 text-sm">
+              <ul>{model.modelObject?.filename}</ul>
+            </Card>
+          </div>
+          <div className="space-y-1 py-4">
+            <InputLabel>Materials & Textures</InputLabel>
+            {(model.modelAssets?.length ?? 0) == 0 && (
+              <span>No materials present</span>
+            )}
+            {model.modelAssets?.map((x, i) => (
+              <Card className="bg-indigo-800 p-1 text-slate-400 text-sm">
+                <ul key={i}>{x.filename}</ul>
               </Card>
-            </div>
-            <div>
-              <InputLabel>Materials & Textures</InputLabel>
-              <Card className="bg-indigo-800">
-                <ul>
-                  {(model.modelAssets?.length ?? 0) == 0 && (
-                    <span>No materials present</span>
-                  )}
-                  {model.modelAssets?.map((x, i) => (
-                    <li key={i}>{x.filename}</li>
-                  ))}
-                </ul>
-              </Card>
-            </div>
-            <div>
-              <InputLabel>Tags</InputLabel>
-              <TagInput tags={model.domainTags} setTags={setTags} />
-            </div>
-          </Card>
-          <Card className="flex-1 ml-2 w-3/4">
-            <ModelPreview
-              model={model.modelObject}
-              modelAssets={model.modelAssets}
+            ))}
+          </div>
+          <div className="space-y-1 py-4">
+            <InputLabel>Tags</InputLabel>
+            <TagInput
+              tags={model.domainTags}
+              setTags={(newTags: string[]) =>
+                handleChange("domainTags", newTags)
+              }
             />
-          </Card>
-        </div>
-        <Card className="mt-4 flex">
-          <div className="flex-1 pr-4">
-            <div>
-              <InputLabel>Name</InputLabel>
-              <InputField
-                type="text"
-                value={model.name}
-                onChange={(ev) =>
-                  setName((ev.target as HTMLInputElement).value)
-                }
-              />
-            </div>
-            <AccessTypeInput
-              className="mt-3"
-              accessType={model.accessType}
-              setAccessType={setAccessType}
-            />
-          </div>
-          <div className="border-l border-white -my-4"></div>
-          <div className="flex-1 px-4">
-            <InputLabel>Update</InputLabel>
-            <Button onClick={updateModel}>Update</Button>
-          </div>
-          <div className="border-l border-white -my-4"></div>
-          <div className="flex-1 px-4">
-            <InputLabel>Download</InputLabel>
-            <Button onClick={downloadModel}>Download</Button>
-          </div>
-          <div className="border-l border-white -my-4"></div>
-          <div className="flex-1 px-4">
-            <InputLabel>Delete</InputLabel>
-            <Button onClick={deleteModel}>Delete</Button>
           </div>
         </Card>
+        <Card className="flex-1 w-3/4">
+          <ModelPreview
+            model={model.modelObject}
+            modelAssets={model.modelAssets}
+          />
+        </Card>
       </div>
-    </>
+
+      <ToolGeneralSettings
+        accessType={model.accessType}
+        name={model.name}
+        uploadButtonText="Update"
+        handleChange={(key, data) => handleChange(key, data)}
+        handleUpload={updateModel}
+        showDownload
+        handleDownload={downloadModel}
+        showDelete
+        handleDelete={deleteModel}
+      />
+    </div>
   );
 };
 

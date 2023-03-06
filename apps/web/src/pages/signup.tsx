@@ -38,12 +38,12 @@ const Signup = () => {
                     onChange={() => {
                       setTermsAgreed(!termsAgreed);
                     }}
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
                     required
                   />
                 </div>
                 <div className="ml-3 text-sm">
-                  <label htmlFor="terms" className="font-medium text-gray-700">
+                  <label htmlFor="terms" className="font-medium text-slate-700">
                     Agree to Terms of Service
                   </label>
                 </div>

@@ -3,7 +3,7 @@ import { BellIcon } from "@heroicons/react/24/outline";
 const NotificationNav = () => (
   <button
     type="button"
-    className="rounded-full bg-gray-700 p-1 text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500"
+    className="rounded-full p-1 text-slate-200 hover:text-slate-400 transition-all duration-150 focus:outline-none focus:ring-1 focus:ring-slate-600"
   >
     <span className="sr-only">View notifications</span>
     <BellIcon className="h-6 w-6" aria-hidden="true" />

@@ -46,7 +46,7 @@ const uploadBackground = (
         resizeImage(128, 128, img, mimType).then((resizedImage) => {
           Database.Background.insertOne({
             _id: newId,
-            userId: req.session.user?._id,
+            userId: new ObjectId(req.session.user?._id),
             // Name in DB is always key in S3 for easier access
             name: key,
             domainTags,

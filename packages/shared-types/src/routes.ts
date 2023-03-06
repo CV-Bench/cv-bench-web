@@ -31,6 +31,8 @@ export enum RouteNames {
   PATCH_DATASET_CONFIGURATION = "PATCH_DATASET_CONFIGURATION",
   POST_DATASET_CONFIGURATION = "POST_DATASET_CONFIGURATION",
 
+  POST_DATASET_PREVIEW = "POST_DATASET_PREVIEW",
+
   GET_NETWORK_LIST = "GET_NETWORK_LIST",
   GET_NETWORK = "GET_NETWORK",
   DELETE_NETWORK = "DELETE_NETWORK",
@@ -194,6 +196,13 @@ export const Routes: {
     /^\/datasetConfiguration\/.*\/?post$/,
     z.object({}),
     (id?: string) => "/datasetConfiguration/" + id
+  ),
+
+  [RouteNames.POST_DATASET_PREVIEW]: createRoute(
+    "/datasetPreview",
+    /^\/datasetPreview\/?post$/,
+    PostDatasetBody,
+    () => "/datasetPreview/"
   ),
 
   [RouteNames.GET_NETWORK_LIST]: createRoute(

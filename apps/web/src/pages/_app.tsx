@@ -3,11 +3,12 @@ import type { Session } from "next-auth";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { MutatingDots } from "react-loader-spinner";
 import useSWR from "swr";
 
 import ModalProvider from "@/components/modal/ModalProvider";
-import { openSocket } from "@/network/socket";
+import { useSocket } from "@/hooks/useSocket";
 
 import { SessionUser } from "shared-types";
 
@@ -29,6 +30,8 @@ const App = ({ Component, pageProps }: AppProps) => {
     fetcher
   );
 
+  useSocket();
+
   useEffect(() => {
     if (!isLoading) {
       try {
@@ -39,7 +42,6 @@ const App = ({ Component, pageProps }: AppProps) => {
         if (router.pathname.startsWith("/signin")) {
           router.push("/");
         }
-        openSocket().then((io) => io.onAny(console.log));
       } catch (e) {
         router.push("/signin");
         setUser(undefined);
@@ -70,9 +72,12 @@ const App = ({ Component, pageProps }: AppProps) => {
     return (
       <>
         {user ? (
-          <NavLayout user={user as SessionUser}>
-            <Component {...pageProps} />
-          </NavLayout>
+          <>
+            <NavLayout user={user as SessionUser}>
+              <Component {...pageProps} />
+            </NavLayout>
+            <Toaster position="top-right" />
+          </>
         ) : (
           <Signin {...pageProps} />
         )}

@@ -38,7 +38,7 @@ const DropdownDetailed = ({ options }: DropdownDetailedProps) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="absolute left-0 z-10 mt-2 w-72 origin-top-right divide-y divide-gray-500 overflow-hidden rounded-md bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Listbox.Options className="absolute left-0 z-10 mt-2 w-72 origin-top-right divide-y divide-slate-500 overflow-hidden rounded-md bg-slate-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   {options.map((option) => (
                     <Listbox.Option
                       key={option.title}
@@ -69,7 +69,7 @@ const DropdownDetailed = ({ options }: DropdownDetailedProps) => {
                               </span>
                             ) : null}
                           </div>
-                          <p className={"mt-2 text-gray-200"}>
+                          <p className={"mt-2 text-slate-200"}>
                             {option.description}
                           </p>
                         </div>

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
+import Button from "./Button";
+
 export interface TableItem {
   callback?: () => void;
   href?: string;
@@ -81,26 +83,25 @@ const Table: React.FC<TableProps> = ({
     "grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4 grid-cols-5 grid-cols-6";
 
   return (
-    <div className={(className ? ` ${className}` : '')}>
+    <div className={className ? ` ${className}` : ""}>
       <div
-        className={`grid grid-cols-${tableCols} bg-gray-900  divide-x divide-gray-600`}
+        className={`grid grid-cols-${tableCols} bg-slate-900/70  divide-x divide-slate-600`}
       >
         {header.map(({ title }, index) => (
-          <p className="uppercase font-bold text-sm py-2 px-4" key={index}>
+          <p
+            className="uppercase font-bold text-sm py-2 px-4 text-slate-400"
+            key={index}
+          >
             {title}
           </p>
         ))}
       </div>
       <div className="relative ">
         {showMoreButton && (
-          <div className="absolute h-full flex justify-center items-end w-full bg-gradient-to-b from-transparent to-gray-800">
-            <div className="pb-8">
-              <Link legacyBehavior href={showMoreButton.href}>
-                <a className="text-indigo-400 text-base hover:text-indigo-500 transition-all duration-150">
-                  {showMoreButton.text}
-                </a>
-              </Link>
-            </div>
+          <div className="absolute h-full flex justify-center items-end w-full bg-gradient-to-b from-transparent to-slate-800">
+            <Link href={showMoreButton.href} className="mb-8">
+              <Button>{showMoreButton.text}</Button>
+            </Link>
           </div>
         )}
         <div>
@@ -117,7 +118,7 @@ const Table: React.FC<TableProps> = ({
                 )}
               </div>
             ));
-            const className = `text-gray-200 grid grid-cols-${tableCols} divide-x divide-gray-600 text-left w-full hover:bg-gray-700 transition-all duration-150 bg-gray-800 ${
+            const className = `text-slate-200 grid grid-cols-${tableCols} divide-x divide-slate-600 text-left w-full hover:bg-slate-700 hover:bg-opacity-30 transition-all duration-150 bg-slate-800 ${
               items.className ? items.className : ""
             }`;
 

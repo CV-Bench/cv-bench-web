@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import CloseIcon from "@mui/icons-material/Close";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import React from "react";
 
 interface ImageThumbnailProps {
@@ -20,10 +20,12 @@ const ImageThumbnail = (props: ImageThumbnailProps) => {
   };
 
   return (
-    <div className="relative m-5 ">
-      {showClose && <CloseIcon className="absolute top-0 left-0 bg-white" />}
+    <div className="relative w-full">
+      {showClose && (
+        <XMarkIcon className="absolute top-0 left-0 text-slate-400 w-8 h-8" />
+      )}
       <img
-        className="hover:opacity-5 hover:cursor-pointer object-scale-down h-40 w-40"
+        className="hover:opacity-50 hover:cursor-pointer object-scale-down w-full h-40"
         src={props.source}
         height={90}
         width={90}

@@ -16,8 +16,8 @@ const TagInput: React.FC<TagInputProps> = ({
     disabled={disabled}
     separators={["Enter", ","]}
     classNames={{
-      input: `block w-full rounded-md bg-gray-700 border-none text-white placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm ${className}`,
-      tag: "block rounded-md bg-gray-700 border-none text-white placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm p-2"
+      input: `block w-full rounded-md bg-slate-700 border-none text-white placeholder:text-slate-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm ${className}`,
+      tag: "block rounded-md bg-slate-700 border-none text-white placeholder:text-slate-400 shadow-sm focus:outline-none focus:ring-0 sm:text-sm p-2"
     }}
   />
 );

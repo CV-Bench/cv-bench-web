@@ -18,7 +18,7 @@ const RadioGroupSelection: React.FC<RadioGroupSelectionProps> = ({
 }) => (
   <div>
     <RadioGroup value={selected} onChange={onSelect}>
-      <div className="text-sm text-gray-100">
+      <div className="text-sm text-slate-100">
         {values.map((option, i) => (
           <RadioGroup.Option
             key={i}
@@ -27,7 +27,7 @@ const RadioGroupSelection: React.FC<RadioGroupSelectionProps> = ({
               option === selected ? "bg-indigo-800 z-10 border-indigo-800" : "",
               i === 0 ? "rounded-l-md" : "",
               i === values.length - 1 ? "rounded-r-md" : "",
-              "inline-flex cursor-pointer border w-1/2 border-gray-600 transition-colors ease-in duration-150 items-center hover:border-indigo-600 px-4 py-2"
+              "inline-flex cursor-pointer border w-1/2 border-slate-600 transition-colors ease-in duration-150 items-center hover:border-indigo-600 px-4 py-2"
             )}
           >
             {option}

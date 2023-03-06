@@ -7,10 +7,12 @@ import {
   TaskType,
   TaskStatus,
   TaskDatasetInfo,
-  DatasetType
+  DatasetType,
+  NotificationTrigger
 } from "shared-types";
 
 import Database from "../../connectors/mongo";
+import Notification from "../../connectors/notifications";
 import { Socket } from "../../connectors/socket";
 
 const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {
@@ -37,13 +39,13 @@ const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {
             break;
         }
 
-        Database.Task.updateOne(taskId, userId, {
-          status: TaskStatus.FINISHED
-        });
-
         Socket.Task.cleanup(taskId);
 
-        // TODO SEND NOTIFICATION
+        Database.Task.updateOne(taskId, userId, {
+          status: TaskStatus.FINISHED
+        }).then(() =>
+          Notification.add(NotificationTrigger.TASK_FINISHED, taskId, {})
+        );
       },
       () => {
         res.status(404).end();
