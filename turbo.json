@@ -8,6 +8,7 @@
     },
     "web#build": {
       "dependsOn": ["^build"],
+      "env": ["HOST_DOMAIN", "SOCKET_DOMAIN"],
       "outputs": [".next/**"]
     },
     "backend#build": {
@@ -22,9 +23,6 @@
     }
   },
   "globalEnv": [
-    "NEXT_PUBLIC_BASE_API_URL",
-    "NEXT_PUBLIC_APP_TOKEN_KEY",
-    "NEXT_PUBLIC_APP_TOKEN",
     "EXPRESS_PORT",
     "SOCKET_PORT",
     "REDIS_SECRET",
@@ -39,16 +37,11 @@
     "AWS_SECRET_ACCESS_KEY",
     "MONGO_CONNECTION_URL",
     "MONGO_DATABASE_NAME",
-    "NEXT_PUBLIC_BASE_API_URL",
-    "NEXT_PUBLIC_APP_TOKEN_KEY",
-    "NEXT_PUBLIC_APP_TOKEN",
     "NODE_ENV",
     "BUCKET_NAME",
     "MICROSOFT_AUTH_CLIENT_ID",
     "MICROSOFT_AUTH_CLIENT_SECRET",
     "SOCKET_AUTH_TOKEN_KEY",
-    "SOCKET_AUTH_TOKEN",
-    "NEXT_PUBLIC_HOST_DOMAIN",
-    "NEXT_PUBLIC_SOCKET_DOMAIN"
+    "SOCKET_AUTH_TOKEN"
   ]
 }
