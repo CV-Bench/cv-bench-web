@@ -10,7 +10,7 @@ import Database from "../../connectors/mongo";
 import logger from "../../util/logger";
 
 const redirectUriBase =
-  (process.env.HOST_DOMAIN || "http://localhost") + "/auth/";
+  (process.env.API_DOMAIN || "http://localhost:3001") + "/auth/";
 
 export const createAuthClient = (
   issuerDomain: string,
@@ -127,13 +127,13 @@ export const createAuthCallbackHandler = (
             res
               .status(200)
               .send(
-                "<html><body><script>location.href = 'http://localhost:3000/'</script></body></html>"
+                `<html><body><script>location.href = '${process.env.APP_DOMAIN}'</script></body></html>`
               );
           } else
             res
               .status(200)
               .send(
-                "<html><body><script>location.href = 'http://localhost:3000/signup'</script></body></html>"
+                `<html><body><script>location.href = '${process.env.APP_DOMAIN}/signup'</script></body></html>`
               );
         })
         .catch((e) => {
