@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Table, { TableHeader, TableItem } from "@/components/Table";
+import Description from "@/components/DescriptionComponent";
 import { useDatasetList } from "@/hooks/dataset";
 
 const DatasetList = () => {
