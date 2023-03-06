@@ -4,6 +4,8 @@ import { v4 as uuid } from "uuid";
 
 import { redisClient, RedisStore } from "../connectors/redis";
 
+console.log(process.env.NODE_ENV);
+
 const sessionOptions = {
   secret: process.env?.SESSION_SECRET || "secret",
   genid: (req: Request) => {

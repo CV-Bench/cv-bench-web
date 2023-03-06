@@ -11,13 +11,13 @@ const Signin = () => {
           }
           img="/btn_google_signin_dark_normal_web@2x.png"
         />
-        <LoginWithButton
+        {/* <LoginWithButton
           getLinkUrl={
             (process.env.NEXT_PUBLIC_HOST_DOMAIN || "http://localhost:3001") +
             "/auth/microsoft/link"
           }
           img="/ms-symbollockup_signin_dark.png"
-        />
+        /> */}
       </div>
     </>
   );

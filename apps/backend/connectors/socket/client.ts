@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from "express";
+import { createServer } from "http";
 import { RateLimiterRedis } from "rate-limiter-flexible";
 import { Server } from "socket.io";
-import * as util from 'util';
+import * as util from "util";
+
 import {
   ClientToServerEvents,
   loggerTitle,
@@ -19,21 +21,31 @@ const rateLimiter = new RateLimiterRedis({
   duration: 1 //per 1 second
 });
 
+const httpServer = createServer().listen(process.env.SOCKET_PORT);
+
 //TODO fix cors for prod
-const io = new Server<ClientToServerEvents, ServerToClientEvents>(
-  parseInt(process.env.SOCKET_PORT || "3002"),
-  {
-    cors: {
-      origin: ["http://localhost:3000", process.env.HOST_DOMAIN!, "https://admin.socket.io"],
-      methods: ["GET", "POST"],
-      credentials: true,
-    },
-    transports: ["websocket", "polling"]
-  }
-);
+const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
+  cors: {
+    origin: [
+      "http://localhost:3000",
+      process.env.APP_DOMAIN!,
+      "https://admin.socket.io"
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
+  },
+  transports: ["websocket", "polling"]
+});
 
 io.engine.on("connection_error", (e) => {
-  logger.error(loggerTitle.SOCKET, "Root Namespace", util.inspect(e.req), e.code, e.message, util.inspect(e.context));
+  logger.error(
+    loggerTitle.SOCKET,
+    "Root Namespace",
+    util.inspect(e.req),
+    e.code,
+    e.message,
+    util.inspect(e.context)
+  );
 });
 
 // SERVER SOCKET
