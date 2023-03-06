@@ -4,7 +4,8 @@ import {
   CollectionName,
   ModelDb,
   ServerNamespace,
-  SocketDb
+  SocketDb,
+  SocketType
 } from "shared-types";
 
 import { collectionRequest } from "./";
@@ -33,17 +34,32 @@ const findOne = (serverId: string, namespace: ServerNamespace) =>
   });
 
 const findUserSockets = (userId: ObjectId | string) =>
-  collectionRequest<FindCursor<SocketDb>>(CollectionName.SOCKET, async (collection) => {
-    return collection.find({
-      userId: new ObjectId(userId)
-    });
-  });
+  collectionRequest<FindCursor<SocketDb>>(
+    CollectionName.SOCKET,
+    async (collection) => {
+      return collection.find({
+        userId: new ObjectId(userId)
+      });
+    }
+  );
+
+const findServerSockets = (namespace: ServerNamespace) =>
+  collectionRequest<FindCursor<SocketDb>>(
+    CollectionName.SOCKET,
+    async (collection) => {
+      return collection.find({
+        type: SocketType.SERVER,
+        serverNamespace: namespace
+      });
+    }
+  );
 
 const Socket = {
   insertOne,
   deleteOne,
   findOne,
-  findUserSockets
+  findUserSockets,
+  findServerSockets
 };
 
 export default Socket;

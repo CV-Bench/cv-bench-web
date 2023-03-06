@@ -1,4 +1,5 @@
 import {
+  AggregationCursor,
   DeleteResult,
   FindCursor,
   InsertOneResult,
@@ -6,7 +7,7 @@ import {
   UpdateResult
 } from "mongodb";
 
-import { CollectionName, TaskDb } from "shared-types";
+import { CollectionName, TaskDb, TaskStatus } from "shared-types";
 
 import { collectionRequest } from "./";
 import { isUsersOrPublic } from "./utils";
@@ -64,12 +65,49 @@ const find = (userId: string | ObjectId) =>
     }
   );
 
+const countServerTasks = () =>
+  collectionRequest<AggregationCursor<{ serverId: string; tasks: number }>>(
+    CollectionName.TASK,
+    async (collection) => {
+      return collection.aggregate([
+        {
+          $match: {
+            status: TaskStatus.RUNNING,
+            serverId: {
+              $ne: null
+            }
+          }
+        },
+        {
+          $group: {
+            _id: "$serverId",
+            tasks: {
+              $push: {
+                status: "$status"
+              }
+            }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            serverId: "$_id",
+            tasks: {
+              $size: "$tasks"
+            }
+          }
+        }
+      ]);
+    }
+  );
+
 const Task = {
   findOne,
   insert,
   updateOne,
   deleteOne,
-  find
+  find,
+  countServerTasks
 };
 
 export default Task;

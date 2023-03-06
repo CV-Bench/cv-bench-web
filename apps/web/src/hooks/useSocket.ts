@@ -20,6 +20,8 @@ export const useSocket = async () => {
 
     globSocket?.disconnect();
 
+    console.log(process.env.SOCKET_DOMAIN);
+
     const socket = io(
       (process.env.SOCKET_DOMAIN! || "http://localhost:3002") + "/frontend",
       {

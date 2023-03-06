@@ -2,6 +2,7 @@ import { Namespace, Socket as SocketIO } from "socket.io";
 
 import {
   NotificationTrigger,
+  ServerNamespace,
   TaskDb,
   TaskNamespaceClientToServerEvents,
   TaskNamespaceData,
@@ -72,6 +73,21 @@ const receiveTaskLogData = (data: TaskDb, socket: SocketIO) => {
 };
 
 const startTask = (taskId: string) => {
+  // Find all Servers
+  const databaseRequests = [];
+
+  databaseRequests.push(
+    Database.Task.countServerTasks().then((result) => result.toArray())
+  );
+
+  databaseRequests.push(
+    Database.Socket.findServerSockets(ServerNamespace.TASK).then((result) =>
+      result.toArray()
+    )
+  );
+
+  Promise.all(databaseRequests).then(([taskCounter, connectedSockets]) => {});
+
   taskNamespace.emit("start", { taskId });
 };
 
