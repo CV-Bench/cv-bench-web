@@ -1,7 +1,9 @@
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
+import fs from "fs";
 import helmet from "helmet";
+import https from "https";
 
 import {
   RouteNames,
@@ -192,12 +194,23 @@ app.patch(route(RouteNames.READ_NOTIFICATION), updateNotification);
 
 socket;
 
-app.listen(port, () => {
-  logger.info(
-    loggerTitle.EXPRESS_SERVER,
-    `⚡️ Server is running at http://localhost:${port}`
-  );
-});
+if (process.env.NODE_ENV === "production") {
+  var options = {
+    key: fs.readFileSync("/home/reyk/cv-bench-web/apps/backend/client-key.pem"),
+    cert: fs.readFileSync(
+      "/home/reyk/cv-bench-web/apps/backend/client-cert.pem"
+    )
+  };
+
+  https.createServer(options, app).listen(port);
+} else {
+  app.listen(port, () => {
+    logger.info(
+      loggerTitle.EXPRESS_SERVER,
+      `⚡ Server is running at http://localhost:${port}`
+    );
+  });
+}
 
 app.get("/", (req, res) => {
   res.status(200).send("HI");
