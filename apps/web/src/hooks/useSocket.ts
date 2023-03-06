@@ -47,5 +47,5 @@ export const useSocket = async () => {
     );
 
     setSocket(socket);
-  }, []);
+  }, [tokenObj]);
 };
