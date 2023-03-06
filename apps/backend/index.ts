@@ -93,7 +93,7 @@ app.use((req, res, next) => {
   );
   res.header(
     "Access-Control-Allow-Headers",
-    `Origin, X-Requested-With, Content-Type, Accept, Authorization, ${process.env.NEXT_PUBLIC_APP_TOKEN_KEY}`
+    `Origin, X-Requested-With, Content-Type, Accept, Authorization`
   );
   next();
 });

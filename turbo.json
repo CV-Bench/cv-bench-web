@@ -8,7 +8,7 @@
     },
     "web#build": {
       "dependsOn": ["^build"],
-      "env": ["HOST_DOMAIN", "SOCKET_DOMAIN"],
+      "env": ["NEXT_PUBLIC_HOST_DOMAIN", "NEXT_PUBLIC_SOCKET_DOMAIN"],
       "outputs": [".next/**"]
     },
     "backend#build": {

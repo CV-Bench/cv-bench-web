@@ -20,10 +20,11 @@ export const useSocket = async () => {
 
     globSocket?.disconnect();
 
-    console.log(process.env.SOCKET_DOMAIN);
+    console.log(process.env.NEXT_PUBLIC_SOCKET_DOMAIN);
 
     const socket = io(
-      (process.env.SOCKET_DOMAIN! || "http://localhost:3002") + "/frontend",
+      (process.env.NEXT_PUBLIC_SOCKET_DOMAIN! || "http://localhost:3002") +
+        "/frontend",
       {
         query: tokenObj,
         transports: ["websocket"]
