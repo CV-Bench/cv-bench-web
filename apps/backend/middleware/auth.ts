@@ -5,7 +5,8 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   if (
     req.session.user ||
     req.method === "OPTIONS" ||
-    req.path.startsWith("/auth")
+    req.path.startsWith("/auth") ||
+    req.path.startsWith("/task/finish")
   ) {
     next();
 

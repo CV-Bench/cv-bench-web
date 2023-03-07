@@ -240,16 +240,16 @@ export const Routes: {
     () => "/task"
   ),
   [RouteNames.FINISH_TASK]: createRoute(
-    "/task/finish/:id",
-    /^\/task\/finish\/.*\/?post$/,
+    "/task/finish",
+    /^\/task\/finish\/?post$/,
     FinishTaskBody,
-    (id?: string) => "/task" + id
+    () => "/task/finish"
   ),
   [RouteNames.STOP_TASK]: createRoute(
-    "/task/stop/:id",
-    /^\/task\/stop\/.*\/?post$/,
+    "/task/stop",
+    /^\/task\/stop\/?post$/,
     StopTaskBody,
-    (id?: string) => "/task/" + id
+    () => "/task/stop"
   ),
 
   [RouteNames.GET_NETWORK_ARCHITECTURE_LIST]: createRoute(
