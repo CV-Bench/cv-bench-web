@@ -24,7 +24,7 @@ const Signup = () => {
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form
               className="space-y-6"
-              action={"http://localhost:3001/auth/signup"}
+              action={`${process.env.NEXT_PUBLIC_HOST_DOMAIN}/auth/signup`}
               method="POST"
             >
               <div className="relative flex items-start">

@@ -10,7 +10,7 @@ const signup = (req: Request, res: Response) => {
     Database.User.insert(req.session.user!)
       .then((result) => {
         req.session.user!._id = result.insertedId;
-        res.status(200).redirect("http://localhost:3000");
+        res.status(200).redirect(process.env.APP_DOMAIN!);
       })
       .catch((e) => {
         logger.error(loggerTitle.AUTH_CLIENT, "Error signing up User", e);

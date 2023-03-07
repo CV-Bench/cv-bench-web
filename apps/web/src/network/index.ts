@@ -51,11 +51,12 @@ import {
   GetDatasetPreview,
   GetDatasetPreviewBody,
   DataType
+  PostNetworkResponse
 } from "shared-types";
 
 import { network } from "./utils";
 
-const baseUrl = process.env.HOST_DOMAIN || "http://localhost:3001";
+const baseUrl = process.env.NEXT_PUBLIC_HOST_DOMAIN || "http://localhost:3001";
 
 const fetchCors = (url: RequestInfo | URL, init?: RequestInit | undefined) =>
   fetch(url, {
@@ -247,7 +248,7 @@ export const api = {
 
     return GetNetworkListBody.parse(backgrounds) as GetNetworkList;
   },
-  postNetworks: async (body: PostNetwork): Promise<{}> =>
+  postNetworks: async (body: PostNetwork): Promise<PostNetworkResponse> =>
     postRequest(getRoute(RouteNames.POST_NETWORK)(), { body }),
   deleteNetwork: (id: string) =>
     deleteRequest(getRoute(RouteNames.DELETE_NETWORK)(id)),

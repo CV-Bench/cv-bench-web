@@ -71,12 +71,7 @@ const find = (userId: string | ObjectId) =>
   collectionRequest<FindCursor<DatasetDb>>(
     CollectionName.DATASET,
     async (collection) => {
-      return collection.findOne({
-        $or: [
-          { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC }
-        ]
-      });
+      return collection.find(isUsersOrPublic(userId));
     }
   );
 

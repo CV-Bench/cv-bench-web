@@ -139,7 +139,9 @@ const FormStepsPanel: React.FC<FormStepsPanelProps> = ({
           </button>
         ))}
       </div>
-      <div className="flex-1 flex flex-col">{steps[activeStep].component}</div>
+      <div className="flex-1 flex flex-col h-full">
+        {steps[activeStep].component}
+      </div>
       <div className="flex justify-between">
         <div>
           {activeStep >= 1 && (

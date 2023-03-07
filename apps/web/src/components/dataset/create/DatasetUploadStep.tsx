@@ -5,56 +5,47 @@ import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
+import ToolGeneralSettings from "@/components/inputs/ToolGeneralSettings";
 
 import { AccessType } from "shared-types";
 
 export interface DatasetUploadStepProps {
-  name?: string;
-  setName: (val: string) => void;
-
+  name: string;
   tags: string[];
-  setTags: (val: string[]) => void;
+  accessType: AccessType;
 
-  accessType?: AccessType;
-  setAccessType: (val: AccessType) => void;
+  handleChange: (
+    key: "domainTags" | "name" | "accessType",
+    value: string[] | string | AccessType
+  ) => void;
+  handleUpload: () => void;
 }
 
 const DatasetUploadStep: React.FC<DatasetUploadStepProps> = ({
   name,
-  setName,
   tags,
-  setTags,
   accessType,
-  setAccessType
+  handleChange,
+  handleUpload
 }) => {
   return (
-    <>
-      <Card className="mb-4">
+    <div className="space-y-4">
+      <Card className="p-4">
         <div>
           <InputLabel>Tags</InputLabel>
-          <TagInput tags={tags} setTags={setTags} />
-        </div>
-      </Card>
-      <Card className="flex p-0">
-        <div className="flex-1 pr-4">
-          <div>
-            <InputLabel>Name</InputLabel>
-            <InputField
-              value={name}
-              onChange={(e) => setName((e.target as HTMLInputElement).value)}
-              type="text"
-            />
-          </div>
-          <AccessTypeInput
-            className="mt-3"
-            accessType={accessType}
-            setAccessType={setAccessType}
+          <TagInput
+            tags={tags}
+            setTags={(newTags) => handleChange("domainTags", newTags)}
           />
         </div>
-        <div className="border-l -my-4 border-indigo-50"></div>
-        <div className="flex-1 pl-4"></div>
       </Card>
-    </>
+      <ToolGeneralSettings
+        name={name}
+        accessType={accessType}
+        handleChange={handleChange}
+        handleUpload={handleUpload}
+      />
+    </div>
   );
 };
 export default DatasetUploadStep;

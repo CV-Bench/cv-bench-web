@@ -10,7 +10,7 @@ import Database from "../../connectors/mongo";
 import logger from "../../util/logger";
 
 const redirectUriBase =
-  (process.env.HOST_DOMAIN || "http://localhost") + "/auth/";
+  (process.env.API_DOMAIN || "http://localhost:3001") + "/auth/";
 
 export const createAuthClient = (
   issuerDomain: string,
@@ -73,6 +73,8 @@ export const createAuthLinkHandler = (
     const nonce = generators.nonce();
     req.session.nonce[authProvider] = nonce;
 
+    console.log("SET SESSION FOR", req.session, authProvider);
+
     try {
       res.status(200).send(
         authProviderClient.authorizationUrl({
@@ -97,8 +99,12 @@ export const createAuthCallbackHandler = (
   authProvider: AuthProvider
 ): RequestHandler => {
   return async (req: Request, res: Response) => {
+    console.log("SESSIONS", req.session);
+
     try {
-      if (!req.session.nonce) req.session.nonce = {};
+      if (!req.session.nonce) {
+        req.session.nonce = {};
+      }
       const params = authProviderClient.callbackParams(req);
       const tokenSet = await authProviderClient.callback(
         redirectUriBase + authProvider + "/callback",
@@ -127,13 +133,13 @@ export const createAuthCallbackHandler = (
             res
               .status(200)
               .send(
-                "<html><body><script>location.href = 'http://localhost:3000/'</script></body></html>"
+                `<html><body><script>location.href = '${process.env.APP_DOMAIN}'</script></body></html>`
               );
           } else
             res
               .status(200)
               .send(
-                "<html><body><script>location.href = 'http://localhost:3000/signup'</script></body></html>"
+                `<html><body><script>location.href = '${process.env.APP_DOMAIN}/signup'</script></body></html>`
               );
         })
         .catch((e) => {
