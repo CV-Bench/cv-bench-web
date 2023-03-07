@@ -50,7 +50,7 @@ import {
   PostDatasetResponseBody,
   GetDatasetPreview,
   GetDatasetPreviewBody,
-  DataType
+  DataType,
   PostNetworkResponse
 } from "shared-types";
 

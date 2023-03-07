@@ -6,6 +6,7 @@ import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
 import { useDataset } from "@/hooks/dataset";
+import { useDatasetPreview } from "@/hooks/datasetPreview";
 import { api } from "@/network";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -16,6 +17,7 @@ const DatasetId = () => {
   const { id } = router.query;
 
   const { data: apiModel } = useDataset(id?.toString() ?? "");
+  const { data: previewImages } = useDatasetPreview(id);
   const [dataset, setDataset] = useState<GetDataset>();
 
   useEffect(() => {
@@ -59,7 +61,7 @@ const DatasetId = () => {
             </div>
           </Card>
           <Card className="flex-1 ml-2 w-3/4">
-            
+            {previewImages?.map(image => <img key={image._id} src={image.image} alt="Preview Image" />)}
           </Card>
         </div>
         <Card className="mt-4 flex">
