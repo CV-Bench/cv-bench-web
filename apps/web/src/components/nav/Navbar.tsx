@@ -46,7 +46,7 @@ const ProfileDropdownRoutes = [
   },
   {
     title: "Sign out",
-    href: process.env.HOST_DOMAIN + "/auth/logout",
+    href: (process.env.NEXT_PUBLIC_HOST_DOMAIN || "http://localhost:3001") + "/auth/logout",
     matcher: /^\/signout(\/.*)?$/
   }
 ];
