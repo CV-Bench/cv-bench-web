@@ -47,7 +47,8 @@ import {
   PostDatasetConfiguration,
   PatchDatasetConfiguration,
   PostDatasetResponse,
-  PostDatasetResponseBody
+  PostDatasetResponseBody,
+  PostNetworkResponse
 } from "shared-types";
 
 import { network } from "./utils";
@@ -234,7 +235,7 @@ export const api = {
 
     return GetNetworkListBody.parse(backgrounds) as GetNetworkList;
   },
-  postNetworks: async (body: PostNetwork): Promise<{}> =>
+  postNetworks: async (body: PostNetwork): Promise<PostNetworkResponse> =>
     postRequest(getRoute(RouteNames.POST_NETWORK)(), { body }),
   deleteNetwork: (id: string) =>
     deleteRequest(getRoute(RouteNames.DELETE_NETWORK)(id)),

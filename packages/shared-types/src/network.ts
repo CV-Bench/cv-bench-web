@@ -16,6 +16,11 @@ export const PostNetworkBody = PostDataBody.merge(
 
 export type PostNetwork = z.infer<typeof PostNetworkBody>;
 
+export const PostNetworkResponseBody = z.object({
+  _id: ObjId
+});
+export type PostNetworkResponse = z.infer<typeof PostNetworkResponseBody>;
+
 // PATCH
 export const PatchNetworkBody = PostDataBody;
 
