@@ -4,7 +4,6 @@ import Link from "next/link";
 import Badge from "@/components/Badge";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
-import Description from "@/components/DescriptionComponent";
 import Table from "@/components/Table";
 import TableHeader from "@/components/TableHeader";
 import { useDatasetList } from "@/hooks/dataset";

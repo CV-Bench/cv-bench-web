@@ -35,7 +35,7 @@ const ModelSelectStep: React.FC<ModelSelectStepProps> = ({
 
   return (
     <>
-      <div className="flex items-start text-white space-x-4">
+      <div className="flex items-start text-slate-200 space-x-4">
         <Card className="w-1/2">
           <SelectionCardHeader
             title="Select Model"

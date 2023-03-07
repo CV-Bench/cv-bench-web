@@ -25,8 +25,8 @@ const SelectionCardHeader: React.FC<SelectionCardHeaderProps> = ({
       </div>
       <div className="space-y-4">
         <div className="space-y-1">
-          <p className="font-medium text-lg">{title}</p>
-          <p className="text-sm">{description}</p>
+          <p className="font-medium text-lg text-slate-200">{title}</p>
+          <p className="text-sm text-slate-400">{description}</p>
         </div>
 
         {linkHref && (

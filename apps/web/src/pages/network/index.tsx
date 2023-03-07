@@ -1,46 +1,60 @@
+import { CircleStackIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import Description from "@/components/DescriptionComponent";
-import Table, { TableHeader, TableItem } from "@/components/Table";
+
+import Badge from "@/components/Badge";
+import Button from "@/components/Button";
+import Card from "@/components/Card";
+import Table from "@/components/Table";
+import TableHeader from "@/components/TableHeader";
 import { useNetworkList } from "@/hooks/network";
+import { formatToDateString } from "@/utils/date";
 
 const NetworkList = () => {
   const { data: networks } = useNetworkList();
-  const data: TableItem[] =
-    networks?.map((network) => {
-      return {
-        ...network,
-        domainTags: network.domainTags.join(", "),
-        href: `/network/${network._id}`
-      };
-    }) ?? [];
-  const header: TableHeader[] = [
-    {
-      key: "name",
-      title: "Name"
-    },
-    {
-      key: "createdAt",
-      title: "Date of creation"
-    }, {
-      key: "domainTags",
-      title: "Tags"
-    }
-  ];
-  return (
-    <>
-      <div className="bg-slate-800 p-4 flex rounded-lg text-white">
-        <Link href="/network/create">Create Network</Link>
-      </div>
-      <Description
-        title="Network"
-        description="An overview of the networks"
-        imageUrl="https://img.freepik.com/vektoren-kostenlos/platine-baum-symbol_98292-3922.jpg?w=1480&t=st=1678130088~exp=1678130688~hmac=7609be3686a372bab9a2ade15efa1a307197d21220c3bcf542f13cedc411e800"
-      />
-      <div className=" text-white">
-        <Table data={data} header={header} />
-      </div>
 
-    </>
+  if (!networks) {
+    return null;
+  }
+
+  return (
+    <div className="mx-auto container py-8">
+      <Card>
+        <TableHeader
+          title="Create Network"
+          description="An overview of the networks"
+          icon={<CircleStackIcon />}
+        >
+          <Link href="/network/create">
+            <Button>Create new Network</Button>
+          </Link>
+        </TableHeader>
+        <Table
+          data={networks.map(
+            ({ name, _id, createdAt, domainTags, accessType }) => ({
+              name,
+              createdAt: formatToDateString(createdAt),
+              accessType: <Badge variant={accessType} />,
+              domainTags: domainTags.join(", ").slice(0, 20),
+              href: `/network/${_id}`
+            })
+          )}
+          header={[
+            {
+              key: "name",
+              title: "Name"
+            },
+            {
+              key: "createdAt",
+              title: "Date of creation"
+            },
+            {
+              key: "domainTags",
+              title: "Tags"
+            }
+          ]}
+        />
+      </Card>
+    </div>
   );
 };
 
