@@ -170,7 +170,7 @@ app.post(
 
 //DATASET PREVIEW ROUTES
 app.post(
-  route(RouteNames.POST_DATASET_PREVIEW),
+  route(RouteNames.POST_TASK_DATASETPREVIEW),
   createDatasetPreview
 )
 
