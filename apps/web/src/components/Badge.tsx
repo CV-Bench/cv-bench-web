@@ -1,6 +1,6 @@
-import { TaskStatus, TaskType } from "shared-types";
+import { AccessType, TaskStatus, TaskType } from "shared-types";
 
-type BadgeVariant = TaskStatus | TaskType | "default";
+type BadgeVariant = TaskStatus | TaskType | "default" | AccessType;
 
 type BadgeSize = "sm" | "lg";
 

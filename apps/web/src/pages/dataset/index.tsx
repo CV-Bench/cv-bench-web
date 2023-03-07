@@ -1,11 +1,23 @@
+import { CircleStackIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import Table, { TableHeader, TableItem } from "@/components/Table";
+
+import Badge from "@/components/Badge";
+import Button from "@/components/Button";
+import Card from "@/components/Card";
 import Description from "@/components/DescriptionComponent";
+import Table from "@/components/Table";
+import TableHeader from "@/components/TableHeader";
 import { useDatasetList } from "@/hooks/dataset";
+import { formatToDateString } from "@/utils/date";
 
 const DatasetList = () => {
   const { data: datasets } = useDatasetList();
-  const data: TableItem[] =
+
+  if (!datasets) {
+    return null;
+  }
+
+  const data =
     datasets?.map((dataset) => {
       return {
         ...dataset,
@@ -13,33 +25,46 @@ const DatasetList = () => {
         href: `/dataset/${dataset._id}`
       };
     }) ?? [];
-  const header: TableHeader[] = [
-    {
-      key: "name",
-      title: "Name"
-    },
-    {
-      key: "createdAt",
-      title: "Date of creation"
-    }, {
-      key: "domainTags",
-      title: "Tags"
-    }
-  ];
+
   return (
-    <>
-      <div className="bg-slate-800 p-4 flex rounded-lg text-white">
-        <Link href="/dataset/create">Create Dataset</Link>
-      </div>
-      <Description
-        title="Dataset"
-        description="An overview of the datasets"
-        imageUrl="https://cdn-icons-png.flaticon.com/512/622/622343.png?w=1480&t=st=1678131040~exp=1678131640~hmac=4e17810b6e6fb21ef5444bf5c5e8469f4e6bd21e63f02b330407d69ddde3c160"
-      />
-      <div className=" text-white">
-        <Table data={data} header={header} />
-      </div>
-    </>
+    <div className="mx-auto container py-8">
+      <Card>
+        <TableHeader
+          title="Create Dataset"
+          description="An overview of the datasets"
+          icon={<CircleStackIcon />}
+        >
+          <Link href="/dataset/create">
+            <Button>Create new Dataset</Button>
+          </Link>
+        </TableHeader>
+        <Table
+          data={datasets.map(
+            ({ name, _id, createdAt, domainTags, accessType }) => ({
+              name,
+              createdAt: formatToDateString(createdAt),
+              accessType: <Badge variant={accessType} />,
+              domainTags: domainTags.join(", ").slice(0, 20),
+              href: `/dataset/${_id}`
+            })
+          )}
+          header={[
+            {
+              key: "name",
+              title: "Name"
+            },
+            {
+              key: "createdAt",
+              title: "Date of creation"
+            },
+            {
+              key: "domainTags",
+              title: "Tags"
+            }
+          ]}
+        />
+      </Card>
+    </div>
   );
 };
 

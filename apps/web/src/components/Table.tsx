@@ -147,7 +147,7 @@ const Table: React.FC<TableProps> = ({
         </div>
         {stateData.length <= 0 && (
           <div className="h-96 flex items-center justify-center">
-            <p className="text-lg font-semibold">
+            <p className="text-lg font-semibold text-slate-400">
               There is currently no data to show here.
             </p>
           </div>
