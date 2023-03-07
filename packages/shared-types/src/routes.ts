@@ -31,6 +31,8 @@ export enum RouteNames {
   PATCH_DATASET_CONFIGURATION = "PATCH_DATASET_CONFIGURATION",
   POST_DATASET_CONFIGURATION = "POST_DATASET_CONFIGURATION",
 
+  POST_TASK_DATASETPREVIEW = "POST_TASK_DATASETPREVIEW",
+
   GET_NETWORK_LIST = "GET_NETWORK_LIST",
   GET_NETWORK = "GET_NETWORK",
   DELETE_NETWORK = "DELETE_NETWORK",
@@ -240,16 +242,22 @@ export const Routes: {
     () => "/task"
   ),
   [RouteNames.FINISH_TASK]: createRoute(
-    "/task/finish/:id",
-    /^\/task\/finish\/.*\/?post$/,
+    "/task/finish",
+    /^\/task\/finish\/?post$/,
     FinishTaskBody,
-    (id?: string) => "/task" + id
+    () => "/task/finish"
   ),
   [RouteNames.STOP_TASK]: createRoute(
-    "/task/stop/:id",
-    /^\/task\/stop\/.*\/?post$/,
+    "/task/stop",
+    /^\/task\/stop\/?post$/,
     StopTaskBody,
-    (id?: string) => "/task/" + id
+    () => "/task/stop"
+  ),
+  [RouteNames.POST_TASK_DATASETPREVIEW]: createRoute(
+    "/datasetPreview",
+    /^\/task\/datasetPreview\/?post$/,
+    PostDatasetBody,
+    () => "/task/datasetPreview/"
   ),
 
   [RouteNames.GET_NETWORK_ARCHITECTURE_LIST]: createRoute(

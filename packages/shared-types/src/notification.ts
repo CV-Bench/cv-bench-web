@@ -9,6 +9,8 @@ export enum NotificationType {
   WARNING = "WARNING"
 }
 
+export type ToastAppearance = NotificationType;
+
 export const NotificationBody = z.object({
   _id: ObjId,
   userId: ObjId,

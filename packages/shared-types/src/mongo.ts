@@ -8,6 +8,7 @@ export enum CollectionName {
   USER = "users",
   DATASET = "datasets",
   DATASET_CONFIGURATION = "datasetConfigurations",
+  DATASET_PREVIEW = "datasetPreview",
   NETWORK = "networks",
   TASK = "tasks",
   NETWORK_ARCHITECTURE = "networkArchitecture",

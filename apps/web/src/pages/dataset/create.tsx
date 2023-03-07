@@ -1,3 +1,4 @@
+import { CubeIcon } from "@heroicons/react/24/outline";
 import { Co2Sharp } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -61,13 +62,21 @@ const CreateDataset = () => {
     [backgrounds]
   );
 
-  const setName = (name: string) => setDataset({ ...dataset, name });
-  const setAccessType = (accessType: AccessType) =>
-    setDataset({ ...dataset, accessType });
-  const setTags = (domainTags: string[]) =>
-    setDataset({ ...dataset, domainTags });
+  const handleChange = (
+    key: "domainTags" | "name" | "accessType",
+    value: string[] | string | AccessType
+  ) => setDataset({ ...dataset, [key]: value });
 
   console.log(dataset);
+
+  const handleUpload = async () => {
+    api
+      .postDatasets(dataset)
+      .then((result) => {
+        // router.push("/task/" + result._id);
+      })
+      .catch((e) => console.error(e));
+  };
 
   const steps: FormStep[] = [
     {
@@ -121,25 +130,15 @@ const CreateDataset = () => {
       component: (
         <DatasetUploadStep
           name={dataset.name}
-          setName={setName}
+          handleChange={handleChange}
+          handleUpload={handleUpload}
           accessType={dataset.accessType}
-          setAccessType={setAccessType}
           tags={dataset.domainTags}
-          setTags={setTags}
         />
       ),
       validation: PostDatasetBody
     }
   ];
-
-  const handleUpload = async () => {
-    api
-      .postDatasets(dataset)
-      .then((result) => {
-        router.push("/task/" + result._id);
-      })
-      .catch((e) => console.error(e));
-  };
 
   return (
     <>

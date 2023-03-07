@@ -2,8 +2,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import * as z from "zod";
 
+import { addToast } from "@/components/Toast";
+import ToolGeneralSettings from "@/components/inputs/ToolGeneralSettings";
 import PreviewStep from "@/components/model/upload/PreviewStep";
-import UploadStep from "@/components/model/upload/UploadStep";
 import FormStepsPanel, {
   FormStep
 } from "@/components/multiform/FormStepsPanel";
@@ -14,12 +15,14 @@ import {
   DataUrlFile,
   DataUrlFileBody,
   ModelType,
+  NotificationType,
   PostModel,
   PostModelBody
 } from "shared-types";
 
 const UploadModel = () => {
   const router = useRouter();
+  const [uploadDisabled, setUploadDisabled] = useState(false);
 
   const [postModel, setFormData] = useState<PostModel>({
     name: "",
@@ -41,9 +44,35 @@ const UploadModel = () => {
   const onSelectMaterials = (val: DataUrlFile[]) =>
     setFormData({ ...postModel, modelAssets: val });
 
-  const onSetName = (val: string) => setFormData({ ...postModel, name: val });
-  const onSetAccessType = (val: AccessType) =>
-    setFormData({ ...postModel, accessType: val });
+  const handleUpload = () => {
+    addToast(
+      "Upload Started!",
+      "This can take a while, please be patient.",
+      NotificationType.INFO
+    );
+
+    setUploadDisabled(true);
+
+    api
+      .postModel(postModel)
+
+      .then(() => {
+        addToast(
+          "Upload were Successful!",
+          "New Model uploaded successfully.",
+          NotificationType.SUCCESS
+        );
+        router.push("/model");
+      })
+      .catch(() => {
+        addToast(
+          "Upload Failed!",
+          "Something went wrong while uploading a new model.",
+          NotificationType.ERROR
+        );
+        setUploadDisabled(false);
+      });
+  };
 
   const steps: FormStep[] = [
     {
@@ -70,29 +99,24 @@ const UploadModel = () => {
       name: "Upload",
       description: "tbd",
       component: (
-        <UploadStep
+        <ToolGeneralSettings
           name={postModel.name}
           accessType={postModel.accessType}
-          setName={onSetName}
-          setAccessType={onSetAccessType}
+          handleChange={(key, value) =>
+            setFormData({ ...postModel, [key]: value })
+          }
+          handleUpload={handleUpload}
+          uploadDisabled={uploadDisabled}
+          uploadButtonText="Upload Data"
         />
       ),
       validation: PostModelBody
     }
   ];
 
-  const handleUpload = () => {
-    api.postModel(postModel).then((x) => router.push("/model"));
-  };
-
   return (
     <>
-      <FormStepsPanel
-        submitButtonText="Start Upload"
-        formData={postModel}
-        steps={steps}
-        handleSubmit={handleUpload}
-      />
+      <FormStepsPanel formData={postModel} steps={steps} />
     </>
   );
 };

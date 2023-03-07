@@ -38,13 +38,13 @@ const BackgroundSelectStep: React.FC<BackgroundSelectStepProps> = ({
         tags={selectedBackgroundTags}
         setTags={onSelectBackgroundTags}
       />
-      <div className="grid lg:grid-cols-5 sm:grid-cols-1">
+      <div className="grid lg:grid-cols-5 sm:grid-cols-1 gap-4">
         {backgrounds &&
           backgrounds.map((background) => (
             <ImageCard
               key={background._id}
               {...background}
-              href={`/background/${background._id}`}
+              href=""
               name={undefined}
             />
           ))}

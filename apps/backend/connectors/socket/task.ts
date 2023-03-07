@@ -1,6 +1,8 @@
 import { Namespace, Socket as SocketIO } from "socket.io";
 
 import {
+  NotificationTrigger,
+  ServerNamespace,
   TaskDb,
   TaskNamespaceClientToServerEvents,
   TaskNamespaceData,
@@ -9,6 +11,7 @@ import {
 } from "shared-types";
 
 import Database from "../mongo";
+import Notification from "../notifications";
 import { redisClient } from "../redis";
 
 import { Socket } from "./";
@@ -29,21 +32,22 @@ taskNamespace.on("connection", (socket) => {
   });
 
   socket.on("task_started", ({ taskId, serverId }: TaskNamespaceData) => {
-    // Set task to running
-    // Set server Id in Task DB
-
     Database.Task.updateOne(taskId, undefined, {
       serverId,
       status: TaskStatus.RUNNING
-    });
-
-    // TODO SEND NOTIFICATION
+    }).then(() =>
+      Notification.add(NotificationTrigger.TASK_STARTED, taskId, {})
+    );
   });
 
   socket.on("stop_failed", (data: TaskNamespaceData) => {});
 
-  socket.on("task_stopped", (data: TaskNamespaceData) => {
-    // TODO SEND NOTIFICATION
+  socket.on("task_stopped", ({ taskId }: TaskNamespaceData) => {
+    Database.Task.updateOne(taskId, undefined, {
+      status: TaskStatus.ABORTED
+    }).then(() =>
+      Notification.add(NotificationTrigger.TASK_STOPPED, taskId, {})
+    );
   });
 
   socket.on("task_log", (data) => {
@@ -69,6 +73,21 @@ const receiveTaskLogData = (data: TaskDb, socket: SocketIO) => {
 };
 
 const startTask = (taskId: string) => {
+  // Find all Servers
+  const databaseRequests = [];
+
+  databaseRequests.push(
+    Database.Task.countServerTasks().then((result) => result.toArray())
+  );
+
+  databaseRequests.push(
+    Database.Socket.findServerSockets(ServerNamespace.TASK).then((result) =>
+      result.toArray()
+    )
+  );
+
+  Promise.all(databaseRequests).then(([taskCounter, connectedSockets]) => {});
+
   taskNamespace.emit("start", { taskId });
 };
 

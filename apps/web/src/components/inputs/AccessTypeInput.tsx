@@ -19,8 +19,11 @@ const AccessTypeInput: React.FC<AccessTypeInputProps> = ({
   className
 }) => {
   return (
-    <div className={className}>
-      <InputLabel>Access Type</InputLabel>
+    <div className="grid grid-cols-2 group">
+      <div className="flex space-x-2 items-center uppercase text-sm text-slate-400 transition-all duration-150  group-hover:text-slate-200">
+        <p>Access type</p>
+        <p className="text-xs text-slate-600">Who can use this data.</p>
+      </div>
       <RadioGroupSelection
         values={["Private", "Public"]}
         selected={accessType == AccessType.PRIVATE ? "Private" : "Public"}

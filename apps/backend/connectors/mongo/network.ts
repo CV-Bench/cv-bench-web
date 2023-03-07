@@ -27,7 +27,7 @@ const findOne = (id: string | ObjectId, userId: string | undefined) =>
     });
   });
 
-const insert = (model: Omit<NetworkDb, "_id" | "createdAt" | "updatedAt">) =>
+const insert = (model: Omit<NetworkDb, "createdAt" | "updatedAt">) =>
   collectionRequest<InsertOneResult>(
     CollectionName.NETWORK,
     async (collection) => {
@@ -77,12 +77,7 @@ const find = (userId: string | ObjectId) =>
   collectionRequest<FindCursor<NetworkDb>>(
     CollectionName.NETWORK,
     async (collection) => {
-      return collection.findOne({
-        $or: [
-          { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC }
-        ]
-      });
+      return collection.find(isUsersOrPublic(userId));
     }
   );
 

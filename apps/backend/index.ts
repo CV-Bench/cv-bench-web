@@ -1,7 +1,9 @@
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
+import fs from "fs";
 import helmet from "helmet";
+import https from "https";
 
 import {
   RouteNames,
@@ -12,6 +14,7 @@ import {
 } from "shared-types";
 
 import socket, { Socket } from "./connectors/socket";
+import io from "./connectors/socket/client";
 import authMiddleware from "./middleware/auth";
 import loggerMiddleware from "./middleware/logger";
 import { sessionMiddleware } from "./middleware/session";
@@ -44,6 +47,9 @@ import {
   getDatasetConfigurationList,
   updateDatasetConfiguration
 } from "./routes/datasetConfiguration";
+import {
+  createDatasetPreview
+} from "./routes/datasetPreview"
 import download from "./routes/download";
 import {
   deleteModel,
@@ -93,7 +99,7 @@ app.use((req, res, next) => {
   );
   res.header(
     "Access-Control-Allow-Headers",
-    `Origin, X-Requested-With, Content-Type, Accept, Authorization, ${process.env.NEXT_PUBLIC_APP_TOKEN_KEY}`
+    `Origin, X-Requested-With, Content-Type, Accept, Authorization`
   );
   next();
 });
@@ -165,6 +171,12 @@ app.post(
   createDatasetConfiguration
 );
 
+//DATASET PREVIEW ROUTES
+app.post(
+  route(RouteNames.POST_TASK_DATASETPREVIEW),
+  createDatasetPreview
+)
+
 // NETWORK ROUTES
 app.get(route(RouteNames.GET_NETWORK_LIST), getNetworkList);
 app.get(route(RouteNames.GET_NETWORK), getNetwork);
@@ -190,14 +202,29 @@ app.get(route(RouteNames.GET_NOTIFICATION), getNotification);
 app.post(route(RouteNames.DELETE_NOTIFICATION), deleteNotification);
 app.patch(route(RouteNames.READ_NOTIFICATION), updateNotification);
 
-socket;
+// socket;
 
-app.listen(port, () => {
-  logger.info(
-    loggerTitle.EXPRESS_SERVER,
-    `⚡️ Server is running at http://localhost:${port}`
-  );
-});
+if (process.env.NODE_ENV === "production") {
+  var options = {
+    key: fs.readFileSync("/home/reyk/cv-bench-web/apps/backend/client-key.pem"),
+    cert: fs.readFileSync(
+      "/home/reyk/cv-bench-web/apps/backend/client-cert.pem"
+    )
+  };
+
+  const server = https.createServer(options, app).listen(port);
+
+  io.attach(server);
+} else {
+  const server = app.listen(port, () => {
+    logger.info(
+      loggerTitle.EXPRESS_SERVER,
+      `⚡ Server is running at http://localhost:${port}`
+    );
+  });
+
+  io.attach(server);
+}
 
 app.get("/", (req, res) => {
   res.status(200).send("HI");

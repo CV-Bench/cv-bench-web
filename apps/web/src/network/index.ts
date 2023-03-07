@@ -36,7 +36,6 @@ import {
   PostNetwork,
   RouteNames,
   getRoute,
-  NotificationBody,
   GetNotification,
   GetNotificationBody,
   GetNotificationList,
@@ -48,12 +47,13 @@ import {
   PostDatasetConfiguration,
   PatchDatasetConfiguration,
   PostDatasetResponse,
-  PostDatasetResponseBody
+  PostDatasetResponseBody,
+  PostNetworkResponse
 } from "shared-types";
 
 import { network } from "./utils";
 
-const baseUrl = process.env.HOST_DOMAIN || "http://localhost:3001";
+const baseUrl = process.env.NEXT_PUBLIC_HOST_DOMAIN || "http://localhost:3001";
 
 const fetchCors = (url: RequestInfo | URL, init?: RequestInit | undefined) =>
   fetch(url, {
@@ -235,7 +235,7 @@ export const api = {
 
     return GetNetworkListBody.parse(backgrounds) as GetNetworkList;
   },
-  postNetworks: async (body: PostNetwork): Promise<{}> =>
+  postNetworks: async (body: PostNetwork): Promise<PostNetworkResponse> =>
     postRequest(getRoute(RouteNames.POST_NETWORK)(), { body }),
   deleteNetwork: (id: string) =>
     deleteRequest(getRoute(RouteNames.DELETE_NETWORK)(id)),
@@ -249,9 +249,9 @@ export const api = {
     return GetTaskBody.parse(background);
   },
   getTaskList: async (): Promise<GetTaskList> => {
-    const backgrounds = await getRequest(getRoute(RouteNames.GET_TASK_LIST)());
+    const tasks = await getRequest(getRoute(RouteNames.GET_TASK_LIST)());
 
-    return GetTaskListBody.parse(backgrounds) as GetTaskList;
+    return GetTaskListBody.parse(tasks) as GetTaskList;
   },
   stopTask: (id: string) => postRequest(getRoute(RouteNames.STOP_TASK)(id)),
 
