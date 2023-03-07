@@ -14,6 +14,7 @@ import {
 } from "shared-types";
 
 import socket, { Socket } from "./connectors/socket";
+import io from "./connectors/socket/client";
 import authMiddleware from "./middleware/auth";
 import loggerMiddleware from "./middleware/logger";
 import { sessionMiddleware } from "./middleware/session";
@@ -192,7 +193,7 @@ app.get(route(RouteNames.GET_NOTIFICATION), getNotification);
 app.post(route(RouteNames.DELETE_NOTIFICATION), deleteNotification);
 app.patch(route(RouteNames.READ_NOTIFICATION), updateNotification);
 
-socket;
+// socket;
 
 if (process.env.NODE_ENV === "production") {
   var options = {
@@ -202,14 +203,18 @@ if (process.env.NODE_ENV === "production") {
     )
   };
 
-  https.createServer(options, app).listen(port);
+  const server = https.createServer(options, app).listen(port);
+
+  io.attach(server);
 } else {
-  app.listen(port, () => {
+  const server = app.listen(port, () => {
     logger.info(
       loggerTitle.EXPRESS_SERVER,
       `⚡ Server is running at http://localhost:${port}`
     );
   });
+
+  io.attach(server);
 }
 
 app.get("/", (req, res) => {
