@@ -124,9 +124,29 @@ const stopTask = (taskId: string, userId: string) => {
   });
 };
 
-const getTask = async (taskId: string) => {};
-const cleanupTask = (taskId: string) =>
-  taskNamespace.emit("cleanup", { taskId });
+const getTask = (taskId: string) => {
+  // Database.Task.findOne(taskId, userId).then((task) => {
+  //   Database.Socket.findOne(task.serverId!, ServerNamespace.TASK).then(
+  //     (serverSocket) => {
+  //       taskNamespace.sockets
+  //         .get(serverSocket.socketId)
+  //         ?.emit("get", { taskId });
+  //     }
+  //   );
+  // });
+};
+
+const cleanupTask = (taskId: string, userId: string) => {
+  Database.Task.findOne(taskId, userId).then((task) => {
+    Database.Socket.findOne(task.serverId!, ServerNamespace.TASK).then(
+      (serverSocket) => {
+        taskNamespace.sockets
+          .get(serverSocket.socketId)
+          ?.emit("cleanup", { taskId });
+      }
+    );
+  });
+};
 
 const Task = {
   start: startTask,
