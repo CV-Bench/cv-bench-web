@@ -22,22 +22,34 @@ const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {
   Database.Task.findOne(taskId, userId)
     .then(
       (task) => {
+        let insertPromise;
+
         switch (task.type) {
           case TaskType.CREATE_DATASET:
-            Database.Dataset.insert({
+            insertPromise = Database.Dataset.insert({
               ...(task.info as TaskDatasetInfo),
               size: 0,
               images: 0,
               datasetType: DatasetType.BLENDER_3D,
-              userId: new ObjectId(task.userId)
+              userId: new ObjectId(task.userId),
+              _id: new ObjectId(taskId)
             });
             break;
           case TaskType.CREATE_NETWORK:
-            Database.Network.insert({
-              ...task.info
+            insertPromise = Database.Network.insert({
+              ...task.info,
+              _id: new ObjectId(taskId)
             });
             break;
         }
+
+        if (!insertPromise) {
+          res.status(500).end();
+
+          return;
+        }
+
+        insertPromise.catch((e) => console.error(e));
 
         Socket.Task.cleanup(taskId);
 

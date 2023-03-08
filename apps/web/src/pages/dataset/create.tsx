@@ -73,7 +73,7 @@ const CreateDataset = () => {
     api
       .postDatasets(dataset)
       .then((result) => {
-        router.push("/task/" + result._id);
+        // router.push("/task/" + result._id);
       })
       .catch((e) => console.error(e));
   };

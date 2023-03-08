@@ -49,9 +49,8 @@ import {
 } from "./routes/datasetConfiguration";
 import {
   createDatasetPreview,
-  getDatasetPreview
-} from "./routes/datasetPreview"
-
+  getDatasetPreviewList
+} from "./routes/datasetPreview";
 import download from "./routes/download";
 import {
   deleteModel,
@@ -174,14 +173,8 @@ app.post(
 );
 
 //DATASET PREVIEW ROUTES
-app.post(
-  route(RouteNames.POST_DATASET_PREVIEW),
-  createDatasetPreview
-)
-app.get(
-  route(RouteNames.GET_DATASET_PREVIEW),
-  getDatasetPreview
-);
+app.post(route(RouteNames.POST_TASK_DATASETPREVIEW), createDatasetPreview);
+app.get(route(RouteNames.GET_DATASET_PREVIEW_LIST), getDatasetPreviewList);
 
 // NETWORK ROUTES
 app.get(route(RouteNames.GET_NETWORK_LIST), getNetworkList);

@@ -1,2 +1,2 @@
-export { default as createDatasetPreview } from "./createDatasetPreview"
-export { default as getDatasetPreview } from "./getDatasetPreview";
+export { default as createDatasetPreview } from "./createDatasetPreview";
+export { default as getDatasetPreviewList } from "./getDatasetPreviewList";

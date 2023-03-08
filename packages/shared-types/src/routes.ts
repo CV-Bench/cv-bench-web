@@ -31,8 +31,8 @@ export enum RouteNames {
   PATCH_DATASET_CONFIGURATION = "PATCH_DATASET_CONFIGURATION",
   POST_DATASET_CONFIGURATION = "POST_DATASET_CONFIGURATION",
 
-  GET_DATASET_PREVIEW = "GET_DATASET_PREVIEW",
-  POST_DATASET_PREVIEW = "POST_DATASET_PREVIEW",
+  POST_TASK_DATASETPREVIEW = "POST_TASK_DATASETPREVIEW",
+  GET_DATASET_PREVIEW_LIST = "GET_DATASET_PREVIEW_LIST",
 
   GET_NETWORK_LIST = "GET_NETWORK_LIST",
   GET_NETWORK = "GET_NETWORK",
@@ -199,19 +199,6 @@ export const Routes: {
     (id?: string) => "/datasetConfiguration/" + id
   ),
 
-  [RouteNames.GET_DATASET_PREVIEW]: createRoute(
-    "/datasetPreview/:id",
-    /^\/datasetPreview\/.*\/?get?$/,
-    z.object({}),
-    (id?: string) => "/datasetPreview/" + id
-  ),
-  [RouteNames.POST_DATASET_PREVIEW]: createRoute(
-    "/datasetPreview",
-    /^\/datasetPreview\/?post$/,
-    PostDatasetBody,
-    () => "/datasetPreview/"
-  ),
-
   [RouteNames.GET_NETWORK_LIST]: createRoute(
     "/network",
     /^\/network\/?get$/,
@@ -256,16 +243,29 @@ export const Routes: {
     () => "/task"
   ),
   [RouteNames.FINISH_TASK]: createRoute(
-    "/task/finish/:id",
-    /^\/task\/finish\/.*\/?post$/,
+    "/task/finish",
+    /^\/task\/finish\/?post$/,
     FinishTaskBody,
-    (id?: string) => "/task" + id
+    () => "/task/finish"
   ),
   [RouteNames.STOP_TASK]: createRoute(
-    "/task/stop/:id",
-    /^\/task\/stop\/.*\/?post$/,
+    "/task/stop",
+    /^\/task\/stop\/?post$/,
     StopTaskBody,
-    (id?: string) => "/task/" + id
+    () => "/task/stop"
+  ),
+
+  [RouteNames.POST_TASK_DATASETPREVIEW]: createRoute(
+    "/datasetPreview",
+    /^\/datasetPreview\/?post$/,
+    PostDatasetBody,
+    () => "/datasetPreview/"
+  ),
+  [RouteNames.GET_DATASET_PREVIEW_LIST]: createRoute(
+    "/datasetPreview/:id",
+    /^\/datasetPreview\/.*\/?get$/,
+    PostDatasetBody,
+    (id?: string) => "/datasetPreview/" + id
   ),
 
   [RouteNames.GET_NETWORK_ARCHITECTURE_LIST]: createRoute(

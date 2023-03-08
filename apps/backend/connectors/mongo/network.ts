@@ -27,7 +27,7 @@ const findOne = (id: string | ObjectId, userId: string | undefined) =>
     });
   });
 
-const insert = (model: Omit<NetworkDb, "_id" | "createdAt" | "updatedAt">) =>
+const insert = (model: Omit<NetworkDb, "createdAt" | "updatedAt">) =>
   collectionRequest<InsertOneResult>(
     CollectionName.NETWORK,
     async (collection) => {
