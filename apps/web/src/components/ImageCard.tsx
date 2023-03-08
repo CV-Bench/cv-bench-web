@@ -18,7 +18,9 @@ const ImageCard: React.FC<ImageCardProps> = ({
   previewImage,
   domainTags,
   createdAt,
-  href
+  href,
+  className,
+  name
 }) => (
   <Link
     href={href}
