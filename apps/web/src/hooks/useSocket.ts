@@ -5,45 +5,66 @@ import useSWR, { SWRResponse } from "swr";
 
 import { addToast } from "@/components/Toast";
 
-import { NotificationDb } from "shared-types";
+import {
+  FrontendNamespaceClientToServerEvents,
+  FrontendNamespaceServerToClientEvents,
+  NotificationDb
+} from "shared-types";
 
 import { api } from "../network";
 
 export const useSocket = async () => {
-  const [globSocket, setSocket] = useState<Socket>();
+  const [globSocket, setSocket] =
+    useState<
+      Socket<
+        FrontendNamespaceServerToClientEvents,
+        FrontendNamespaceClientToServerEvents
+      >
+    >();
   const { data: tokenObj } = useSWR("/auth/token", api.getSocketAuthToken);
 
-  useEffect(() => {
-    if (!tokenObj) {
-      return;
-    }
-
-    globSocket?.disconnect();
-
-    const socket = io(
-      (process.env.NEXT_PUBLIC_SOCKET_DOMAIN! || "http://localhost:3002") +
-        "/frontend",
-      {
-        query: tokenObj,
-        transports: ["websocket"]
+  return new Promise<
+    Socket<
+      FrontendNamespaceServerToClientEvents,
+      FrontendNamespaceClientToServerEvents
+    > | undefined
+  >((resolve, reject) => {
+    useEffect(() => {
+      if (!tokenObj) {
+        return;
       }
-    );
 
-    socket.on("connect", () => {
-      console.log("Connected");
-    });
+      globSocket?.disconnect();
 
-    socket.on("disconnect", () => {});
+      const socket: Socket<
+        FrontendNamespaceServerToClientEvents,
+        FrontendNamespaceClientToServerEvents
+      > = io(
+        (process.env.NEXT_PUBLIC_SOCKET_DOMAIN! || "http://localhost:3002") +
+          "/frontend",
+        {
+          query: tokenObj,
+          transports: ["websocket"]
+        }
+      );
 
-    socket.on(
-      "notification",
-      ({ title, description, type, href }: NotificationDb) => {
-        addToast(title, description, type, href);
+      socket.on("connect", () => {
+        console.log("Connected");
+      });
 
-        // TODO Invalidate Notifications
-      }
-    );
+      socket.on("disconnect", () => {});
 
-    setSocket(socket);
-  }, [tokenObj]);
+      socket.on(
+        "notification",
+        ({ title, description, type, href }: NotificationDb) => {
+          addToast(title, description, type, href);
+
+          // TODO Invalidate Notifications
+        }
+      );
+
+      setSocket(socket);
+      resolve(globSocket);
+    }, [tokenObj]);
+  });
 };
