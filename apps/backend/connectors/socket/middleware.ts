@@ -9,7 +9,9 @@ import {
   ServerNamespace,
   ServerNamespaceMap,
   SocketType,
-  loggerTitle
+  loggerTitle,
+  FrontendNamespaceClientToServerEvents,
+  FrontendNamespaceServerToClientEvents
 } from "shared-types";
 
 import logger from "../../util/logger";
@@ -92,8 +94,11 @@ export const serverRegistryMiddleware: SocketMiddleware = (socket, next) => {
 };
 
 export const userRegistryMiddleware = (
-  socket: Socket<DefaultEventsMap, any> & {
-    user: { _id: string; [key: string] };
+  socket: Socket<
+    FrontendNamespaceClientToServerEvents,
+    FrontendNamespaceServerToClientEvents
+  > & {
+    user: { _id: string; [key: string]: any };
   },
   next: (err?: ExtendedError | undefined) => void
 ) => {

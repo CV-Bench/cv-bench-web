@@ -34,6 +34,7 @@ frontendNamespace.use(
   })
 );
 
+//@ts-ignore for user prop
 frontendNamespace.use(userRegistryMiddleware);
 
 io.engine.on("connection_error", (e) => {
