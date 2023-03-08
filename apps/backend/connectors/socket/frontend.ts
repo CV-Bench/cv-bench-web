@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { Namespace } from "socket.io";
+import { Namespace, Socket as SocketIO } from "socket.io";
 import * as socketJwt from "socketio-jwt";
 import * as util from "util";
 
@@ -11,12 +11,14 @@ import {
   FrontendNamespaceClientToServerEvents,
   FrontendNamespaceServerToClientEvents,
   NotificationDb,
-  loggerTitle
+  loggerTitle,
+  ServerNamespace
 } from "shared-types";
 
 import logger from "../../util/logger";
 import Database from "../mongo";
 
+import { Socket } from "./";
 import io from "./client";
 import { userRegistryMiddleware } from "./middleware";
 
@@ -59,7 +61,43 @@ frontendNamespace.on("connection", (socket) => {
       socket.emit("blocked", rejRes.msBeforeNext);
     }
   });
+
+  socket.on("subscribe_task_log", (tmp) => {
+    //@ts-ignore for user prop
+    handleTaskSubscription(tmp, socket, "subscribe_task_log");
+  });
+  socket.on("unsubscribe_task_log", (tmp) => {
+    //@ts-ignore for user prop
+    handleTaskSubscription(tmp, socket, "unsubscribe_task_log");
+  });
 });
+
+const handleTaskSubscription = (
+  { taskId }: { taskId: string },
+  socket: SocketIO<
+    FrontendNamespaceClientToServerEvents,
+    FrontendNamespaceServerToClientEvents
+  > & {
+    user: { _id: string; [key: string]: any };
+  },
+  event: "subscribe_task_log" | "unsubscribe_task_log"
+) => {
+  Database.Task.findOne(taskId, socket?.user?._id).then((task) => {
+    if (!task) return;
+
+    Database.Socket.findOne(task.serverId as string, ServerNamespace.TASK).then(
+      (res) => {
+        if (!res) return;
+
+        const serverSocket = Socket.Task.sockets.get(res.socketId);
+        serverSocket?.emit(event, {
+          taskId: taskId,
+          userId: socket?.user?._id
+        });
+      }
+    );
+  });
+};
 
 const sendNotification = (
   notification: NotificationDb,

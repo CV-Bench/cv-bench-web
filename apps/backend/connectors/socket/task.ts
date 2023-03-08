@@ -101,7 +101,8 @@ const Task = {
   start: startTask,
   stop: stopTask,
   get: getTask,
-  cleanup: cleanupTask
+  cleanup: cleanupTask,
+  sockets: taskNamespace.sockets
 };
 
 export default Task;
