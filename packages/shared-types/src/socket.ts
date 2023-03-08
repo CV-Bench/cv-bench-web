@@ -50,30 +50,33 @@ type StartPrevCurr = [number, number, number];
 
 export interface NetworkLogUpdateData {
   data: {
-    train: {
-      iter: StartPrevCurr;
-      lr: StartPrevCurr;
-      memory: StartPrevCurr;
-      data_time: StartPrevCurr;
-      loss_rpn_cls: StartPrevCurr;
-      loss_rpn_bbox: StartPrevCurr;
-      loss_cls: StartPrevCurr;
-      acc: StartPrevCurr;
-      loss_bbox: StartPrevCurr;
-      loss: StartPrevCurr;
-      time: StartPrevCurr;
+    lines: string[];
+    data: {
+      train: {
+        iter: StartPrevCurr;
+        lr: StartPrevCurr;
+        memory: StartPrevCurr;
+        data_time: StartPrevCurr;
+        loss_rpn_cls: StartPrevCurr;
+        loss_rpn_bbox: StartPrevCurr;
+        loss_cls: StartPrevCurr;
+        acc: StartPrevCurr;
+        loss_bbox: StartPrevCurr;
+        loss: StartPrevCurr;
+        time: StartPrevCurr;
+      };
+      val: {
+        iter: StartPrevCurr;
+        lr: StartPrevCurr;
+        bbox_mAP: StartPrevCurr;
+        bbox_mAP_50: StartPrevCurr;
+        bbox_mAP_75: StartPrevCurr;
+        bbox_mAP_s: StartPrevCurr;
+        bbox_mAP_m: StartPrevCurr;
+        bbox_mAP_l: StartPrevCurr;
+      };
+      currentEpoch: number;
     };
-    val: {
-      iter: StartPrevCurr;
-      lr: StartPrevCurr;
-      bbox_mAP: StartPrevCurr;
-      bbox_mAP_50: StartPrevCurr;
-      bbox_mAP_75: StartPrevCurr;
-      bbox_mAP_s: StartPrevCurr;
-      bbox_mAP_m: StartPrevCurr;
-      bbox_mAP_l: StartPrevCurr;
-    };
-    currentEpoch: number;
   };
 }
 

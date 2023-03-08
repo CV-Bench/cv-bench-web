@@ -1,16 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Socket } from "socket.io-client";
 
-import Badge from "@/components/Badge";
 import Card from "@/components/Card";
-import Date from "@/components/Date";
-import InputField from "@/components/inputs/InputField";
-import InputLabel from "@/components/inputs/InputLabel";
 import DatasetPreviewImages from "@/components/task/DatasetPreviewImages";
-import DatasetTaskInfo, {
-  DatasetTaskInfoProps
-} from "@/components/task/DatasetTaskInfo";
+import DatasetTaskInfo from "@/components/task/DatasetTaskInfo";
 import TaskLogs from "@/components/task/Logs";
 import NetworkTaskInfo from "@/components/task/NetworkTaskInfo";
 import TaskGeneralInfos from "@/components/task/TaskGeneralInfos";
@@ -50,8 +43,6 @@ const TaskId = () => {
   if (!task) {
     return null;
   }
-
-  console.log("TASK LOG 2", taskLog);
 
   return (
     <div className="flex flex-col container mx-auto py-8 space-y-4">
