@@ -11,35 +11,29 @@ import NetworkTaskInfo from "@/components/task/NetworkTaskInfo";
 import { useTask } from "@/hooks/task";
 import { useSocket } from "@/hooks/useSocket";
 
-import {
-  FrontendNamespaceClientToServerEvents,
-  FrontendNamespaceServerToClientEvents,
-  TaskType
-} from "shared-types";
+import { TaskType } from "shared-types";
 
 const TaskId = () => {
   const router = useRouter();
-  const { id } = router.query;
-  let socket: Socket<
-    FrontendNamespaceServerToClientEvents,
-    FrontendNamespaceClientToServerEvents
-  >;
-
-  useSocket().then((s) => {
-    socket = s!;
-  });
+  const { id: taskId } = router.query as { id: string };
+  const socket = useSocket();
+  const { data: task } = useTask(taskId?.toString() ?? "");
 
   useEffect(() => {
+    if (!socket || !taskId) {
+      return;
+    }
+
+    console.log("Subscribing to log");
+
     // sub on component mount
-    socket?.emit("subscribe_task_log", { taskId: id as string });
+    socket.emit("subscribe_task_log", { taskId });
 
     // unsub on component unmount
     return () => {
-      socket?.emit("unsubscribe_task_log", { taskId: id as string });
+      socket.emit("unsubscribe_task_log", { taskId });
     };
-  }, []);
-
-  const { data: task } = useTask(id?.toString() ?? "");
+  }, [socket, taskId]);
 
   return (
     <div className="flex flex-col h-full container mx-auto">

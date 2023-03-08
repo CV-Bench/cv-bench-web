@@ -19,7 +19,7 @@ import Database from "../mongo";
 import { RedisStore } from "../redis";
 import { redisClient } from "../redis";
 
-import { SocketMiddleware } from "./types";
+import { FrontendSocket, SocketMiddleware, SocketWithUser } from "./types";
 
 export const serverAuthMiddleware: SocketMiddleware = (socket, next) => {
   const token = socket.handshake.auth[process.env.SOCKET_AUTH_TOKEN_KEY || ""];
@@ -94,34 +94,31 @@ export const serverRegistryMiddleware: SocketMiddleware = (socket, next) => {
 };
 
 export const userRegistryMiddleware = (
-  socket: Socket<
-    FrontendNamespaceClientToServerEvents,
-    FrontendNamespaceServerToClientEvents
-  > & {
-    user: { _id: string; [key: string]: any };
-  },
+  socket: FrontendSocket,
   next: (err?: ExtendedError | undefined) => void
 ) => {
-  if (!socket.user || !socket.user._id) {
+  const socketWithUser = socket as SocketWithUser;
+
+  if (!socketWithUser.user || !socketWithUser.user._id) {
     logger.error(
       loggerTitle.SOCKET,
       "Socket Connection failed.",
       "Namespace not valid or id missing!"
     );
 
-    socket.disconnect();
+    socketWithUser.disconnect();
     return;
   }
 
   Database.Socket.insertOne({
     createdAt: new Date(),
-    socketId: socket.id,
+    socketId: socketWithUser.id,
     type: SocketType.FRONTEND,
-    userId: new ObjectId(socket.user._id)
+    userId: new ObjectId(socketWithUser.user._id)
   });
 
-  socket.on("disconnect", (reason) => {
-    Database.Socket.deleteOne(socket.id);
+  socketWithUser.on("disconnect", (reason) => {
+    Database.Socket.deleteOne(socketWithUser.id);
   });
 
   next();

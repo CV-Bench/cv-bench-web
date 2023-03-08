@@ -13,7 +13,7 @@ import {
 
 import { api } from "../network";
 
-export const useSocket = async () => {
+export const useSocket = () => {
   const [globSocket, setSocket] =
     useState<
       Socket<
@@ -23,48 +23,44 @@ export const useSocket = async () => {
     >();
   const { data: tokenObj } = useSWR("/auth/token", api.getSocketAuthToken);
 
-  return new Promise<
-    Socket<
+  useEffect(() => {
+    if (!tokenObj) {
+      return;
+    }
+
+    globSocket?.disconnect();
+
+    const socket: Socket<
       FrontendNamespaceServerToClientEvents,
       FrontendNamespaceClientToServerEvents
-    > | undefined
-  >((resolve, reject) => {
-    useEffect(() => {
-      if (!tokenObj) {
-        return;
+    > = io(
+      (process.env.NEXT_PUBLIC_SOCKET_DOMAIN! || "http://localhost:3002") +
+        "/frontend",
+      {
+        query: tokenObj,
+        transports: ["websocket"]
       }
+    );
 
-      globSocket?.disconnect();
+    socket.on("connect", () => {
+      console.log("Connected");
+    });
 
-      const socket: Socket<
-        FrontendNamespaceServerToClientEvents,
-        FrontendNamespaceClientToServerEvents
-      > = io(
-        (process.env.NEXT_PUBLIC_SOCKET_DOMAIN! || "http://localhost:3002") +
-          "/frontend",
-        {
-          query: tokenObj,
-          transports: ["websocket"]
-        }
-      );
+    socket.on("disconnect", () => {});
 
-      socket.on("connect", () => {
-        console.log("Connected");
-      });
+    socket.on(
+      "notification",
+      ({ title, description, type, href }: NotificationDb) => {
+        addToast(title, description, type, href);
 
-      socket.on("disconnect", () => {});
+        // TODO Invalidate Notifications
+      }
+    );
 
-      socket.on(
-        "notification",
-        ({ title, description, type, href }: NotificationDb) => {
-          addToast(title, description, type, href);
+    socket.on("task_log", (data) => console.log("TASK LOG", data));
 
-          // TODO Invalidate Notifications
-        }
-      );
+    setSocket(socket);
+  }, [tokenObj]);
 
-      setSocket(socket);
-      resolve(globSocket);
-    }, [tokenObj]);
-  });
+  return globSocket;
 };

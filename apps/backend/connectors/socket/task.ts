@@ -4,10 +4,12 @@ import {
   NotificationTrigger,
   ServerNamespace,
   TaskDb,
+  TaskLogUpdateData,
   TaskNamespaceClientToServerEvents,
   TaskNamespaceData,
   TaskNamespaceServerToClientEvents,
-  TaskStatus
+  TaskStatus,
+  TaskType
 } from "shared-types";
 
 import Database from "../mongo";
@@ -17,6 +19,7 @@ import { redisClient } from "../redis";
 import { Socket } from "./";
 import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
+import { SocketWithUser } from "./types";
 
 const taskNamespace: Namespace<
   TaskNamespaceClientToServerEvents,
@@ -32,6 +35,8 @@ taskNamespace.on("connection", (socket) => {
   });
 
   socket.on("task_started", ({ taskId, serverId }: TaskNamespaceData) => {
+    console.log("Task Started");
+
     Database.Task.updateOne(taskId, undefined, {
       serverId,
       status: TaskStatus.RUNNING
@@ -50,8 +55,12 @@ taskNamespace.on("connection", (socket) => {
     );
   });
 
-  socket.on("task_log", (data) => {
-    receiveTaskLogData(data, socket);
+  socket.on("log_update", (data: TaskLogUpdateData) => {
+    console.log("LOG UPDATE RECEIVED");
+
+    Socket.Frontend.sendLogUpdate(data);
+
+    // receiveTaskLogData(data, socket);
   });
 
   socket.on("cleanup_failed", (data: TaskNamespaceData) => {});
@@ -59,18 +68,18 @@ taskNamespace.on("connection", (socket) => {
   socket.on("task_cleaned", (data: TaskNamespaceData) => {});
 });
 
-const receiveTaskLogData = (data: TaskDb, socket: SocketIO) => {
-  redisClient.set(`taskLog:${data._id}`, JSON.stringify(data));
-  Socket.Frontend.Sockets.forEach((frontendSocket) => {
-    //@ts-ignore
-    if (frontendSocket.user._id == data.userId) {
-      frontendSocket.emit("task_log", data);
-      //@ts-ignore
-      socket.emit("task_viewer", frontendSocket.user);
-      return;
-    }
-  });
-};
+// const receiveTaskLogData = (data: TaskDb, socket: SocketIO) => {
+//   redisClient.set(`taskLog:${data._id}`, JSON.stringify(data));
+//   Socket.Frontend.Sockets.forEach((frontendSocket) => {
+//     //@ts-ignore
+//     if (frontendSocket.user._id == data.userId) {
+//       frontendSocket.emit("task_log", data);
+//       //@ts-ignore
+//       socket.emit("task_viewer", frontendSocket.user);
+//       return;
+//     }
+//   });
+// };
 
 const startTask = (taskId: string) => {
   // Find all Servers
@@ -93,16 +102,28 @@ const startTask = (taskId: string) => {
 
 const stopTask = (taskId: string) => taskNamespace.emit("stop", { taskId });
 
-const getTask = async (taskId: string) => {};
 const cleanupTask = (taskId: string) =>
   taskNamespace.emit("cleanup", { taskId });
+
+const setSubscribeTaskLog = (
+  rcvId: string,
+  data: { taskId: string; userId: string; taskType: TaskType },
+  event: "subscribe_task_log" | "unsubscribe_task_log"
+) => {
+  const serverSocket = taskNamespace.sockets.get(rcvId);
+
+  if (!serverSocket) {
+    return;
+  }
+
+  serverSocket.emit(event, data);
+};
 
 const Task = {
   start: startTask,
   stop: stopTask,
-  get: getTask,
   cleanup: cleanupTask,
-  sockets: taskNamespace.sockets
+  toggleSubscribe: setSubscribeTaskLog
 };
 
 export default Task;
