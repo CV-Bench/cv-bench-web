@@ -67,6 +67,10 @@ import {
 } from "./routes/network";
 import { getNetworkArchitectureList } from "./routes/networkArchitecture";
 import {
+  createNetworkPreview,
+  getNetworkPreviewList
+} from "./routes/networkPreview";
+import {
   getNotificationList,
   getNotification,
   deleteNotification,
@@ -175,6 +179,10 @@ app.post(
 //DATASET PREVIEW ROUTES
 app.post(route(RouteNames.POST_TASK_DATASETPREVIEW), createDatasetPreview);
 app.get(route(RouteNames.GET_DATASET_PREVIEW_LIST), getDatasetPreviewList);
+
+//NETWORK PREVIEW ROUTES
+app.post(route(RouteNames.POST_NETWORK_PREVIEW), createNetworkPreview);
+app.get(route(RouteNames.GET_NETWORK_PREVIEW_LIST), getNetworkPreviewList);
 
 // NETWORK ROUTES
 app.get(route(RouteNames.GET_NETWORK_LIST), getNetworkList);

@@ -1,19 +1,19 @@
 import { Response } from "express";
 import { ObjectId } from "mongodb";
 
-import { PostDatasetPreview, TypedRequest } from "shared-types";
+import { PostNetworkPreview, TypedRequest } from "shared-types";
 
 import Database from "../../connectors/mongo";
 
-const createDatasetPreview = (
-  req: TypedRequest<PostDatasetPreview>,
+const createNetworkPreview = (
+  req: TypedRequest<PostNetworkPreview>,
   res: Response
 ) => {
   const { taskId, image } = req.body;
 
-  Database.DatasetPreview.insertOne({ taskId: new ObjectId(taskId), image })
+  Database.NetworkPreview.insertOne({ taskId: new ObjectId(taskId), image })
     .then((value) => res.json(value.insertedId).end())
     .catch((x) => res.status(500).end());
 };
 
-export default createDatasetPreview;
+export default createNetworkPreview;

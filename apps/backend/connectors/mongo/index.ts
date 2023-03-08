@@ -10,6 +10,7 @@ import DatasetPreview from "./datasetPreview";
 import Model from "./model";
 import Network from "./network";
 import NetworkArchitecture from "./networkArchitecture";
+import NetworkPreview from "./networkPreview";
 import Notification from "./notification";
 import Socket from "./socket";
 import Task from "./task";
@@ -37,7 +38,8 @@ const Database = {
   Notification,
   Socket,
   Task,
-  Network
+  Network,
+  NetworkPreview
 };
 
 export const dataTypeCollectionMap = (dataType: DataType) =>
