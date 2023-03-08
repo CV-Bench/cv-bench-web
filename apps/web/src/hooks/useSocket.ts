@@ -57,8 +57,6 @@ export const useSocket = () => {
       }
     );
 
-    socket.on("task_log", (data) => console.log("TASK LOG", data));
-
     setSocket(socket);
   }, [tokenObj]);
 

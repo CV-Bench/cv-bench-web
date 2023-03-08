@@ -42,10 +42,18 @@ export interface TaskNamespaceData extends ServerSocketData {
   taskId: string;
 }
 
-export interface TaskLogUpdateData extends TaskNamespaceData {
+export interface DatasetLogUpdateData {
   data: string[];
-  timestamp: number;
 }
+
+export interface NetworkLogUpdateData {
+  data: any;
+}
+
+export type TaskLogUpdateData = (DatasetLogUpdateData | NetworkLogUpdateData) &
+  TaskNamespaceData & {
+    timestamp: number;
+  };
 
 export interface DataNamespaceData extends ServerSocketData {
   dataId: string;
