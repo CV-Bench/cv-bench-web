@@ -1,3 +1,6 @@
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+
 import Button from "@/components/Button";
 import Card from "@/components/Card";
 import DownloadButton from "@/components/DownloadButton";
@@ -5,19 +8,17 @@ import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
-import { useDataset } from "@/hooks/dataset";
-import { useDatasetPreview } from "@/hooks/datasetPreview";
+import { useDataset, useDatasetPreviews } from "@/hooks/dataset";
 import { api } from "@/network";
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+
 import { AccessType, DataType, GetDataset } from "shared-types";
 
 const DatasetId = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = router.query as { id: string };
 
   const { data: apiModel } = useDataset(id?.toString() ?? "");
-  const { data: previewImages } = useDatasetPreview(id);
+  const { data: previewImages } = useDatasetPreviews(id || "");
   const [dataset, setDataset] = useState<GetDataset>();
 
   useEffect(() => {
@@ -30,7 +31,8 @@ const DatasetId = () => {
     return <></>;
   }
 
-  const setTags = (val: string[]) => setDataset({ ...dataset, domainTags: val });
+  const setTags = (val: string[]) =>
+    setDataset({ ...dataset, domainTags: val });
   const setName = (val: string) => setDataset({ ...dataset, name: val });
   const setAccessType = (val: AccessType) =>
     setDataset({ ...dataset, accessType: val });
@@ -61,7 +63,9 @@ const DatasetId = () => {
             </div>
           </Card>
           <Card className="flex-1 ml-2 w-3/4">
-            {previewImages?.map(image => <img key={image._id} src={image.image} alt="Preview Image" />)}
+            {previewImages?.map((image) => (
+              <img key={image._id} src={image.image} alt="Preview Image" />
+            ))}
           </Card>
         </div>
         <Card className="mt-4 flex">
@@ -90,7 +94,11 @@ const DatasetId = () => {
           <div className="border-l border-white -my-4"></div>
           <div className="flex-1 px-4">
             <InputLabel>Download</InputLabel>
-            <DownloadButton dataType={DataType.DATASET} dataId={dataset._id} s3Key={dataset.s3Key} />
+            <DownloadButton
+              dataType={DataType.DATASET}
+              dataId={dataset._id}
+              s3Key={dataset.s3Key}
+            />
           </div>
           <div className="border-l border-white -my-4"></div>
           <div className="flex-1 px-4">
@@ -99,7 +107,8 @@ const DatasetId = () => {
           </div>
         </Card>
       </div>
-    </>);
+    </>
+  );
 };
 
 export default DatasetId;
