@@ -17,10 +17,8 @@ export interface ImageCardProps {
 const ImageCard: React.FC<ImageCardProps> = ({
   previewImage,
   domainTags,
-  name,
   createdAt,
-  href,
-  className
+  href
 }) => (
   <Link
     href={href}

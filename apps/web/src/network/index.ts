@@ -48,8 +48,15 @@ import {
   PatchDatasetConfiguration,
   PostDatasetResponse,
   PostDatasetResponseBody,
+<<<<<<< HEAD
+  GetDatasetPreview,
+  GetDatasetPreviewBody,
+  DataType,
+  PostNetworkResponse
+=======
   PostNetworkResponse,
   GetDatasetPreviewListBody
+>>>>>>> main
 } from "shared-types";
 
 import { network } from "./utils";
@@ -68,26 +75,26 @@ const fetchCors = (url: RequestInfo | URL, init?: RequestInit | undefined) =>
 
 const createMethod =
   (method: string) =>
-  async <T, B = any>(
-    url: RequestInfo | URL,
-    init?:
-      | (Omit<RequestInit, "body"> & { body: T } & {
+    async <T, B = any>(
+      url: RequestInfo | URL,
+      init?:
+        | (Omit<RequestInit, "body"> & { body: T } & {
           throwError?: boolean;
         })
-      | undefined
-  ) => {
-    const response = await fetchCors(baseUrl + url, {
-      ...init,
-      ...(init && init.body
-        ? { body: JSON.stringify(init.body) }
-        : { body: null }),
-      method
-    });
+        | undefined
+    ) => {
+      const response = await fetchCors(baseUrl + url, {
+        ...init,
+        ...(init && init.body
+          ? { body: JSON.stringify(init.body) }
+          : { body: null }),
+        method
+      });
 
-    network.checkResponse(response, init?.throwError || true);
+      network.checkResponse(response, init?.throwError || true);
 
-    return response.json() as Promise<B>;
-  };
+      return response.json() as Promise<B>;
+    };
 
 const postRequest = createMethod("POST");
 const deleteRequest = createMethod("DELETE");
@@ -223,10 +230,20 @@ export const api = {
       body
     }),
 
+  getDatasetPreview: async (
+    id: string
+  ): Promise<GetDatasetPreview> => {
+    const datasetPreviews = await getRequest(
+      getRoute(RouteNames.GET_DATASET_PREVIEW)(id)
+    );
+
+    return GetDatasetPreviewBody.parse(datasetPreviews);
+  },
+
+
   // NETWORK
   getNetwork: async (id: string): Promise<GetNetwork> => {
     const background = await getRequest(getRoute(RouteNames.GET_NETWORK)(id));
-
     return GetNetworkBody.parse(background);
   },
   getNetworkList: async (): Promise<GetNetworkList> => {
@@ -291,8 +308,6 @@ export const api = {
     const datasetPreviews = await getRequest(
       getRoute(RouteNames.GET_DATASET_PREVIEW_LIST)(id)
     );
-
-    console.log(datasetPreviews);
 
     return GetDatasetPreviewListBody.parse(datasetPreviews);
   },
