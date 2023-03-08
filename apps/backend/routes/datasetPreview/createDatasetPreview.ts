@@ -5,7 +5,7 @@ import { PostDatasetPreview, TypedRequest } from "shared-types";
 
 import Database from "../../connectors/mongo";
 
-const createDatasetConfiguration = (
+const createDatasetPreview = (
   req: TypedRequest<PostDatasetPreview>,
   res: Response
 ) => {
@@ -16,4 +16,4 @@ const createDatasetConfiguration = (
     .catch((x) => res.status(500).end());
 };
 
-export default createDatasetConfiguration;
+export default createDatasetPreview;

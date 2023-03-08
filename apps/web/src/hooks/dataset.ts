@@ -9,3 +9,8 @@ export const useDataset = (id: string): SWRResponse<GetDataset> =>
 
 export const useDatasetList = (): SWRResponse<GetDatasetList> =>
   useSWR(getRoute(RouteNames.GET_DATASET_LIST)(), api.getDatasetList);
+
+export const useDatasetPreviews = (id: string) =>
+  useSWR(getRoute(RouteNames.GET_DATASET_PREVIEW_LIST)(id), () =>
+    api.getDatasetPreviewList(id)
+  );

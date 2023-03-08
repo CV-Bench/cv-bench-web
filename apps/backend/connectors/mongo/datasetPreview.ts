@@ -71,11 +71,21 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
     }
   );
 
+const find = (taskId: string | ObjectId) =>
+  collectionRequest<FindCursor<DatasetPreviewDb>>(
+    CollectionName.DATASET_PREVIEW,
+    async (collection) => {
+      return collection.find({
+        taskId: new ObjectId(taskId)
+      });
+    }
+  );
+
 const DatasetPreview = {
   //findOne,
   insertOne,
-  deleteOne
-  //find
+  deleteOne,
+  find
 };
 
 export default DatasetPreview;

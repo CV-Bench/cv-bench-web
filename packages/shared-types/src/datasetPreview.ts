@@ -41,3 +41,7 @@ export const GetDatasetPreviewBody = DatasetPreviewBody.omit({
 });
 
 export type GetDatasetPreview = z.infer<typeof GetDatasetPreviewBody>;
+
+export const GetDatasetPreviewListBody = z.array(GetDatasetPreviewBody);
+
+export type GetDatasetPreviewList = z.infer<typeof GetDatasetPreviewListBody>;
