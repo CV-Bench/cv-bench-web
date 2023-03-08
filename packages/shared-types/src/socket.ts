@@ -96,11 +96,16 @@ export interface TaskNamespaceServerToClientEvents
   stop: (data: { taskId: string }) => void;
   cleanup: (data: { taskId: string }) => void;
   task_viewer: (viewer: SessionUser) => void;
+  subscribe_task_log: (data: {taskId: string, userId: string}) => void;
+  unsubscribe_task_log: (data: {taskId: string, userId: string}) => void;
 }
 
 // Frontend Namespace Events
 export interface FrontendNamespaceClientToServerEvents
-  extends ClientToServerEvents {}
+  extends ClientToServerEvents {
+    subscribe_task_log: (data: {taskId: string}) => void;
+    unsubscribe_task_log: (data: {taskId: string}) => void;
+  }
 
 export interface FrontendNamespaceServerToClientEvents
   extends ServerToClientEvents {
