@@ -3,6 +3,7 @@ import { Namespace, Socket as SocketIO } from "socket.io";
 import {
   NotificationTrigger,
   ServerNamespace,
+  SocketDb,
   TaskDb,
   TaskNamespaceClientToServerEvents,
   TaskNamespaceData,
@@ -72,23 +73,43 @@ const receiveTaskLogData = (data: TaskDb, socket: SocketIO) => {
   });
 };
 
-const startTask = (taskId: string) => {
-  // Find all Servers
-  const databaseRequests = [];
+const startTask = (taskId: string, userId: string) => {
+  let taskCounts: {
+    serverId: string;
+    tasks: number;
+  }[];
+  let connectedSockets: SocketDb[];
 
-  databaseRequests.push(
-    Database.Task.countServerTasks().then((result) => result.toArray())
-  );
-
-  databaseRequests.push(
-    Database.Socket.findServerSockets(ServerNamespace.TASK).then((result) =>
-      result.toArray()
-    )
-  );
-
-  Promise.all(databaseRequests).then(([taskCounter, connectedSockets]) => {});
-
-  taskNamespace.emit("start", { taskId });
+  //prepare data from db
+  Promise.all([
+    Database.Task.countServerTasks().then((res) => {
+      res.toArray().then((resInner) => {
+        taskCounts = resInner;
+      });
+    }),
+    Database.Socket.findServerSockets(ServerNamespace.TASK).then((result) => {
+      result.toArray().then((resInner) => {
+        connectedSockets = resInner;
+      });
+    })
+  ]).then(() => {
+    //get server with fewest tasks
+    const freeServer = taskCounts.reduce((prev, curr) =>
+      prev.tasks < curr.tasks ? prev : curr
+    ).serverId;
+    //assign task
+    Database.Task.updateOne(taskId, userId, { serverId: freeServer }).then(
+      (res) => {
+        if (!res.acknowledged) return;
+        //emit message to inform server
+        Database.Socket.findOne(freeServer, ServerNamespace.TASK).then(
+          (res) => {
+            taskNamespace.sockets.get(res.socketId)?.emit("start", { taskId });
+          }
+        );
+      }
+    );
+  });
 };
 
 const stopTask = (taskId: string) => taskNamespace.emit("stop", { taskId });
