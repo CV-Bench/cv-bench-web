@@ -112,7 +112,17 @@ const startTask = (taskId: string, userId: string) => {
   });
 };
 
-const stopTask = (taskId: string) => taskNamespace.emit("stop", { taskId });
+const stopTask = (taskId: string, userId: string) => {
+  Database.Task.findOne(taskId, userId).then((task) => {
+    Database.Socket.findOne(task.serverId!, ServerNamespace.TASK).then(
+      (serverSocket) => {
+        taskNamespace.sockets
+          .get(serverSocket.socketId)
+          ?.emit("stop", { taskId });
+      }
+    );
+  });
+};
 
 const getTask = async (taskId: string) => {};
 const cleanupTask = (taskId: string) =>
