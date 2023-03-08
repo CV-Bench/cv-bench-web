@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 import { useBackgroundList } from "@/hooks/background";
 import { useModelList } from "@/hooks/model";
 
-import { GetTask, TaskDatasetInfo } from "shared-types";
+import { DatasetDb } from "shared-types";
 
 import Collapsible from "../Collapsible";
 import ImageCard from "../ImageCard";
@@ -9,29 +10,29 @@ import InputField from "../inputs/InputField";
 import InputLabel from "../inputs/InputLabel";
 import TagInput from "../inputs/TagInput";
 
-export interface DatasetTaskInfoProps {
-  task: GetTask;
+export interface DatasetTaskInfoProps
+  extends Pick<
+    DatasetDb,
+    "modelIds" | "distractorIds" | "domainTags" | "backgroundIds"
+  > {
+  showTags?: boolean;
 }
 
-const DatasetTaskInfo: React.FC<DatasetTaskInfoProps> = ({ task }) => {
-  const info = task.info as TaskDatasetInfo;
-
-  const { data: backgrounds } = useBackgroundList(undefined, info.backgroundIds);
-  const { data: models } = useModelList(info.modelIds);
-  const { data: distractors } = useModelList(info.distractorIds);
+const DatasetTaskInfo: React.FC<DatasetTaskInfoProps> = ({
+  modelIds,
+  distractorIds,
+  domainTags,
+  backgroundIds,
+  showTags = true
+}) => {
+  const { data: backgrounds } = useBackgroundList(undefined, backgroundIds);
+  const { data: models } = useModelList(modelIds);
+  const { data: distractors } = useModelList(distractorIds);
 
   return (
-    <div className="pl-3">
-      <div>
-        <InputLabel>Name</InputLabel>
-        <InputField type="text" readOnly value={info.name} />
-      </div>
-      <div>
-        <InputLabel>Access Type</InputLabel>
-        <InputField type="text" readOnly value={info.accessType} />
-      </div>
-      <Collapsible title={`Models (${info.modelIds.length})`}>
-        <div className="flex">
+    <>
+      <Collapsible title={`Models (${modelIds.length})`} className="text-sm">
+        <div className="grid grid-cols-4">
           {models?.map((model) => (
             <ImageCard
               key={model._id}
@@ -41,8 +42,11 @@ const DatasetTaskInfo: React.FC<DatasetTaskInfoProps> = ({ task }) => {
           ))}
         </div>
       </Collapsible>
-      <Collapsible title={`Distractors (${info.distractorIds.length})`}>
-        <div className="flex">
+      <Collapsible
+        title={`Distractors (${distractorIds.length})`}
+        className="text-sm"
+      >
+        <div className="grid grid-cols-6">
           {distractors?.map((model) => (
             <ImageCard
               key={model._id}
@@ -53,8 +57,11 @@ const DatasetTaskInfo: React.FC<DatasetTaskInfoProps> = ({ task }) => {
           ))}
         </div>
       </Collapsible>
-      <Collapsible title={`Backgrounds (${info.backgroundIds.length})`}>
-        <div className="flex">
+      <Collapsible
+        title={`Backgrounds (${backgroundIds.length})`}
+        className="text-sm"
+      >
+        <div className="grid grid-cols-6 gap-4">
           {backgrounds?.map((bg) => (
             <ImageCard
               key={bg._id}
@@ -65,11 +72,13 @@ const DatasetTaskInfo: React.FC<DatasetTaskInfoProps> = ({ task }) => {
           ))}
         </div>
       </Collapsible>
-      <div>
-        <InputLabel>Tags</InputLabel>
-        <TagInput disabled={true} tags={info.domainTags} />
-      </div>
-    </div>
+      {showTags && (
+        <div>
+          <InputLabel>Tags</InputLabel>
+          <TagInput disabled={true} tags={domainTags} />
+        </div>
+      )}
+    </>
   );
 };
 

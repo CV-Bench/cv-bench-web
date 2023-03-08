@@ -75,7 +75,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         {user ? (
           <>
             <NavLayout user={user as SessionUser}>
-              <Component {...pageProps} />
+              <Component {...pageProps} user={user as SessionUser} />
             </NavLayout>
             <Toaster position="top-right" />
           </>

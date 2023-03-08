@@ -32,6 +32,7 @@ export enum RouteNames {
   POST_DATASET_CONFIGURATION = "POST_DATASET_CONFIGURATION",
 
   POST_TASK_DATASETPREVIEW = "POST_TASK_DATASETPREVIEW",
+  GET_DATASET_PREVIEW_LIST = "GET_DATASET_PREVIEW_LIST",
 
   GET_NETWORK_LIST = "GET_NETWORK_LIST",
   GET_NETWORK = "GET_NETWORK",
@@ -253,11 +254,18 @@ export const Routes: {
     StopTaskBody,
     () => "/task/stop"
   ),
+
   [RouteNames.POST_TASK_DATASETPREVIEW]: createRoute(
     "/datasetPreview",
-    /^\/task\/datasetPreview\/?post$/,
+    /^\/datasetPreview\/?post$/,
     PostDatasetBody,
-    () => "/task/datasetPreview/"
+    () => "/datasetPreview/"
+  ),
+  [RouteNames.GET_DATASET_PREVIEW_LIST]: createRoute(
+    "/datasetPreview/:id",
+    /^\/datasetPreview\/.*\/?get$/,
+    PostDatasetBody,
+    (id?: string) => "/datasetPreview/" + id
   ),
 
   [RouteNames.GET_NETWORK_ARCHITECTURE_LIST]: createRoute(

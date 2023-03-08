@@ -48,7 +48,8 @@ import {
   PatchDatasetConfiguration,
   PostDatasetResponse,
   PostDatasetResponseBody,
-  PostNetworkResponse
+  PostNetworkResponse,
+  GetDatasetPreviewListBody
 } from "shared-types";
 
 import { network } from "./utils";
@@ -225,15 +226,12 @@ export const api = {
   // NETWORK
   getNetwork: async (id: string): Promise<GetNetwork> => {
     const background = await getRequest(getRoute(RouteNames.GET_NETWORK)(id));
-
     return GetNetworkBody.parse(background);
   },
   getNetworkList: async (): Promise<GetNetworkList> => {
-    const backgrounds = await getRequest(
-      getRoute(RouteNames.GET_NETWORK_LIST)()
-    );
+    const network = await getRequest(getRoute(RouteNames.GET_NETWORK_LIST)());
 
-    return GetNetworkListBody.parse(backgrounds) as GetNetworkList;
+    return GetNetworkListBody.parse(network) as GetNetworkList;
   },
   postNetworks: async (body: PostNetwork): Promise<PostNetworkResponse> =>
     postRequest(getRoute(RouteNames.POST_NETWORK)(), { body }),
@@ -244,9 +242,11 @@ export const api = {
 
   // TASK
   getTask: async (id: string): Promise<GetTask> => {
-    const background = await getRequest(getRoute(RouteNames.GET_TASK)(id));
+    const task = await getRequest(getRoute(RouteNames.GET_TASK)(id));
 
-    return GetTaskBody.parse(background);
+    console.log("TASK", task);
+
+    return GetTaskBody.parse(task);
   },
   getTaskList: async (): Promise<GetTaskList> => {
     const tasks = await getRequest(getRoute(RouteNames.GET_TASK_LIST)());
@@ -285,6 +285,14 @@ export const api = {
     deleteRequest(getRoute(RouteNames.DELETE_NOTIFICATION)(id)),
   readNotification: (id: string) =>
     patchRequest(getRoute(RouteNames.READ_NOTIFICATION)(id)),
+
+  getDatasetPreviewList: async (id: string) => {
+    const datasetPreviews = await getRequest(
+      getRoute(RouteNames.GET_DATASET_PREVIEW_LIST)(id)
+    );
+
+    return GetDatasetPreviewListBody.parse(datasetPreviews);
+  },
 
   // SOCKET
   //TODO fix url to match others

@@ -17,6 +17,7 @@ import { Bucket, createBucketKey } from "shared-types";
 
 import { Background } from "./background";
 import { Model } from "./model";
+import { Dataset } from "./dataset";
 
 export const s3Client = new _S3({
   endpoint: process.env.S3_ENDPOINT_URL,
@@ -113,7 +114,8 @@ export const getPresignedUrl = async (key: string) => {
 
 const S3 = {
   Model,
-  Background
+  Background,
+  Dataset
 };
 
 export default S3;

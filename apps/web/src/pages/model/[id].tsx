@@ -31,10 +31,6 @@ const ModelId = () => {
     return <></>;
   }
 
-  const setName = (val: string) => setModel({ ...model, name: val });
-  const setAccessType = (val: AccessType) =>
-    setModel({ ...model, accessType: val });
-
   const handleChange = (
     key: "accessType" | "name" | "domainTags",
     val: string[] | string | AccessType
