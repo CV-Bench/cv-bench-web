@@ -44,6 +44,8 @@ const DatasetUploadStep: React.FC<DatasetUploadStepProps> = ({
         accessType={accessType}
         handleChange={handleChange}
         handleUpload={handleUpload}
+        uploadButtonText="Start"
+        uploadTitleText="Start"
       />
     </div>
   );

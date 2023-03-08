@@ -42,6 +42,19 @@ export interface TaskNamespaceData extends ServerSocketData {
   taskId: string;
 }
 
+export interface DatasetLogUpdateData {
+  data: string[];
+}
+
+export interface NetworkLogUpdateData {
+  data: any;
+}
+
+export type TaskLogUpdateData = (DatasetLogUpdateData | NetworkLogUpdateData) &
+  TaskNamespaceData & {
+    timestamp: number;
+  };
+
 export interface DataNamespaceData extends ServerSocketData {
   dataId: string;
   dataType: DataType;
@@ -87,7 +100,7 @@ export interface TaskNamespaceClientToServerEvents
   task_stopped: TaskNamespaceClientToServerEventFunction;
   cleanup_failed: TaskNamespaceClientToServerEventFunction;
   task_cleaned: TaskNamespaceClientToServerEventFunction;
-  task_log: (data: TaskDb) => void;
+  log_update: (data: TaskLogUpdateData) => void;
 }
 
 export interface TaskNamespaceServerToClientEvents
@@ -96,15 +109,20 @@ export interface TaskNamespaceServerToClientEvents
   stop: (data: { taskId: string }) => void;
   cleanup: (data: { taskId: string }) => void;
   task_viewer: (viewer: SessionUser) => void;
+  subscribe_task_log: (data: { taskId: string; userId: string }) => void;
+  unsubscribe_task_log: (data: { taskId: string; userId: string }) => void;
 }
 
 // Frontend Namespace Events
 export interface FrontendNamespaceClientToServerEvents
-  extends ClientToServerEvents {}
+  extends ClientToServerEvents {
+  subscribe_task_log: (data: { taskId: string }) => void;
+  unsubscribe_task_log: (data: { taskId: string }) => void;
+}
 
 export interface FrontendNamespaceServerToClientEvents
   extends ServerToClientEvents {
-  task_log: (data: TaskDb) => void;
+  task_log: (data: TaskLogUpdateData) => void;
 
   notification: (data: NotificationDb) => void;
 }

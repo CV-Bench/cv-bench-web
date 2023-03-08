@@ -5,12 +5,22 @@ import useSWR, { SWRResponse } from "swr";
 
 import { addToast } from "@/components/Toast";
 
-import { NotificationDb } from "shared-types";
+import {
+  FrontendNamespaceClientToServerEvents,
+  FrontendNamespaceServerToClientEvents,
+  NotificationDb
+} from "shared-types";
 
 import { api } from "../network";
 
-export const useSocket = async () => {
-  const [globSocket, setSocket] = useState<Socket>();
+export const useSocket = () => {
+  const [globSocket, setSocket] =
+    useState<
+      Socket<
+        FrontendNamespaceServerToClientEvents,
+        FrontendNamespaceClientToServerEvents
+      >
+    >();
   const { data: tokenObj } = useSWR("/auth/token", api.getSocketAuthToken);
 
   useEffect(() => {
@@ -20,7 +30,10 @@ export const useSocket = async () => {
 
     globSocket?.disconnect();
 
-    const socket = io(
+    const socket: Socket<
+      FrontendNamespaceServerToClientEvents,
+      FrontendNamespaceClientToServerEvents
+    > = io(
       (process.env.NEXT_PUBLIC_SOCKET_DOMAIN! || "http://localhost:3002") +
         "/frontend",
       {
@@ -46,4 +59,6 @@ export const useSocket = async () => {
 
     setSocket(socket);
   }, [tokenObj]);
+
+  return globSocket;
 };
