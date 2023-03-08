@@ -8,7 +8,9 @@ import Date from "@/components/Date";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 import DatasetPreviewImages from "@/components/task/DatasetPreviewImages";
-import DatasetTaskInfo from "@/components/task/DatasetTaskInfo";
+import DatasetTaskInfo, {
+  DatasetTaskInfoProps
+} from "@/components/task/DatasetTaskInfo";
 import TaskLogs from "@/components/task/Logs";
 import NetworkTaskInfo from "@/components/task/NetworkTaskInfo";
 import TaskGeneralInfos from "@/components/task/TaskGeneralInfos";

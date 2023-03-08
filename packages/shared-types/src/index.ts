@@ -20,6 +20,7 @@ export * from "./model";
 export * from "./dataset";
 export * from "./datasetConfiguration";
 export * from "./datasetPreview";
+export * from "./networkPreview";
 export * from "./audit";
 export * from "./network";
 export * from "./background";

@@ -22,7 +22,7 @@ export const PostDatasetPreviewBody = PostDataBody.pick({})
     })
   )
   .extend({
-    merge: z.string()
+    mode: z.string()
   });
 export type PostDatasetPreview = z.infer<typeof PostDatasetPreviewBody>;
 

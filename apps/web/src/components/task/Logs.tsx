@@ -5,7 +5,7 @@ import { DatasetLogUpdateData, TaskLogUpdateData } from "shared-types";
 import Card from "../Card";
 
 interface TaskLogsProps {
-  taskLog: (Omit<TaskLogUpdateData, "data"> & DatasetLogUpdateData) | undefined;
+  taskLog: TaskLogUpdateData | undefined;
 }
 
 const TaskLogs: React.FC<TaskLogsProps> = ({ taskLog }) => {
@@ -13,7 +13,8 @@ const TaskLogs: React.FC<TaskLogsProps> = ({ taskLog }) => {
     return null;
   }
 
-  const { timestamp, data } = taskLog;
+  const { timestamp, data } = taskLog as Omit<TaskLogUpdateData, "data"> &
+    DatasetLogUpdateData;
 
   return (
     <Card className="p-4 divide-y divide-slate-600">

@@ -1,26 +1,10 @@
-import {
-  DeleteResult,
-  FindCursor,
-  InsertOneResult,
-  ObjectId,
-  UpdateResult
-} from "mongodb";
+import { DeleteResult, FindCursor, InsertOneResult, ObjectId } from "mongodb";
 
-import {
-  AccessType,
-  CollectionName,
-  DatasetPreviewDb,
-  loggerTitle
-} from "shared-types";
-
-import logger from "../../util/logger";
+import { CollectionName, NetworkPreviewDb } from "shared-types";
 
 import { collectionRequest } from "./";
-import Dataset from "./dataset";
-import Task from "./task";
-import { isUsersOrPublic } from "./utils";
 
-const insertOne = (preview: Omit<DatasetPreviewDb, "createdAt">) =>
+const insertOne = (preview: Omit<NetworkPreviewDb, "createdAt">) =>
   collectionRequest<InsertOneResult>(
     CollectionName.DATASET_PREVIEW,
     async (collection) => {
@@ -42,7 +26,7 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
   );
 
 const find = (taskId: string | ObjectId) =>
-  collectionRequest<FindCursor<DatasetPreviewDb>>(
+  collectionRequest<FindCursor<NetworkPreviewDb>>(
     CollectionName.DATASET_PREVIEW,
     async (collection) => {
       return collection.find({
@@ -51,11 +35,10 @@ const find = (taskId: string | ObjectId) =>
     }
   );
 
-const DatasetPreview = {
-  //findOne,
+const NetworkPreview = {
   insertOne,
   deleteOne,
   find
 };
 
-export default DatasetPreview;
+export default NetworkPreview;
