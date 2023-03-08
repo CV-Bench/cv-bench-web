@@ -1,4 +1,6 @@
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { Socket } from "socket.io-client";
 
 import Card from "@/components/Card";
 import Date from "@/components/Date";
@@ -7,12 +9,35 @@ import InputLabel from "@/components/inputs/InputLabel";
 import DatasetTaskInfo from "@/components/task/DatasetTaskInfo";
 import NetworkTaskInfo from "@/components/task/NetworkTaskInfo";
 import { useTask } from "@/hooks/task";
+import { useSocket } from "@/hooks/useSocket";
 
-import { TaskType } from "shared-types";
+import {
+  FrontendNamespaceClientToServerEvents,
+  FrontendNamespaceServerToClientEvents,
+  TaskType
+} from "shared-types";
 
 const TaskId = () => {
   const router = useRouter();
   const { id } = router.query;
+  let socket: Socket<
+    FrontendNamespaceServerToClientEvents,
+    FrontendNamespaceClientToServerEvents
+  >;
+
+  useSocket().then((s) => {
+    socket = s!;
+  });
+
+  useEffect(() => {
+    // sub on component mount
+    socket?.emit("subscribe_task_log", { taskId: id as string });
+
+    // unsub on component unmount
+    return () => {
+      socket?.emit("unsubscribe_task_log", { taskId: id as string });
+    };
+  }, []);
 
   const { data: task } = useTask(id?.toString() ?? "");
 
