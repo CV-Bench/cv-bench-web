@@ -16,10 +16,9 @@ import Notification from "../../connectors/notifications";
 import { Socket } from "../../connectors/socket";
 
 const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {
-  const userId = req.session.user?._id;
   const { taskId } = req.body;
 
-  Database.Task.findOne(taskId, userId)
+  Database.Task.findOne(taskId, undefined)
     .then(
       (task) => {
         let insertPromise;
