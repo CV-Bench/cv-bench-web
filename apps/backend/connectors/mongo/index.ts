@@ -14,7 +14,6 @@ import NetworkPreview from "./networkPreview";
 import Notification from "./notification";
 import Socket from "./socket";
 import Task from "./task";
-import TaskLog from "./taskLog";
 import User from "./user";
 
 export { cvBenchDb, clientNotReady, collectionRequest } from "./client";
@@ -40,8 +39,7 @@ const Database = {
   Socket,
   Task,
   Network,
-  NetworkPreview,
-  TaskLog
+  NetworkPreview
 };
 
 export const dataTypeCollectionMap = (dataType: DataType) =>

@@ -1,6 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { useInterval } from "react-use";
-
 import { useDatasetPreviews } from "@/hooks/dataset";
 
 import Card from "../Card";
@@ -12,11 +10,7 @@ interface DatasetPreviewImagesProps {
 const DatasetPreviewImages: React.FC<DatasetPreviewImagesProps> = ({
   taskId
 }) => {
-  const { data: datasetPreviewList, mutate } = useDatasetPreviews(taskId);
-
-  useInterval(() => {
-    mutate();
-  }, 10000);
+  const { data: datasetPreviewList } = useDatasetPreviews(taskId);
 
   if (!datasetPreviewList || datasetPreviewList.length <= 0) {
     return null;

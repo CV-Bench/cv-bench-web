@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useInterval } from "react-use";
+import { useEffect, useState } from "react";
 
 import Card from "@/components/Card";
 import DatasetPreviewImages from "@/components/task/DatasetPreviewImages";
@@ -9,40 +8,41 @@ import TaskLogs from "@/components/task/Logs";
 import NetworkMetricsPage from "@/components/task/NetworkMetrics";
 import NetworkTaskInfo from "@/components/task/NetworkTaskInfo";
 import TaskGeneralInfos from "@/components/task/TaskGeneralInfos";
-import { useTask, useTaskLog } from "@/hooks/task";
-import { api } from "@/network";
+import { useTask } from "@/hooks/task";
+import { useSocket } from "@/hooks/useSocket";
 
 import {
-  RouteNames,
   TaskDatasetInfo,
+  TaskLogUpdateData,
   TaskNetworkInfo,
-  TaskType,
-  getRoute
+  TaskType
 } from "shared-types";
 
 const TaskId = () => {
   const router = useRouter();
   const { id: taskId } = router.query as { id: string };
+  const socket = useSocket();
   const { data: task } = useTask(taskId?.toString() ?? "");
-  const { data: taskLog, mutate } = useTaskLog(taskId);
-
-  useInterval(() => {
-    mutate();
-  }, 1000);
+  const [taskLog, setTaskLog] = useState<TaskLogUpdateData>();
 
   useEffect(() => {
-    if (!taskId) {
+    if (!socket || !taskId) {
       return;
     }
 
+    socket.on("task_log", (data) => {
+      console.log("TASK LOG", data);
+      setTaskLog(data);
+    });
+
     // sub on component mount
-    api.subscribeTaskLog(taskId);
+    socket.emit("subscribe_task_log", { taskId });
 
     // unsub on component unmount
     return () => {
-      api.unsubscribeTaskLog(taskId);
+      socket.emit("unsubscribe_task_log", { taskId });
     };
-  }, [taskId]);
+  }, [socket, taskId]);
 
   if (!task) {
     return null;
