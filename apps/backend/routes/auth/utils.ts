@@ -73,6 +73,8 @@ export const createAuthLinkHandler = (
     const nonce = generators.nonce();
     req.session.nonce[authProvider] = nonce;
 
+    console.log("SET SESSION FOR", req.session, authProvider);
+
     try {
       res.status(200).send(
         authProviderClient.authorizationUrl({
@@ -97,6 +99,8 @@ export const createAuthCallbackHandler = (
   authProvider: AuthProvider
 ): RequestHandler => {
   return async (req: Request, res: Response) => {
+    console.log("SESSIONS", req.session);
+
     try {
       if (!req.session.nonce) {
         req.session.nonce = {};
