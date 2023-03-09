@@ -26,7 +26,7 @@ const findOne = (id: string | ObjectId, userId: string | undefined) =>
     });
   });
 
-const insert = (model: Omit<DatasetDb, "_id" | "updatedAt" | "createdAt">) =>
+const insert = (model: Omit<DatasetDb, "updatedAt" | "createdAt">) =>
   collectionRequest<InsertOneResult>(
     CollectionName.DATASET,
     async (collection) => {
@@ -71,12 +71,7 @@ const find = (userId: string | ObjectId) =>
   collectionRequest<FindCursor<DatasetDb>>(
     CollectionName.DATASET,
     async (collection) => {
-      return collection.findOne({
-        $or: [
-          { userId: new ObjectId(userId) },
-          { accessType: AccessType.PUBLIC }
-        ]
-      });
+      return collection.find(isUsersOrPublic(userId));
     }
   );
 

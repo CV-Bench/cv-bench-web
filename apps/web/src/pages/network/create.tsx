@@ -1,5 +1,4 @@
-import { Router, useRouter } from "next/router";
-import { title } from "process";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import * as z from "zod";
 
@@ -9,53 +8,39 @@ import TrainStep from "@/components/model/network/TrainStep";
 import FormStepsPanel, {
   FormStep
 } from "@/components/multiform/FormStepsPanel";
-import { useDatasetList } from "@/hooks/dataset";
 import { api } from "@/network";
 
 import { AccessType, PostNetwork } from "shared-types";
 
 const CreateNetwork = () => {
-  const [formData, setFormData] = useState<
-    Pick<
-      PostNetwork,
-      | "accessType"
-      | "domainTags"
-      | "name"
-      | "datasetId"
-      | "networkArchitectureId"
-    >
-  >({
+  const [network, setNetwork] = useState<PostNetwork>({
     accessType: AccessType.PUBLIC,
     domainTags: [],
     name: "",
     datasetId: null,
     networkArchitectureId: null
   });
-
-  const onSetName = (val: string) => setFormData({ ...formData, name: val });
-
-  const onSelectTags = (val: string[]) =>
-    setFormData({ ...formData, domainTags: val });
-
-  const onSelectAccessType = (val: AccessType) =>
-    setFormData({ ...formData, accessType: val });
+  const { push } = useRouter();
 
   const onSelectDataset = (id?: string) => {
-    setFormData({ ...formData, datasetId: id });
+    setNetwork({ ...network, datasetId: id });
   };
 
   const onSelectNetworkArchitecture = (id: string | undefined) => {
-    setFormData({ ...formData, networkArchitectureId: id });
+    setNetwork({ ...network, networkArchitectureId: id });
   };
 
-  const { push } = useRouter();
+  const handleChange = (
+    key: "domainTags" | "name" | "accessType",
+    value: string[] | string | AccessType
+  ) => setNetwork({ ...network, [key]: value });
 
   const handleUpload = () => {
-    const postObject: PostNetwork = {
-      ...formData
-    };
+    api
+      .postNetworks(network)
+      .then((result) => push("/task/" + result._id))
+      .catch((e) => console.error(e));
   };
-
 
   const steps: FormStep[] = [
     {
@@ -63,8 +48,8 @@ const CreateNetwork = () => {
       description: "tbd",
       component: (
         <DataStep
-          item={formData.datasetId}
-          selectedDatasetId={formData.datasetId}
+          item={network.datasetId}
+          selectedDatasetId={network.datasetId}
           onSelectDatasetId={onSelectDataset}
         />
       ),
@@ -77,7 +62,7 @@ const CreateNetwork = () => {
       description: "tbd",
       component: (
         <ArchitectureStep
-          selectedNetworkArchitectureId={formData.networkArchitectureId}
+          selectedNetworkArchitectureId={network.networkArchitectureId}
           onSelectNetworkArchitectureId={onSelectNetworkArchitecture}
         />
       ),
@@ -90,12 +75,11 @@ const CreateNetwork = () => {
       description: "tbd",
       component: (
         <TrainStep
-          tags={formData.domainTags}
-          onSelectTags={onSelectTags}
-          accessType={formData.accessType}
-          onSelectAccessType={onSelectAccessType}
-          name={formData.name}
-          onSetName={onSetName}
+          tags={network.domainTags}
+          accessType={network.accessType}
+          name={network.name}
+          handleChange={handleChange}
+          handleUpload={handleUpload}
         />
       ),
       validation: z.object({
@@ -108,7 +92,7 @@ const CreateNetwork = () => {
       <div className="">
         <FormStepsPanel
           submitButtonText="Start Training"
-          formData={formData}
+          formData={network}
           steps={steps}
           handleSubmit={handleUpload}
         />

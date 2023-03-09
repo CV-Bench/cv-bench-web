@@ -4,20 +4,21 @@ import * as socketJwt from "socketio-jwt";
 import * as util from "util";
 
 import {
-  DataNamespaceClientToServerEvents,
-  DataNamespaceData,
-  DataNamespaceServerToClientEvents,
-  DataType,
   FrontendNamespaceClientToServerEvents,
   FrontendNamespaceServerToClientEvents,
   NotificationDb,
-  loggerTitle
+  loggerTitle,
+  ServerNamespace,
+  TaskLogUpdateData
 } from "shared-types";
 
 import logger from "../../util/logger";
+import Database from "../mongo";
 
+import { Socket } from "./";
 import io from "./client";
-import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
+import { userRegistryMiddleware } from "./middleware";
+import { FrontendSocket, SocketWithUser } from "./types";
 
 const frontendNamespace: Namespace<
   FrontendNamespaceClientToServerEvents,
@@ -32,6 +33,8 @@ frontendNamespace.use(
     decodedPropertyName: "user"
   })
 );
+
+frontendNamespace.use(userRegistryMiddleware);
 
 io.engine.on("connection_error", (e) => {
   logger.error(
@@ -55,18 +58,95 @@ frontendNamespace.on("connection", (socket) => {
       socket.emit("blocked", rejRes.msBeforeNext);
     }
   });
+
+  socket.on("subscribe_task_log", (tmp) => {
+    handleTaskSubscription(tmp, socket as SocketWithUser, "subscribe_task_log");
+  });
+  socket.on("unsubscribe_task_log", (tmp) => {
+    handleTaskSubscription(
+      tmp,
+      socket as SocketWithUser,
+      "unsubscribe_task_log"
+    );
+  });
 });
+
+const handleTaskSubscription = (
+  { taskId }: { taskId: string },
+  socket: SocketWithUser,
+  event: "subscribe_task_log" | "unsubscribe_task_log"
+) => {
+  console.log("SUBSCRIBE TO TASK");
+
+  Database.Task.findOne(taskId, socket?.user?._id).then((task) => {
+    if (!task) {
+      return;
+    }
+
+    console.log(task.serverId);
+
+    Database.Socket.findOne(task.serverId as string, ServerNamespace.TASK).then(
+      (res) => {
+        if (!res) {
+          return;
+        }
+
+        console.log(res.socketId);
+
+        Socket.Task.toggleSubscribe(
+          res.socketId,
+          {
+            taskId: taskId,
+            userId: socket?.user?._id,
+            taskType: task.type
+          },
+          event
+        );
+      }
+    );
+  });
+};
+
+const mapUserSockets = (
+  userId: string | ObjectId,
+  callback: (socket: FrontendSocket) => any
+) => {
+  Database.Socket.findUserSockets(userId).then((result) =>
+    result.toArray().then((result) => {
+      for (const { socketId } of result) {
+        const socket = frontendNamespace.sockets.get(socketId);
+
+        if (!socket) {
+          Database.Socket.deleteOne(socketId);
+          continue;
+        }
+
+        callback(socket);
+      }
+    })
+  );
+};
 
 const sendNotification = (
   notification: NotificationDb,
   userId: string | ObjectId
-) => {
-  // TODO
+) =>
+  mapUserSockets(userId, (socket) => socket.emit("notification", notification));
+
+const sendLogUpdate = (data: TaskLogUpdateData) => {
+  const { taskId } = data;
+
+  Database.Task.findOne(taskId, undefined)
+    .then(({ userId }) => {
+      mapUserSockets(userId, (socket) => socket.emit("task_log", data));
+    })
+    .catch(() => {});
 };
 
 const Frontend = {
   Sockets: frontendNamespace.sockets,
-  sendNotification: sendNotification
+  sendNotification,
+  sendLogUpdate
 };
 
 export default Frontend;

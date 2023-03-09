@@ -35,24 +35,10 @@ const PreviewStep: React.FC<PreviewStepProps> = ({
   onSelectModelAssets
 }) => {
   return (
-    <div className="lg:flex flex-1">
-      <div className="lg:w-1/3 lg:pr-2 lg:pb-0 pb-2">
-        <Card className="flex flex-col justify-around h-full">
-          <div>
-            <InputLabel>Thumbnail</InputLabel>
-            <div className="relative min-h-[180px]">
-              {thumbnail && (
-                <Image
-                  className="mx-auto object-contain"
-                  alt="Preview Thumbnail"
-                  fill
-                  src={thumbnail}
-                />
-              )}
-            </div>
-          </div>
-
-          <div>
+    <div className="lg:flex">
+      <div className="lg:w-1/4 lg:pr-2 lg:pb-0 pb-2">
+        <Card className="flex flex-col h-full p-4 divide-y divide-slate-600">
+          <div className="pb-4 space-y-1">
             <InputLabel>3D Model</InputLabel>
             <FileInput
               selectedFiles={model && [model]}
@@ -60,7 +46,7 @@ const PreviewStep: React.FC<PreviewStepProps> = ({
               accept={[".obj", ".ply"]}
             />
           </div>
-          <div>
+          <div className="py-4 space-y-1">
             <InputLabel>Materials & Textures</InputLabel>
             <FileInput
               selectedFiles={modelAssets}
@@ -70,13 +56,27 @@ const PreviewStep: React.FC<PreviewStepProps> = ({
             />
           </div>
 
-          <div className="mt-3">
+          <div className="py-4 space-y-1">
             <InputLabel>Tags</InputLabel>
             <TagInput tags={tags} setTags={onSelectTags} placeholder="Tags" />
           </div>
+
+          {thumbnail && (
+            <div className="py-4 space-y-1">
+              <InputLabel>Thumbnail</InputLabel>
+              <div className="relative min-h-[180px]">
+                <Image
+                  className="mx-auto object-contain"
+                  alt="Preview Thumbnail"
+                  fill
+                  src={thumbnail}
+                />
+              </div>
+            </div>
+          )}
         </Card>
       </div>
-      <div className="lg:w-2/3 lg:pl-2 lg:pt-0 pt-2 min-h-full">
+      <div className="lg:w-3/4 lg:pl-2 lg:pt-0 pt-2 min-h-full">
         <Card className="h-full">
           <ModelPreview
             onThumbnailUpdate={onThumbnailUpdate}

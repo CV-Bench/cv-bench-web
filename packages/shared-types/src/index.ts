@@ -12,13 +12,15 @@ export enum loggerTitle {
   REDIS_CLIENT = "REDIS CLIENT",
   MONGO_CLIENT = "MONGO CLIENT",
   AUTH_CLIENT = "AUTH CLIENT",
-  SOCKET = "SOCKET",
+  SOCKET = "SOCKET"
 }
 
 export * from "./utils";
 export * from "./model";
 export * from "./dataset";
 export * from "./datasetConfiguration";
+export * from "./datasetPreview";
+export * from "./networkPreview";
 export * from "./audit";
 export * from "./network";
 export * from "./background";
@@ -31,3 +33,5 @@ export { AccessType } from "./utils";
 export * from "./auth";
 export * from "./networkArchitecture";
 export * from "./socket";
+
+export * from "./constants";

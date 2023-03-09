@@ -16,6 +16,7 @@ import { Readable } from "stream";
 import { Bucket, createBucketKey } from "shared-types";
 
 import { Background } from "./background";
+import { Dataset } from "./dataset";
 import { Model } from "./model";
 import { Network } from "./network";
 
@@ -115,6 +116,7 @@ export const getPresignedUrl = async (key: string) => {
 const S3 = {
   Model,
   Background,
+  Dataset,
   Network
 };
 

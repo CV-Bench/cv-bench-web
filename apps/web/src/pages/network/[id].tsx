@@ -7,10 +7,14 @@ import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
+import ToolGeneralSettings from "@/components/inputs/ToolGeneralSettings";
+import NetworkPreviewImages from "@/components/task/NetworkPreviewImages";
+import NetworkTaskInfo from "@/components/task/NetworkTaskInfo";
+import TaskGeneralInfos from "@/components/task/TaskGeneralInfos";
+import { useNetwork } from "@/hooks/network";
 import { api } from "@/network";
 
 import { AccessType, DataUrlFile, GetNetwork } from "shared-types";
-import { useNetwork } from "@/hooks/network";
 
 const NetworkId = () => {
   const router = useRouter();
@@ -29,81 +33,69 @@ const NetworkId = () => {
     return <></>;
   }
 
-  const setTags = (val: string[]) => setNetwork({ ...network, domainTags: val });
-  const setName = (val: string) => setNetwork({ ...network, name: val });
-  const setAccessType = (val: AccessType) =>
-    setNetwork({ ...network, accessType: val });
+  const handleChange = (
+    key: "domainTags" | "name" | "accessType",
+    value: string[] | string | AccessType
+  ) => setNetwork({ ...network, [key]: value });
 
+  const downloadNetwork = () => {};
 
-  const downloadNetwork = () => {
-    
-  };
-
-  const deleteNetwork = async () => {
+  const handleDelete = async () => {
     await api.deleteNetwork(network._id);
     router.push("/network");
   };
 
-  const updateNetwork = async () => {
+  const handleUpdate = async () => {
     await api.patchNetwork(network._id, {
       name: network.name,
       description: network.description,
       domainTags: network.domainTags,
       accessType: network.accessType
     });
-    router.push("/network");
   };
 
   return (
-    <>
-      <div className="h-full flex flex-col text-white container mx-auto">
-        <div className="flex-1 flex">
-          <Card className="mr-2 w-1/4 flex flex-col justify-around">
-            <div>
-              <InputLabel>Tags</InputLabel>
-              <TagInput tags={network.domainTags} setTags={setTags} />
-            </div>
-          </Card>
-          <Card className="flex-1 ml-2 w-3/4">
-
-          </Card>
-        </div>
-        <Card className="mt-4 flex">
-          <div className="flex-1 pr-4">
-            <div>
-              <InputLabel>Name</InputLabel>
-              <InputField
-                type="text"
-                value={network.name}
-                onChange={(ev) =>
-                  setName((ev.target as HTMLInputElement).value)
-                }
-              />
-            </div>
-            <AccessTypeInput
-              className="mt-3"
-              accessType={network.accessType}
-              setAccessType={setAccessType}
-            />
-          </div>
-          <div className="border-l border-white -my-4"></div>
-          <div className="flex-1 px-4">
-            <InputLabel>Update</InputLabel>
-            <Button onClick={updateNetwork}>Update</Button>
-          </div>
-          <div className="border-l border-white -my-4"></div>
-          <div className="flex-1 px-4">
-            <InputLabel>Download</InputLabel>
-            <Button onClick={downloadNetwork}>Download</Button>
-          </div>
-          <div className="border-l border-white -my-4"></div>
-          <div className="flex-1 px-4">
-            <InputLabel>Delete</InputLabel>
-            <Button onClick={deleteNetwork}>Delete</Button>
+    <div className="container mx-auto space-y-4 py-8">
+      <div className="grid grid-cols-4 gap-4">
+        <TaskGeneralInfos
+          name={network.name}
+          accessType={network.accessType}
+          createdAt={network.createdAt}
+          updatedAt={network.updatedAt}
+        />
+        <Card className="p-4 divide-y divide-slate-600 col-span-3">
+          <p className="text-slate-200 pb-4">Specific Infos</p>
+          <div className="py-4">
+            <NetworkTaskInfo {...network} />
           </div>
         </Card>
       </div>
-    </>
+
+      <NetworkPreviewImages taskId={network._id} />
+
+      <Card className="p-4 justify-around">
+        <div>
+          <InputLabel>Tags</InputLabel>
+          <TagInput
+            tags={network.domainTags}
+            setTags={(newTags) => handleChange("domainTags", newTags)}
+          />
+        </div>
+      </Card>
+
+      <ToolGeneralSettings
+        name={network.name}
+        accessType={network.accessType}
+        handleChange={handleChange}
+        uploadButtonText="Update"
+        handleUpload={handleUpdate}
+        // showDownload
+        // handleDownload={}
+
+        showDelete
+        handleDelete={handleDelete}
+      />
+    </div>
   );
 };
 

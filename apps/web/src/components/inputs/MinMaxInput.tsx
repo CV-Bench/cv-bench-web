@@ -1,3 +1,5 @@
+import Collapsible from "../Collapsible";
+
 import InputField from "./InputField";
 import InputLabel from "./InputLabel";
 
@@ -7,6 +9,7 @@ export interface MinMaxInputProps {
   min: number;
   max: number;
   step?: number;
+  title: string;
 
   onMinChange: (min: number) => void;
   onMaxChange: (max: number) => void;
@@ -15,6 +18,7 @@ export interface MinMaxInputProps {
 const MinMaxInput: React.FC<MinMaxInputProps> = ({
   className,
   min,
+  title,
   max,
   onMinChange,
   onMaxChange,
@@ -24,22 +28,28 @@ const MinMaxInput: React.FC<MinMaxInputProps> = ({
   const setMax = (value: number) => onMaxChange(value > min ? value : min);
 
   return (
-    <div className={"flex items-center " + className}>
-      <InputLabel className="mx-2 my-1">Min</InputLabel>
-      <InputField
-        type="number"
-        step={step}
-        value={min}
-        onChange={(e) => setMin(+(e.target as HTMLInputElement).value)}
-      />
-      <InputLabel className="mx-2 my-1">Max</InputLabel>
-      <InputField
-        type="number"
-        step={step}
-        value={max}
-        onChange={(e) => setMax(+(e.target as HTMLInputElement).value)}
-      />
-    </div>
+    <Collapsible title={title} className="text-sm">
+      <div className="flex space-x-2 px-2">
+        <div>
+          <InputLabel className="mx-2 my-1">Min</InputLabel>
+          <InputField
+            type="number"
+            step={step}
+            value={min}
+            onChange={(e) => setMin(+(e.target as HTMLInputElement).value)}
+          />
+        </div>
+        <div>
+          <InputLabel className="mx-2 my-1">Max</InputLabel>
+          <InputField
+            type="number"
+            step={step}
+            value={max}
+            onChange={(e) => setMax(+(e.target as HTMLInputElement).value)}
+          />
+        </div>
+      </div>
+    </Collapsible>
   );
 };
 

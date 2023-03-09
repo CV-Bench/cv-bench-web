@@ -4,6 +4,7 @@ import { PatchBackgroundBody, PostBackgroundBody } from "./background";
 import { PatchDatasetBody, PostDatasetBody } from "./dataset";
 import { PatchModelBody, PostModelBody } from "./model";
 import { PatchNetworkBody, PostNetworkBody } from "./network";
+import { PostNetworkPreviewBody } from "./networkPreview";
 import { FinishTaskBody, StopTaskBody } from "./task";
 
 export enum RouteNames {
@@ -30,6 +31,12 @@ export enum RouteNames {
   DELETE_DATASET_CONFIGURATION = "DELETE_DATASET_CONFIGURATION",
   PATCH_DATASET_CONFIGURATION = "PATCH_DATASET_CONFIGURATION",
   POST_DATASET_CONFIGURATION = "POST_DATASET_CONFIGURATION",
+
+  POST_TASK_DATASETPREVIEW = "POST_TASK_DATASETPREVIEW",
+  GET_DATASET_PREVIEW_LIST = "GET_DATASET_PREVIEW_LIST",
+
+  POST_NETWORK_PREVIEW = "POST_NETWORK_PREVIEW",
+  GET_NETWORK_PREVIEW_LIST = "GET_NETWORK_PREVIEW_LIST",
 
   GET_NETWORK_LIST = "GET_NETWORK_LIST",
   GET_NETWORK = "GET_NETWORK",
@@ -240,16 +247,42 @@ export const Routes: {
     () => "/task"
   ),
   [RouteNames.FINISH_TASK]: createRoute(
-    "/task/finish/:id",
-    /^\/task\/finish\/.*\/?post$/,
+    "/task/finish",
+    /^\/task\/finish\/?post$/,
     FinishTaskBody,
-    (id?: string) => "/task" + id
+    () => "/task/finish"
   ),
   [RouteNames.STOP_TASK]: createRoute(
-    "/task/stop/:id",
-    /^\/task\/stop\/.*\/?post$/,
+    "/task/stop",
+    /^\/task\/stop\/?post$/,
     StopTaskBody,
-    (id?: string) => "/task/" + id
+    () => "/task/stop"
+  ),
+
+  [RouteNames.POST_TASK_DATASETPREVIEW]: createRoute(
+    "/datasetPreview",
+    /^\/datasetPreview\/?post$/,
+    PostDatasetBody,
+    () => "/datasetPreview/"
+  ),
+  [RouteNames.GET_DATASET_PREVIEW_LIST]: createRoute(
+    "/datasetPreview/:id",
+    /^\/datasetPreview\/.*\/?get$/,
+    z.object({}),
+    (id?: string) => "/datasetPreview/" + id
+  ),
+
+  [RouteNames.POST_NETWORK_PREVIEW]: createRoute(
+    "/networkPreview",
+    /^\/networkPreview\/?post$/,
+    PostNetworkPreviewBody,
+    () => "/networkPreview/"
+  ),
+  [RouteNames.GET_NETWORK_PREVIEW_LIST]: createRoute(
+    "/networkPreview/:id",
+    /^\/networkPreview\/.*\/?get$/,
+    z.object({}),
+    (id?: string) => "/networkPreview/" + id
   ),
 
   [RouteNames.GET_NETWORK_ARCHITECTURE_LIST]: createRoute(

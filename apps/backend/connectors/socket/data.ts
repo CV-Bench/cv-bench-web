@@ -2,12 +2,13 @@ import { Namespace } from "socket.io";
 
 import {
   DataNamespaceClientToServerEvents,
-  DataNamespaceData,
   DataNamespaceServerToClientEvents,
-  DataType
+  DataType,
+  NotificationTrigger
 } from "shared-types";
 
 import Database, { dataTypeCollectionMap } from "../mongo";
+import Notification from "../notifications";
 
 import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
@@ -24,9 +25,13 @@ dataNamespace.on("connection", (socket) => {
   socket.on("data_uploaded", ({ s3Key, dataType, dataId }) => {
     const collectionName = dataTypeCollectionMap(dataType);
 
-    Database[collectionName].updateOne(dataId, undefined, { s3Key });
-
-    // TODO SEND NOTIFICATION
+    Database[collectionName]
+      .updateOne(dataId, undefined, { s3Key })
+      .then(() => {
+        Notification.add(NotificationTrigger.DOWNLOAD_READY, dataId, {
+          dataType
+        });
+      });
   });
 
   socket.on("data_deleted", (data) => {

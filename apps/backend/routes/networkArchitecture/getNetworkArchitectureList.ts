@@ -4,7 +4,9 @@ import Database from "../../connectors/mongo";
 
 const getNetworkArchitectureList = (_: Request, res: Response) => {
   Database.NetworkArchitecture.find()
-    .then((result) => res.status(200).json(result.toArray()))
+    .then((result) =>
+      result.toArray().then((list) => res.status(200).json(list))
+    )
     .catch(() => res.status(500).end());
 };
 

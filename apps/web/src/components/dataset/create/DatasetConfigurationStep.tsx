@@ -149,7 +149,7 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({
   };
 
   return (
-    <div className="flex-1 flex items-stretch">
+    <div className="flex items-stretch h-full space-x-4">
       <DatasetConfigurationModal
         dataset={dataset}
         setDataset={setDataset}
@@ -159,53 +159,53 @@ const DatasetConfigurationStep: React.FC<DatasetConfigurationStepProps> = ({
         onClose={onConfigModalClose}
       />
 
-      <div className="w-1/4 flex flex-col">
-        <div className="px-3 pb-3 border-b border-white">
-          <InputLabel>Configuration</InputLabel>
-          <SelectInput
-            value={dataset.configurationId}
-            setValue={setSelectedConfigId}
-          >
-            <option value="null">New</option>
-            {datasetConfigs?.map((config) => (
-              <option key={config._id} value={config._id}>
-                {config.name}
-              </option>
-            ))}
-          </SelectInput>
+      <Card className="w-1/4 flex flex-col h-[32rem]">
+        <div className="pt-4 px-4">
+          <div className="pb-2 border-b border-slate-600">
+            <InputLabel>Configuration</InputLabel>
+            <SelectInput
+              value={dataset.configurationId}
+              setValue={setSelectedConfigId}
+            >
+              <option value="null">New</option>
+              {datasetConfigs?.map((config) => (
+                <option key={config._id} value={config._id}>
+                  {config.name}
+                </option>
+              ))}
+            </SelectInput>
+          </div>
         </div>
-        <div className="relative flex-1">
-          <Card className="absolute w-full h-full flex-1 overflow-y-auto">
-            <DatasetConfigurationVisuals
-              models={models}
-              backgrounds={backgrounds}
-              visuals={visuals}
-              setVisuals={setVisuals}
-            />
-            <DatasetConfigurationInputs
-              config={config.configuration}
-              setConfig={updateConfig}
-            />
-          </Card>
+        <div className="relative flex-1 overflow-y-auto divide-y divide-slate-600 px-4">
+          <DatasetConfigurationVisuals
+            models={models}
+            backgrounds={backgrounds}
+            visuals={visuals}
+            setVisuals={setVisuals}
+          />
+          <DatasetConfigurationInputs
+            config={config.configuration}
+            setConfig={updateConfig}
+          />
         </div>
 
-        <div className="p-3">
-          {configHasChanged && (
+        {configHasChanged && (
+          <div className="pt-2">
             <Button
-              className="w-full"
+              className="w-full rounded-t-none"
               color="red"
               onClick={() => setIsConfigModalOpen(true)}
             >
               Save Changes
             </Button>
-          )}
-        </div>
-      </div>
-      <div className="relative w-3/4">
+          </div>
+        )}
+      </Card>
+      <Card className="relative w-3/4">
         <div className="absolute h-full w-full flex justify-center items-center">
           <Workspace visuals={visuals} configuration={config.configuration} />
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

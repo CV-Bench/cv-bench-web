@@ -1,6 +1,7 @@
-import { Socket } from "socket.io";
+import { ObjectId } from "mongodb";
 
 import { SessionUser } from "./auth";
+import { NotificationDb } from "./notification";
 import { TaskDb } from "./task";
 import { DataType } from "./utils";
 
@@ -30,6 +31,7 @@ export interface SocketDb {
   type: SocketType;
   serverNamespace?: ServerNamespace;
   serverId?: string;
+  userId?: ObjectId;
 }
 
 export interface ServerSocketData {
@@ -38,6 +40,50 @@ export interface ServerSocketData {
 
 export interface TaskNamespaceData extends ServerSocketData {
   taskId: string;
+}
+
+type StartPrevCurr = [number, number, number];
+
+export interface TrainMetrics {
+  iter: StartPrevCurr;
+  lr: StartPrevCurr;
+  memory: StartPrevCurr;
+  data_time: StartPrevCurr;
+  loss_rpn_cls: StartPrevCurr;
+  loss_rpn_bbox: StartPrevCurr;
+  loss_cls: StartPrevCurr;
+  acc: StartPrevCurr;
+  loss_bbox: StartPrevCurr;
+  loss: StartPrevCurr;
+  time: StartPrevCurr;
+}
+
+export type TrainMetricKeys = keyof TrainMetrics;
+
+export interface ValidationMetrics {
+  iter: StartPrevCurr;
+  lr: StartPrevCurr;
+  bbox_mAP: StartPrevCurr;
+  bbox_mAP_50: StartPrevCurr;
+  bbox_mAP_75: StartPrevCurr;
+  bbox_mAP_s: StartPrevCurr;
+  bbox_mAP_m: StartPrevCurr;
+  bbox_mAP_l: StartPrevCurr;
+}
+
+export type ValidationMetricKeys = keyof ValidationMetrics;
+
+export interface NetworkMetrics {
+  train: TrainMetrics;
+  val: ValidationMetrics;
+  currentEpoch: number;
+}
+
+export interface TaskLogUpdateData extends TaskNamespaceData {
+  timestamp: number;
+
+  lines: string[];
+  metrics?: NetworkMetrics;
 }
 
 export interface DataNamespaceData extends ServerSocketData {
@@ -85,7 +131,7 @@ export interface TaskNamespaceClientToServerEvents
   task_stopped: TaskNamespaceClientToServerEventFunction;
   cleanup_failed: TaskNamespaceClientToServerEventFunction;
   task_cleaned: TaskNamespaceClientToServerEventFunction;
-  task_log: (data: TaskDb) => void;
+  log_update: (data: TaskLogUpdateData) => void;
 }
 
 export interface TaskNamespaceServerToClientEvents
@@ -94,17 +140,20 @@ export interface TaskNamespaceServerToClientEvents
   stop: (data: { taskId: string }) => void;
   cleanup: (data: { taskId: string }) => void;
   task_viewer: (viewer: SessionUser) => void;
+  subscribe_task_log: (data: { taskId: string; userId: string }) => void;
+  unsubscribe_task_log: (data: { taskId: string; userId: string }) => void;
 }
 
 // Frontend Namespace Events
 export interface FrontendNamespaceClientToServerEvents
-  extends ClientToServerEvents {}
+  extends ClientToServerEvents {
+  subscribe_task_log: (data: { taskId: string }) => void;
+  unsubscribe_task_log: (data: { taskId: string }) => void;
+}
 
 export interface FrontendNamespaceServerToClientEvents
   extends ServerToClientEvents {
-  start_failed: (data: TaskNamespaceData) => void;
-  task_started: (data: TaskNamespaceData) => void;
-  stop_failed: (data: TaskNamespaceData) => void;
-  task_stopped: (data: TaskNamespaceData) => void;
-  task_log: (data: TaskDb) => void;
+  task_log: (data: TaskLogUpdateData) => void;
+
+  notification: (data: NotificationDb) => void;
 }

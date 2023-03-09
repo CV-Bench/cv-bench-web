@@ -10,7 +10,7 @@ export interface CardProps extends React.HTMLProps<HTMLDivElement> {
 
 const Card: React.FC<CardProps> = (props) => {
   const combinedClassName = classNames(
-    "bg-gray-800 rounded-lg p-3 shadow",
+    "bg-slate-800 rounded-lg shadow overflow-hidden",
     props.className
   );
 

@@ -1,4 +1,4 @@
-import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { ArrowUpTrayIcon } from "@heroicons/react/20/solid";
 import { useRef } from "react";
 
 import ImageThumbnail from "./ImageThumbnail";
@@ -35,7 +35,6 @@ const ImageDragAndDrop: React.FC<ImageDragAndDropProps> = ({
 
   const handleFileInputChange = (event: any) => {
     const acceptedTypes = ["image/jpeg", "image/png"];
-    console.log(event);
 
     const newFiles = [...event.target.files]
       .filter((file) => acceptedTypes.includes(file.type))
@@ -66,21 +65,21 @@ const ImageDragAndDrop: React.FC<ImageDragAndDropProps> = ({
         className="h-full w-full flex flex-wrap  max-h-full overflow-y-auto"
       >
         {files.length === 0 ? (
-          <div className="flex justify-center items-center h-full w-full">
-            <FileUploadIcon className="text-white text-2xl" />
-            <p className="text-white text-2xl ml-2">
-              Drop background(s) here OR click to preview your files
-            </p>
+          <div className="flex justify-center items-center h-full w-full space-x-2 transition-all duration-150 text-slate-200 hover:text-slate-400">
+            <ArrowUpTrayIcon className=" w-6 h-6" />
+            <p>Drop background(s) here OR click to preview your files</p>
           </div>
         ) : (
-          files.map((file, index) => (
-            <ImageThumbnail
-              key={index}
-              index={index}
-              source={file.content}
-              handleCloseClick={handleCloseClick}
-            />
-          ))
+          <div className="grid-cols-5 grid gap-4 w-full">
+            {files.map((file, index) => (
+              <ImageThumbnail
+                key={index}
+                index={index}
+                source={file.content}
+                handleCloseClick={handleCloseClick}
+              />
+            ))}
+          </div>
         )}
       </div>
       <input

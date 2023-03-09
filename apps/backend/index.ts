@@ -1,7 +1,9 @@
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
+import fs from "fs";
 import helmet from "helmet";
+import https from "https";
 
 import {
   RouteNames,
@@ -12,6 +14,7 @@ import {
 } from "shared-types";
 
 import socket, { Socket } from "./connectors/socket";
+import io from "./connectors/socket/client";
 import authMiddleware from "./middleware/auth";
 import loggerMiddleware from "./middleware/logger";
 import { sessionMiddleware } from "./middleware/session";
@@ -44,6 +47,10 @@ import {
   getDatasetConfigurationList,
   updateDatasetConfiguration
 } from "./routes/datasetConfiguration";
+import {
+  createDatasetPreview,
+  getDatasetPreviewList
+} from "./routes/datasetPreview";
 import download from "./routes/download";
 import {
   deleteModel,
@@ -59,6 +66,10 @@ import {
   createNetwork
 } from "./routes/network";
 import { getNetworkArchitectureList } from "./routes/networkArchitecture";
+import {
+  createNetworkPreview,
+  getNetworkPreviewList
+} from "./routes/networkPreview";
 import {
   getNotificationList,
   getNotification,
@@ -82,7 +93,7 @@ const bodyParser = require("body-parser");
 // dotenv.config({ path: "../../.env" });
 
 const app: Express = express();
-const port = process.env.EXPRESS_PORT || 3001;
+const port = process.env.EXPRESS_PORT;
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
@@ -93,7 +104,7 @@ app.use((req, res, next) => {
   );
   res.header(
     "Access-Control-Allow-Headers",
-    `Origin, X-Requested-With, Content-Type, Accept, Authorization, ${process.env.NEXT_PUBLIC_APP_TOKEN_KEY}`
+    `Origin, X-Requested-With, Content-Type, Accept, Authorization`
   );
   next();
 });
@@ -165,6 +176,14 @@ app.post(
   createDatasetConfiguration
 );
 
+//DATASET PREVIEW ROUTES
+app.post(route(RouteNames.POST_TASK_DATASETPREVIEW), createDatasetPreview);
+app.get(route(RouteNames.GET_DATASET_PREVIEW_LIST), getDatasetPreviewList);
+
+//NETWORK PREVIEW ROUTES
+app.post(route(RouteNames.POST_NETWORK_PREVIEW), createNetworkPreview);
+app.get(route(RouteNames.GET_NETWORK_PREVIEW_LIST), getNetworkPreviewList);
+
 // NETWORK ROUTES
 app.get(route(RouteNames.GET_NETWORK_LIST), getNetworkList);
 app.get(route(RouteNames.GET_NETWORK), getNetwork);
@@ -190,14 +209,31 @@ app.get(route(RouteNames.GET_NOTIFICATION), getNotification);
 app.post(route(RouteNames.DELETE_NOTIFICATION), deleteNotification);
 app.patch(route(RouteNames.READ_NOTIFICATION), updateNotification);
 
-socket;
+// socket;
 
-app.listen(port, () => {
-  logger.info(
-    loggerTitle.EXPRESS_SERVER,
-    `⚡️ Server is running at http://localhost:${port}`
-  );
-});
+if (process.env.NODE_ENV === "production") {
+  var options = {
+    key: fs.readFileSync("/home/reyk/cv-bench-web/apps/backend/client-key.pem"),
+    cert: fs.readFileSync(
+      "/home/reyk/cv-bench-web/apps/backend/client-cert.pem"
+    )
+  };
+
+  const server = https.createServer(options, app).listen(port);
+
+  io.attach(server);
+} else {
+  const server = app.listen(parseInt(port || "3001"), "0.0.0.0", () => {
+    logger.info(
+      loggerTitle.EXPRESS_SERVER,
+      `⚡ Server is running at http://localhost:${port}`
+    );
+  });
+
+  console.log("SERVER", server);
+
+  io.attach(server);
+}
 
 app.get("/", (req, res) => {
   res.status(200).send("HI");

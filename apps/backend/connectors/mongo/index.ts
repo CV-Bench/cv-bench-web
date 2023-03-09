@@ -6,9 +6,11 @@ import Background from "./background";
 import { prepareCollection } from "./client";
 import Dataset from "./dataset";
 import DatasetConfiguration from "./datasetConfiguration";
+import DatasetPreview from "./datasetPreview";
 import Model from "./model";
 import Network from "./network";
 import NetworkArchitecture from "./networkArchitecture";
+import NetworkPreview from "./networkPreview";
 import Notification from "./notification";
 import Socket from "./socket";
 import Task from "./task";
@@ -29,13 +31,15 @@ const Database = {
   Model,
   Dataset,
   DatasetConfiguration,
+  DatasetPreview,
   User,
   Background,
   NetworkArchitecture,
   Notification,
   Socket,
   Task,
-  Network
+  Network,
+  NetworkPreview
 };
 
 export const dataTypeCollectionMap = (dataType: DataType) =>

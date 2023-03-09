@@ -6,6 +6,7 @@ import {
   GetNetwork,
   GetNetworkArchitectureList,
   GetNetworkList,
+  GetNetworkPreviewList,
   RouteNames,
   getRoute
 } from "shared-types";
@@ -22,3 +23,10 @@ export const useNetworkArchitectureList =
       getRoute(RouteNames.GET_NETWORK_ARCHITECTURE_LIST)(),
       api.getNetworkArchitectureList
     );
+
+export const useNetworkPreviews = (
+  id: string
+): SWRResponse<GetNetworkPreviewList> =>
+  useSWR(getRoute(RouteNames.GET_DATASET_PREVIEW_LIST)(id), () =>
+    api.getNetworkPreviewList(id)
+  );

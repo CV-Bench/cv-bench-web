@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 import {
   DataType,
   NotificationTrigger,
@@ -9,7 +11,7 @@ import { Socket } from "./socket";
 
 const getDbObject = (
   trigger: NotificationTrigger,
-  id: string,
+  id: string | ObjectId,
   options: { dataType?: DataType }
 ) => {
   switch (trigger) {

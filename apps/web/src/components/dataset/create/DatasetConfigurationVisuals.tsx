@@ -2,6 +2,7 @@ import Collapsible from "@/components/Collapsible";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
 import SelectInput from "@/components/inputs/SelectInput";
+import SwitchToggle from "@/components/inputs/Switch";
 import { WorkspaceVisuals } from "@/components/visualization/Workspace/Workspace";
 
 import { GetBackgroundList, GetModelList } from "shared-types";
@@ -44,50 +45,30 @@ const DatasetConfigurationVisuals: React.FC<
   };
 
   return (
-    <>
-      <Collapsible title="Visuals">
+    <Collapsible title="Visuals" className="px-2">
+      <div className="space-y-2">
+        <SwitchToggle
+          text="Show Camera Sphere"
+          onChange={setShowCameraSphere}
+          isActive={visuals.showCameraSphere}
+        />
+        <SwitchToggle
+          text="Show Model Box"
+          onChange={setShowModelBox}
+          isActive={visuals.showModelBox}
+        />
+        <SwitchToggle
+          text="Lock Camera To Sphere"
+          onChange={setLockCameraToSphere}
+          isActive={visuals.lockCameraToSphere}
+        />
+        <SwitchToggle
+          text="Preview Render Resolution"
+          onChange={setShowRenderResolution}
+          isActive={visuals.showRenderResolution}
+        />
         <div>
-          <InputLabel>Show Camera Sphere</InputLabel>
-          <InputField
-            type="checkbox"
-            checked={visuals.showCameraSphere}
-            onChange={(e) =>
-              setShowCameraSphere(!!(e.target as HTMLInputElement).checked)
-            }
-          />
-        </div>
-        <div>
-          <InputLabel>Show Model Box</InputLabel>
-          <InputField
-            type="checkbox"
-            checked={visuals.showModelBox}
-            onChange={(e) =>
-              setShowModelBox(!!(e.target as HTMLInputElement).checked)
-            }
-          />
-        </div>
-        <div>
-          <InputLabel>Lock Camera To Sphere</InputLabel>
-          <InputField
-            type="checkbox"
-            checked={visuals.lockCameraToSphere}
-            onChange={(e) =>
-              setLockCameraToSphere(!!(e.target as HTMLInputElement).checked)
-            }
-          />
-        </div>
-        <div>
-          <InputLabel>Preview Render Resolution</InputLabel>
-          <InputField
-            type="checkbox"
-            checked={visuals.showRenderResolution}
-            onChange={(e) =>
-              setShowRenderResolution(!!(e.target as HTMLInputElement).checked)
-            }
-          />
-        </div>
-        <div>
-          <InputLabel>Preview Background</InputLabel>
+          <InputLabel className="text-sm">Preview Background</InputLabel>
           <SelectInput
             value={visuals.selectedBackgroundId}
             setValue={setSelectedBackgroundId}
@@ -100,7 +81,7 @@ const DatasetConfigurationVisuals: React.FC<
           </SelectInput>
         </div>
         <div>
-          <InputLabel>Preview Model</InputLabel>
+          <InputLabel className="text-sm">Preview Model</InputLabel>
           <SelectInput
             value={visuals.selectedModelId}
             setValue={setSelectedModelId}
@@ -112,8 +93,8 @@ const DatasetConfigurationVisuals: React.FC<
             ))}
           </SelectInput>
         </div>
-      </Collapsible>
-    </>
+      </div>
+    </Collapsible>
   );
 };
 
