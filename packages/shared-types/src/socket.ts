@@ -86,6 +86,11 @@ export interface TaskLogUpdateData extends TaskNamespaceData {
   metrics?: NetworkMetrics;
 }
 
+export interface TaskLogUpdateDb extends TaskLogUpdateData {
+  _id: string | ObjectId;
+  updatedAt: Date;
+}
+
 export interface DataNamespaceData extends ServerSocketData {
   dataId: string;
   dataType: DataType;
