@@ -5,7 +5,7 @@ import { PatchDatasetBody, PostDatasetBody } from "./dataset";
 import { PatchModelBody, PostModelBody } from "./model";
 import { PatchNetworkBody, PostNetworkBody } from "./network";
 import { PostNetworkPreviewBody } from "./networkPreview";
-import { FinishTaskBody, StopTaskBody } from "./task";
+import { FinishTaskBody, StopTaskBody, TaskLogTriggerBody } from "./task";
 
 export enum RouteNames {
   GET_MODEL_LIST = "GET_MODEL_LIST",
@@ -54,7 +54,11 @@ export enum RouteNames {
   GET_NOTIFICATION_LIST = "GET_NOTIFICATION_LIST",
   GET_NOTIFICATION = "GET_NOTIFICATION",
   DELETE_NOTIFICATION = "DELETE_NOTIFICATION",
-  READ_NOTIFICATION = "READ_NOTIFICATION"
+  READ_NOTIFICATION = "READ_NOTIFICATION",
+
+  SUBSCRIBE_TASK_LOG = "SUBSCRIBE_TASK_LOG",
+  UNSUBSCRIBE_TASK_LOG = "UNSUBSCRIBE_TASK_LOG",
+  GET_TASK_LOG = "GET_TASK_LOG"
 }
 
 interface RouteType {
@@ -315,6 +319,25 @@ export const Routes: {
     /^\/notification\/.*\/?patch?$/,
     z.object({}),
     (id?: string) => "/notification/" + id
+  ),
+
+  [RouteNames.SUBSCRIBE_TASK_LOG]: createRoute(
+    "/taskLog/subscribe",
+    /^\/taskLog\/subscribe\/?post$/,
+    TaskLogTriggerBody,
+    () => "/taskLog/subscribe"
+  ),
+  [RouteNames.UNSUBSCRIBE_TASK_LOG]: createRoute(
+    "/taskLog/unsubscribe",
+    /^\/taskLog\/unsubscribe\/?post$/,
+    TaskLogTriggerBody,
+    () => "/taskLog/unsubscribe"
+  ),
+  [RouteNames.GET_TASK_LOG]: createRoute(
+    "/taskLog/:id",
+    /^\/taskLog\/.*\/?get$/,
+    z.object({}),
+    (id?: string) => "/taskLog/" + id
   )
 };
 

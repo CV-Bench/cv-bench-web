@@ -14,7 +14,8 @@ export enum CollectionName {
   TASK = "tasks",
   NETWORK_ARCHITECTURE = "networkArchitecture",
   NOTIFICATION = "notification",
-  SOCKET = "sockets"
+  SOCKET = "sockets",
+  TASK_LOG = "taskLog"
 }
 
 export type CollectionCollection = { [name in CollectionName]?: Collection };
@@ -30,5 +31,6 @@ export enum DatabaseCollectionEntries {
   NetworkPreview = "NetworkPreview",
   Socket = "Socket",
   Task = "Task",
-  Network = "Network"
+  Network = "Network",
+  TaskLog = "TaskLog"
 }

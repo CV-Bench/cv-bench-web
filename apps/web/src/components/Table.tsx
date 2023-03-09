@@ -68,8 +68,6 @@ const Table: React.FC<TableProps> = ({
 
   useEffect(() => {
     if (minItems && minItems > 0) {
-      console.log(minItems);
-
       const appendItems = new Array(minItems).fill({});
       const newStateData = [...data, ...appendItems].slice(0, minItems);
 

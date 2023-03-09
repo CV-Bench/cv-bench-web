@@ -53,9 +53,9 @@ taskNamespace.on("connection", (socket) => {
   });
 
   socket.on("log_update", (data: TaskLogUpdateData) => {
-    logger.debug(loggerTitle.SOCKET, "Forward log update.");
+    logger.debug(loggerTitle.SOCKET, "Received log update.");
 
-    Socket.Frontend.sendLogUpdate(data);
+    Database.TaskLog.upsertOne(data.taskId, data);
   });
 
   socket.on("cleanup_failed", (data: TaskNamespaceData) => {});
