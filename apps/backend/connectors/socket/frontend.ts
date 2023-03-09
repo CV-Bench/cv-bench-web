@@ -48,7 +48,7 @@ io.engine.on("connection_error", (e) => {
 });
 
 frontendNamespace.on("connection", (socket) => {
-  logger.debug(loggerTitle.SOCKET, "/frontend | Socket connected:", socket.id);
+  logger.info(loggerTitle.SOCKET, "/frontend | Socket connected:", socket.id);
   socket.onAny(async (event, ...args) => {
     try {
       socket.emit(event, args);
