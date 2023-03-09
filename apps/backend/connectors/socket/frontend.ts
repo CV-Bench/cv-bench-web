@@ -76,16 +76,22 @@ const handleTaskSubscription = (
   socket: SocketWithUser,
   event: "subscribe_task_log" | "unsubscribe_task_log"
 ) => {
+  console.log("SUBSCRIBE TO TASK");
+
   Database.Task.findOne(taskId, socket?.user?._id).then((task) => {
     if (!task) {
       return;
     }
+
+    console.log(task.serverId);
 
     Database.Socket.findOne(task.serverId as string, ServerNamespace.TASK).then(
       (res) => {
         if (!res) {
           return;
         }
+
+        console.log(res.socketId);
 
         Socket.Task.toggleSubscribe(
           res.socketId,

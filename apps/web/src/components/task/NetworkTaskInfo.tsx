@@ -1,24 +1,42 @@
-import { GetTask, TaskDatasetInfo, TaskNetworkInfo } from "shared-types";
+import {
+  GetTask,
+  NetworkDb,
+  TaskDatasetInfo,
+  TaskNetworkInfo
+} from "shared-types";
 
 import InputField from "../inputs/InputField";
 import InputLabel from "../inputs/InputLabel";
 import TagInput from "../inputs/TagInput";
 
-export interface NetworkTaskInfoProps {
-  task: GetTask;
+export interface NetworkTaskInfoProps
+  extends Pick<NetworkDb, "networkArchitectureId" | "datasetId"> {
+  showTags?: boolean;
 }
 
-const NetworkTaskInfo: React.FC<NetworkTaskInfoProps> = ({ task }) => {
-  const info = task.info as TaskNetworkInfo;
+const NetworkTaskInfo: React.FC<NetworkTaskInfoProps> = ({
+  networkArchitectureId,
+  datasetId
+}) => {
   return (
-    <div className="pl-3">
-      <div>
-        <InputLabel>Dataset ID</InputLabel>
-        <InputField type="text" readOnly value={info.datasetId} />
+    <div className="space-y-2">
+      <div className="grid grid-cols-2">
+        <InputLabel className="text-slate-400">Dataset ID</InputLabel>
+        <InputField
+          type="text"
+          readOnly
+          value={datasetId}
+          className="text-slate-200 py-1 bg-transparent px-0"
+        />
       </div>
-      <div>
-        <InputLabel>Network Architecture</InputLabel>
-        <InputField type="text" readOnly value={info.networkArchitectureId} />
+      <div className="grid grid-cols-2">
+        <InputLabel className="text-slate-400">Network Architecture</InputLabel>
+        <InputField
+          type="text"
+          readOnly
+          value={networkArchitectureId}
+          className="text-slate-200 py-1 bg-transparent px-0"
+        />
       </div>
     </div>
   );

@@ -5,12 +5,18 @@ import Card from "@/components/Card";
 import DatasetPreviewImages from "@/components/task/DatasetPreviewImages";
 import DatasetTaskInfo from "@/components/task/DatasetTaskInfo";
 import TaskLogs from "@/components/task/Logs";
+import NetworkMetricsPage from "@/components/task/NetworkMetrics";
 import NetworkTaskInfo from "@/components/task/NetworkTaskInfo";
 import TaskGeneralInfos from "@/components/task/TaskGeneralInfos";
 import { useTask } from "@/hooks/task";
 import { useSocket } from "@/hooks/useSocket";
 
-import { TaskDatasetInfo, TaskLogUpdateData, TaskType } from "shared-types";
+import {
+  TaskDatasetInfo,
+  TaskLogUpdateData,
+  TaskNetworkInfo,
+  TaskType
+} from "shared-types";
 
 const TaskId = () => {
   const router = useRouter();
@@ -23,8 +29,6 @@ const TaskId = () => {
     if (!socket || !taskId) {
       return;
     }
-
-    console.log("Subscribing to log");
 
     socket.on("task_log", (data) => {
       console.log("TASK LOG", data);
@@ -48,7 +52,7 @@ const TaskId = () => {
     <div className="flex flex-col container mx-auto py-8 space-y-4">
       <div className="grid grid-cols-4 gap-4">
         <TaskGeneralInfos
-          name={task.info.accessType}
+          name={task.info.name}
           accessType={task.info.accessType}
           status={task.status}
           type={task.type}
@@ -63,17 +67,24 @@ const TaskId = () => {
               <DatasetTaskInfo {...(task.info as TaskDatasetInfo)} />
             )}
             {task.type == TaskType.CREATE_NETWORK && (
-              <NetworkTaskInfo task={task} />
+              <NetworkTaskInfo {...(task.info as TaskNetworkInfo)} />
             )}
           </div>
         </Card>
       </div>
 
       {task.type === TaskType.CREATE_DATASET && (
-        <>
-          <DatasetPreviewImages taskId={task._id} />
-          <TaskLogs taskLog={taskLog} />
-        </>
+        <DatasetPreviewImages taskId={task._id} />
+      )}
+      {task.type == TaskType.CREATE_NETWORK && taskLog && taskLog.metrics && (
+        <NetworkMetricsPage
+          metrics={taskLog.metrics}
+          timestamp={taskLog.timestamp}
+        />
+      )}
+
+      {taskLog && (
+        <TaskLogs timestamp={taskLog.timestamp} lines={taskLog.lines} />
       )}
     </div>
   );

@@ -40,6 +40,8 @@ const TrainStep: React.FC<TrainStepProps> = ({
         accessType={accessType}
         handleChange={handleChange}
         handleUpload={handleUpload}
+        uploadButtonText="Start Training"
+        uploadTitleText="Start Training"
       />
     </div>
   );

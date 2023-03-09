@@ -1,20 +1,16 @@
 import { formatToDateString } from "@/utils/date";
 
-import { DatasetLogUpdateData, TaskLogUpdateData } from "shared-types";
-
 import Card from "../Card";
 
 interface TaskLogsProps {
-  taskLog: TaskLogUpdateData | undefined;
+  timestamp: number;
+  lines: string[];
 }
 
-const TaskLogs: React.FC<TaskLogsProps> = ({ taskLog }) => {
-  if (!taskLog) {
+const TaskLogs: React.FC<TaskLogsProps> = ({ timestamp, lines }) => {
+  if (lines.length <= 0) {
     return null;
   }
-
-  const { timestamp, data } = taskLog as Omit<TaskLogUpdateData, "data"> &
-    DatasetLogUpdateData;
 
   return (
     <Card className="p-4 divide-y divide-slate-600">
@@ -26,8 +22,8 @@ const TaskLogs: React.FC<TaskLogsProps> = ({ taskLog }) => {
       </div>
       <div className="pt-4">
         <div className="bg-gray-900 text-slate-400 p-4 rounded shadow">
-          {data.map((line) => (
-            <p>{line}</p>
+          {lines.map((line, i) => (
+            <p key={i}>{line}</p>
           ))}
         </div>
       </div>

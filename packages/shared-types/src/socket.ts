@@ -42,48 +42,49 @@ export interface TaskNamespaceData extends ServerSocketData {
   taskId: string;
 }
 
-export interface DatasetLogUpdateData {
-  data: string[];
-}
-
 type StartPrevCurr = [number, number, number];
 
-export interface NetworkLogUpdateData {
-  data: {
-    lines: string[];
-    data: {
-      train: {
-        iter: StartPrevCurr;
-        lr: StartPrevCurr;
-        memory: StartPrevCurr;
-        data_time: StartPrevCurr;
-        loss_rpn_cls: StartPrevCurr;
-        loss_rpn_bbox: StartPrevCurr;
-        loss_cls: StartPrevCurr;
-        acc: StartPrevCurr;
-        loss_bbox: StartPrevCurr;
-        loss: StartPrevCurr;
-        time: StartPrevCurr;
-      };
-      val: {
-        iter: StartPrevCurr;
-        lr: StartPrevCurr;
-        bbox_mAP: StartPrevCurr;
-        bbox_mAP_50: StartPrevCurr;
-        bbox_mAP_75: StartPrevCurr;
-        bbox_mAP_s: StartPrevCurr;
-        bbox_mAP_m: StartPrevCurr;
-        bbox_mAP_l: StartPrevCurr;
-      };
-      currentEpoch: number;
-    };
-  };
+export interface TrainMetrics {
+  iter: number;
+  lr: number;
+  memory: number;
+  data_time: number;
+  loss_rpn_cls: number;
+  loss_rpn_bbox: number;
+  loss_cls: number;
+  acc: number;
+  loss_bbox: number;
+  loss: number;
+  time: number;
 }
 
-export type TaskLogUpdateData = (DatasetLogUpdateData | NetworkLogUpdateData) &
-  TaskNamespaceData & {
-    timestamp: number;
-  };
+export type TrainMetricKeys = keyof TrainMetrics;
+
+export interface ValidationMetrics {
+  iter: number;
+  lr: number;
+  bbox_mAP: number;
+  bbox_mAP_50: number;
+  bbox_mAP_75: number;
+  bbox_mAP_s: number;
+  bbox_mAP_m: number;
+  bbox_mAP_l: number;
+}
+
+export type ValidationMetricKeys = keyof ValidationMetrics;
+
+export interface NetworkMetrics {
+  train: [TrainMetrics, TrainMetrics, TrainMetrics];
+  val: [ValidationMetrics, ValidationMetrics, ValidationMetrics];
+  currentEpoch: number;
+}
+
+export interface TaskLogUpdateData extends TaskNamespaceData {
+  timestamp: number;
+
+  lines: string[];
+  metrics?: NetworkMetrics;
+}
 
 export interface DataNamespaceData extends ServerSocketData {
   dataId: string;
