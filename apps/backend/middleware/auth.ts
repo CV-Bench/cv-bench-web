@@ -8,7 +8,8 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     req.path.startsWith("/auth") ||
     req.path.startsWith("/task/finish") ||
     req.path.startsWith("/task/stop") ||
-    req.path.startsWith("/datasetPreview")
+    req.path.startsWith("/datasetPreview") ||
+    req.path.startsWith("/networkPreview")
   ) {
     next();
 

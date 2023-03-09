@@ -93,7 +93,7 @@ const bodyParser = require("body-parser");
 // dotenv.config({ path: "../../.env" });
 
 const app: Express = express();
-const port = process.env.EXPRESS_PORT || 3001;
+const port = process.env.EXPRESS_PORT;
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
@@ -223,12 +223,14 @@ if (process.env.NODE_ENV === "production") {
 
   io.attach(server);
 } else {
-  const server = app.listen(port, () => {
+  const server = app.listen(parseInt(port || "3001"), "0.0.0.0", () => {
     logger.info(
       loggerTitle.EXPRESS_SERVER,
       `⚡ Server is running at http://localhost:${port}`
     );
   });
+
+  console.log("SERVER", server);
 
   io.attach(server);
 }

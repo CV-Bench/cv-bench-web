@@ -45,37 +45,37 @@ export interface TaskNamespaceData extends ServerSocketData {
 type StartPrevCurr = [number, number, number];
 
 export interface TrainMetrics {
-  iter: number;
-  lr: number;
-  memory: number;
-  data_time: number;
-  loss_rpn_cls: number;
-  loss_rpn_bbox: number;
-  loss_cls: number;
-  acc: number;
-  loss_bbox: number;
-  loss: number;
-  time: number;
+  iter: StartPrevCurr;
+  lr: StartPrevCurr;
+  memory: StartPrevCurr;
+  data_time: StartPrevCurr;
+  loss_rpn_cls: StartPrevCurr;
+  loss_rpn_bbox: StartPrevCurr;
+  loss_cls: StartPrevCurr;
+  acc: StartPrevCurr;
+  loss_bbox: StartPrevCurr;
+  loss: StartPrevCurr;
+  time: StartPrevCurr;
 }
 
 export type TrainMetricKeys = keyof TrainMetrics;
 
 export interface ValidationMetrics {
-  iter: number;
-  lr: number;
-  bbox_mAP: number;
-  bbox_mAP_50: number;
-  bbox_mAP_75: number;
-  bbox_mAP_s: number;
-  bbox_mAP_m: number;
-  bbox_mAP_l: number;
+  iter: StartPrevCurr;
+  lr: StartPrevCurr;
+  bbox_mAP: StartPrevCurr;
+  bbox_mAP_50: StartPrevCurr;
+  bbox_mAP_75: StartPrevCurr;
+  bbox_mAP_s: StartPrevCurr;
+  bbox_mAP_m: StartPrevCurr;
+  bbox_mAP_l: StartPrevCurr;
 }
 
 export type ValidationMetricKeys = keyof ValidationMetrics;
 
 export interface NetworkMetrics {
-  train: [TrainMetrics, TrainMetrics, TrainMetrics];
-  val: [ValidationMetrics, ValidationMetrics, ValidationMetrics];
+  train: TrainMetrics;
+  val: ValidationMetrics;
   currentEpoch: number;
 }
 

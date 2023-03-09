@@ -1,30 +1,20 @@
-import { NextFunction } from "express";
-import * as jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
-import { Socket } from "socket.io";
 import { ExtendedError } from "socket.io/dist/namespace";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 import {
   ServerNamespace,
   ServerNamespaceMap,
   SocketType,
-  loggerTitle,
-  FrontendNamespaceClientToServerEvents,
-  FrontendNamespaceServerToClientEvents
+  loggerTitle
 } from "shared-types";
 
 import logger from "../../util/logger";
 import Database from "../mongo";
-import { RedisStore } from "../redis";
-import { redisClient } from "../redis";
 
 import { FrontendSocket, SocketMiddleware, SocketWithUser } from "./types";
 
 export const serverAuthMiddleware: SocketMiddleware = (socket, next) => {
   const token = socket.handshake.auth[process.env.SOCKET_AUTH_TOKEN_KEY || ""];
-
-  console.log(socket.id);
 
   if (token != process.env.SOCKET_AUTH_TOKEN) {
     logger.error(
@@ -56,12 +46,6 @@ export const serverAuthMiddleware: SocketMiddleware = (socket, next) => {
     socket.handshake.headers.serverid as string,
     ServerNamespaceMap[socket.nsp.name] as ServerNamespace
   ).then((result) => {
-    console.log(
-      socket.handshake.headers.serverid,
-      ServerNamespaceMap[socket.nsp.name],
-      result
-    );
-
     if (result) {
       socket.disconnect();
       logger.error(
@@ -85,6 +69,12 @@ export const serverRegistryMiddleware: SocketMiddleware = (socket, next) => {
     serverNamespace: ServerNamespaceMap[socket.nsp.name] as ServerNamespace,
     serverId: socket.handshake.headers.serverid as string
   });
+
+  logger.debug(
+    loggerTitle.SOCKET,
+    "New Server registrated",
+    "ID: " + socket.handshake.headers.serverid
+  );
 
   socket.on("disconnect", (reason) => {
     Database.Socket.deleteOne(socket.id);

@@ -1,25 +1,24 @@
-import { Namespace, Socket as SocketIO } from "socket.io";
+import { Namespace } from "socket.io";
 
 import {
   NotificationTrigger,
   ServerNamespace,
-  TaskDb,
   TaskLogUpdateData,
   TaskNamespaceClientToServerEvents,
   TaskNamespaceData,
   TaskNamespaceServerToClientEvents,
   TaskStatus,
-  TaskType
+  TaskType,
+  loggerTitle
 } from "shared-types";
 
+import logger from "../../util/logger";
 import Database from "../mongo";
 import Notification from "../notifications";
-import { redisClient } from "../redis";
 
 import { Socket } from "./";
 import io from "./client";
 import { serverAuthMiddleware, serverRegistryMiddleware } from "./middleware";
-import { SocketWithUser } from "./types";
 
 const taskNamespace: Namespace<
   TaskNamespaceClientToServerEvents,
@@ -35,8 +34,6 @@ taskNamespace.on("connection", (socket) => {
   });
 
   socket.on("task_started", ({ taskId, serverId }: TaskNamespaceData) => {
-    console.log("Task Started");
-
     Database.Task.updateOne(taskId, undefined, {
       serverId,
       status: TaskStatus.RUNNING
@@ -56,30 +53,15 @@ taskNamespace.on("connection", (socket) => {
   });
 
   socket.on("log_update", (data: TaskLogUpdateData) => {
-    console.log("LOG UPDATE RECEIVED");
+    logger.debug(loggerTitle.SOCKET, "Forward log update.");
 
     Socket.Frontend.sendLogUpdate(data);
-
-    // receiveTaskLogData(data, socket);
   });
 
   socket.on("cleanup_failed", (data: TaskNamespaceData) => {});
 
   socket.on("task_cleaned", (data: TaskNamespaceData) => {});
 });
-
-// const receiveTaskLogData = (data: TaskDb, socket: SocketIO) => {
-//   redisClient.set(`taskLog:${data._id}`, JSON.stringify(data));
-//   Socket.Frontend.Sockets.forEach((frontendSocket) => {
-//     //@ts-ignore
-//     if (frontendSocket.user._id == data.userId) {
-//       frontendSocket.emit("task_log", data);
-//       //@ts-ignore
-//       socket.emit("task_viewer", frontendSocket.user);
-//       return;
-//     }
-//   });
-// };
 
 const startTask = (taskId: string) => {
   // Find all Servers
