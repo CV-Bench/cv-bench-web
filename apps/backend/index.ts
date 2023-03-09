@@ -13,6 +13,7 @@ import {
   AuthProvider
 } from "shared-types";
 
+import socket, { Socket } from "./connectors/socket";
 import io from "./connectors/socket/client";
 import authMiddleware from "./middleware/auth";
 import loggerMiddleware from "./middleware/logger";
@@ -76,7 +77,6 @@ import {
   updateNotification
 } from "./routes/notification";
 import { finishTask, stopTask, getTask, getTaskList } from "./routes/task";
-import { getTaskLog, subscribe, unsubscribe } from "./routes/taskLog";
 import logger from "./util/logger";
 
 declare module "express-session" {
@@ -208,11 +208,6 @@ app.get(route(RouteNames.GET_NOTIFICATION_LIST), getNotificationList);
 app.get(route(RouteNames.GET_NOTIFICATION), getNotification);
 app.post(route(RouteNames.DELETE_NOTIFICATION), deleteNotification);
 app.patch(route(RouteNames.READ_NOTIFICATION), updateNotification);
-
-// TASK LOG
-app.post(route(RouteNames.SUBSCRIBE_TASK_LOG), subscribe);
-app.post(route(RouteNames.UNSUBSCRIBE_TASK_LOG), unsubscribe);
-app.get(route(RouteNames.GET_TASK_LOG), getTaskLog);
 
 // socket;
 

@@ -50,8 +50,7 @@ import {
   PostDatasetResponseBody,
   PostNetworkResponse,
   GetDatasetPreviewListBody,
-  GetNetworkPreviewListBody,
-  TaskLogUpdateData
+  GetNetworkPreviewListBody
 } from "shared-types";
 
 import { network } from "./utils";
@@ -246,6 +245,8 @@ export const api = {
   getTask: async (id: string): Promise<GetTask> => {
     const task = await getRequest(getRoute(RouteNames.GET_TASK)(id));
 
+    console.log("TASK", task);
+
     return GetTaskBody.parse(task);
   },
   getTaskList: async (): Promise<GetTaskList> => {
@@ -301,20 +302,6 @@ export const api = {
 
     return GetNetworkPreviewListBody.parse(networkPreviews);
   },
-
-  getTaskLog: async (id: string) => {
-    const taskLog = await getRequest(getRoute(RouteNames.GET_TASK_LOG)(id));
-
-    return taskLog as TaskLogUpdateData;
-  },
-  subscribeTaskLog: async (taskId: string) =>
-    postRequest(getRoute(RouteNames.SUBSCRIBE_TASK_LOG)(), {
-      body: { taskId }
-    }),
-  unsubscribeTaskLog: async (taskId: string) =>
-    postRequest(getRoute(RouteNames.UNSUBSCRIBE_TASK_LOG)(), {
-      body: { taskId }
-    }),
 
   // SOCKET
   //TODO fix url to match others
