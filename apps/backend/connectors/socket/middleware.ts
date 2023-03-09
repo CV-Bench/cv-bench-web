@@ -47,18 +47,13 @@ export const serverAuthMiddleware: SocketMiddleware = (socket, next) => {
     ServerNamespaceMap[socket.nsp.name] as ServerNamespace
   ).then((result) => {
     if (result) {
-      socket.disconnect();
-      logger.error(
-        loggerTitle.SOCKET,
-        "Socket Connection failed.",
-        "Socket with this id and namespace already connected!"
-      );
-
-      return;
+      Database.Socket.deleteOne(socket.id).then(() => {
+        next()
+      });
+    else {
+      next();
     }
-
-    next();
-  });
+  }).catch(() => next());
 };
 
 export const serverRegistryMiddleware: SocketMiddleware = (socket, next) => {
