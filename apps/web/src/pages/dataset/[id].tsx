@@ -60,7 +60,7 @@ const DatasetId = () => {
           updatedAt={dataset.updatedAt}
         />
         <Card className="p-4 divide-y divide-slate-600 col-span-3">
-          <p className="text-slate-200 pb-4">General Infos</p>
+          <p className="text-slate-200 pb-4">Specific Infos</p>
           <div className="py-4">
             <DatasetTaskInfo {...dataset} showTags={false} />
           </div>

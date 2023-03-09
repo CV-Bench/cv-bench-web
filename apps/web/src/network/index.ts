@@ -49,7 +49,8 @@ import {
   PostDatasetResponse,
   PostDatasetResponseBody,
   PostNetworkResponse,
-  GetDatasetPreviewListBody
+  GetDatasetPreviewListBody,
+  GetNetworkPreviewListBody
 } from "shared-types";
 
 import { network } from "./utils";
@@ -292,6 +293,14 @@ export const api = {
     );
 
     return GetDatasetPreviewListBody.parse(datasetPreviews);
+  },
+
+  getNetworkPreviewList: async (id: string) => {
+    const networkPreviews = await getRequest(
+      getRoute(RouteNames.GET_NETWORK_PREVIEW_LIST)(id)
+    );
+
+    return GetNetworkPreviewListBody.parse(networkPreviews);
   },
 
   // SOCKET
