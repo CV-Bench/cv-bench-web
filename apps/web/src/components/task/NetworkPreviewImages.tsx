@@ -1,18 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import { useDatasetPreviews } from "@/hooks/dataset";
+import { useNetworkPreviews } from "@/hooks/network";
 
 import Card from "../Card";
 
-interface DatasetPreviewImagesProps {
+interface NetworkPreviewImagesProps {
   taskId: string;
 }
 
-const DatasetPreviewImages: React.FC<DatasetPreviewImagesProps> = ({
+const NetworkPreviewImages: React.FC<NetworkPreviewImagesProps> = ({
   taskId
 }) => {
-  const { data: datasetPreviewList } = useDatasetPreviews(taskId);
+  const { data: networkPreviewList } = useNetworkPreviews(taskId);
 
-  if (!datasetPreviewList || datasetPreviewList.length <= 0) {
+  if (!networkPreviewList || networkPreviewList.length <= 0) {
     return null;
   }
 
@@ -20,7 +20,7 @@ const DatasetPreviewImages: React.FC<DatasetPreviewImagesProps> = ({
     <Card className="p-4 divide-y divide-slate-600">
       <p className="text-slate-200 pb-4">Preview Images</p>
       <div className="py-4 grid grid-cols-6 gap-4">
-        {datasetPreviewList.map(({ image }) => (
+        {networkPreviewList.map(({ image }) => (
           <div className="flex items-center ">
             <img
               src={image}
@@ -34,4 +34,4 @@ const DatasetPreviewImages: React.FC<DatasetPreviewImagesProps> = ({
   );
 };
 
-export default DatasetPreviewImages;
+export default NetworkPreviewImages;
