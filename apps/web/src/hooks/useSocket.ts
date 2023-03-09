@@ -35,11 +35,11 @@ export const useSocket = () => {
       FrontendNamespaceClientToServerEvents
     > = io(
       (process.env.NEXT_PUBLIC_SOCKET_DOMAIN! || "http://localhost:3002") +
-        // "http://167.71.33.87:3001" + "/frontend",
-        {
-          query: tokenObj,
-          transports: ["websocket"]
-        }
+        "/frontend",
+      {
+        query: tokenObj,
+        transports: ["websocket"]
+      }
     );
 
     console.log(socket);
