@@ -50,7 +50,7 @@ export const serverAuthMiddleware: SocketMiddleware = (socket, next) => {
       Database.Socket.deleteOne(socket.id).then(() => {
         next()
       });
-    else {
+    } else {
       next();
     }
   }).catch(() => next());
