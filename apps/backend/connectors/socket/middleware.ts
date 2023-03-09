@@ -42,18 +42,19 @@ export const serverAuthMiddleware: SocketMiddleware = (socket, next) => {
   }
 
   // If a server with this Id and Namespace is already connected
-  Database.Socket.findOne(
-    socket.handshake.headers.serverid as string,
-    ServerNamespaceMap[socket.nsp.name] as ServerNamespace
-  ).then((result) => {
-    if (result) {
-      Database.Socket.deleteOne(socket.id).then(() => {
-        next()
-      });
-    } else {
-      next();
-    }
-  }).catch(() => next());
+//   Database.Socket.findOne(
+//     socket.handshake.headers.serverid as string,
+//     ServerNamespaceMap[socket.nsp.name] as ServerNamespace
+//   ).then((result) => {
+//     if (result) {
+//       Database.Socket.deleteOne(socket.id).then(() => {
+//         next()
+//       });
+//     } else {
+//       next();
+//     }
+//   }).catch(() => next());
+  next();
 };
 
 export const serverRegistryMiddleware: SocketMiddleware = (socket, next) => {
