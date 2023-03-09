@@ -73,3 +73,10 @@ export type FinishTask = z.infer<typeof FinishTaskBody>;
 export const StopTaskBody = z.object({ taskId: z.string() });
 
 export type StopTask = z.infer<typeof StopTaskBody>;
+
+// SUBSCRIBE TASK LOG
+export const TaskLogTriggerBody = z.object({
+  taskId: z.string()
+});
+
+export type TaskLogTrigger = z.infer<typeof TaskLogTriggerBody>;
