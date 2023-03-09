@@ -8,6 +8,11 @@ const getDatasetPreviewList = (req: Request, res: Response) => {
   const taskId = req.params.id;
 
   Database.Task.findOne(taskId, undefined).then((result) => {
+    if (!result) {
+      res.status(200).json([]);
+      return;
+    }
+    
     const { status, info, userId } = result;
 
     const isTaskFinished = [TaskStatus.FINISHED, TaskStatus.ABORTED].includes(
