@@ -55,7 +55,7 @@ const ModelList = () => {
         </Card>
       </div>
       <div className="grid grid-cols-3 gap-4 col-span-3 pl-2">
-        {[...models, ...models, ...models, ...models, ...models, ...models].map(
+        {models.map(
           ({ domainTags, createdAt, updatedAt, previewImage, name, _id }) => (
             <Link
               href={`/model/${_id}`}
