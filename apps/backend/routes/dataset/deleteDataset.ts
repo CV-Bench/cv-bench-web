@@ -20,10 +20,10 @@ const deleteDataset = (req: Request, res: Response) => {
       Socket.Data.deleteData(req.params.id, DataType.DATASET);
 
       Promise.all(actions)
-        .then(() => res.status(200))
-        .catch(() => res.status(500));
+        .then(() => res.status(200).end())
+        .catch(() => res.status(500).end());
     })
-    .catch(() => res.status(500));
+    .catch(() => res.status(500).end());
 };
 
 export default deleteDataset;
