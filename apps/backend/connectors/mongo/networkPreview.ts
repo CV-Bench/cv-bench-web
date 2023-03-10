@@ -6,7 +6,7 @@ import { collectionRequest } from "./";
 
 const insertOne = (preview: Omit<NetworkPreviewDb, "createdAt">) =>
   collectionRequest<InsertOneResult>(
-    CollectionName.DATASET_PREVIEW,
+    CollectionName.NETWORK_PREVIEW,
     async (collection) => {
       return collection.insertOne({
         ...preview,
@@ -17,7 +17,7 @@ const insertOne = (preview: Omit<NetworkPreviewDb, "createdAt">) =>
 
 const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
   collectionRequest<DeleteResult>(
-    CollectionName.DATASET_PREVIEW,
+    CollectionName.NETWORK_PREVIEW,
     async (collection) => {
       return collection.deleteOne({
         _id: new ObjectId(id)
@@ -27,7 +27,7 @@ const deleteOne = (id: string | ObjectId, userId: string | ObjectId) =>
 
 const find = (taskId: string | ObjectId) =>
   collectionRequest<FindCursor<NetworkPreviewDb>>(
-    CollectionName.DATASET_PREVIEW,
+    CollectionName.NETWORK_PREVIEW,
     async (collection) => {
       return collection.find({
         taskId: new ObjectId(taskId)
