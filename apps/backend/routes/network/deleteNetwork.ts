@@ -19,7 +19,9 @@ const deleteNetwork = (req: Request, res: Response) => {
 
       Socket.Data.deleteData(req.params.id, DataType.NETWORK);
 
-      Promise.all(actions).then(() => res.status(200));
+      Promise.all(actions)
+      .then(() => res.status(200))
+      .catch(() => res.status(500));
     })
     .catch(() => res.status(500));
 };
