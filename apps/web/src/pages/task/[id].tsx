@@ -83,7 +83,7 @@ const TaskId = () => {
         />
       )}
 
-      {taskLog && (
+      {taskLog && taskLog.lines && (
         <TaskLogs timestamp={taskLog.timestamp} lines={taskLog.lines} />
       )}
     </div>
