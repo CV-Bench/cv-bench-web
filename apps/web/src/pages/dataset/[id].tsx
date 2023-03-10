@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import Card from "@/components/Card";
+import { addToast } from "@/components/Toast";
 import InputLabel from "@/components/inputs/InputLabel";
 import TagInput from "@/components/inputs/TagInput";
 import ToolGeneralSettings from "@/components/inputs/ToolGeneralSettings";
@@ -11,7 +12,7 @@ import TaskGeneralInfos from "@/components/task/TaskGeneralInfos";
 import { useDataset } from "@/hooks/dataset";
 import { api } from "@/network";
 
-import { AccessType, GetDataset } from "shared-types";
+import { AccessType, GetDataset, NotificationType } from "shared-types";
 
 const DatasetId = () => {
   const router = useRouter();
@@ -36,18 +37,47 @@ const DatasetId = () => {
   ) => setDataset({ ...dataset, [key]: value });
 
   const handleDelete = async () => {
-    await api.deleteDataset(dataset._id);
-    router.push("/dataset");
+    api
+      .deleteDataset(dataset._id)
+      .then(() => {
+        addToast(
+          "Dataset Deleted!",
+          "Dataset was deleted successfully.",
+          NotificationType.INFO
+        );
+        router.push("/dataset");
+      })
+      .catch((e) =>
+        addToast(
+          "Deletion Failed!",
+          "Dataset could not be deleted.",
+          NotificationType.ERROR
+        )
+      );
   };
 
   const handleUpdate = async () => {
-    await api.patchDataset(dataset._id, {
-      name: dataset.name,
-      description: dataset.description,
-      domainTags: dataset.domainTags,
-      accessType: dataset.accessType
-    });
-    router.push("/dataset");
+    api
+      .patchDataset(id, {
+        name: dataset.name,
+        description: dataset.description,
+        domainTags: dataset.domainTags,
+        accessType: dataset.accessType
+      })
+      .then(() => {
+        addToast(
+          "Dataset Updated!",
+          "Dataset was updated successfully.",
+          NotificationType.SUCCESS
+        );
+      })
+      .catch((e) =>
+        addToast(
+          "Update Failed!",
+          "Dataset could not be updated.",
+          NotificationType.ERROR
+        )
+      );
   };
 
   return (

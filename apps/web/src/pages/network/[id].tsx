@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import Button from "@/components/Button";
 import Card from "@/components/Card";
+import { addToast } from "@/components/Toast";
 import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
@@ -14,7 +15,7 @@ import TaskGeneralInfos from "@/components/task/TaskGeneralInfos";
 import { useNetwork } from "@/hooks/network";
 import { api } from "@/network";
 
-import { AccessType, DataUrlFile, GetNetwork } from "shared-types";
+import { AccessType, GetNetwork, NotificationType } from "shared-types";
 
 const NetworkId = () => {
   const router = useRouter();
@@ -38,20 +39,48 @@ const NetworkId = () => {
     value: string[] | string | AccessType
   ) => setNetwork({ ...network, [key]: value });
 
-  const downloadNetwork = () => {};
-
   const handleDelete = async () => {
-    await api.deleteNetwork(network._id);
-    router.push("/network");
+    api
+      .deleteDataset(network._id)
+      .then(() => {
+        addToast(
+          "Network Deleted!",
+          "Network was deleted successfully.",
+          NotificationType.INFO
+        );
+        router.push("/network");
+      })
+      .catch((e) =>
+        addToast(
+          "Deletion Failed!",
+          "Network could not be deleted.",
+          NotificationType.ERROR
+        )
+      );
   };
 
   const handleUpdate = async () => {
-    await api.patchNetwork(network._id, {
-      name: network.name,
-      description: network.description,
-      domainTags: network.domainTags,
-      accessType: network.accessType
-    });
+    api
+      .patchNetwork(network._id, {
+        name: network.name,
+        description: network.description,
+        domainTags: network.domainTags,
+        accessType: network.accessType
+      })
+      .then(() => {
+        addToast(
+          "Network Updated!",
+          "Network was updated successfully.",
+          NotificationType.SUCCESS
+        );
+      })
+      .catch((e) =>
+        addToast(
+          "Update Failed!",
+          "Network could not be updated.",
+          NotificationType.ERROR
+        )
+      );
   };
 
   return (

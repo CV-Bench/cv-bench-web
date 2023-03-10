@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import Button from "@/components/Button";
 import Card from "@/components/Card";
+import { addToast } from "@/components/Toast";
 import AccessTypeInput from "@/components/inputs/AccessTypeInput";
 import InputField from "@/components/inputs/InputField";
 import InputLabel from "@/components/inputs/InputLabel";
@@ -12,7 +13,12 @@ import ModelPreview from "@/components/visualization/ModelPreview";
 import { useModel } from "@/hooks/model";
 import { api } from "@/network";
 
-import { AccessType, DataUrlFile, GetModel } from "shared-types";
+import {
+  AccessType,
+  DataUrlFile,
+  GetModel,
+  NotificationType
+} from "shared-types";
 
 const ModelId = () => {
   const router = useRouter();
@@ -53,17 +59,47 @@ const ModelId = () => {
   };
 
   const deleteModel = async () => {
-    await api.deleteModel(model._id);
-    router.push("/model");
+    api
+      .deleteModel(model._id)
+      .then(() => {
+        addToast(
+          "Network Deleted!",
+          "Network was deleted successfully.",
+          NotificationType.INFO
+        );
+        router.push("/model");
+      })
+      .catch((e) =>
+        addToast(
+          "Deletion Failed!",
+          "Network could not be deleted.",
+          NotificationType.ERROR
+        )
+      );
   };
 
-  const updateModel = async () => {
-    await api.patchModel(model._id, {
-      name: model.name,
-      description: model.description,
-      domainTags: model.domainTags,
-      accessType: model.accessType
-    });
+  const updateModel = () => {
+    api
+      .patchModel(model._id, {
+        name: model.name,
+        description: model.description,
+        domainTags: model.domainTags,
+        accessType: model.accessType
+      })
+      .then(() => {
+        addToast(
+          "Model Updated!",
+          "Model was updated successfully.",
+          NotificationType.SUCCESS
+        );
+      })
+      .catch((e) =>
+        addToast(
+          "Update Failed!",
+          "Model could not be updated.",
+          NotificationType.ERROR
+        )
+      );
   };
 
   return (
