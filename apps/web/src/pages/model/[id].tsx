@@ -63,8 +63,8 @@ const ModelId = () => {
       .deleteModel(model._id)
       .then(() => {
         addToast(
-          "Network Deleted!",
-          "Network was deleted successfully.",
+          "Model Deleted!",
+          "Model was deleted successfully.",
           NotificationType.INFO
         );
         router.push("/model");
@@ -72,7 +72,7 @@ const ModelId = () => {
       .catch((e) =>
         addToast(
           "Deletion Failed!",
-          "Network could not be deleted.",
+          "Model could not be deleted.",
           NotificationType.ERROR
         )
       );
