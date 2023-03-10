@@ -52,7 +52,7 @@ const finishTask = (req: TypedRequest<FinishTask>, res: Response) => {
 
         Socket.Task.cleanup(taskId);
 
-        Database.Task.updateOne(taskId, userId, {
+        Database.Task.updateOne(taskId, task.userId, {
           status: TaskStatus.FINISHED
         }).then(() =>
           Notification.add(NotificationTrigger.TASK_FINISHED, taskId, {})
