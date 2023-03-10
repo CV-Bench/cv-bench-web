@@ -36,11 +36,11 @@ const DatasetConfigurationVisuals: React.FC<
     updateVisuals();
   };
   const setSelectedModelId = (val: string) => {
-    visuals.selectedBackgroundId = val;
+    visuals.selectedModelId = val;
     updateVisuals();
   };
   const setSelectedBackgroundId = (val: string) => {
-    visuals.selectedModelId = val;
+    visuals.selectedBackgroundId = val;
     updateVisuals();
   };
 
