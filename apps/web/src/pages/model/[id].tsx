@@ -12,9 +12,9 @@ import ModelPreview from "@/components/visualization/ModelPreview";
 import { useModel } from "@/hooks/model";
 import { api } from "@/network";
 
-import { AccessType, DataUrlFile, GetModel } from "shared-types";
+import { AccessType, DataUrlFile, GetModel, SessionUser } from "shared-types";
 
-const ModelId = () => {
+const ModelId = ({user}: {user: SessionUser}) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -115,6 +115,7 @@ const ModelId = () => {
         handleDownload={downloadModel}
         showDelete
         handleDelete={deleteModel}
+        isUsers={user?._id == model?.userId}
       />
     </div>
   );

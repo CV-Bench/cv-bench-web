@@ -20,6 +20,7 @@ interface ToolGeneralSettingsProps {
   handleDownload?: () => void;
   showDelete?: boolean;
   handleDelete?: () => void;
+  isUsers?: boolean;
 }
 
 const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
@@ -34,7 +35,8 @@ const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
   showDownload = false,
   handleDownload,
   showDelete = false,
-  handleDelete
+  handleDelete,
+  isUsers = true
 }) => {
   const getGridParams = () => {
     if (!showDownload && !showDelete) {
@@ -69,6 +71,7 @@ const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
                 type="text"
                 onChange={(value) => handleChange("name", value)}
                 isValid={(name) => name != null && String(name).length >= 5}
+                disabled={!isUsers}
               />
             )}
 
@@ -76,23 +79,26 @@ const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
               className="mt-3"
               accessType={accessType}
               setAccessType={(val) => handleChange("accessType", val)}
+              disabled={!isUsers}
             />
           </div>
         </div>
       </div>
-      <div
-        className={`divide-y divide-slate-600 ${
-          showDownload ? "px-4" : "pl-4"
-        }`}
-      >
-        <p className="pb-4">{uploadTitleText}</p>
+      {isUsers && (
+        <div
+          className={`divide-y divide-slate-600 ${
+            showDownload ? "px-4" : "pl-4"
+          }`}
+        >
+          <p className="pb-4">{uploadTitleText}</p>
 
-        <div className="pt-4">
-          <Button onClick={handleUpload} disabled={uploadDisabled}>
-            {uploadButtonText}
-          </Button>
+          <div className="pt-4">
+            <Button onClick={handleUpload} disabled={uploadDisabled}>
+              {uploadButtonText}
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
       {showDownload && (
         <div
           className={`${
@@ -106,7 +112,7 @@ const ToolGeneralSettings: React.FC<ToolGeneralSettingsProps> = ({
           </div>
         </div>
       )}
-      {showDelete && (
+      {isUsers && showDelete && (
         <div className="pl-4 divide-y divide-slate-600">
           <p className="pb-4">Delete</p>
 

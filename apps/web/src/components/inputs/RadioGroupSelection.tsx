@@ -7,6 +7,7 @@ import { classNames } from "../../utils/strings";
 interface RadioGroupSelectionProps {
   values: string[] | number[];
   selected: string;
+  disabled?: boolean;
 
   onSelect: (value: string | number) => void;
 }
@@ -14,10 +15,11 @@ interface RadioGroupSelectionProps {
 const RadioGroupSelection: React.FC<RadioGroupSelectionProps> = ({
   values,
   selected,
-  onSelect
+  onSelect,
+  disabled
 }) => (
   <div>
-    <RadioGroup value={selected} onChange={onSelect}>
+    <RadioGroup value={selected} onChange={onSelect} disabled={disabled}>
       <div className="text-sm text-slate-100">
         {values.map((option, i) => (
           <RadioGroup.Option
@@ -29,6 +31,7 @@ const RadioGroupSelection: React.FC<RadioGroupSelectionProps> = ({
               i === values.length - 1 ? "rounded-r-md" : "",
               "inline-flex cursor-pointer border w-1/2 border-slate-600 transition-colors ease-in duration-150 items-center hover:border-indigo-600 px-4 py-2"
             )}
+            disabled={disabled}
           >
             {option}
           </RadioGroup.Option>

@@ -11,9 +11,9 @@ import TaskGeneralInfos from "@/components/task/TaskGeneralInfos";
 import { useDataset } from "@/hooks/dataset";
 import { api } from "@/network";
 
-import { AccessType, GetDataset } from "shared-types";
+import { AccessType, GetDataset, SessionUser } from "shared-types";
 
-const DatasetId = () => {
+const DatasetId = ({user}: {user: SessionUser}) => {
   const router = useRouter();
   const { id } = router.query as { id: string };
 
@@ -87,6 +87,7 @@ const DatasetId = () => {
 
         showDelete
         handleDelete={handleDelete}
+        isUsers={user?._id == dataset?.userId}
       />
     </div>
   );

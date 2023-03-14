@@ -11,12 +11,14 @@ export interface AccessTypeInputProps {
   className?: string;
   accessType?: AccessType;
   setAccessType: (val: AccessType) => void;
+  disabled?: boolean;
 }
 
 const AccessTypeInput: React.FC<AccessTypeInputProps> = ({
   accessType = AccessType.PRIVATE,
   setAccessType,
-  className
+  className,
+  disabled
 }) => {
   return (
     <div className="grid grid-cols-2 group">
@@ -32,6 +34,7 @@ const AccessTypeInput: React.FC<AccessTypeInputProps> = ({
             val == "Private" ? AccessType.PRIVATE : AccessType.PUBLIC
           )
         }
+        disabled={disabled}
       />
     </div>
   );

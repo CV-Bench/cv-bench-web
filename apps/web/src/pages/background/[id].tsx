@@ -12,9 +12,9 @@ import ToolGeneralSettings from "@/components/inputs/ToolGeneralSettings";
 import { useBackground } from "@/hooks/background";
 import { api } from "@/network";
 
-import { AccessType, NotificationType, PatchBackground } from "shared-types";
+import { AccessType, NotificationType, PatchBackground, SessionUser } from "shared-types";
 
-const BackgroundId: React.FC = () => {
+const BackgroundId: React.FC<{user: SessionUser}> = ({user}: {user: SessionUser}) => {
   const { query, push } = useRouter();
   const { id } = query as { [key: string]: string };
 
@@ -128,6 +128,7 @@ const BackgroundId: React.FC = () => {
         handleDelete={handleDelete}
         showDownload
         handleDownload={handleDownload}
+        isUsers={user?._id == background?.userId}
       />
     </div>
   );
